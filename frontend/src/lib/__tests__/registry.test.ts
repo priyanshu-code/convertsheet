@@ -127,8 +127,11 @@ describe("Converter Registry & Utilities", () => {
       expect(config?.targetExtension).toBe(".xlsx");
     });
 
-    it("returns undefined for unknown or empty slug", () => {
-      expect(getConverterBySlug("non-existent-slug")).toBeUndefined();
+    it("returns undefined for unknown slug or prototype properties", () => {
+      expect(getConverterBySlug("non-existent-converter")).toBeUndefined();
+      expect(getConverterBySlug("toString")).toBeUndefined();
+      expect(getConverterBySlug("valueOf")).toBeUndefined();
+      expect(getConverterBySlug("__proto__")).toBeUndefined();
       expect(getConverterBySlug("")).toBeUndefined();
     });
   });

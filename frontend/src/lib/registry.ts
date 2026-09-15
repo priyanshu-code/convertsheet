@@ -413,7 +413,7 @@ export function getAllConverterSlugs(): ConverterSlug[] {
  * Retrieves a converter configuration by its slug.
  */
 export function getConverterBySlug(slug: string): ConverterConfig | undefined {
-  if (slug in CONVERTER_REGISTRY) {
+  if (Object.hasOwn(CONVERTER_REGISTRY, slug)) {
     return CONVERTER_REGISTRY[slug as ConverterSlug] as ConverterConfig;
   }
   return undefined;
