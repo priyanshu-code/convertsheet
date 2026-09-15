@@ -12,6 +12,8 @@ import type { ConverterConfig } from "@/types/registry";
 import { ConverterCard } from "@/components/converter";
 import { AdBanner } from "@/components/layout";
 import { HowToGuide, FAQAccordion, JsonLdSchema } from "@/components/seo";
+import { getAllTools } from "@/lib/tool-registry";
+import type { ToolConfig } from "@/types/tool";
 
 export interface ConverterPageProps {
   params: {
@@ -82,6 +84,9 @@ export default function ConverterPage({ params }: ConverterPageProps) {
   const otherConverters = (
     Object.values(CONVERTER_REGISTRY) as ConverterConfig[]
   ).filter((c) => c.slug !== config.slug);
+
+  // Retrieve featured calculators & tools for bidirectional GEO/SEO cross-linking
+  const featuredTools = getAllTools().slice(0, 3);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
@@ -211,6 +216,61 @@ export default function ConverterPage({ params }: ConverterPageProps) {
               <div className="mt-5 flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
                 <span>Launch Converter</span>
                 <ArrowRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Related Free Calculators & Tools (Bidirectional GEO / AEO Cluster) */}
+      <section
+        aria-labelledby="related-tools-heading"
+        className="max-w-7xl mx-auto pt-8 border-t border-zinc-200 dark:border-zinc-800 space-y-6"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2
+              id="related-tools-heading"
+              className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
+            >
+              Explore Free Calculators &amp; Developer Tools
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              Private, zero-upload calculation utilities to pair with your data conversions.
+            </p>
+          </div>
+
+          <Link
+            href="/#tools"
+            className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline inline-flex items-center gap-1"
+          >
+            <span>View All 18 Tools</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {featuredTools.map((tool) => (
+            <Link
+              key={tool.slug}
+              href={`/tools/${tool.slug}`}
+              className="group p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-emerald-500/50 hover:bg-emerald-50/10 dark:hover:bg-emerald-950/10 transition-all flex flex-col justify-between space-y-3"
+            >
+              <div>
+                <span className="text-[10px] font-bold tracking-wider uppercase text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded">
+                  {tool.category === "financial" ? "Financial" : tool.category === "data-developer" ? "Developer" : "Utility"}
+                </span>
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mt-2">
+                  {tool.name}
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-1">
+                  {tool.subtitle}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-1 text-xs font-semibold text-zinc-400 group-hover:text-emerald-500 transition-colors">
+                <span>Launch Tool</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
               </div>
             </Link>
           ))}

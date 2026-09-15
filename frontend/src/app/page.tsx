@@ -12,9 +12,11 @@ import {
 } from "lucide-react";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 import type { ConverterConfig } from "@/types/registry";
+import { getAllTools } from "@/lib/tool-registry";
 import { ConverterCard } from "@/components/converter";
 import { AdBanner } from "@/components/layout";
 import { ConverterGrid } from "@/components/home/ConverterGrid";
+import { ToolGrid } from "@/components/home/ToolGrid";
 
 export const metadata: Metadata = {
   title: "ConvertSheet - Fast, Private Structured Data Converter",
@@ -81,6 +83,7 @@ const homeJsonLd = {
 export default function HomePage() {
   const defaultConverter = CONVERTER_REGISTRY["json-to-excel"];
   const allConverters = Object.values(CONVERTER_REGISTRY) as ConverterConfig[];
+  const allTools = getAllTools();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16 sm:space-y-20">
@@ -139,6 +142,26 @@ export default function HomePage() {
         </div>
 
         <ConverterGrid converters={allConverters} />
+      </section>
+
+      {/* Free Calculators & Online Tools Grid */}
+      <section aria-labelledby="free-tools-heading" className="space-y-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/60">
+            Calculators &amp; Utilities
+          </span>
+          <h2
+            id="free-tools-heading"
+            className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
+          >
+            Free Online Calculators &amp; Developer Tools
+          </h2>
+          <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+            18 specialized financial, developer, and everyday math calculators executing 100% in your browser.
+          </p>
+        </div>
+
+        <ToolGrid tools={allTools} />
       </section>
 
       {/* Value Propositions Section */}

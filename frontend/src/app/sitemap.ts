@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllConverterSlugs } from "@/lib/registry";
+import { getAllToolSlugs } from "@/lib/tool-registry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://convertsheet.com";
@@ -14,6 +15,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
+  const toolRoutes: MetadataRoute.Sitemap = getAllToolSlugs().map((slug) => ({
+    url: `${baseUrl}/tools/${slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -22,5 +30,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     ...converterRoutes,
+    ...toolRoutes,
   ];
 }
