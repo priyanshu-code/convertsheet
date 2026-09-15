@@ -11,20 +11,25 @@ export interface HowToStep {
   description: string;
 }
 
-export interface ConverterConfig {
+export interface BaseConverterConfig {
   slug: string;
   sourceFormat: string;
   targetFormat: string;
   sourceExtension: string;
+  additionalExtensions?: string[];
   targetExtension: string;
   acceptedMimeTypes: string[];
   title: string;
   subtitle: string;
   metaDescription: string;
-  engineId?: ConverterEngineId; // undefined for future backend engines like pdf-to-excel
-  isClientSide: boolean;
   featured?: boolean;
   badge?: string;
   faqs: FAQItem[];
   howTo: HowToStep[];
 }
+
+export type ConverterConfig = BaseConverterConfig & (
+  | { isClientSide: true; engineId: ConverterEngineId }
+  | { isClientSide: false; engineId?: undefined }
+);
+

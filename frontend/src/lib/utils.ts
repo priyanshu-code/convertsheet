@@ -25,6 +25,7 @@ export function formatBytes(bytes: number, decimals: number = 2): string {
 
 /**
  * Triggers a client-side file download for a given Blob.
+ * Defers URL.revokeObjectURL to prevent Safari and Firefox from cancelling active downloads.
  */
 export function downloadBlob(blob: Blob, filename: string): void {
   if (typeof window === "undefined" || typeof document === "undefined") {
@@ -37,7 +38,9 @@ export function downloadBlob(blob: Blob, filename: string): void {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
 }
 
 /**
@@ -47,16 +50,38 @@ export function downloadBlob(blob: Blob, filename: string): void {
 export function getFileExtension(filename: string): string {
   if (!filename || typeof filename !== "string") return "";
   const trimmed = filename.trim();
-  const lastDotIndex = trimmed.lastIndexOf(".");
-  if (lastDotIndex === -1 || lastDotIndex === trimmed.length - 1) {
+  const basename = trimmed.split(/[/\\]/).pop() ?? "";
+  const lastDotIndex = basename.lastIndexOf(".");
+  if (lastDotIndex === -1 || lastDotIndex === basename.length - 1) {
     return "";
   }
-  return trimmed.slice(lastDotIndex + 1).toLowerCase();
+  return basename.slice(lastDotIndex + 1).toLowerCase();
+}
+
+/**
+ * Checks whether a filename matches any of the supported extensions.
+ * Handles extensions with or without leading dots and is case-insensitive.
+ */
+export function isExtensionSupported(
+  filename: string,
+  supportedExtensions: string[]
+): boolean {
+  if (!filename || !Array.isArray(supportedExtensions) || supportedExtensions.length === 0) {
+    return false;
+  }
+  const ext = getFileExtension(filename);
+  if (!ext) return false;
+  return supportedExtensions.some((supported) => {
+    if (!supported || typeof supported !== "string") return false;
+    const normalized = supported.trim().toLowerCase().replace(/^\./, "");
+    return normalized === ext;
+  });
 }
 
 /**
  * Sanitizes an Excel sheet name by removing characters disallowed by Excel ([\\/?*[\]:]),
- * trimming leading/trailing single quotes, truncating to 31 characters, and defaulting to "Sheet1".
+ * trimming leading/trailing single quotes, truncating to 31 characters, avoiding the reserved
+ * keyword "History", and defaulting to "Sheet1".
  */
 export function sanitizeSheetName(name?: string): string {
   if (!name || typeof name !== "string") {
@@ -78,5 +103,15 @@ export function sanitizeSheetName(name?: string): string {
   // Excel sheet names have a maximum length of 31 characters
   cleaned = cleaned.slice(0, 31).replace(/^'+|'+$/g, "").trim();
 
-  return cleaned || "Sheet1";
+  if (!cleaned) {
+    return "Sheet1";
+  }
+
+  // "History" is a reserved worksheet name in Microsoft Excel (case-insensitive)
+  if (cleaned.toLowerCase() === "history") {
+    return "History_Sheet";
+  }
+
+  return cleaned;
 }
+

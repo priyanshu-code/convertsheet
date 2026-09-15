@@ -5,10 +5,12 @@ import {
   getConverterBySlug,
   getFeaturedConverters,
   ALL_SUPPORTED_EXTENSIONS,
+  type ConverterSlug,
 } from "../registry";
 import {
   formatBytes,
   getFileExtension,
+  isExtensionSupported,
   sanitizeSheetName,
   cn,
   downloadBlob,
@@ -49,6 +51,15 @@ describe("Converter Registry & Utilities", () => {
       expect(config.sourceExtension).toMatch(/^\.[a-z0-9]+$/);
       expect(config.targetExtension).toMatch(/^\.[a-z0-9]+$/);
 
+      // If additionalExtensions are provided, each must start with dot and be non-empty
+      if (config.additionalExtensions) {
+        expect(Array.isArray(config.additionalExtensions)).toBe(true);
+        expect(config.additionalExtensions.length).toBeGreaterThan(0);
+        config.additionalExtensions.forEach((ext) => {
+          expect(ext).toMatch(/^\.[a-z0-9]+$/);
+        });
+      }
+
       // Accepted MIME types must be non-empty
       expect(config.acceptedMimeTypes.length).toBeGreaterThan(0);
       config.acceptedMimeTypes.forEach((mime) => {
@@ -82,6 +93,16 @@ describe("Converter Registry & Utilities", () => {
         expect(step.title.trim().length).toBeGreaterThan(3);
         expect(step.description.trim().length).toBeGreaterThan(10);
       });
+    });
+
+    it("supports .xls as an additionalExtension for excel-to-json and excel-to-csv", () => {
+      const excelJson = CONVERTER_REGISTRY["excel-to-json"];
+      expect(excelJson.additionalExtensions).toBeDefined();
+      expect(excelJson.additionalExtensions).toContain(".xls");
+
+      const excelCsv = CONVERTER_REGISTRY["excel-to-csv"];
+      expect(excelCsv.additionalExtensions).toBeDefined();
+      expect(excelCsv.additionalExtensions).toContain(".xls");
     });
 
     it("has pdf-to-excel configured as server-side (isClientSide: false, engineId: undefined)", () => {
@@ -190,9 +211,54 @@ describe("Converter Registry & Utilities", () => {
     it("trims surrounding whitespace from filename", () => {
       expect(getFileExtension("   document.pdf   ")).toBe("pdf");
     });
+
+    it("correctly handles file paths with dots in directory names", () => {
+      expect(getFileExtension("backup.2024/data")).toBe("");
+      expect(getFileExtension("backup.2024/data.csv")).toBe("csv");
+      expect(getFileExtension("path.with.dots/subfolder/file.json")).toBe("json");
+      expect(getFileExtension("path.with.dots/subfolder/noext")).toBe("");
+      expect(getFileExtension("C:\\projects.2024\\report")).toBe("");
+      expect(getFileExtension("C:\\projects.2024\\report.xlsx")).toBe("xlsx");
+    });
+  });
+
+  describe("isExtensionSupported utility", () => {
+    it("validates extensions case-insensitively with or without leading dots", () => {
+      expect(isExtensionSupported("data.xlsx", [".xlsx", ".xls"])).toBe(true);
+      expect(isExtensionSupported("data.XLS", [".xlsx", ".xls"])).toBe(true);
+      expect(isExtensionSupported("data.xls", ["xlsx", "xls"])).toBe(true);
+      expect(isExtensionSupported("data.csv", [".xlsx", ".xls"])).toBe(false);
+    });
+
+    it("validates file paths containing directory segments", () => {
+      expect(isExtensionSupported("backup.2024/data.json", [".json"])).toBe(true);
+      expect(isExtensionSupported("backup.2024/data", [".json"])).toBe(false);
+      expect(isExtensionSupported("C:\\dir.name\\file.csv", [".csv"])).toBe(true);
+      expect(isExtensionSupported("C:\\dir.name\\file", [".csv"])).toBe(false);
+    });
+
+    it("returns false for missing extensions or empty parameter lists", () => {
+      expect(isExtensionSupported("", [".xlsx"])).toBe(false);
+      expect(isExtensionSupported("file.xlsx", [])).toBe(false);
+      expect(isExtensionSupported("noext", [".xlsx"])).toBe(false);
+      expect(isExtensionSupported(null as any, [".xlsx"])).toBe(false);
+      expect(isExtensionSupported("file.xlsx", null as any)).toBe(false);
+    });
   });
 
   describe("sanitizeSheetName utility", () => {
+    it("guards against reserved worksheet name 'History' (case-insensitive)", () => {
+      expect(sanitizeSheetName("History")).toBe("History_Sheet");
+      expect(sanitizeSheetName("history")).toBe("History_Sheet");
+      expect(sanitizeSheetName("HISTORY")).toBe("History_Sheet");
+      expect(sanitizeSheetName("'history'")).toBe("History_Sheet");
+      expect(sanitizeSheetName("  History  ")).toBe("History_Sheet");
+      expect(sanitizeSheetName("History:")).toBe("History_Sheet");
+      // Non-reserved names should be preserved
+      expect(sanitizeSheetName("Order History")).toBe("Order History");
+      expect(sanitizeSheetName("History_Sheet")).toBe("History_Sheet");
+    });
+
     it("trims leading and trailing single quotes", () => {
       expect(sanitizeSheetName("'Quarterly Report'")).toBe("Quarterly Report");
       expect(sanitizeSheetName("''Double Quoted''")).toBe("Double Quoted");
@@ -240,7 +306,8 @@ describe("Converter Registry & Utilities", () => {
       expect(() => downloadBlob(blob, "output.txt")).not.toThrow();
     });
 
-    it("triggers file download using temporary anchor element when window and document exist", () => {
+    it("triggers file download using temporary anchor element and defers revokeObjectURL", () => {
+      vi.useFakeTimers();
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
       const mockRevokeObjectURL = vi.fn();
       const mockClick = vi.fn();
@@ -285,8 +352,15 @@ describe("Converter Registry & Utilities", () => {
         expect(mockAppendChild).toHaveBeenCalledWith(mockAnchor);
         expect(mockClick).toHaveBeenCalled();
         expect(mockRemoveChild).toHaveBeenCalledWith(mockAnchor);
+
+        // revokeObjectURL must NOT be called synchronously
+        expect(mockRevokeObjectURL).not.toHaveBeenCalled();
+
+        // Advance timers by 1000ms
+        vi.advanceTimersByTime(1000);
         expect(mockRevokeObjectURL).toHaveBeenCalledWith("blob:mock-url");
       } finally {
+        vi.useRealTimers();
         (globalThis as any).window = prevWindow;
         (globalThis as any).document = prevDocument;
         URL.createObjectURL = prevCreateObjectURL;

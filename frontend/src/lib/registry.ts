@@ -1,6 +1,6 @@
 import { ConverterConfig } from "@/types/registry";
 
-export const CONVERTER_REGISTRY: Record<string, ConverterConfig> = {
+export const CONVERTER_REGISTRY = {
   "json-to-excel": {
     slug: "json-to-excel",
     sourceFormat: "JSON",
@@ -176,6 +176,7 @@ export const CONVERTER_REGISTRY: Record<string, ConverterConfig> = {
     sourceFormat: "Excel",
     targetFormat: "JSON",
     sourceExtension: ".xlsx",
+    additionalExtensions: [".xls"],
     targetExtension: ".json",
     acceptedMimeTypes: [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -234,6 +235,7 @@ export const CONVERTER_REGISTRY: Record<string, ConverterConfig> = {
     sourceFormat: "Excel",
     targetFormat: "CSV",
     sourceExtension: ".xlsx",
+    additionalExtensions: [".xls"],
     targetExtension: ".csv",
     acceptedMimeTypes: [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -396,37 +398,46 @@ export const CONVERTER_REGISTRY: Record<string, ConverterConfig> = {
       },
     ],
   },
-};
+} as const satisfies Record<string, ConverterConfig>;
+
+export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;
 
 /**
  * Returns all converter slug keys defined in CONVERTER_REGISTRY.
  */
-export function getAllConverterSlugs(): string[] {
-  return Object.keys(CONVERTER_REGISTRY);
+export function getAllConverterSlugs(): ConverterSlug[] {
+  return Object.keys(CONVERTER_REGISTRY) as ConverterSlug[];
 }
 
 /**
  * Retrieves a converter configuration by its slug.
  */
 export function getConverterBySlug(slug: string): ConverterConfig | undefined {
-  return CONVERTER_REGISTRY[slug];
+  if (slug in CONVERTER_REGISTRY) {
+    return CONVERTER_REGISTRY[slug as ConverterSlug] as ConverterConfig;
+  }
+  return undefined;
 }
 
 /**
  * Retrieves all converter configurations flagged as featured.
  */
 export function getFeaturedConverters(): ConverterConfig[] {
-  return Object.values(CONVERTER_REGISTRY).filter((c) => Boolean(c.featured));
+  return Object.values(CONVERTER_REGISTRY).filter((c) =>
+    Boolean(c.featured)
+  ) as ConverterConfig[];
 }
 
 /**
  * List of all supported source extensions across all registered converters.
  */
-export const ALL_SUPPORTED_EXTENSIONS: string[] = [
-  ".json",
-  ".xml",
-  ".csv",
-  ".xlsx",
-  ".xls",
-  ".pdf",
-];
+export const ALL_SUPPORTED_EXTENSIONS: string[] = Array.from(
+  new Set(
+    (Object.values(CONVERTER_REGISTRY) as ConverterConfig[]).flatMap((c) => [
+      c.sourceExtension,
+      ...(c.additionalExtensions ?? []),
+    ])
+  )
+);
+
+
