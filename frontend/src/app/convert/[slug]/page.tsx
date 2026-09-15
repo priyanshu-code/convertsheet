@@ -1,0 +1,187 @@
+import React from "react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
+import {
+  getAllConverterSlugs,
+  getConverterBySlug,
+  CONVERTER_REGISTRY,
+} from "@/lib/registry";
+import { ConverterCard } from "@/components/converter";
+import { AdBanner } from "@/components/layout";
+import { HowToGuide, FAQAccordion, JsonLdSchema } from "@/components/seo";
+
+export interface ConverterPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export function generateStaticParams() {
+  return getAllConverterSlugs().map((slug) => ({
+    slug,
+  }));
+}
+
+export async function generateMetadata({
+  params,
+}: ConverterPageProps): Promise<Metadata> {
+  const config = getConverterBySlug(params.slug);
+
+  if (!config) {
+    return {
+      title: "Converter Not Found - ConvertSheet",
+      description: "The requested data converter was not found.",
+    };
+  }
+
+  const canonicalUrl = `https://convertsheet.com/convert/${config.slug}`;
+
+  return {
+    title: config.title,
+    description: config.metaDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: config.title,
+      description: config.metaDescription,
+      url: canonicalUrl,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: config.title,
+      description: config.metaDescription,
+    },
+  };
+}
+
+export default function ConverterPage({ params }: ConverterPageProps) {
+  const config = getConverterBySlug(params.slug);
+
+  if (!config) {
+    notFound();
+  }
+
+  // Retrieve the other 6 converters for internal cross-linking
+  const otherConverters = Object.values(CONVERTER_REGISTRY).filter(
+    (c) => c.slug !== config.slug
+  );
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+      {/* Hero Section */}
+      <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
+        {/* Privacy Badge & Featured Status */}
+        <div className="flex flex-wrap items-center justify-center gap-2.5">
+          <div
+            data-testid="privacy-badge"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 shadow-xs"
+          >
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>
+              {config.isClientSide
+                ? "100% Client-Side & Private • Zero Server Uploads"
+                : "Secure End-to-End Processing • Zero Retention"}
+            </span>
+          </div>
+
+          {config.badge && (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+              <span>{config.badge}</span>
+            </span>
+          )}
+        </div>
+
+        {/* Title */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.15]">
+          {config.title}
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          {config.subtitle}
+        </p>
+      </div>
+
+      {/* Converter Card - Above the fold */}
+      <div className="max-w-4xl mx-auto">
+        <ConverterCard config={config} />
+      </div>
+
+      {/* Leaderboard Ad Slot */}
+      <div className="flex justify-center w-full my-6 sm:my-8">
+        <AdBanner format="leaderboard" />
+      </div>
+
+      {/* 3-Step Visual How-To Guide */}
+      <div className="max-w-5xl mx-auto">
+        <HowToGuide config={config} />
+      </div>
+
+      {/* Interactive FAQ Accordion */}
+      <div className="max-w-4xl mx-auto">
+        <FAQAccordion config={config} />
+      </div>
+
+      {/* Other Popular Data Converters Section */}
+      <section
+        aria-labelledby="other-converters-heading"
+        data-testid="other-converters-section"
+        className="max-w-7xl mx-auto pt-8 border-t border-zinc-200 dark:border-zinc-800"
+      >
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+          <h2
+            id="other-converters-heading"
+            className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
+          >
+            Other Popular Data Converters
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
+            Convert spreadsheets, structured documents, and accounting files directly in your browser.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          {otherConverters.map((converter) => (
+            <Link
+              key={converter.slug}
+              href={`/convert/${converter.slug}`}
+              className="group relative flex flex-col justify-between p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:border-emerald-300 dark:hover:border-emerald-800/80 hover:shadow-md transition-all duration-200"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="font-mono text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2.5 py-1 rounded-lg">
+                    {converter.sourceFormat} &rarr; {converter.targetFormat}
+                  </span>
+                  {converter.badge && (
+                    <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
+                      {converter.badge}
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  {converter.sourceFormat} to {converter.targetFormat}
+                </h3>
+                <p className="mt-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+                  {converter.metaDescription}
+                </p>
+              </div>
+
+              <div className="mt-5 flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
+                <span>Launch Converter</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Structured Data Script */}
+      <JsonLdSchema config={config} />
+    </div>
+  );
+}
