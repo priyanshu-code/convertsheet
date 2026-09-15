@@ -13,6 +13,27 @@ import {
   XmlToExcelEngine,
   TallyXmlToExcelEngine,
 } from "./xml-engine";
+import {
+  parquetToExcelEngine,
+  parquetToCsvEngine,
+  parquetToJsonEngine,
+  csvToParquetEngine,
+  jsonToParquetEngine,
+  ParquetToExcelEngine,
+  ParquetToCsvEngine,
+  ParquetToJsonEngine,
+  CsvToParquetEngine,
+  JsonToParquetEngine,
+} from "./parquet-engine";
+import {
+  jsonlToExcelEngine,
+  jsonlToCsvEngine,
+  csvToJsonlEngine,
+  JsonlToExcelEngine,
+  JsonlToCsvEngine,
+  CsvToJsonlEngine,
+} from "./jsonl-engine";
+import { DuckDbClient, getDuckDbClient } from "./duckdb-client";
 
 export {
   csvToExcelEngine,
@@ -27,6 +48,24 @@ export {
   tallyXmlToExcelEngine,
   XmlToExcelEngine,
   TallyXmlToExcelEngine,
+  parquetToExcelEngine,
+  parquetToCsvEngine,
+  parquetToJsonEngine,
+  csvToParquetEngine,
+  jsonToParquetEngine,
+  ParquetToExcelEngine,
+  ParquetToCsvEngine,
+  ParquetToJsonEngine,
+  CsvToParquetEngine,
+  JsonToParquetEngine,
+  jsonlToExcelEngine,
+  jsonlToCsvEngine,
+  csvToJsonlEngine,
+  JsonlToExcelEngine,
+  JsonlToCsvEngine,
+  CsvToJsonlEngine,
+  DuckDbClient,
+  getDuckDbClient,
   flattenObject,
 };
 
@@ -37,6 +76,14 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "excel-to-csv": excelToCsvEngine,
   "xml-to-excel": xmlToExcelEngine,
   "tally-xml-to-excel": tallyXmlToExcelEngine,
+  "parquet-to-excel": parquetToExcelEngine,
+  "parquet-to-csv": parquetToCsvEngine,
+  "parquet-to-json": parquetToJsonEngine,
+  "csv-to-parquet": csvToParquetEngine,
+  "json-to-parquet": jsonToParquetEngine,
+  "jsonl-to-excel": jsonlToExcelEngine,
+  "jsonl-to-csv": jsonlToCsvEngine,
+  "csv-to-jsonl": csvToJsonlEngine,
 };
 
 export function getConverterEngine(engineId: ConverterEngineId): IConverterEngine {

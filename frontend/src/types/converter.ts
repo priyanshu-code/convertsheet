@@ -28,4 +28,12 @@ export type ConverterEngineId =
   | "excel-to-json"
   | "excel-to-csv"
   | "xml-to-excel"
-  | "tally-xml-to-excel";
+  | "tally-xml-to-excel"
+  | "parquet-to-excel"
+  | "parquet-to-csv"
+  | "parquet-to-json"
+  | "csv-to-parquet"
+  | "json-to-parquet"
+  | "jsonl-to-excel"
+  | "jsonl-to-csv"
+  | "csv-to-jsonl";
