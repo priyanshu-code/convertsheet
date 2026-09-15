@@ -98,10 +98,10 @@ export function AgeCalculator() {
           primaryValue={ageData.primaryAge}
           copyValue={ageData.primaryAge}
           items={[
-            { label: "Next Birthday Countdown", value: ageData.daysToBday, highlight: true },
-            { label: "Total Days Lived", value: `${ageData.totalDays} days` },
-            { label: "Total Weeks", value: `${ageData.totalWeeks} weeks` },
-            { label: "Total Hours", value: `${ageData.totalHours} hrs` },
+            { label: "Next Birthday Countdown", value: ageData.daysToBday || "N/A", highlight: true },
+            { label: "Total Days Lived", value: `${ageData.totalDays || 0} days` },
+            { label: "Total Weeks", value: `${ageData.totalWeeks || 0} weeks` },
+            { label: "Total Hours", value: `${ageData.totalHours || 0} hrs` },
           ]}
         />
       ) : null}
