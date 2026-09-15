@@ -52,10 +52,10 @@ describe("Converter Registry & Utilities", () => {
       expect(config.targetExtension).toMatch(/^\.[a-z0-9]+$/);
 
       // If additionalExtensions are provided, each must start with dot and be non-empty
-      if (config.additionalExtensions) {
+      if ("additionalExtensions" in config && config.additionalExtensions) {
         expect(Array.isArray(config.additionalExtensions)).toBe(true);
         expect(config.additionalExtensions.length).toBeGreaterThan(0);
-        config.additionalExtensions.forEach((ext) => {
+        (config.additionalExtensions as readonly string[]).forEach((ext) => {
           expect(ext).toMatch(/^\.[a-z0-9]+$/);
         });
       }
