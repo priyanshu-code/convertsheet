@@ -1,0 +1,66 @@
+import Papa from "papaparse";
+import * as XLSX from "xlsx";
+import {
+  IConverterEngine,
+  TabularData,
+  ConversionOptions,
+  ConversionOutput,
+} from "@/types/converter";
+
+export class CsvToExcelEngine implements IConverterEngine {
+  async parsePreview(file: File, maxRows?: number): Promise<TabularData> {
+    const text = await file.text();
+    if (!text || !text.trim()) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
+
+    const parsed = Papa.parse<Record<string, unknown>>(text, {
+      header: true,
+      skipEmptyLines: "greedy",
+    });
+
+    const columns = parsed.meta.fields ? [...parsed.meta.fields] : [];
+    const allRows = parsed.data || [];
+    const limit = maxRows !== undefined ? maxRows : 10;
+    const rows = limit > 0 ? allRows.slice(0, limit) : allRows;
+
+    return {
+      columns,
+      rows,
+      totalRows: allRows.length,
+    };
+  }
+
+  async convert(file: File, options?: ConversionOptions): Promise<ConversionOutput> {
+    const text = await file.text();
+    if (!text || !text.trim()) {
+      throw new Error("CSV file is empty");
+    }
+
+    const parsed = Papa.parse<unknown[]>(text, {
+      header: false,
+      skipEmptyLines: "greedy",
+      delimiter: options?.delimiter,
+      dynamicTyping: true,
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(parsed.data);
+    const workbook = XLSX.utils.book_new();
+    const sheetName = options?.sheetName || "Sheet1";
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+
+    const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const baseName = file.name ? file.name.replace(/\.[^/.]+$/, "") : "converted";
+    return {
+      blob,
+      filename: `${baseName}.xlsx`,
+      mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    };
+  }
+}
+
+export const csvToExcelEngine = new CsvToExcelEngine();
