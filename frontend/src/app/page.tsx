@@ -11,8 +11,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
+import type { ConverterConfig } from "@/types/registry";
 import { ConverterCard } from "@/components/converter";
 import { AdBanner } from "@/components/layout";
+import { ConverterGrid } from "@/components/home/ConverterGrid";
 
 export const metadata: Metadata = {
   title: "ConvertSheet - Fast, Private Structured Data Converter",
@@ -59,7 +61,7 @@ const VALUE_PROPS = [
 
 export default function HomePage() {
   const defaultConverter = CONVERTER_REGISTRY["json-to-excel"];
-  const allConverters = Object.values(CONVERTER_REGISTRY);
+  const allConverters = Object.values(CONVERTER_REGISTRY) as ConverterConfig[];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16 sm:space-y-20">
@@ -111,46 +113,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allConverters.map((converter) => (
-            <Link
-              key={converter.slug}
-              href={`/convert/${converter.slug}`}
-              className="group relative flex flex-col justify-between p-6 sm:p-7 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:border-emerald-400 dark:hover:border-emerald-800 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-200"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="font-mono text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-3 py-1 rounded-xl">
-                    {converter.sourceFormat} &rarr; {converter.targetFormat}
-                  </span>
-                  {converter.badge && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800 px-2.5 py-0.5 rounded-full border border-zinc-200 dark:border-zinc-700">
-                      <Sparkles className="w-3 h-3 text-emerald-500" />
-                      <span>{converter.badge}</span>
-                    </span>
-                  )}
-                </div>
-
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                  {converter.sourceFormat} to {converter.targetFormat}
-                </h3>
-                <p className="mt-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
-                  {converter.metaDescription}
-                </p>
-              </div>
-
-              <div className="mt-6 flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800/80">
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                  {converter.isClientSide ? "In-Browser WebAssembly" : "Cloud OCR Engine"}
-                </span>
-                <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
-                  <span>Open Tool</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <ConverterGrid converters={allConverters} />
       </section>
 
       {/* Value Propositions Section */}

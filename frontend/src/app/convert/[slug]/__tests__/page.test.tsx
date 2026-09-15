@@ -35,10 +35,10 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
 
   describe("generateStaticParams", () => {
-    it("returns all 7 converter slugs for static pre-rendering", () => {
+    it("returns all 15 converter slugs for static pre-rendering", () => {
       const params = generateStaticParams();
 
-      expect(params).toHaveLength(7);
+      expect(params).toHaveLength(15);
       const slugs = params.map((p) => p.slug);
       expect(slugs).toEqual(
         expect.arrayContaining([
@@ -49,6 +49,14 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
           "excel-to-csv",
           "pdf-to-excel",
           "tally-xml-to-excel",
+          "parquet-to-excel",
+          "parquet-to-csv",
+          "parquet-to-json",
+          "csv-to-parquet",
+          "json-to-parquet",
+          "jsonl-to-excel",
+          "jsonl-to-csv",
+          "csv-to-jsonl",
         ])
       );
     });
@@ -134,11 +142,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         )
       ).toBeInTheDocument();
 
-      // Other Popular Data Converters (should list the other 6)
+      // Other Popular Data Converters (should list the other 14)
       const otherSection = screen.getByTestId("other-converters-section");
       expect(otherSection).toBeInTheDocument();
       const otherLinks = otherSection.querySelectorAll("a");
-      expect(otherLinks).toHaveLength(6);
+      expect(otherLinks).toHaveLength(14);
 
       const linkedHrefs = Array.from(otherLinks).map((a) =>
         a.getAttribute("href")
@@ -150,6 +158,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       expect(linkedHrefs).toContain("/convert/excel-to-csv");
       expect(linkedHrefs).toContain("/convert/pdf-to-excel");
       expect(linkedHrefs).toContain("/convert/tally-xml-to-excel");
+      expect(linkedHrefs).toContain("/convert/parquet-to-excel");
+      expect(linkedHrefs).toContain("/convert/jsonl-to-excel");
 
       // Structured Data JSON-LD Script tag
       const scriptTag = container.querySelector(
@@ -290,11 +300,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   });
 
   describe("Sitemap & Robots Handlers", () => {
-    it("sitemap returns home, pricing, and all 7 converter routes with priority 0.9", () => {
+    it("sitemap returns home, pricing, and all 15 converter routes with priority 0.9", () => {
       const entries = sitemap();
 
-      // Home + Pricing + 7 Converters = 9 entries
-      expect(entries).toHaveLength(9);
+      // Home + Pricing + 15 Converters = 17 entries
+      expect(entries).toHaveLength(17);
 
       // Home entry
       const homeEntry = entries.find(

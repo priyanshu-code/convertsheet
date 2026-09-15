@@ -154,7 +154,7 @@ export class ParquetToCsvEngine implements IConverterEngine {
       const baseName = file.name.replace(/\.parquet$/i, "");
       const outputFilename = `${baseName}.csv`;
 
-      const blob = new Blob([outBuffer], {
+      const blob = new Blob([outBuffer as unknown as BlobPart], {
         type: "text/csv;charset=utf-8;",
       });
 
@@ -217,7 +217,7 @@ export class ParquetToJsonEngine implements IConverterEngine {
         }
       }
 
-      const blob = new Blob([finalBuffer], {
+      const blob = new Blob([finalBuffer as unknown as BlobPart], {
         type: "application/json",
       });
 
@@ -305,7 +305,7 @@ export class CsvToParquetEngine implements IConverterEngine {
       const baseName = file.name.replace(/\.csv$/i, "");
       const outputFilename = `${baseName}.parquet`;
 
-      const blob = new Blob([outBuffer], {
+      const blob = new Blob([outBuffer as unknown as BlobPart], {
         type: "application/vnd.apache.parquet",
       });
 
@@ -393,7 +393,7 @@ export class JsonToParquetEngine implements IConverterEngine {
       const baseName = file.name.replace(/\.json$/i, "");
       const outputFilename = `${baseName}.parquet`;
 
-      const blob = new Blob([outBuffer], {
+      const blob = new Blob([outBuffer as unknown as BlobPart], {
         type: "application/vnd.apache.parquet",
       });
 

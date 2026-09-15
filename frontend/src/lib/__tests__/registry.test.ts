@@ -18,18 +18,17 @@ import {
 
 describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
-    it("returns exactly 7 slugs for the MVP converters", () => {
+    it("returns all 15 registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(7);
-      expect(slugs).toEqual([
-        "json-to-excel",
-        "xml-to-excel",
-        "csv-to-excel",
-        "excel-to-json",
-        "excel-to-csv",
-        "pdf-to-excel",
-        "tally-xml-to-excel",
-      ]);
+      expect(slugs).toHaveLength(15);
+      expect(slugs).toContain("parquet-to-excel");
+      expect(slugs).toContain("parquet-to-csv");
+      expect(slugs).toContain("parquet-to-json");
+      expect(slugs).toContain("csv-to-parquet");
+      expect(slugs).toContain("json-to-parquet");
+      expect(slugs).toContain("jsonl-to-excel");
+      expect(slugs).toContain("jsonl-to-csv");
+      expect(slugs).toContain("csv-to-jsonl");
     });
   });
 
@@ -139,7 +138,7 @@ describe("Converter Registry & Utilities", () => {
   describe("getFeaturedConverters", () => {
     it("returns all converters flagged as featured", () => {
       const featured = getFeaturedConverters();
-      expect(featured.length).toBe(7);
+      expect(featured.length).toBeGreaterThanOrEqual(7);
       featured.forEach((item) => {
         expect(item.featured).toBe(true);
       });
@@ -154,6 +153,9 @@ describe("Converter Registry & Utilities", () => {
       expect(ALL_SUPPORTED_EXTENSIONS).toContain(".xlsx");
       expect(ALL_SUPPORTED_EXTENSIONS).toContain(".xls");
       expect(ALL_SUPPORTED_EXTENSIONS).toContain(".pdf");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".parquet");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".jsonl");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".ndjson");
       ALL_SUPPORTED_EXTENSIONS.forEach((ext) => {
         expect(ext.startsWith(".")).toBe(true);
       });

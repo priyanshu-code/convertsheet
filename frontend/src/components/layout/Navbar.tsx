@@ -15,6 +15,12 @@ import { ConverterConfig } from "@/types/registry";
 import { ThemeToggle } from "./ThemeToggle";
 
 const CONVERTER_LIST = Object.values(CONVERTER_REGISTRY) as ConverterConfig[];
+const SPREADSHEET_CONVERTERS = CONVERTER_LIST.filter(
+  (c) => c.category === "spreadsheets" || !c.category
+);
+const DATA_ENG_CONVERTERS = CONVERTER_LIST.filter(
+  (c) => c.category === "data-engineering"
+);
 
 function getFormatBadge(c: ConverterConfig): string {
   if (c.slug === "excel-to-json") return "XLSX → JSON";
@@ -26,16 +32,11 @@ function getFormatBadge(c: ConverterConfig): string {
 }
 
 function getConverterLabel(slug: string): string {
-  const map: Record<string, string> = {
-    "json-to-excel": "JSON to Excel",
-    "xml-to-excel": "XML to Excel",
-    "csv-to-excel": "CSV to Excel",
-    "excel-to-json": "Excel to JSON",
-    "excel-to-csv": "Excel to CSV",
-    "pdf-to-excel": "PDF to Excel",
-    "tally-xml-to-excel": "Tally XML to Excel",
-  };
-  return map[slug] || slug;
+  const config = CONVERTER_REGISTRY[slug as keyof typeof CONVERTER_REGISTRY];
+  if (config) {
+    return `${config.sourceFormat} to ${config.targetFormat}`;
+  }
+  return slug;
 }
 
 export function Navbar() {
@@ -132,53 +133,107 @@ export function Navbar() {
                   <div
                     role="menu"
                     aria-orientation="vertical"
-                    className="absolute left-0 mt-2 w-96 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl p-2 z-50 animate-in fade-in zoom-in-95 duration-100"
+                    className="absolute left-0 mt-2 w-[680px] rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-100"
                   >
-                    <div className="px-3 py-2 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-                      Structured Data Converters (7)
-                    </div>
-                    <div className="space-y-1">
-                      {CONVERTER_LIST.map((converter) => {
-                        const badge = getFormatBadge(converter);
-                        const label = getConverterLabel(converter.slug);
-                        return (
-                          <Link
-                            key={converter.slug}
-                            href={`/convert/${converter.slug}`}
-                            role="menuitem"
-                            onClick={() => setIsToolsOpen(false)}
-                            className="group flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                          >
-                            <div className="flex flex-col">
-                              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                                {label}
-                              </span>
-                              <span className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-1">
-                                {converter.badge ? (
-                                  <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                                    {converter.badge} •{" "}
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Column 1: Spreadsheets & Documents */}
+                      <div>
+                        <div className="px-2 py-1 text-[11px] font-bold text-zinc-400 uppercase tracking-wider flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 mb-1.5">
+                          <span>Spreadsheets &amp; Docs</span>
+                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-semibold">
+                            {SPREADSHEET_CONVERTERS.length}
+                          </span>
+                        </div>
+                        <div className="space-y-0.5">
+                          {SPREADSHEET_CONVERTERS.map((converter) => {
+                            const badge = getFormatBadge(converter);
+                            const label = getConverterLabel(converter.slug);
+                            return (
+                              <Link
+                                key={converter.slug}
+                                href={`/convert/${converter.slug}`}
+                                role="menuitem"
+                                onClick={() => setIsToolsOpen(false)}
+                                className="group flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                              >
+                                <div className="flex flex-col min-w-0">
+                                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
+                                    {label}
                                   </span>
-                                ) : null}
-                                {converter.isClientSide
-                                  ? "100% In-Browser"
-                                  : "Cloud Table Recognition"}
-                              </span>
-                            </div>
-                            <span className="font-mono text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded ml-2 whitespace-nowrap">
-                              {badge}
-                            </span>
-                          </Link>
-                        );
-                      })}
+                                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                                    {converter.badge ? (
+                                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                                        {converter.badge} •{" "}
+                                      </span>
+                                    ) : null}
+                                    {converter.isClientSide
+                                      ? "100% In-Browser"
+                                      : "Cloud Table OCR"}
+                                  </span>
+                                </div>
+                                <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded ml-2 whitespace-nowrap shrink-0">
+                                  {badge}
+                                </span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Column 2: Data Engineering & Analytics */}
+                      <div>
+                        <div className="px-2 py-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 mb-1.5">
+                          <span>Data Engineering</span>
+                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold">
+                            {DATA_ENG_CONVERTERS.length}
+                          </span>
+                        </div>
+                        <div className="space-y-0.5">
+                          {DATA_ENG_CONVERTERS.map((converter) => {
+                            const badge = getFormatBadge(converter);
+                            const label = getConverterLabel(converter.slug);
+                            return (
+                              <Link
+                                key={converter.slug}
+                                href={`/convert/${converter.slug}`}
+                                role="menuitem"
+                                onClick={() => setIsToolsOpen(false)}
+                                className="group flex items-center justify-between px-2.5 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                              >
+                                <div className="flex flex-col min-w-0">
+                                  <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
+                                    {label}
+                                  </span>
+                                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                                    {converter.badge ? (
+                                      <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                                        {converter.badge} •{" "}
+                                      </span>
+                                    ) : null}
+                                    DuckDB-Wasm
+                                  </span>
+                                </div>
+                                <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded ml-2 whitespace-nowrap shrink-0">
+                                  {badge}
+                                </span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
-                    <div className="border-t border-zinc-100 dark:border-zinc-800 mt-2 pt-2 px-3 py-1 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
-                      <span>Zero server retention</span>
+
+                    <div className="border-t border-zinc-100 dark:border-zinc-800 mt-3 pt-2 px-2 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                      <div className="flex items-center gap-1.5 text-[11px]">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                        <span>Zero server upload • Local DuckDB &amp; Worker engine</span>
+                      </div>
                       <Link
                         href="/#converters"
                         onClick={() => setIsToolsOpen(false)}
-                        className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1"
+                        className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline flex items-center gap-1 text-xs"
                       >
-                        All Tools <ArrowRight className="w-3 h-3" />
+                        All 15 Tools <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
                   </div>
@@ -243,28 +298,57 @@ export function Navbar() {
           aria-label="Mobile Navigation"
           className="md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 pt-3 pb-6 space-y-4 max-h-[calc(100vh-4rem)] overflow-y-auto animate-in slide-in-from-top-2 duration-150"
         >
-          <div>
-            <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
-              Converters
+          <div className="space-y-4">
+            <div>
+              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                <span>Spreadsheets &amp; Documents</span>
+                <span className="font-mono text-[10px]">{SPREADSHEET_CONVERTERS.length}</span>
+              </div>
+              <div className="grid grid-cols-1 gap-1">
+                {SPREADSHEET_CONVERTERS.map((converter) => {
+                  const badge = getFormatBadge(converter);
+                  const label = getConverterLabel(converter.slug);
+                  return (
+                    <Link
+                      key={converter.slug}
+                      href={`/convert/${converter.slug}`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                    >
+                      <span>{label}</span>
+                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded">
+                        {badge}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-            <div className="grid grid-cols-1 gap-1">
-              {CONVERTER_LIST.map((converter) => {
-                const badge = getFormatBadge(converter);
-                const label = getConverterLabel(converter.slug);
-                return (
-                  <Link
-                    key={converter.slug}
-                    href={`/convert/${converter.slug}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                  >
-                    <span>{label}</span>
-                    <span className="font-mono text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded">
-                      {badge}
-                    </span>
-                  </Link>
-                );
-              })}
+
+            <div>
+              <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                <span>Data Engineering (DuckDB)</span>
+                <span className="font-mono text-[10px]">{DATA_ENG_CONVERTERS.length}</span>
+              </div>
+              <div className="grid grid-cols-1 gap-1">
+                {DATA_ENG_CONVERTERS.map((converter) => {
+                  const badge = getFormatBadge(converter);
+                  const label = getConverterLabel(converter.slug);
+                  return (
+                    <Link
+                      key={converter.slug}
+                      href={`/convert/${converter.slug}`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                    >
+                      <span>{label}</span>
+                      <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded">
+                        {badge}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </div>
 

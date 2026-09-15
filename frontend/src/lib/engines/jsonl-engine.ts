@@ -152,7 +152,7 @@ export class JsonlToCsvEngine implements IConverterEngine {
       const baseName = file.name.replace(/\.(jsonl|ndjson)$/i, "");
       const outputFilename = `${baseName}.csv`;
 
-      const blob = new Blob([outBuffer], {
+      const blob = new Blob([outBuffer as unknown as BlobPart], {
         type: "text/csv;charset=utf-8;",
       });
 
@@ -241,7 +241,7 @@ export class CsvToJsonlEngine implements IConverterEngine {
       const baseName = file.name.replace(/\.csv$/i, "");
       const outputFilename = `${baseName}.jsonl`;
 
-      const blob = new Blob([outBuffer], {
+      const blob = new Blob([outBuffer as unknown as BlobPart], {
         type: "application/x-ndjson",
       });
 

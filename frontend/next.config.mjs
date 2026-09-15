@@ -7,6 +7,10 @@ const nextConfig = {
       asyncWebAssembly: true,
       layers: true,
     };
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      { module: /@duckdb\/duckdb-wasm/ },
+    ];
     return config;
   },
 };

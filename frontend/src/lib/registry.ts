@@ -8,6 +8,7 @@ export const CONVERTER_REGISTRY = {
     sourceExtension: ".json",
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["application/json", "text/json"],
+    category: "spreadsheets",
     title: "Convert JSON to Excel Online - Fast, Free & Private",
     subtitle:
       "Transform JSON data, nested objects, and API arrays into formatted Microsoft Excel (.xlsx) spreadsheets instantly in your browser.",
@@ -68,11 +69,12 @@ export const CONVERTER_REGISTRY = {
     sourceExtension: ".xml",
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["application/xml", "text/xml"],
-    title: "Convert XML to Excel Online - Fast & Private XML to XLSX",
+    category: "spreadsheets",
+    title: "Convert XML to Excel Online (.xlsx) - Fast In-Browser Tool",
     subtitle:
-      "Parse XML documents and export structured Excel (.xlsx) workbooks directly in your browser with complete privacy.",
+      "Parse XML trees, feeds, and attribute structures into clean, multi-column Excel workbooks without installing software.",
     metaDescription:
-      "Free online XML to Excel converter. Transform complex XML documents, RSS feeds, and data dumps into clean, multi-column Excel spreadsheets with zero server uploads.",
+      "Convert XML files to Excel spreadsheets (.xlsx) online for free. Automatically detects XML record repeating nodes and converts attributes into structured spreadsheet columns.",
     engineId: "xml-to-excel",
     isClientSide: true,
     featured: true,
@@ -80,38 +82,38 @@ export const CONVERTER_REGISTRY = {
     howTo: [
       {
         step: 1,
-        title: "Upload XML File",
+        title: "Select XML Document",
         description:
-          "Drop your .xml file into the converter box or browse to select it from your device.",
+          "Drop your XML dataset, RSS/Atom feed, or ERP export file into the upload area.",
       },
       {
         step: 2,
-        title: "Preview Structured Data",
+        title: "Verify Table Columns",
         description:
-          "The engine automatically identifies repeating node structures and displays an instant preview of rows and columns.",
+          "Preview the extracted rows and columns with automatic XML attribute unrolling and value formatting.",
       },
       {
         step: 3,
-        title: "Export to Excel",
+        title: "Export to XLSX",
         description:
-          "Click 'Convert & Download' to obtain your clean, styled Excel workbook (.xlsx) ready for analysis.",
+          "Generate and download an official Microsoft Excel .xlsx workbook with preserved headers and numeric formatting.",
       },
     ],
     faqs: [
       {
-        question: "How does the XML to Excel converter identify table rows?",
+        question: "Does this XML to Excel converter support XML attributes?",
         answer:
-          "The engine recursively traverses your XML hierarchy to detect repeating node elements (such as records, items, or entries) and maps their attributes and child tags into spreadsheet columns.",
+          "Yes. XML attributes (e.g. <item id='123' category='tools'>) are unrolled into distinct spreadsheet columns prefixed with @_ so no metadata is lost.",
       },
       {
-        question: "Are my XML files stored or logged anywhere?",
+        question: "Will large enterprise XML exports convert reliably?",
         answer:
-          "Never. All XML parsing is executed locally within your web browser. No files are uploaded to our servers, ensuring total compliance with privacy and confidential data policies.",
+          "Yes. Our streaming XML parser parses repeat nodes directly into memory and handles files up to 10MB in your browser.",
       },
       {
-        question: "Does it support XML files with attributes and CDATA?",
+        question: "Are there any privacy risks when converting sensitive business XML?",
         answer:
-          "Yes. XML attributes, text nodes, and CDATA sections are safely extracted and mapped to tabular columns without data loss.",
+          "None. Processing happens 100% locally in your web browser. Neither our servers nor third parties can view your XML payload.",
       },
     ],
   },
@@ -123,11 +125,12 @@ export const CONVERTER_REGISTRY = {
     sourceExtension: ".csv",
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
-    title: "Convert CSV to Excel Online - Fast & Private Delimited to XLSX",
+    category: "spreadsheets",
+    title: "Convert CSV to Excel Online (.xlsx) - Auto-Delimiter Detection",
     subtitle:
-      "Convert CSV, TSV, and delimited text files into styled Microsoft Excel spreadsheets with auto-delimiter detection and UTF-8 encoding.",
+      "Convert CSV comma, semicolon, tab, and pipe-delimited text files into authentic Microsoft Excel spreadsheets.",
     metaDescription:
-      "Free online CSV to Excel converter. Auto-detects delimiters (comma, semicolon, tab, pipe) and generates formatted XLSX workbooks securely in your browser.",
+      "Free online CSV to Excel converter. Auto-detects delimiters (comma, semicolon, tab), preserves leading zeros and dates, and outputs clean .xlsx workbooks.",
     engineId: "csv-to-excel",
     isClientSide: true,
     featured: true,
@@ -135,38 +138,38 @@ export const CONVERTER_REGISTRY = {
     howTo: [
       {
         step: 1,
-        title: "Select CSV File",
+        title: "Upload CSV File",
         description:
-          "Drag and drop your .csv, .tsv, or delimited text file into the upload area.",
+          "Drag and drop any .csv, .tsv, or text file into the converter box.",
       },
       {
         step: 2,
-        title: "Auto-Detect & Preview",
+        title: "Auto-Detect Delimiters",
         description:
-          "Our parser automatically detects delimiters (commas, semicolons, tabs, or pipes) and presents a 10-row data preview.",
+          "Our engine automatically detects whether your CSV uses commas, semicolons, tabs, or pipes and prepares a preview.",
       },
       {
         step: 3,
-        title: "Download XLSX",
+        title: "Download Clean Excel File",
         description:
-          "Choose your preferred sheet name and click 'Convert & Download' to receive your native Excel spreadsheet.",
+          "Save the formatted .xlsx file to your device with proper column data types and header styling.",
       },
     ],
     faqs: [
       {
-        question: "Can it auto-detect delimiters like semicolons or tabs?",
+        question: "Does the CSV to Excel converter preserve leading zeros?",
         answer:
-          "Yes. ConvertSheet automatically detects whether your file uses commas, semicolons, tabs, or pipes, parsing each column correctly.",
+          "Yes! Unlike standard Excel imports that convert postal codes like '01234' to 1234, ConvertSheet explicitly preserves leading zeros as text cells.",
       },
       {
-        question: "Does this handle special characters and international accents?",
+        question: "What delimiters are supported?",
         answer:
-          "Yes. Files are read with UTF-8 encoding support, preserving international characters, accents, currency symbols, and emoji accurately.",
+          "Comma (,), Semicolon (;), Tab (\\t), Pipe (|), and custom single-character delimiters are supported with automatic detection.",
       },
       {
-        question: "Can I convert large CSV files without freezing my browser?",
+        question: "Can I convert large CSV exports from databases?",
         answer:
-          "Yes. ConvertSheet utilizes streaming PapaParse technology to process large CSVs efficiently without UI lockup.",
+          "Yes. Files up to 10MB convert in under 200ms in your browser. For multi-gigabyte exports, our ConvertSheet Pro tier provides chunked streaming.",
       },
     ],
   },
@@ -182,11 +185,12 @@ export const CONVERTER_REGISTRY = {
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "application/vnd.ms-excel",
     ],
-    title: "Convert Excel to JSON Online - Fast & Clean Spreadsheet Extraction",
+    category: "spreadsheets",
+    title: "Convert Excel to JSON Online (.xlsx to .json) - Array of Objects",
     subtitle:
-      "Extract Excel spreadsheets (.xlsx, .xls) into clean, valid JSON arrays or objects 100% privately in your browser.",
+      "Transform Excel spreadsheets (.xlsx and .xls) into clean, API-ready JSON arrays of objects with optional prettified indentation.",
     metaDescription:
-      "Convert Excel to JSON online for free. Transform XLSX and XLS workbooks into structured, formatted JSON data arrays instantly with zero server uploads.",
+      "Convert Excel to JSON online for free. Extracts XLSX and XLS worksheet rows into JSON arrays of objects with zero data retention and instant client-side download.",
     engineId: "excel-to-json",
     isClientSide: true,
     featured: true,
@@ -194,38 +198,38 @@ export const CONVERTER_REGISTRY = {
     howTo: [
       {
         step: 1,
-        title: "Upload Excel Workbook",
+        title: "Upload Excel Spreadsheet",
         description:
-          "Drag and drop your .xlsx or .xls file into the upload dropzone.",
+          "Select or drop any .xlsx or .xls file from your computer or phone.",
       },
       {
         step: 2,
-        title: "Preview Tabular Records",
+        title: "Preview & Choose Options",
         description:
-          "Inspect the sheet data in our tabular preview and toggle options like formatted/prettified JSON output.",
+          "Inspect table columns and choose whether to format JSON with pretty indentation (2 spaces) or minified payload.",
       },
       {
         step: 3,
         title: "Download JSON File",
         description:
-          "Click 'Convert & Download' to save your validated JSON file directly to your computer.",
+          "Instantly download your validated .json array ready for database seeding, web development, or REST API use.",
       },
     ],
     faqs: [
       {
-        question: "Does this converter support older .xls files as well as .xlsx?",
+        question: "How does the Excel to JSON converter map columns?",
         answer:
-          "Yes. Both modern OpenXML (.xlsx) and legacy binary Excel (.xls) files are fully supported.",
+          "The first row of your worksheet is treated as object keys, and each subsequent row becomes an object in a JSON array: [{ column1: val1, column2: val2 }].",
       },
       {
-        question: "Can I choose between compact and prettified JSON?",
+        question: "Can I select which sheet to convert from a multi-sheet workbook?",
         answer:
-          "Yes. You can toggle formatted JSON for readable indented output or compact JSON for optimized file size and API payloads.",
+          "By default, the first worksheet is parsed. You can specify custom sheet names in the options panel before downloading.",
       },
       {
-        question: "How does it handle multiple sheets or empty cells?",
+        question: "Are numbers, booleans, and dates typed properly in the JSON output?",
         answer:
-          "The active worksheet is exported by default, and empty cells are handled cleanly according to standard JSON conventions.",
+          "Yes. Excel numeric and boolean cells remain native JSON numbers and booleans rather than being coerced to strings.",
       },
     ],
   },
@@ -241,11 +245,12 @@ export const CONVERTER_REGISTRY = {
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "application/vnd.ms-excel",
     ],
-    title: "Convert Excel to CSV Online - Fast, Private & UTF-8 Safe",
+    category: "spreadsheets",
+    title: "Convert Excel to CSV Online (.xlsx to .csv) - UTF-8 Compliant",
     subtitle:
-      "Export Excel spreadsheets (.xlsx, .xls) to UTF-8 encoded CSV files compatible with any database, CRM, or data science tool.",
+      "Export Excel workbooks (.xlsx, .xls) to clean UTF-8 comma-separated value (CSV) text files with proper quoting.",
     metaDescription:
-      "Free online Excel to CSV converter. Export XLSX and XLS worksheets to UTF-8 CSV with custom delimiter support and complete data privacy.",
+      "Free online Excel to CSV converter. Converts XLSX and legacy XLS spreadsheets to UTF-8 CSV with custom delimiters, quote escaping, and instant browser processing.",
     engineId: "excel-to-csv",
     isClientSide: true,
     featured: true,
@@ -255,36 +260,36 @@ export const CONVERTER_REGISTRY = {
         step: 1,
         title: "Upload Excel File",
         description:
-          "Choose your .xlsx or .xls file to convert.",
+          "Drop your .xlsx or legacy .xls spreadsheet into the conversion box.",
       },
       {
         step: 2,
-        title: "Preview & Select Delimiter",
+        title: "Configure Delimiters",
         description:
-          "Verify the preview table and choose your preferred delimiter (comma, semicolon, tab).",
+          "Choose standard comma (,) or international semicolon (;) delimiter settings.",
       },
       {
         step: 3,
-        title: "Download CSV",
+        title: "Download Clean CSV",
         description:
-          "Click 'Convert & Download' to download a clean UTF-8 encoded CSV with proper byte-order mark (BOM) for universal compatibility.",
+          "Save your UTF-8 encoded CSV file immediately with RFC 4180 quotation compliance.",
       },
     ],
     faqs: [
       {
-        question: "Why does ConvertSheet include a UTF-8 BOM?",
+        question: "Is the exported CSV encoded in UTF-8?",
         answer:
-          "A UTF-8 Byte Order Mark ensures that programs like Microsoft Excel, Numbers, and Google Sheets correctly display non-ASCII characters without encoding glitches.",
+          "Yes. All CSV files are generated with UTF-8 encoding and a standard byte-order mark (BOM) to ensure international characters open correctly in Excel and Google Sheets.",
       },
       {
-        question: "Can I customize the delimiter?",
+        question: "How are cells containing commas or line breaks handled?",
         answer:
-          "Yes. You can select standard comma (,), semicolon (;), or tab delimiters to match your database or importing system requirements.",
+          "Our engine adheres to the RFC 4180 standard, wrapping cells with commas, quotes, or newlines in quotation marks and escaping internal quotes as \"\".",
       },
       {
-        question: "Are my confidential business spreadsheets safe?",
+        question: "Is there a limit on row count for Excel to CSV conversion?",
         answer:
-          "100% safe. The conversion executes entirely within your browser's memory. No data is transmitted to the cloud or saved anywhere.",
+          "In-browser conversion comfortably processes spreadsheets with over 100,000 rows within 1–2 seconds.",
       },
     ],
   },
@@ -296,50 +301,50 @@ export const CONVERTER_REGISTRY = {
     sourceExtension: ".pdf",
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["application/pdf"],
-    title: "Convert PDF to Excel Online - Table Extraction & OCR",
+    category: "spreadsheets",
+    title: "Convert PDF to Excel Online - Extract Tables & Bank Statements",
     subtitle:
-      "Extract tables and tabular data from PDF documents, financial statements, and invoices into editable Microsoft Excel spreadsheets.",
+      "Extract financial statements, invoices, and grid tables from PDF documents into editable Microsoft Excel spreadsheets.",
     metaDescription:
-      "Convert PDF tables to Excel online. Extract financial statements, invoices, and tabular reports from PDF to editable XLSX spreadsheets accurately.",
-    engineId: undefined,
+      "Extract structured tables from PDF documents into Excel spreadsheets (.xlsx). Advanced table detection for invoices, receipts, and bank statements.",
     isClientSide: false,
     featured: true,
     badge: "Pro / OCR",
     howTo: [
       {
         step: 1,
-        title: "Select PDF Document",
+        title: "Upload PDF Document",
         description:
-          "Upload your PDF bank statement, invoice, or tabular document.",
+          "Select a PDF bank statement, invoice, or financial report containing tables.",
       },
       {
         step: 2,
-        title: "Automatic Table Recognition",
+        title: "Table Detection & OCR",
         description:
-          "Our specialized extraction engine parses borders, columns, and data cells from the document.",
+          "Our high-capacity backend engine detects table boundaries and cleans numeric column figures.",
       },
       {
         step: 3,
-        title: "Export Editable XLSX",
+        title: "Download Excel Workbook",
         description:
-          "Download your converted Excel spreadsheet with preserved numeric formats and column alignments.",
+          "Receive a clean .xlsx spreadsheet with preserved table structure and row alignment.",
       },
     ],
     faqs: [
       {
-        question: "How are tables detected inside PDFs?",
+        question: "Can this tool extract multi-page bank statements?",
         answer:
-          "Our table detection engine analyzes line coordinates, text bounding boxes, and whitespace gaps to reconstruct clean spreadsheet grids from static PDFs.",
+          "Yes. Our server-side processing engine concatenates repeating headers across pages into a unified tabular sheet.",
       },
       {
-        question: "Can it extract data from scanned PDFs?",
+        question: "Does it work with scanned PDFs and images?",
         answer:
-          "Scanned or image-based PDFs are processed through our high-accuracy OCR pipeline in ConvertSheet Pro.",
+          "Yes. ConvertSheet Pro uses high-accuracy Optical Character Recognition (OCR) to extract tables from scanned documents and receipts.",
       },
       {
-        question: "Does it preserve numbers and currency formatting?",
+        question: "How long are uploaded PDF files stored?",
         answer:
-          "Yes. Recognized numbers, dates, and currency values are cast into proper Excel data types for seamless calculation.",
+          "Files processed via our Pro server queue are permanently deleted within 15 minutes after conversion. We maintain zero permanent data retention.",
       },
     ],
   },
@@ -351,6 +356,7 @@ export const CONVERTER_REGISTRY = {
     sourceExtension: ".xml",
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["application/xml", "text/xml"],
+    category: "spreadsheets",
     title: "Convert Tally XML to Excel Online - Daybooks, Vouchers & Ledgers",
     subtitle:
       "Convert Tally ERP 9 and Tally Prime XML export files into organized, audit-ready Excel spreadsheets with proper debit/credit columns.",
@@ -398,6 +404,449 @@ export const CONVERTER_REGISTRY = {
       },
     ],
   },
+
+  // -------------------------------------------------------------
+  // Data Engineering & Analytical Converters (DuckDB-Wasm Powered)
+  // -------------------------------------------------------------
+
+  "parquet-to-excel": {
+    slug: "parquet-to-excel",
+    sourceFormat: "Parquet",
+    targetFormat: "Excel",
+    sourceExtension: ".parquet",
+    targetExtension: ".xlsx",
+    acceptedMimeTypes: [
+      "application/vnd.apache.parquet",
+      "application/octet-stream",
+    ],
+    category: "data-engineering",
+    title: "Convert Parquet to Excel Online (.parquet to .xlsx) - DuckDB-Wasm",
+    subtitle:
+      "Convert Apache Parquet columnar datasets into Microsoft Excel spreadsheets directly in your browser with zero server uploads.",
+    metaDescription:
+      "Free in-browser Parquet to Excel converter powered by DuckDB-Wasm. Convert analytics datasets, Snappy compressed Parquet, and Databricks/AWS Athena exports to XLSX instantly.",
+    engineId: "parquet-to-excel",
+    isClientSide: true,
+    featured: true,
+    badge: "DuckDB-Wasm",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload Apache Parquet File",
+        description:
+          "Select or drop your .parquet dataset into the in-browser converter.",
+      },
+      {
+        step: 2,
+        title: "Instant Columnar Preview",
+        description:
+          "DuckDB-Wasm reads the columnar metadata and displays a live 10-row preview with detected data types.",
+      },
+      {
+        step: 3,
+        title: "Download Excel Spreadsheet",
+        description:
+          "Click 'Convert & Download' to save an organized .xlsx workbook with preserved headers and numbers.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How can Parquet be converted without a Python server?",
+        answer:
+          "We run DuckDB compiled directly into WebAssembly inside your browser. DuckDB reads and deserializes the Parquet binary format locally in browser memory.",
+      },
+      {
+        question: "Are Snappy and ZSTD compressed Parquet files supported?",
+        answer:
+          "Yes! DuckDB-Wasm includes full support for Snappy, GZIP, and ZSTD compressed Parquet files generated by Databricks, Snowflake, Polars, and PyArrow.",
+      },
+      {
+        question: "Is my enterprise analytical data private?",
+        answer:
+          "100% private. Your .parquet file never touches our servers or third-party APIs. All processing runs in a secure client-side Web Worker.",
+      },
+    ],
+  },
+
+  "parquet-to-csv": {
+    slug: "parquet-to-csv",
+    sourceFormat: "Parquet",
+    targetFormat: "CSV",
+    sourceExtension: ".parquet",
+    targetExtension: ".csv",
+    acceptedMimeTypes: [
+      "application/vnd.apache.parquet",
+      "application/octet-stream",
+    ],
+    category: "data-engineering",
+    title: "Convert Parquet to CSV Online - Fast Columnar Export",
+    subtitle:
+      "High-speed client-side conversion of Apache Parquet files to standard comma-separated values (CSV) with zero server latency.",
+    metaDescription:
+      "Convert Parquet to CSV online in your browser. Fast, private, and powered by DuckDB-Wasm with custom delimiter support and instant download.",
+    engineId: "parquet-to-csv",
+    isClientSide: true,
+    featured: true,
+    howTo: [
+      {
+        step: 1,
+        title: "Upload Parquet File",
+        description: "Choose any .parquet file from your data warehouse or pipeline.",
+      },
+      {
+        step: 2,
+        title: "Choose Delimiter",
+        description: "Select comma (,), semicolon (;), or tab delimiter settings.",
+      },
+      {
+        step: 3,
+        title: "Export to CSV",
+        description: "DuckDB executes a native columnar streaming copy directly to CSV.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Why convert Parquet to CSV?",
+        answer:
+          "Parquet is ideal for analytics, but many legacy tools, spreadsheets, and reporting systems require plain-text CSV format for ingestion.",
+      },
+      {
+        question: "How fast is the conversion?",
+        answer:
+          "Because DuckDB-Wasm runs compiled C++ inside the browser, it can process tens of thousands of rows in 50–150ms.",
+      },
+      {
+        question: "Can I open the resulting CSV in Excel or Google Sheets?",
+        answer:
+          "Yes. The output conforms to RFC 4180 standards and opens seamlessly in Microsoft Excel, Google Sheets, LibreOffice, and PostgreSQL.",
+      },
+    ],
+  },
+
+  "parquet-to-json": {
+    slug: "parquet-to-json",
+    sourceFormat: "Parquet",
+    targetFormat: "JSON",
+    sourceExtension: ".parquet",
+    targetExtension: ".json",
+    acceptedMimeTypes: [
+      "application/vnd.apache.parquet",
+      "application/octet-stream",
+    ],
+    category: "data-engineering",
+    title: "Convert Parquet to JSON Online - Array of Objects",
+    subtitle:
+      "Convert Apache Parquet datasets to clean JSON arrays for web apps, APIs, and document stores.",
+    metaDescription:
+      "Convert Parquet to JSON online for free. In-browser DuckDB engine converts columnar Parquet into structured JSON arrays of objects with optional formatting.",
+    engineId: "parquet-to-json",
+    isClientSide: true,
+    howTo: [
+      {
+        step: 1,
+        title: "Select Parquet File",
+        description: "Drag and drop your .parquet file into the converter.",
+      },
+      {
+        step: 2,
+        title: "Preview Data",
+        description: "Inspect columns, row count, and choose prettify options.",
+      },
+      {
+        step: 3,
+        title: "Download JSON",
+        description: "Save a clean, formatted JSON file ready for frontend or API integration.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How are complex column types represented in JSON?",
+        answer:
+          "DuckDB maps nested structs to JSON objects, lists to JSON arrays, and timestamps to ISO 8601 strings.",
+      },
+      {
+        question: "Can I use the output with MongoDB or Elasticsearch?",
+        answer:
+          "Yes. The output is a standard array of JSON documents compatible with MongoDB mongoimport, Elasticsearch bulk indexers, and REST APIs.",
+      },
+      {
+        question: "Does this require any cloud upload?",
+        answer:
+          "No. Processing occurs purely in your browser's local memory.",
+      },
+    ],
+  },
+
+  "csv-to-parquet": {
+    slug: "csv-to-parquet",
+    sourceFormat: "CSV",
+    targetFormat: "Parquet",
+    sourceExtension: ".csv",
+    targetExtension: ".parquet",
+    acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
+    category: "data-engineering",
+    title: "Convert CSV to Parquet Online - Compressed Apache Parquet",
+    subtitle:
+      "Convert CSV spreadsheets into compressed, columnar Apache Parquet files directly in your browser with DuckDB-Wasm.",
+    metaDescription:
+      "Free online CSV to Parquet converter. Compress large CSV files into high-performance columnar Apache Parquet format using in-browser WebAssembly.",
+    engineId: "csv-to-parquet",
+    isClientSide: true,
+    featured: true,
+    badge: "Columnar Storage",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload CSV Spreadsheet",
+        description: "Drop your CSV or TSV file into the upload zone.",
+      },
+      {
+        step: 2,
+        title: "Automatic Schema Inference",
+        description: "DuckDB scans column types (integers, floats, dates, text) automatically.",
+      },
+      {
+        step: 3,
+        title: "Download Parquet File",
+        description: "Download a compact, Snappy-compressed .parquet file with up to 80% size reduction.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What are the advantages of converting CSV to Parquet?",
+        answer:
+          "Parquet uses columnar compression, making files up to 80% smaller and querying up to 100x faster in tools like DuckDB, PySpark, and AWS Athena.",
+      },
+      {
+        question: "Does the converter infer column data types?",
+        answer:
+          "Yes. DuckDB analyzes the first several thousand rows to automatically detect integers, decimals, booleans, dates, and strings.",
+      },
+      {
+        question: "Can I query the resulting Parquet file with pandas or Polars?",
+        answer:
+          "Yes. The output is 100% compliant with the official Apache Parquet format specification.",
+      },
+    ],
+  },
+
+  "json-to-parquet": {
+    slug: "json-to-parquet",
+    sourceFormat: "JSON",
+    targetFormat: "Parquet",
+    sourceExtension: ".json",
+    targetExtension: ".parquet",
+    acceptedMimeTypes: ["application/json", "text/json"],
+    category: "data-engineering",
+    title: "Convert JSON to Parquet Online - Columnar Compression",
+    subtitle:
+      "Transform JSON datasets and API outputs into high-efficiency Apache Parquet files in your browser.",
+    metaDescription:
+      "Convert JSON to Parquet online for free. Compress JSON arrays into columnar Apache Parquet files using DuckDB WebAssembly with zero data leakage.",
+    engineId: "json-to-parquet",
+    isClientSide: true,
+    howTo: [
+      {
+        step: 1,
+        title: "Upload JSON Document",
+        description: "Select any JSON array of objects or API export.",
+      },
+      {
+        step: 2,
+        title: "Preview Inferred Schema",
+        description: "Review detected keys, data types, and preview rows.",
+      },
+      {
+        step: 3,
+        title: "Download Parquet Dataset",
+        description: "Save your optimized columnar Parquet file with instant browser download.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can it handle nested JSON structures?",
+        answer:
+          "Yes. DuckDB converts nested JSON keys into Parquet STRUCT and LIST types, preserving hierarchical data without flattening.",
+      },
+      {
+        question: "Is this tool suitable for data science pipelines?",
+        answer:
+          "Absolutely. It is the fastest way to turn JSON dumps into compact Parquet files for training data, PyTorch, pandas, and data lakes.",
+      },
+      {
+        question: "Are files uploaded to remote servers?",
+        answer:
+          "Never. Everything runs locally in your browser session.",
+      },
+    ],
+  },
+
+  "jsonl-to-excel": {
+    slug: "jsonl-to-excel",
+    sourceFormat: "JSONL",
+    targetFormat: "Excel",
+    sourceExtension: ".jsonl",
+    additionalExtensions: [".ndjson"],
+    targetExtension: ".xlsx",
+    acceptedMimeTypes: [
+      "application/x-ndjson",
+      "application/jsonlines",
+      "text/plain",
+    ],
+    category: "data-engineering",
+    title: "Convert JSONL to Excel Online (.jsonl to .xlsx) - AI Datasets",
+    subtitle:
+      "Convert Newline-Delimited JSON (JSONL / NDJSON) datasets and LLM fine-tuning files into clean Excel spreadsheets.",
+    metaDescription:
+      "Free online JSONL to Excel converter. Convert newline-delimited JSON (NDJSON) files into formatted XLSX worksheets with instant in-browser DuckDB processing.",
+    engineId: "jsonl-to-excel",
+    isClientSide: true,
+    featured: true,
+    badge: "AI Datasets",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload JSONL File",
+        description: "Select any .jsonl or .ndjson file from OpenAI, Hugging Face, or log exports.",
+      },
+      {
+        step: 2,
+        title: "Live Preview Table",
+        description: "DuckDB parses line-by-line JSON records into structured tabular columns.",
+      },
+      {
+        step: 3,
+        title: "Download Excel Workbook",
+        description: "Click 'Convert & Download' to export an organized .xlsx file.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What is JSONL format?",
+        answer:
+          "JSONL (JSON Lines) contains one valid JSON object per line, commonly used for AI prompt/completion datasets, logging, and massive big-data streaming.",
+      },
+      {
+        question: "Does it support .ndjson extension?",
+        answer:
+          "Yes. Both .jsonl and .ndjson (Newline Delimited JSON) extensions are fully supported.",
+      },
+      {
+        question: "Can I open large AI datasets in Excel?",
+        answer:
+          "Yes. Our in-browser DuckDB engine processes line-by-line streams efficiently without hitting browser DOM memory bottlenecks.",
+      },
+    ],
+  },
+
+  "jsonl-to-csv": {
+    slug: "jsonl-to-csv",
+    sourceFormat: "JSONL",
+    targetFormat: "CSV",
+    sourceExtension: ".jsonl",
+    additionalExtensions: [".ndjson"],
+    targetExtension: ".csv",
+    acceptedMimeTypes: [
+      "application/x-ndjson",
+      "application/jsonlines",
+      "text/plain",
+    ],
+    category: "data-engineering",
+    title: "Convert JSONL to CSV Online - Fast Line-by-Line Converter",
+    subtitle:
+      "Transform newline-delimited JSON (JSON Lines) into standard CSV spreadsheets in seconds with DuckDB-Wasm.",
+    metaDescription:
+      "Convert JSONL to CSV online for free. Fast, in-browser conversion of NDJSON datasets into RFC 4180 compliant CSV files with custom delimiters.",
+    engineId: "jsonl-to-csv",
+    isClientSide: true,
+    howTo: [
+      {
+        step: 1,
+        title: "Upload JSONL / NDJSON File",
+        description: "Drop your line-delimited JSON document into the box.",
+      },
+      {
+        step: 2,
+        title: "Configure Delimiter",
+        description: "Select standard comma (,) or custom delimiter.",
+      },
+      {
+        step: 3,
+        title: "Download CSV",
+        description: "Save your clean, delimited text file immediately.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How are missing keys in some JSON lines handled?",
+        answer:
+          "DuckDB unifies all unique keys across all JSON lines into consistent CSV columns, filling missing values with empty cells.",
+      },
+      {
+        question: "Is there a limit on line count?",
+        answer:
+          "Files up to 10MB (typically 20,000–50,000 lines) convert in under a second in browser memory.",
+      },
+      {
+        question: "Is my data stored or logged?",
+        answer:
+          "Never. All conversion happens client-side; no data is sent to our servers.",
+      },
+    ],
+  },
+
+  "csv-to-jsonl": {
+    slug: "csv-to-jsonl",
+    sourceFormat: "CSV",
+    targetFormat: "JSONL",
+    sourceExtension: ".csv",
+    targetExtension: ".jsonl",
+    acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
+    category: "data-engineering",
+    title: "Convert CSV to JSONL Online - Format for AI Fine-Tuning",
+    subtitle:
+      "Convert CSV spreadsheets into Newline-Delimited JSON (JSONL / NDJSON) for OpenAI fine-tuning, Claude, and analytics.",
+    metaDescription:
+      "Free online CSV to JSONL converter. Convert CSV rows into individual newline-delimited JSON objects ready for LLM fine-tuning and big data pipelines.",
+    engineId: "csv-to-jsonl",
+    isClientSide: true,
+    featured: true,
+    badge: "LLM Prep",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload CSV File",
+        description: "Select or drop your spreadsheet into the dropzone.",
+      },
+      {
+        step: 2,
+        title: "Preview Records",
+        description: "Verify columns and row counts before conversion.",
+      },
+      {
+        step: 3,
+        title: "Download JSONL Dataset",
+        description: "Save a valid .jsonl file with one JSON record per line.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can I use the output for OpenAI model fine-tuning?",
+        answer:
+          "Yes. The output adheres strictly to the JSON Lines format required by OpenAI, Anthropic, and Hugging Face fine-tuning APIs.",
+      },
+      {
+        question: "Does each line represent one CSV row?",
+        answer:
+          "Yes. Each row in your CSV is serialized into an independent, compact JSON object separated by a standard newline.",
+      },
+      {
+        question: "Does the converter handle commas inside text cells?",
+        answer:
+          "Yes. Quoted cells with commas or newlines are parsed accurately into proper JSON string properties.",
+      },
+    ],
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;
@@ -423,9 +872,20 @@ export function getConverterBySlug(slug: string): ConverterConfig | undefined {
  * Retrieves all converter configurations flagged as featured.
  */
 export function getFeaturedConverters(): ConverterConfig[] {
-  return Object.values(CONVERTER_REGISTRY).filter((c) =>
+  return (Object.values(CONVERTER_REGISTRY) as ConverterConfig[]).filter((c) =>
     Boolean(c.featured)
-  ) as ConverterConfig[];
+  );
+}
+
+/**
+ * Retrieves converters by category.
+ */
+export function getConvertersByCategory(
+  category: "spreadsheets" | "data-engineering"
+): ConverterConfig[] {
+  return (Object.values(CONVERTER_REGISTRY) as ConverterConfig[]).filter(
+    (c) => c.category === category
+  );
 }
 
 /**
@@ -439,5 +899,3 @@ export const ALL_SUPPORTED_EXTENSIONS: string[] = Array.from(
     ])
   )
 );
-
-

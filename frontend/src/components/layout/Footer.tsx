@@ -8,11 +8,14 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
+import { ConverterConfig } from "@/types/registry";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const converters = Object.values(CONVERTER_REGISTRY).map((c) => ({
+  const converters = (
+    Object.values(CONVERTER_REGISTRY) as ConverterConfig[]
+  ).map((c) => ({
     name: `${c.sourceFormat} to ${c.targetFormat}`,
     href: `/convert/${c.slug}`,
     badge: c.badge,

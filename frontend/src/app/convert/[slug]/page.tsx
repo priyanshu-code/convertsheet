@@ -8,6 +8,7 @@ import {
   getConverterBySlug,
   CONVERTER_REGISTRY,
 } from "@/lib/registry";
+import type { ConverterConfig } from "@/types/registry";
 import { ConverterCard } from "@/components/converter";
 import { AdBanner } from "@/components/layout";
 import { HowToGuide, FAQAccordion, JsonLdSchema } from "@/components/seo";
@@ -77,10 +78,10 @@ export default function ConverterPage({ params }: ConverterPageProps) {
     notFound();
   }
 
-  // Retrieve the other 6 converters for internal cross-linking
-  const otherConverters = Object.values(CONVERTER_REGISTRY).filter(
-    (c) => c.slug !== config.slug
-  );
+  // Retrieve the other converters for internal cross-linking
+  const otherConverters = (
+    Object.values(CONVERTER_REGISTRY) as ConverterConfig[]
+  ).filter((c) => c.slug !== config.slug);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
