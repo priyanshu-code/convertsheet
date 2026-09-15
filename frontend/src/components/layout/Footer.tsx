@@ -21,11 +21,11 @@ export function Footer() {
     badge: c.badge,
   }));
 
-  const features = [
-    { name: "REST API", href: "/pricing#api" },
-    { name: "Python & Node.js", href: "/pricing#api" },
-    { name: "Batch Processing", href: "/pricing#features" },
-    { name: "High-Volume Enterprise", href: "/pricing#enterprise" },
+  const toolsLinks = [
+    { name: "SIP Calculator", href: "/tools/sip-calculator" },
+    { name: "EMI Calculator", href: "/tools/emi-calculator" },
+    { name: "JSON Formatter", href: "/tools/json-formatter-validator" },
+    { name: "Base64 Encoder", href: "/tools/base64-encoder-decoder" },
   ];
 
   const privacyLinks = [
@@ -111,13 +111,13 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Features & API Column */}
+          {/* Calculators & Tools Column */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white mb-4">
-              Features &amp; API
+              Calculators &amp; Tools
             </h3>
             <ul className="space-y-2.5">
-              {features.map((item) => (
+              {toolsLinks.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}

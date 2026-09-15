@@ -2,12 +2,11 @@ import { describe, it, expect } from "vitest";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import HomePage from "../page";
-import PricingPage from "../pricing/page";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 
-describe("Pages (Home & Pricing)", () => {
+describe("Pages (Home)", () => {
   describe("HomePage", () => {
-    it("renders headline, privacy badge, hero converter card, and value props", () => {
+    it("renders headline, privacy badge, hero converter card, value props, and free platform banner", () => {
       render(<HomePage />);
 
       // Headline
@@ -36,7 +35,7 @@ describe("Pages (Home & Pricing)", () => {
         })
       ).toBeInTheDocument();
 
-      // All 7 tools listed in cards
+      // All 15 tools listed in cards
       const allConverters = Object.values(CONVERTER_REGISTRY);
       for (const converter of allConverters) {
         expect(
@@ -59,67 +58,12 @@ describe("Pages (Home & Pricing)", () => {
       expect(screen.getByText("Zero Data Retention")).toBeInTheDocument();
       expect(screen.getByText("Developer REST API")).toBeInTheDocument();
 
-      // Pro CTA Banner
+      // Free Platform & Open Tools Suite Banner
       expect(
         screen.getByRole("heading", {
           level: 2,
-          name: "Unlock ConvertSheet Pro & Developer API",
+          name: "Every Converter & Calculator is Free Forever",
         })
-      ).toBeInTheDocument();
-    });
-  });
-
-  describe("PricingPage", () => {
-    it("renders all three pricing tiers, CTA links, and FAQs", () => {
-      render(<PricingPage />);
-
-      // Headline
-      expect(
-        screen.getByRole("heading", {
-          level: 1,
-          name: "Convert Free in Browser, Scale with Pro & API",
-        })
-      ).toBeInTheDocument();
-
-      // 3 Tier Cards
-      expect(
-        screen.getByRole("heading", { level: 2, name: "Free" })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 2, name: "Pro" })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 2, name: "Developer API" })
-      ).toBeInTheDocument();
-
-      // Price tags
-      expect(screen.getByText("$0")).toBeInTheDocument();
-      expect(screen.getByText("$9.99")).toBeInTheDocument();
-      expect(screen.getByText("$19.99")).toBeInTheDocument();
-
-      // CTAs
-      expect(
-        screen.getByRole("link", { name: /Start Free/i })
-      ).toHaveAttribute("href", "/");
-      expect(
-        screen.getByRole("link", { name: /Upgrade to Pro/i })
-      ).toHaveAttribute("href", "https://buy.stripe.com/test_convertsheet_pro");
-      expect(
-        screen.getByRole("link", { name: /Get API Keys/i })
-      ).toHaveAttribute("href", "https://buy.stripe.com/test_convertsheet_api");
-
-      // FAQ section
-      expect(
-        screen.getByRole("heading", {
-          level: 2,
-          name: "Frequently Asked Pricing Questions",
-        })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("How does the Free plan remain free?")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText("How does the 15-minute file wipe guarantee work?")
       ).toBeInTheDocument();
     });
   });

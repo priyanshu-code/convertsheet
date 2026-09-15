@@ -97,23 +97,20 @@ describe("Layout Components", () => {
       expect(screen.getByText("Sheet")).toBeInTheDocument();
     });
 
-    it("renders navigation links to API and Pricing", () => {
+    it("renders navigation link to Calculators & Tools", () => {
       render(<Navbar />);
-      const apiLinks = screen.getAllByRole("link", { name: "API" });
-      expect(apiLinks[0]).toHaveAttribute("href", "/pricing#api");
-
-      const pricingLinks = screen.getAllByRole("link", { name: "Pricing" });
-      expect(pricingLinks[0]).toHaveAttribute("href", "/pricing");
+      const toolsLink = screen.getByRole("link", { name: "Calculators & Tools" });
+      expect(toolsLink).toHaveAttribute("href", "/#tools");
     });
 
-    it("renders prominent Pro upgrade button", () => {
+    it("renders prominent Free Tools suite button", () => {
       render(<Navbar />);
-      const proLink = screen.getByRole("link", {
-        name: /Upgrade to ConvertSheet Pro/i,
+      const freeToolsBtn = screen.getByRole("link", {
+        name: "Free Calculators and Tools",
       });
-      expect(proLink).toBeInTheDocument();
-      expect(proLink).toHaveAttribute("href", "/pricing");
-      expect(proLink).toHaveTextContent("Pro");
+      expect(freeToolsBtn).toBeInTheDocument();
+      expect(freeToolsBtn).toHaveAttribute("href", "/#tools");
+      expect(freeToolsBtn).toHaveTextContent("Free Tools");
     });
 
     it("toggles Tools dropdown and shows all 7 converters with format badges", () => {
@@ -228,14 +225,12 @@ describe("Layout Components", () => {
       expect(mobileNav).toHaveClass("max-h-[calc(100vh-4rem)]");
       expect(mobileNav).toHaveClass("overflow-y-auto");
 
-      expect(screen.getByText("Developer API")).toBeInTheDocument();
-      expect(screen.getByText("Pricing Plans")).toBeInTheDocument();
-      expect(screen.getByText("Upgrade to Pro")).toBeInTheDocument();
+      expect(screen.getByText("Calculators & Free Tools")).toBeInTheDocument();
 
       // Clicking a mobile link closes the drawer
-      fireEvent.click(screen.getByText("Developer API"));
+      fireEvent.click(screen.getByText("Calculators & Free Tools"));
       expect(mobileToggle).toHaveAttribute("aria-expanded", "false");
-      expect(screen.queryByText("Developer API")).not.toBeInTheDocument();
+      expect(screen.queryByText("Calculators & Free Tools")).not.toBeInTheDocument();
     });
 
     it("closes mobile menu on Escape key", () => {
@@ -245,10 +240,10 @@ describe("Layout Components", () => {
       });
 
       fireEvent.click(mobileToggle);
-      expect(screen.getByText("Developer API")).toBeInTheDocument();
+      expect(screen.getByText("Calculators & Free Tools")).toBeInTheDocument();
 
       fireEvent.keyDown(document, { key: "Escape" });
-      expect(screen.queryByText("Developer API")).not.toBeInTheDocument();
+      expect(screen.queryByText("Calculators & Free Tools")).not.toBeInTheDocument();
     });
   });
 
@@ -300,23 +295,23 @@ describe("Layout Components", () => {
       );
     });
 
-    it("renders Features & API links", () => {
+    it("renders Calculators & Tools links", () => {
       render(<Footer />);
-      expect(screen.getByRole("link", { name: "REST API" })).toHaveAttribute(
+      expect(screen.getByRole("link", { name: "SIP Calculator" })).toHaveAttribute(
         "href",
-        "/pricing#api"
+        "/tools/sip-calculator"
       );
-      expect(screen.getByRole("link", { name: "Python & Node.js" })).toHaveAttribute(
+      expect(screen.getByRole("link", { name: "EMI Calculator" })).toHaveAttribute(
         "href",
-        "/pricing#api"
+        "/tools/emi-calculator"
       );
-      expect(screen.getByRole("link", { name: "Batch Processing" })).toHaveAttribute(
+      expect(screen.getByRole("link", { name: "JSON Formatter" })).toHaveAttribute(
         "href",
-        "/pricing#features"
+        "/tools/json-formatter-validator"
       );
-      expect(screen.getByRole("link", { name: "High-Volume Enterprise" })).toHaveAttribute(
+      expect(screen.getByRole("link", { name: "Base64 Encoder" })).toHaveAttribute(
         "href",
-        "/pricing#enterprise"
+        "/tools/base64-encoder-decoder"
       );
     });
 

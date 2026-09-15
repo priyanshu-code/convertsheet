@@ -181,47 +181,47 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Pro CTA Banner */}
+      {/* Free Platform & Open Tools Suite Banner */}
       <section className="relative overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-zinc-900 to-zinc-950 p-8 sm:p-12 text-center max-w-5xl mx-auto space-y-6">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
           <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Need 100GB Files or Batch Conversions?</span>
+          <span>100% Free • No Signups • Client-Side Privacy</span>
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Unlock ConvertSheet Pro &amp; Developer API
+          Every Converter &amp; Calculator is Free Forever
         </h2>
         <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed">
-          Upgrade for chunked cloud processing of massive datasets, automated 15-minute file wipe guarantees, and REST API keys for automated data ingestion.
+          No credit cards, no monthly subscriptions, and no hidden file size limits. Run high-performance DuckDB transformations, financial projections, and developer formatting completely in your browser.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
           <Link
-            href="/pricing"
+            href="/#tools"
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-lg shadow-emerald-500/20 transition-colors"
           >
-            <span>View Pro Plans ($9.99/mo)</span>
+            <span>Explore Free Calculators</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
-            href="/pricing#api"
+            href="/#converters"
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700 transition-colors"
           >
-            <span>Explore Developer API</span>
+            <span>Browse 15 File Converters</span>
           </Link>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-xs text-zinc-400">
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Cancel anytime</span>
+            <span>Zero server data retention</span>
           </span>
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>7-day free trial</span>
+            <span>Instant client-side execution</span>
           </span>
           <span className="flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>15-min auto file purge</span>
+            <span>No account required</span>
           </span>
         </div>
       </section>

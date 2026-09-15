@@ -240,20 +240,12 @@ export function Navbar() {
                 )}
               </div>
 
-              {/* API Link */}
+              {/* Tools Anchor Link */}
               <Link
-                href="/pricing#api"
+                href="/#tools"
                 className="px-3 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
-                API
-              </Link>
-
-              {/* Pricing Link */}
-              <Link
-                href="/pricing"
-                className="px-3 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                Pricing
+                Calculators &amp; Tools
               </Link>
             </nav>
           </div>
@@ -263,15 +255,14 @@ export function Navbar() {
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Pro Upgrade Button */}
+            {/* Free Tools Suite Button */}
             <Link
-              href="/pricing"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-sm shadow-emerald-500/20 hover:shadow-md hover:shadow-emerald-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
-              aria-label="Upgrade to ConvertSheet Pro"
+              href="/#tools"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm shadow-emerald-500/20 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
+              aria-label="Free Calculators and Tools"
             >
-              <span>👑</span>
-              <span>Pro</span>
-              <Sparkles className="w-3.5 h-3.5 text-emerald-200 hidden sm:inline" />
+              <Sparkles className="w-3.5 h-3.5 text-emerald-100" />
+              <span>Free Tools</span>
             </Link>
 
             {/* Mobile Hamburger Toggle */}
@@ -354,26 +345,11 @@ export function Navbar() {
 
           <div className="border-t border-zinc-200 dark:border-zinc-800 pt-3 space-y-2">
             <Link
-              href="/pricing#api"
+              href="/#tools"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             >
-              Developer API
-            </Link>
-            <Link
-              href="/pricing"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            >
-              Pricing Plans
-            </Link>
-            <Link
-              href="/pricing"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-sm"
-            >
-              <span>👑</span>
-              <span>Upgrade to Pro</span>
+              Calculators &amp; Free Tools
             </Link>
           </div>
         </nav>

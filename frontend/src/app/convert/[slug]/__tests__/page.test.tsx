@@ -301,11 +301,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   });
 
   describe("Sitemap & Robots Handlers", () => {
-    it("sitemap returns home, pricing, and all 15 converter routes with priority 0.9", () => {
+    it("sitemap returns home and all 15 converter routes with priority 0.9", () => {
       const entries = sitemap();
 
-      // Home + Pricing + 15 Converters = 17 entries
-      expect(entries).toHaveLength(17);
+      // Home + 15 Converters = 16 entries (pricing removed)
+      expect(entries).toHaveLength(16);
 
       // Home entry
       const homeEntry = entries.find(
@@ -316,13 +316,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       expect(homeEntry?.changeFrequency).toBe("daily");
       expect(homeEntry?.lastModified).toBeInstanceOf(Date);
 
-      // Pricing entry
+      // Pricing entry should NOT exist
       const pricingEntry = entries.find(
         (e) => e.url === "https://convertsheet.com/pricing"
       );
-      expect(pricingEntry).toBeDefined();
-      expect(pricingEntry?.priority).toBe(0.8);
-      expect(pricingEntry?.changeFrequency).toBe("monthly");
+      expect(pricingEntry).toBeUndefined();
 
       // All 7 converter entries
       for (const slug of allSlugs) {
