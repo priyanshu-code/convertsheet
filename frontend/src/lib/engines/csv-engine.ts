@@ -6,6 +6,28 @@ import {
   ConversionOptions,
   ConversionOutput,
 } from "@/types/converter";
+import { sanitizeSheetName } from "@/lib/utils";
+
+function parseCellPreservingLeadingZeros(val: unknown): unknown {
+  if (typeof val !== "string") return val;
+  const trimmed = val.trim();
+  if (trimmed === "") return val;
+  if (trimmed.toLowerCase() === "true") return true;
+  if (trimmed.toLowerCase() === "false") return false;
+
+  // If numeric
+  if (/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(trimmed)) {
+    // Preserve string for codes with leading zeros (e.g. "01234", "007")
+    if (/^-?0\d+/.test(trimmed)) {
+      return val;
+    }
+    const num = Number(trimmed);
+    if (!Number.isNaN(num) && Number.isFinite(num)) {
+      return num;
+    }
+  }
+  return val;
+}
 
 export class CsvToExcelEngine implements IConverterEngine {
   async parsePreview(file: File, maxRows?: number): Promise<TabularData> {
@@ -41,12 +63,17 @@ export class CsvToExcelEngine implements IConverterEngine {
       header: false,
       skipEmptyLines: "greedy",
       delimiter: options?.delimiter,
-      dynamicTyping: true,
+      dynamicTyping: false,
     });
 
-    const worksheet = XLSX.utils.aoa_to_sheet(parsed.data);
+    const rows = (parsed.data || []).map((row, rowIdx) => {
+      if (rowIdx === 0) return row;
+      return (row || []).map((cell) => parseCellPreservingLeadingZeros(cell));
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(rows);
     const workbook = XLSX.utils.book_new();
-    const sheetName = options?.sheetName || "Sheet1";
+    const sheetName = sanitizeSheetName(options?.sheetName);
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
 
     const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });

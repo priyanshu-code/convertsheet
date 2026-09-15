@@ -11,12 +11,16 @@ function parseExcelTabular(
   maxRows?: number,
   sheetName?: string
 ): TabularData {
+  if (!workbook || !workbook.SheetNames || workbook.SheetNames.length === 0) {
+    return { columns: [], rows: [], totalRows: 0 };
+  }
+
   const targetSheet =
-    sheetName && workbook.Sheets[sheetName]
+    sheetName && workbook.Sheets?.[sheetName]
       ? sheetName
       : workbook.SheetNames[0];
 
-  if (!targetSheet || !workbook.Sheets[targetSheet]) {
+  if (!targetSheet || !workbook.Sheets || !workbook.Sheets[targetSheet]) {
     return { columns: [], rows: [], totalRows: 0 };
   }
 
@@ -45,20 +49,32 @@ function parseExcelTabular(
 
 export class ExcelToJsonEngine implements IConverterEngine {
   async parsePreview(file: File, maxRows?: number): Promise<TabularData> {
+    if (file.size === 0) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
     const buffer = await file.arrayBuffer();
+    if (buffer.byteLength === 0) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
     const workbook = XLSX.read(buffer, { type: "array" });
     return parseExcelTabular(workbook, maxRows);
   }
 
   async convert(file: File, options?: ConversionOptions): Promise<ConversionOutput> {
+    if (file.size === 0) {
+      throw new Error("Excel file is empty");
+    }
     const buffer = await file.arrayBuffer();
+    if (buffer.byteLength === 0) {
+      throw new Error("Excel file is empty");
+    }
     const workbook = XLSX.read(buffer, { type: "array" });
     const targetSheet =
-      options?.sheetName && workbook.Sheets[options.sheetName]
+      options?.sheetName && workbook.Sheets?.[options.sheetName]
         ? options.sheetName
-        : workbook.SheetNames[0];
+        : (workbook.SheetNames || [])[0];
 
-    const worksheet = targetSheet ? workbook.Sheets[targetSheet] : undefined;
+    const worksheet = targetSheet && workbook.Sheets ? workbook.Sheets[targetSheet] : undefined;
     const rows = worksheet
       ? XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet)
       : [];
@@ -79,20 +95,32 @@ export class ExcelToJsonEngine implements IConverterEngine {
 
 export class ExcelToCsvEngine implements IConverterEngine {
   async parsePreview(file: File, maxRows?: number): Promise<TabularData> {
+    if (file.size === 0) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
     const buffer = await file.arrayBuffer();
+    if (buffer.byteLength === 0) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
     const workbook = XLSX.read(buffer, { type: "array" });
     return parseExcelTabular(workbook, maxRows);
   }
 
   async convert(file: File, options?: ConversionOptions): Promise<ConversionOutput> {
+    if (file.size === 0) {
+      throw new Error("Excel file is empty");
+    }
     const buffer = await file.arrayBuffer();
+    if (buffer.byteLength === 0) {
+      throw new Error("Excel file is empty");
+    }
     const workbook = XLSX.read(buffer, { type: "array" });
     const targetSheet =
-      options?.sheetName && workbook.Sheets[options.sheetName]
+      options?.sheetName && workbook.Sheets?.[options.sheetName]
         ? options.sheetName
-        : workbook.SheetNames[0];
+        : (workbook.SheetNames || [])[0];
 
-    const worksheet = targetSheet ? workbook.Sheets[targetSheet] : undefined;
+    const worksheet = targetSheet && workbook.Sheets ? workbook.Sheets[targetSheet] : undefined;
     const csvString = worksheet
       ? XLSX.utils.sheet_to_csv(worksheet, { FS: options?.delimiter || "," })
       : "";

@@ -9,6 +9,7 @@ import {
   tallyXmlToExcelEngine,
   getConverterEngine,
 } from "../index";
+import { sanitizeSheetName } from "@/lib/utils";
 
 describe("Conversion Engines", () => {
   describe("csvToExcelEngine", () => {
@@ -66,6 +67,23 @@ describe("Conversion Engines", () => {
     it("convert throws error on empty CSV", async () => {
       const file = new File(["   "], "empty.csv", { type: "text/csv" });
       await expect(csvToExcelEngine.convert(file)).rejects.toThrow("CSV file is empty");
+    });
+
+    it("convert preserves leading zeros for postal codes and identifiers", async () => {
+      const csvContent = "name,zip,code\nAlice,01234,007\nBob,90210,042";
+      const file = new File([csvContent], "users.csv", { type: "text/csv" });
+
+      const output = await csvToExcelEngine.convert(file);
+      const arrayBuffer = await output.blob.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: "array" });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+      expect(sheet["B2"].v).toBe("01234");
+      expect(sheet["B2"].t).toBe("s");
+      expect(sheet["C2"].v).toBe("007");
+      expect(sheet["C2"].t).toBe("s");
+      expect(sheet["B3"].v).toBe(90210);
+      expect(sheet["B3"].t).toBe("n");
     });
   });
 
@@ -149,6 +167,31 @@ describe("Conversion Engines", () => {
       const output = await jsonToExcelEngine.convert(file, { flattenNested: false });
       expect(output.blob).toBeInstanceOf(Blob);
     });
+
+    it("throws descriptive error on malformed JSON", async () => {
+      const badFile = new File(["{ name: 'invalid', }"], "bad.json", {
+        type: "application/json",
+      });
+      await expect(jsonToExcelEngine.parsePreview(badFile)).rejects.toThrow(
+        /Invalid JSON format:/
+      );
+      await expect(jsonToExcelEngine.convert(badFile)).rejects.toThrow(
+        /Invalid JSON format:/
+      );
+    });
+
+    it("handles empty wrapper array { 'data': [] } gracefully", async () => {
+      const emptyDataFile = new File([JSON.stringify({ data: [] })], "empty_data.json", {
+        type: "application/json",
+      });
+      const preview = await jsonToExcelEngine.parsePreview(emptyDataFile);
+      expect(preview.columns).toEqual([]);
+      expect(preview.rows).toEqual([]);
+      expect(preview.totalRows).toBe(0);
+
+      const output = await jsonToExcelEngine.convert(emptyDataFile);
+      expect(output.blob).toBeInstanceOf(Blob);
+    });
   });
 
   describe("excelToJsonEngine", () => {
@@ -192,6 +235,25 @@ describe("Conversion Engines", () => {
       // Verify formatting when prettify is true
       expect(text).toContain("\n");
     });
+
+    it("parsePreview handles empty Excel file gracefully", async () => {
+      const emptyFile = new File([], "empty.xlsx", {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const preview = await excelToJsonEngine.parsePreview(emptyFile);
+      expect(preview.columns).toEqual([]);
+      expect(preview.rows).toEqual([]);
+      expect(preview.totalRows).toBe(0);
+    });
+
+    it("convert throws error on empty Excel file", async () => {
+      const emptyFile = new File([], "empty.xlsx", {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      await expect(excelToJsonEngine.convert(emptyFile)).rejects.toThrow(
+        "Excel file is empty"
+      );
+    });
   });
 
   describe("excelToCsvEngine", () => {
@@ -228,6 +290,25 @@ describe("Conversion Engines", () => {
       const text = await output.blob.text();
       expect(text).toContain("id;name;dept");
       expect(text).toContain("101;Carol;Finance");
+    });
+
+    it("parsePreview handles empty Excel file gracefully", async () => {
+      const emptyFile = new File([], "empty.xlsx", {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const preview = await excelToCsvEngine.parsePreview(emptyFile);
+      expect(preview.columns).toEqual([]);
+      expect(preview.rows).toEqual([]);
+      expect(preview.totalRows).toBe(0);
+    });
+
+    it("convert throws error on empty Excel file", async () => {
+      const emptyFile = new File([], "empty.xlsx", {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      await expect(excelToCsvEngine.convert(emptyFile)).rejects.toThrow(
+        "Excel file is empty"
+      );
     });
   });
 
@@ -315,6 +396,107 @@ describe("Conversion Engines", () => {
 
       const output = await tallyXmlToExcelEngine.convert(file);
       expect(output.filename).toBe("tally_export.xlsx");
+    });
+
+    it("handles XML with root attributes properly unwrapping child elements", async () => {
+      const xmlWithAttributes = `
+        <catalog version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <book id="bk101">
+            <author>Gambardella, Matthew</author>
+            <title>XML Developer's Guide</title>
+            <price>44.95</price>
+          </book>
+          <book id="bk102">
+            <author>Ralls, Kim</author>
+            <title>Midnight Rain</title>
+            <price>5.95</price>
+          </book>
+        </catalog>
+      `;
+      const file = new File([xmlWithAttributes], "catalog.xml", { type: "application/xml" });
+
+      const preview = await xmlToExcelEngine.parsePreview(file);
+      expect(preview.columns).toContain("author");
+      expect(preview.columns).toContain("title");
+      expect(preview.columns).toContain("price");
+      expect(preview.rows).toHaveLength(2);
+      expect(preview.rows[0]["author"]).toBe("Gambardella, Matthew");
+    });
+
+    it("handles single-child XML with root attributes", async () => {
+      const xmlSingle = `
+        <catalog version="1.0">
+          <product id="p100">
+            <name>Super Widget</name>
+            <cost>19.99</cost>
+          </product>
+        </catalog>
+      `;
+      const file = new File([xmlSingle], "single.xml", { type: "application/xml" });
+
+      const preview = await xmlToExcelEngine.parsePreview(file);
+      expect(preview.columns).toContain("name");
+      expect(preview.columns).toContain("cost");
+      expect(preview.rows).toHaveLength(1);
+      expect(preview.rows[0]["name"]).toBe("Super Widget");
+    });
+
+    it("handles Tally XML with attributes on <TALLYMESSAGE>", async () => {
+      const tallyWithAttrs = `
+        <ENVELOPE>
+          <BODY>
+            <IMPORTDATA>
+              <REQUESTDATA>
+                <TALLYMESSAGE xmlns:UDF="TallyUDF">
+                  <VOUCHER VCHTYPE="Journal" ACTION="Create">
+                    <DATE>20230501</DATE>
+                    <NARRATION>Opening Balance</NARRATION>
+                    <AMOUNT>50000</AMOUNT>
+                  </VOUCHER>
+                </TALLYMESSAGE>
+                <TALLYMESSAGE xmlns:UDF="TallyUDF">
+                  <VOUCHER VCHTYPE="Payment" ACTION="Create">
+                    <DATE>20230502</DATE>
+                    <NARRATION>Vendor Payment</NARRATION>
+                    <AMOUNT>-12000</AMOUNT>
+                  </VOUCHER>
+                </TALLYMESSAGE>
+              </REQUESTDATA>
+            </IMPORTDATA>
+          </BODY>
+        </ENVELOPE>
+      `;
+      const file = new File([tallyWithAttrs], "tally_vouchers.xml", {
+        type: "application/xml",
+      });
+
+      const preview = await tallyXmlToExcelEngine.parsePreview(file);
+      expect(preview.rows).toHaveLength(2);
+      expect(preview.totalRows).toBe(2);
+      expect(preview.columns).toContain("DATE");
+      expect(preview.columns).toContain("NARRATION");
+      expect(preview.columns).toContain("AMOUNT");
+      // Attributes on VOUCHER are preserved cleanly
+      expect(preview.rows[0]["@_VCHTYPE"]).toBe("Journal");
+      expect(preview.rows[0]["@_ACTION"]).toBe("Create");
+      // Namespace attribute on TALLYMESSAGE does not pollute columns
+      expect(preview.columns).not.toContain("xmlns:UDF");
+      expect(preview.columns).not.toContain("@_xmlns:UDF");
+
+      const output = await tallyXmlToExcelEngine.convert(file);
+      expect(output.filename).toBe("tally_vouchers.xlsx");
+    });
+  });
+
+  describe("sanitizeSheetName helper", () => {
+    it("sanitizes invalid Excel sheet name characters and limits length to 31 chars", () => {
+      expect(sanitizeSheetName("Invalid:Sheet/Name*?[Test]")).toBe("InvalidSheetNameTest");
+      expect(sanitizeSheetName("A".repeat(40))).toBe("A".repeat(31));
+      expect(sanitizeSheetName("")).toBe("Sheet1");
+      expect(sanitizeSheetName("   ")).toBe("Sheet1");
+      expect(sanitizeSheetName(":::***???///")).toBe("Sheet1");
+      expect(sanitizeSheetName(undefined)).toBe("Sheet1");
+      expect(sanitizeSheetName("ValidSheet")).toBe("ValidSheet");
     });
   });
 

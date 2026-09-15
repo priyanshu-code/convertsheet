@@ -5,6 +5,7 @@ import {
   ConversionOptions,
   ConversionOutput,
 } from "@/types/converter";
+import { sanitizeSheetName } from "@/lib/utils";
 
 export function flattenObject(
   obj: Record<string, unknown>,
@@ -48,7 +49,10 @@ export function extractJsonItems(data: unknown): Record<string, unknown>[] {
   }
   if (typeof data === "object" && data !== null) {
     const dataObj = data as Record<string, unknown>;
-    const arrayKey = Object.keys(dataObj).find(
+    const keys = Object.keys(dataObj);
+
+    // 1. Check for array containing objects
+    const arrayKey = keys.find(
       (k) =>
         Array.isArray(dataObj[k]) &&
         (dataObj[k] as unknown[]).length > 0 &&
@@ -61,6 +65,29 @@ export function extractJsonItems(data: unknown): Record<string, unknown>[] {
           : { value: item }
       );
     }
+
+    // 2. Check for empty wrapper arrays, e.g. { "data": [] }, { "items": [] }, or single-key empty array
+    const emptyWrapperKey = keys.find((k) => {
+      if (!Array.isArray(dataObj[k]) || (dataObj[k] as unknown[]).length > 0) {
+        return false;
+      }
+      if (keys.length === 1) return true;
+      const lower = k.toLowerCase();
+      return [
+        "data",
+        "items",
+        "results",
+        "rows",
+        "records",
+        "list",
+        "entities",
+      ].includes(lower);
+    });
+
+    if (emptyWrapperKey) {
+      return [];
+    }
+
     return [dataObj];
   }
   return [];
@@ -73,7 +100,13 @@ export class JsonToExcelEngine implements IConverterEngine {
       return { columns: [], rows: [], totalRows: 0 };
     }
 
-    const data = JSON.parse(text);
+    let data: unknown;
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
+      throw new Error(`Invalid JSON format: ${(err as Error).message}`);
+    }
+
     const items = extractJsonItems(data);
     const flattenedRows = items.map((item) => flattenObject(item));
 
@@ -99,7 +132,13 @@ export class JsonToExcelEngine implements IConverterEngine {
       throw new Error("JSON file is empty");
     }
 
-    const data = JSON.parse(text);
+    let data: unknown;
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
+      throw new Error(`Invalid JSON format: ${(err as Error).message}`);
+    }
+
     const items = extractJsonItems(data);
     const shouldFlatten = options?.flattenNested !== false;
     const processedRows = items.map((item) =>
@@ -114,7 +153,7 @@ export class JsonToExcelEngine implements IConverterEngine {
 
     const worksheet = XLSX.utils.json_to_sheet(processedRows, { header: columns });
     const workbook = XLSX.utils.book_new();
-    const sheetName = options?.sheetName || "Sheet1";
+    const sheetName = sanitizeSheetName(options?.sheetName);
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
 
     const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
