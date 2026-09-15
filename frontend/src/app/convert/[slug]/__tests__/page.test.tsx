@@ -123,14 +123,14 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       // HowToGuide
       expect(
         screen.getByText(
-          "How to Convert JSON to Excel Online in 3 Simple Steps"
+          `How to Convert JSON to Excel Online in ${jsonConfig.howTo.length} Simple Steps`
         )
       ).toBeInTheDocument();
 
       // FAQAccordion
       expect(
         screen.getByText(
-          `Frequently Asked Questions About ${jsonConfig.title}`
+          "Frequently Asked Questions About JSON to EXCEL Conversion"
         )
       ).toBeInTheDocument();
 
@@ -185,7 +185,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       // Section Title
       expect(
         screen.getByRole("heading", {
-          name: "How to Convert JSON to Excel Online in 3 Simple Steps",
+          name: `How to Convert JSON to Excel Online in ${jsonConfig.howTo.length} Simple Steps`,
         })
       ).toBeInTheDocument();
 
@@ -209,7 +209,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       // Heading
       expect(
         screen.getByText(
-          `Frequently Asked Questions About ${jsonConfig.title}`
+          "Frequently Asked Questions About JSON to EXCEL Conversion"
         )
       ).toBeInTheDocument();
 
@@ -245,7 +245,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       const howToSchema = generateHowToSchema(jsonConfig);
       expect(howToSchema["@type"]).toBe("HowTo");
       expect(howToSchema.name).toBe(
-        `How to Convert ${jsonConfig.sourceFormat} to ${jsonConfig.targetFormat} Online in 3 Simple Steps`
+        `How to Convert ${jsonConfig.sourceFormat} to ${jsonConfig.targetFormat} Online in ${jsonConfig.howTo.length} Simple Steps`
       );
       expect(howToSchema.step).toHaveLength(3);
       expect(howToSchema.step[0]).toEqual({
@@ -253,6 +253,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         position: 1,
         name: jsonConfig.howTo[0].title,
         text: jsonConfig.howTo[0].description,
+        url: `https://convertsheet.com/convert/${jsonConfig.slug}#step-1`,
       });
     });
 

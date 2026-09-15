@@ -18,6 +18,8 @@ export interface ConverterPageProps {
   };
 }
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllConverterSlugs().map((slug) => ({
     slug,
@@ -31,12 +33,13 @@ export async function generateMetadata({
 
   if (!config) {
     return {
-      title: "Converter Not Found - ConvertSheet",
+      title: "Converter Not Found",
       description: "The requested data converter was not found.",
     };
   }
 
   const canonicalUrl = `https://convertsheet.com/convert/${config.slug}`;
+  const ogImage = `https://convertsheet.com/convert/${config.slug}/opengraph-image`;
 
   return {
     title: config.title,
@@ -49,11 +52,20 @@ export async function generateMetadata({
       description: config.metaDescription,
       url: canonicalUrl,
       type: "website",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: config.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: config.title,
       description: config.metaDescription,
+      images: [ogImage],
     },
   };
 }

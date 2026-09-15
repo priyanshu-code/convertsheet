@@ -27,7 +27,7 @@ export function HowToGuide({ config, className }: HowToGuideProps) {
           id="how-to-guide-heading"
           className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
         >
-          How to Convert {config.sourceFormat} to {config.targetFormat} Online in 3 Simple Steps
+          How to Convert {config.sourceFormat} to {config.targetFormat} Online in {steps.length} Simple Steps
         </h2>
         <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
           Convert your data effortlessly with zero installations and complete local privacy.
@@ -47,7 +47,8 @@ export function HowToGuide({ config, className }: HowToGuideProps) {
             return (
               <li
                 key={stepNumber}
-                className="flex flex-col items-center text-center group"
+                id={`step-${stepNumber}`}
+                className="flex flex-col items-center text-center group scroll-mt-24"
                 data-testid={`how-to-step-${stepNumber}`}
               >
                 {/* Numbered step pill */}

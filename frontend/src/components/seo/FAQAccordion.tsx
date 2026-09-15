@@ -29,7 +29,7 @@ export function FAQAccordion({ config, className }: FAQAccordionProps) {
           id="faq-accordion-heading"
           className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
         >
-          Frequently Asked Questions About {config.title}
+          Frequently Asked Questions About {config.sourceFormat.toUpperCase()} to {config.targetFormat.toUpperCase()} Conversion
         </h2>
         <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
           Everything you need to know about formats, privacy, and browser-based file conversion.
@@ -43,7 +43,7 @@ export function FAQAccordion({ config, className }: FAQAccordionProps) {
             data-testid={`faq-item-${index}`}
             className="group rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/80 overflow-hidden transition-all duration-200 hover:border-zinc-300 dark:hover:border-zinc-700 open:border-emerald-200 dark:open:border-emerald-900/50 open:bg-white dark:open:bg-zinc-900"
           >
-            <summary className="flex items-center justify-between p-5 cursor-pointer font-medium text-zinc-900 dark:text-zinc-100 list-none select-none hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-xl">
+            <summary className="flex items-center justify-between p-5 cursor-pointer font-medium text-zinc-900 dark:text-zinc-100 list-none select-none hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-xl [&::-webkit-details-marker]:hidden">
               <span className="text-sm sm:text-base font-semibold pr-4">
                 {faq.question}
               </span>

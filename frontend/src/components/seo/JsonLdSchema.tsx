@@ -13,7 +13,7 @@ export function generateSoftwareApplicationSchema(config: ConverterConfig) {
     applicationCategory: "BusinessApplication",
     offers: {
       "@type": "Offer",
-      price: "0",
+      price: config.isClientSide ? "0" : "9.99",
       priceCurrency: "USD",
     },
     description: config.metaDescription,
@@ -24,12 +24,13 @@ export function generateSoftwareApplicationSchema(config: ConverterConfig) {
 export function generateHowToSchema(config: ConverterConfig) {
   return {
     "@type": "HowTo",
-    name: `How to Convert ${config.sourceFormat} to ${config.targetFormat} Online in 3 Simple Steps`,
+    name: `How to Convert ${config.sourceFormat} to ${config.targetFormat} Online in ${config.howTo.length} Simple Steps`,
     step: config.howTo.map((step, index) => ({
       "@type": "HowToStep",
       position: step.step || index + 1,
       name: step.title,
       text: step.description,
+      url: `https://convertsheet.com/convert/${config.slug}#step-${step.step || index + 1}`,
     })),
   };
 }
@@ -66,7 +67,7 @@ export function JsonLdSchema({ config }: JsonLdSchemaProps) {
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(structuredData),
+        __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
       }}
     />
   );
