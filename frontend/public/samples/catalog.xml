@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://convertsheet.com/catalog">
+  <category name="Enterprise Hardware">
+    <item id="SRV-800" tier="datacenter">
+      <title>Rackmount Server 2U</title>
+      <specs ram="256GB" cores="64" storage="8TB NVMe"/>
+      <price currency="USD">8499.00</price>
+      <in_stock>true</in_stock>
+      <description><![CDATA[High-density dual-socket server optimized for <em>virtualization</em> and heavy database workloads.]]></description>
+    </item>
+    <item id="SW-400" tier="networking">
+      <title>48-Port Managed Switch</title>
+      <specs throughput="100Gbps" ports="48" poe="true"/>
+      <price currency="USD">2199.00</price>
+      <in_stock>true</in_stock>
+      <description><![CDATA[Layer 3 managed switch with redundant power supplies and SFP28 uplink capability.]]></description>
+    </item>
+  </category>
+</catalog>

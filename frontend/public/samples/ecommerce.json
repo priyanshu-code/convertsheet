@@ -1,0 +1,47 @@
+[
+  {
+    "order_id": "ORD-2026-9001",
+    "customer": {
+      "name": "Sarah Connor",
+      "email": "sarah.c@cyberdyne.org",
+      "address": {
+        "city": "Los Angeles",
+        "state": "CA",
+        "postal": "90001"
+      }
+    },
+    "items": [
+      { "sku": "TECH-101", "name": "4K Ultra Monitor", "qty": 2, "price": 499.99 },
+      { "sku": "ACC-502", "name": "Mechanical Keyboard", "qty": 1, "price": 129.50 }
+    ],
+    "payment": {
+      "method": "credit_card",
+      "status": "settled",
+      "currency": "USD"
+    },
+    "total_amount": 1129.48,
+    "fulfilled": true
+  },
+  {
+    "order_id": "ORD-2026-9002",
+    "customer": {
+      "name": "Bruce Wayne",
+      "email": "bruce@wayneenterprises.com",
+      "address": {
+        "city": "Gotham",
+        "state": "NJ",
+        "postal": "07001"
+      }
+    },
+    "items": [
+      { "sku": "SEC-900", "name": "Kevlar Fiber Weave", "qty": 10, "price": 2500.00 }
+    ],
+    "payment": {
+      "method": "wire_transfer",
+      "status": "settled",
+      "currency": "USD"
+    },
+    "total_amount": 25000.00,
+    "fulfilled": true
+  }
+]

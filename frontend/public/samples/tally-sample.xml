@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ENVELOPE>
+  <HEADER>
+    <TALLYREQUEST>Export Data</TALLYREQUEST>
+  </HEADER>
+  <BODY>
+    <DATA>
+      <TALLYMESSAGE xmlns:UDF="TallyUDF">
+        <VOUCHER VCHTYPE="Sales" ACTION="Create" OBJVIEW="Invoice Voucher View">
+          <DATE>20260401</DATE>
+          <GUID>e3a89012-984b-48c2-a9b3-90d238bfa001</GUID>
+          <VOUCHERTYPENAME>Sales Invoice</VOUCHERTYPENAME>
+          <VOUCHERNUMBER>CS-2026-INV01</VOUCHERNUMBER>
+          <REFERENCE>PO-88210</REFERENCE>
+          <PARTYLEDGERNAME>Apex Cloud Solutions Pvt Ltd</PARTYLEDGERNAME>
+          <STATENAME>Maharashtra</STATENAME>
+          <AMOUNT>-75000.00</AMOUNT>
+          <NARRATION>Annual subscription license for enterprise data converter platform</NARRATION>
+        </VOUCHER>
+      </TALLYMESSAGE>
+      <TALLYMESSAGE xmlns:UDF="TallyUDF">
+        <VOUCHER VCHTYPE="Receipt" ACTION="Create" OBJVIEW="Accounting Voucher View">
+          <DATE>20260405</DATE>
+          <GUID>e3a89012-984b-48c2-a9b3-90d238bfa002</GUID>
+          <VOUCHERTYPENAME>Bank Receipt</VOUCHERTYPENAME>
+          <VOUCHERNUMBER>REC-2026-004</VOUCHERNUMBER>
+          <PARTYLEDGERNAME>HDFC Bank Operating Account</PARTYLEDGERNAME>
+          <AMOUNT>75000.00</AMOUNT>
+          <NARRATION>NEFT receipt for invoice CS-2026-INV01</NARRATION>
+        </VOUCHER>
+      </TALLYMESSAGE>
+    </DATA>
+  </BODY>
+</ENVELOPE>

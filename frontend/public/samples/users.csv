@@ -1,0 +1,7 @@
+id,name,role,department,email,salary,zip_code,notes
+1,"Smith, John",Senior Architect,Engineering,john.smith@example.com,145000,01234,"Lead on cloud migration project
+Handles multi-region deployment"
+2,"García, María",Data Scientist,Analytics,maria.garcia@example.com,132000,02138,"Specialist in NLP and predictive models"
+3,"陈伟 (Wei Chen)",Backend Engineer,Platform,wei.chen@example.com,128000,08540,"Maintains high-throughput Kafka streaming"
+4,"Müller, Hans",Security Analyst,DevOps,hans.mueller@example.com,115000,07030,"Zero-trust network architecture lead"
+5,"Patel, Priya",Product Manager,Growth,priya.patel@example.com,140000,00501,"Spearheads B2B SaaS conversion funnels"
