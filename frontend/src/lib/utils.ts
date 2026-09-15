@@ -28,7 +28,12 @@ export function formatBytes(bytes: number, decimals: number = 2): string {
  * Defers URL.revokeObjectURL to prevent Safari and Firefox from cancelling active downloads.
  */
 export function downloadBlob(blob: Blob, filename: string): void {
-  if (typeof window === "undefined" || typeof document === "undefined") {
+  if (
+    typeof window === "undefined" ||
+    typeof document === "undefined" ||
+    typeof URL === "undefined" ||
+    typeof URL.createObjectURL !== "function"
+  ) {
     return;
   }
   const url = URL.createObjectURL(blob);

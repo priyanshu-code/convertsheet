@@ -46,6 +46,7 @@ export function DropZone({
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       e.stopPropagation();
+      if (e.currentTarget.contains(e.relatedTarget as Node)) return;
       setIsDragOver(false);
     },
     []
@@ -123,6 +124,7 @@ export function DropZone({
         type="file"
         accept={acceptAttribute}
         onChange={handleInputChange}
+        onClick={(e) => e.stopPropagation()}
         disabled={disabled}
         className="sr-only hidden"
         aria-hidden="true"

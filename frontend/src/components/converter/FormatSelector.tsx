@@ -164,6 +164,7 @@ export function FormatSelector({
                     <button
                       key={item.label}
                       type="button"
+                      aria-pressed={isSelected}
                       onClick={() => handleDelimiterSelect(item.value)}
                       className={cn(
                         "px-2.5 py-1.5 text-xs font-mono rounded-lg border transition-all text-center",

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { formatBytes, cn } from "@/lib/utils";
-import { useConverter } from "@/hooks/useConverter";
+import { useConverter, MAX_FREE_FILE_SIZE_BYTES } from "@/hooks/useConverter";
 import { DropZone } from "./DropZone";
 import { DataPreviewTable } from "./DataPreviewTable";
 import { FormatSelector } from "./FormatSelector";
@@ -39,7 +39,15 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
     convert,
   } = useConverter(config);
 
+  const requiresPro = Boolean(
+    file && (!config.isClientSide || file.size > MAX_FREE_FILE_SIZE_BYTES)
+  );
+
   const handleConvertClick = async () => {
+    if (requiresPro) {
+      setShowProModal(true);
+      return;
+    }
     await convert();
   };
 
@@ -124,10 +132,17 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
 
           {/* Action Footer */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-            <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 order-2 sm:order-1">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Ready to transform into native {config.targetFormat}</span>
-            </div>
+            {requiresPro ? (
+              <div className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1.5 order-2 sm:order-1 font-medium">
+                <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <span>ConvertSheet Pro required for this file</span>
+              </div>
+            ) : (
+              <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 order-2 sm:order-1">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                <span>Ready to transform into native {config.targetFormat}</span>
+              </div>
+            )}
 
             <div className="flex items-center gap-3 w-full sm:w-auto order-1 sm:order-2">
               <button
@@ -139,24 +154,35 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
                 Cancel
               </button>
 
-              <button
-                type="button"
-                onClick={handleConvertClick}
-                disabled={isParsing || isConverting}
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-600/20 active:scale-[0.99] transition-all disabled:opacity-50 disabled:pointer-events-none"
-              >
-                {isConverting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Converting to {config.targetFormat}...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-4 h-4" />
-                    <span>Convert &amp; Download {config.targetFormat}</span>
-                  </>
-                )}
-              </button>
+              {requiresPro ? (
+                <button
+                  type="button"
+                  onClick={() => setShowProModal(true)}
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white bg-amber-600 hover:bg-amber-500 shadow-md shadow-amber-600/20 active:scale-[0.99] transition-all"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>ConvertSheet Pro required for this file</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleConvertClick}
+                  disabled={isParsing || isConverting}
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-600/20 active:scale-[0.99] transition-all disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  {isConverting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Converting to {config.targetFormat}...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      <span>Convert &amp; Download {config.targetFormat}</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>

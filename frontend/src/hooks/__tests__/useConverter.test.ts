@@ -1,62 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
-import React from "react";
+import { renderHook, act } from "@testing-library/react";
 import { useConverter, MAX_FREE_FILE_SIZE_BYTES } from "../useConverter";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 import { IConverterEngine, TabularData, ConversionOutput } from "@/types/converter";
-
-// Lightweight test hook runner for Node test environment
-function renderHook<T>(renderCallback: () => T) {
-  let hookIndex = 0;
-  const stateStore: any[] = [];
-  const result: { current: T } = { current: undefined as any };
-
-  const dispatcher = (React as any)
-    .__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentDispatcher;
-
-  const testDispatcher = {
-    useState(initialState: any) {
-      const idx = hookIndex++;
-      if (stateStore[idx] === undefined) {
-        stateStore[idx] =
-          typeof initialState === "function" ? initialState() : initialState;
-      }
-      const setState = (action: any) => {
-        stateStore[idx] =
-          typeof action === "function" ? action(stateStore[idx]) : action;
-        rerun();
-      };
-      return [stateStore[idx], setState];
-    },
-    useRef(initialValue: any) {
-      const idx = hookIndex++;
-      if (stateStore[idx] === undefined) {
-        stateStore[idx] = { current: initialValue };
-      }
-      return stateStore[idx];
-    },
-    useCallback(fn: any) {
-      return fn;
-    },
-    useEffect() {},
-    useMemo(fn: any) {
-      return fn();
-    },
-  };
-
-  function rerun() {
-    hookIndex = 0;
-    const prevDispatcher = dispatcher.current;
-    dispatcher.current = testDispatcher;
-    try {
-      result.current = renderCallback();
-    } finally {
-      dispatcher.current = prevDispatcher;
-    }
-  }
-
-  rerun();
-  return { result, rerun };
-}
 
 describe("useConverter hook", () => {
   const jsonConfig = CONVERTER_REGISTRY["json-to-excel"];
@@ -83,7 +29,9 @@ describe("useConverter hook", () => {
       type: "text/plain",
     });
 
-    await result.current.setFile(invalidFile);
+    await act(async () => {
+      await result.current.setFile(invalidFile);
+    });
 
     expect(result.current.file).toBeNull();
     expect(result.current.preview).toBeNull();
@@ -94,7 +42,6 @@ describe("useConverter hook", () => {
   it("triggers Pro modal gating when file exceeds 10MB limit", async () => {
     const { result } = renderHook(() => useConverter(jsonConfig));
 
-    // Create a mock file larger than 10MB
     const largeFile = new File(["dummy"], "huge_dataset.json", {
       type: "application/json",
     });
@@ -102,7 +49,9 @@ describe("useConverter hook", () => {
       value: MAX_FREE_FILE_SIZE_BYTES + 1024,
     });
 
-    await result.current.setFile(largeFile);
+    await act(async () => {
+      await result.current.setFile(largeFile);
+    });
 
     expect(result.current.file).toBe(largeFile);
     expect(result.current.preview).toBeNull();
@@ -117,7 +66,9 @@ describe("useConverter hook", () => {
       type: "application/pdf",
     });
 
-    await result.current.setFile(pdfFile);
+    await act(async () => {
+      await result.current.setFile(pdfFile);
+    });
 
     expect(result.current.file).toBe(pdfFile);
     expect(result.current.preview).toBeNull();
@@ -149,7 +100,9 @@ describe("useConverter hook", () => {
       type: "application/json",
     });
 
-    await result.current.setFile(jsonFile);
+    await act(async () => {
+      await result.current.setFile(jsonFile);
+    });
 
     expect(result.current.file).toBe(jsonFile);
     expect(result.current.preview).toEqual(mockPreviewData);
@@ -172,7 +125,9 @@ describe("useConverter hook", () => {
       type: "application/json",
     });
 
-    await result.current.setFile(brokenFile);
+    await act(async () => {
+      await result.current.setFile(brokenFile);
+    });
 
     expect(result.current.preview).toBeNull();
     expect(result.current.error).toBe("Corrupted JSON structure");
@@ -196,9 +151,15 @@ describe("useConverter hook", () => {
     );
 
     const file = new File(["[{}]"], "data.json", { type: "application/json" });
-    await result.current.setFile(file);
+    await act(async () => {
+      await result.current.setFile(file);
+    });
 
-    const success = await result.current.convert();
+    let success = false;
+    await act(async () => {
+      success = await result.current.convert();
+    });
+
     expect(success).toBe(true);
     expect(mockEngine.convert).toHaveBeenCalledWith(file, expect.objectContaining({ sheetName: "Sheet1" }));
     expect(result.current.isConverting).toBe(false);
@@ -208,7 +169,11 @@ describe("useConverter hook", () => {
   it("aborts convert() if no file is selected", async () => {
     const { result } = renderHook(() => useConverter(jsonConfig));
 
-    const success = await result.current.convert();
+    let success = true;
+    await act(async () => {
+      success = await result.current.convert();
+    });
+
     expect(success).toBe(false);
     expect(result.current.error).toBe("Please select a file to convert.");
   });
@@ -219,10 +184,19 @@ describe("useConverter hook", () => {
     const largeFile = new File(["dummy"], "large.json", { type: "application/json" });
     Object.defineProperty(largeFile, "size", { value: MAX_FREE_FILE_SIZE_BYTES + 500 });
 
-    await result.current.setFile(largeFile);
-    result.current.setShowProModal(false);
+    await act(async () => {
+      await result.current.setFile(largeFile);
+    });
 
-    const success = await result.current.convert();
+    act(() => {
+      result.current.setShowProModal(false);
+    });
+
+    let success = true;
+    await act(async () => {
+      success = await result.current.convert();
+    });
+
     expect(success).toBe(false);
     expect(result.current.showProModal).toBe(true);
   });
@@ -238,12 +212,16 @@ describe("useConverter hook", () => {
     );
 
     const file = new File(["[{ \"a\": 1 }]"], "test.json", { type: "application/json" });
-    await result.current.setFile(file);
+    await act(async () => {
+      await result.current.setFile(file);
+    });
 
     expect(result.current.file).not.toBeNull();
     expect(result.current.preview).not.toBeNull();
 
-    result.current.reset();
+    act(() => {
+      result.current.reset();
+    });
 
     expect(result.current.file).toBeNull();
     expect(result.current.preview).toBeNull();
@@ -256,12 +234,16 @@ describe("useConverter hook", () => {
   it("updates options via updateOptions() and setOptions()", () => {
     const { result } = renderHook(() => useConverter(jsonConfig));
 
-    result.current.updateOptions({ sheetName: "CustomSheet", delimiter: ";" });
+    act(() => {
+      result.current.updateOptions({ sheetName: "CustomSheet", delimiter: ";" });
+    });
     expect(result.current.options.sheetName).toBe("CustomSheet");
     expect(result.current.options.delimiter).toBe(";");
     expect(result.current.options.prettify).toBe(true);
 
-    result.current.setOptions((prev) => ({ ...prev, prettify: false }));
+    act(() => {
+      result.current.setOptions((prev) => ({ ...prev, prettify: false }));
+    });
     expect(result.current.options.prettify).toBe(false);
   });
 
@@ -269,10 +251,115 @@ describe("useConverter hook", () => {
     const { result } = renderHook(() => useConverter(jsonConfig));
 
     const file = new File(["{}"], "file.json", { type: "application/json" });
-    await result.current.setFile(file);
+    await act(async () => {
+      await result.current.setFile(file);
+    });
     expect(result.current.file).toBe(file);
 
-    await result.current.setFile(null);
+    await act(async () => {
+      await result.current.setFile(null);
+    });
+    expect(result.current.file).toBeNull();
+    expect(result.current.preview).toBeNull();
+  });
+
+  it("guards against race conditions when a superseded parse resolves later", async () => {
+    let resolveFirstParse!: (data: TabularData) => void;
+    const firstPromise = new Promise<TabularData>((resolve) => {
+      resolveFirstParse = resolve;
+    });
+
+    const secondData: TabularData = {
+      columns: ["colB"],
+      rows: [{ colB: "second" }],
+      totalRows: 1,
+    };
+
+    const mockEngine: IConverterEngine = {
+      parsePreview: vi
+        .fn()
+        .mockImplementationOnce(() => firstPromise)
+        .mockImplementationOnce(() => Promise.resolve(secondData)),
+      convert: vi.fn(),
+    };
+
+    const { result } = renderHook(() =>
+      useConverter(jsonConfig, { engine: mockEngine })
+    );
+
+    const file1 = new File(["{}"], "file1.json", { type: "application/json" });
+    const file2 = new File(["{}"], "file2.json", { type: "application/json" });
+
+    // Start parsing file1 (slow)
+    let p1: Promise<void>;
+    act(() => {
+      p1 = result.current.setFile(file1);
+    });
+
+    // Start parsing file2 (fast) - supersedes file1
+    await act(async () => {
+      await result.current.setFile(file2);
+    });
+
+    expect(result.current.preview).toEqual(secondData);
+
+    // Now resolve first parse (out of order)
+    await act(async () => {
+      resolveFirstParse({
+        columns: ["colA"],
+        rows: [{ colA: "first" }],
+        totalRows: 1,
+      });
+      await p1;
+    });
+
+    // Preview should NOT be overwritten by file1
+    expect(result.current.preview).toEqual(secondData);
+  });
+
+  it("guards against race condition when reset() is called during in-flight parse", async () => {
+    let resolveParse!: (data: TabularData) => void;
+    const slowPromise = new Promise<TabularData>((resolve) => {
+      resolveParse = resolve;
+    });
+
+    const mockEngine: IConverterEngine = {
+      parsePreview: vi.fn().mockImplementation(() => slowPromise),
+      convert: vi.fn(),
+    };
+
+    const { result } = renderHook(() =>
+      useConverter(jsonConfig, { engine: mockEngine })
+    );
+
+    const file = new File(["{}"], "file.json", { type: "application/json" });
+
+    let p: Promise<void>;
+    act(() => {
+      p = result.current.setFile(file);
+    });
+
+    expect(result.current.isParsing).toBe(true);
+
+    // User clicks reset
+    act(() => {
+      result.current.reset();
+    });
+
+    expect(result.current.file).toBeNull();
+    expect(result.current.preview).toBeNull();
+
+    // The slow parse finishes later
+    await act(async () => {
+      resolveParse({
+        columns: ["col"],
+        rows: [{ col: 1 }],
+        totalRows: 1,
+      });
+      await p;
+    });
+
+    // State should remain null and not be resurrected
     expect(result.current.file).toBeNull();
     expect(result.current.preview).toBeNull();
   });

@@ -70,6 +70,9 @@ export function useConverter(
   const optionsRef = useRef(options);
   optionsRef.current = options;
 
+  // Track active preview parsing operation to guard against race conditions
+  const activeParseIdRef = useRef(0);
+
   const updateOptions = useCallback((newOpts: Partial<ConversionOptions>) => {
     setOptions((prev) => ({ ...prev, ...newOpts }));
   }, []);
@@ -86,6 +89,8 @@ export function useConverter(
 
   const setFile = useCallback(
     async (newFile: File | null) => {
+      const currentId = ++activeParseIdRef.current;
+
       if (!newFile) {
         setFileState(null);
         setPreview(null);
@@ -142,9 +147,11 @@ export function useConverter(
       setError(null);
       try {
         const previewData = await engine.parsePreview(newFile, 10);
+        if (activeParseIdRef.current !== currentId) return;
         setPreview(previewData);
         setError(null);
       } catch (err: unknown) {
+        if (activeParseIdRef.current !== currentId) return;
         const message =
           err instanceof Error
             ? err.message
@@ -152,7 +159,9 @@ export function useConverter(
         setError(message);
         setPreview(null);
       } finally {
-        setIsParsing(false);
+        if (activeParseIdRef.current === currentId) {
+          setIsParsing(false);
+        }
       }
     },
     [config, resolveEngine]
@@ -201,6 +210,7 @@ export function useConverter(
   }, [file, config, resolveEngine]);
 
   const reset = useCallback(() => {
+    activeParseIdRef.current++;
     setFileState(null);
     setPreview(null);
     setError(null);

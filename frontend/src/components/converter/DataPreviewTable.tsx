@@ -36,7 +36,12 @@ function renderCellValue(value: unknown): React.ReactNode {
   }
 
   if (typeof value === "object") {
-    const jsonStr = JSON.stringify(value);
+    let jsonStr: string;
+    try {
+      jsonStr = JSON.stringify(value) ?? "[Object]";
+    } catch {
+      jsonStr = "[Object]";
+    }
     return (
       <span
         className="inline-block max-w-[200px] truncate px-1.5 py-0.5 rounded text-xs font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
@@ -80,7 +85,7 @@ export function DataPreviewTable({
   className,
 }: DataPreviewTableProps) {
   const rowsToDisplay = preview.rows.slice(0, maxDisplayRows);
-  const totalRows = preview.totalRows || preview.rows.length;
+  const totalRows = preview.totalRows ?? preview.rows.length;
   const isAllRows = totalRows <= rowsToDisplay.length;
 
   return (
