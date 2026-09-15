@@ -59,12 +59,37 @@ const VALUE_PROPS = [
   },
 ];
 
+const homeJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "ConvertSheet",
+      url: "https://convertsheet.com",
+      description:
+        "Fast, private structured data conversion. Convert spreadsheets, JSON arrays, and XML feeds directly in your browser with zero server uploads.",
+    },
+    {
+      "@type": "Organization",
+      name: "ConvertSheet",
+      url: "https://convertsheet.com",
+      logo: "https://convertsheet.com/icon.png",
+    },
+  ],
+};
+
 export default function HomePage() {
   const defaultConverter = CONVERTER_REGISTRY["json-to-excel"];
   const allConverters = Object.values(CONVERTER_REGISTRY) as ConverterConfig[];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16 sm:space-y-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homeJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       {/* Hero Section */}
       <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
         {/* Top Trust Badge */}

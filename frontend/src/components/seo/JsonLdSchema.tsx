@@ -49,6 +49,32 @@ export function generateFAQPageSchema(config: ConverterConfig) {
   };
 }
 
+export function generateBreadcrumbSchema(config: ConverterConfig) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://convertsheet.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Converters",
+        item: "https://convertsheet.com/#converters",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: `${config.sourceFormat} to ${config.targetFormat}`,
+        item: `https://convertsheet.com/convert/${config.slug}`,
+      },
+    ],
+  };
+}
+
 export function getJsonLdData(config: ConverterConfig) {
   return {
     "@context": "https://schema.org",
@@ -56,6 +82,7 @@ export function getJsonLdData(config: ConverterConfig) {
       generateSoftwareApplicationSchema(config),
       generateHowToSchema(config),
       generateFAQPageSchema(config),
+      generateBreadcrumbSchema(config),
     ],
   };
 }

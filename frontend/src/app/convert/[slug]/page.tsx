@@ -87,6 +87,30 @@ export default function ConverterPage({ params }: ConverterPageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
       {/* Hero Section */}
       <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
+        {/* Breadcrumb Navigation */}
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center justify-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400"
+        >
+          <Link
+            href="/"
+            className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+          >
+            Home
+          </Link>
+          <span className="text-zinc-300 dark:text-zinc-700">/</span>
+          <Link
+            href="/#converters"
+            className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+          >
+            Converters
+          </Link>
+          <span className="text-zinc-300 dark:text-zinc-700">/</span>
+          <span className="text-zinc-800 dark:text-zinc-200">
+            {config.sourceFormat} to {config.targetFormat}
+          </span>
+        </nav>
+
         {/* Privacy Badge & Featured Status */}
         <div className="flex flex-wrap items-center justify-center gap-2.5">
           <div

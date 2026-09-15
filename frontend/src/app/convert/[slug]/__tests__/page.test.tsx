@@ -290,12 +290,13 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
 
       const json = JSON.parse(script!.textContent || "{}");
       expect(json["@context"]).toBe("https://schema.org");
-      expect(json["@graph"]).toHaveLength(3);
+      expect(json["@graph"]).toHaveLength(4);
 
       const types = json["@graph"].map((item: { "@type": string }) => item["@type"]);
       expect(types).toContain("SoftwareApplication");
       expect(types).toContain("HowTo");
       expect(types).toContain("FAQPage");
+      expect(types).toContain("BreadcrumbList");
     });
   });
 
