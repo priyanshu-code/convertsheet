@@ -2,7 +2,7 @@ import React from "react";
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { Navbar, Footer, AdBanner, ThemeToggle, THEME_STORAGE_KEY } from "../index";
-import { metadata } from "@/app/layout";
+import RootLayout, { metadata } from "@/app/layout";
 
 describe("Layout Components", () => {
   beforeEach(() => {
@@ -59,6 +59,31 @@ describe("Layout Components", () => {
       expect(document.documentElement.classList.contains("dark")).toBe(false);
       const button = screen.getByTestId("theme-toggle");
       expect(button).toHaveAttribute("aria-label", "Switch to dark mode");
+    });
+
+    it("guards aria-label and title with mounted state to prevent hydration mismatch", () => {
+      render(<ThemeToggle />);
+      const button = screen.getByTestId("theme-toggle");
+      expect(button).toHaveAttribute("aria-label", "Switch to dark mode");
+      expect(button).toHaveAttribute("title", "Switch to dark mode");
+    });
+
+    it("handles restricted localStorage (SecurityError) gracefully without throwing", () => {
+      const getItemSpy = vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+        throw new DOMException("The operation is insecure.", "SecurityError");
+      });
+      const setItemSpy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+        throw new DOMException("The operation is insecure.", "SecurityError");
+      });
+
+      expect(() => {
+        render(<ThemeToggle />);
+        const button = screen.getByTestId("theme-toggle");
+        fireEvent.click(button);
+      }).not.toThrow();
+
+      getItemSpy.mockRestore();
+      setItemSpy.mockRestore();
     });
   });
 
@@ -167,6 +192,23 @@ describe("Layout Components", () => {
       expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     });
 
+    it("closes Tools dropdown on blur when keyboard focus leaves the menu container", () => {
+      render(<Navbar />);
+      const toolsButton = screen.getByRole("button", { name: /Tools/i });
+
+      // Open dropdown
+      fireEvent.click(toolsButton);
+      expect(screen.getByRole("menu")).toBeInTheDocument();
+
+      // Trigger blur event where relatedTarget is outside tools container
+      const toolsContainer = toolsButton.closest("div.relative")!;
+      fireEvent.blur(toolsContainer, {
+        relatedTarget: document.body,
+      });
+
+      expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+    });
+
     it("toggles mobile menu on hamburger button click and closes on link click", () => {
       render(<Navbar />);
       const mobileToggle = screen.getByRole("button", {
@@ -177,6 +219,15 @@ describe("Layout Components", () => {
       // Open mobile menu
       fireEvent.click(mobileToggle);
       expect(mobileToggle).toHaveAttribute("aria-expanded", "true");
+
+      // Verify semantic nav and scroll classes on mobile drawer
+      const mobileNav = screen.getByRole("navigation", {
+        name: "Mobile Navigation",
+      });
+      expect(mobileNav).toBeInTheDocument();
+      expect(mobileNav).toHaveClass("max-h-[calc(100vh-4rem)]");
+      expect(mobileNav).toHaveClass("overflow-y-auto");
+
       expect(screen.getByText("Developer API")).toBeInTheDocument();
       expect(screen.getByText("Pricing Plans")).toBeInTheDocument();
       expect(screen.getByText("Upgrade to Pro")).toBeInTheDocument();
@@ -288,17 +339,35 @@ describe("Layout Components", () => {
         "/privacy"
       );
     });
+
+    it("renders converter badges aligned with CONVERTER_REGISTRY", () => {
+      render(<Footer />);
+      expect(screen.getByText("Popular")).toBeInTheDocument();
+      expect(screen.getByText("Fast")).toBeInTheDocument();
+      expect(screen.getByText("Instant")).toBeInTheDocument();
+      expect(screen.getByText("Developer Favorite")).toBeInTheDocument();
+      expect(screen.getByText("UTF-8 Ready")).toBeInTheDocument();
+      expect(screen.getByText("Pro / OCR")).toBeInTheDocument();
+      expect(screen.getByText("Accounting Special")).toBeInTheDocument();
+    });
   });
 
   describe("AdBanner", () => {
     const originalEnv = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 
+    beforeEach(() => {
+      delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+    });
+
     afterEach(() => {
-      process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = originalEnv;
+      if (originalEnv === undefined) {
+        delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+      } else {
+        process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = originalEnv;
+      }
     });
 
     it("renders placeholder preventing CLS for horizontal format", () => {
-      delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
       render(<AdBanner format="horizontal" />);
 
       const banner = screen.getByTestId("ad-banner");
@@ -312,7 +381,6 @@ describe("Layout Components", () => {
     });
 
     it("renders placeholder preventing CLS for leaderboard format", () => {
-      delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
       render(<AdBanner format="leaderboard" />);
 
       const banner = screen.getByTestId("ad-banner");
@@ -324,7 +392,6 @@ describe("Layout Components", () => {
     });
 
     it("renders placeholder preventing CLS for rectangle format", () => {
-      delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
       render(<AdBanner format="rectangle" />);
 
       const banner = screen.getByTestId("ad-banner");
@@ -335,9 +402,10 @@ describe("Layout Components", () => {
       expect(screen.getByText(/Medium Rectangle \(300 × 250\)/i)).toBeInTheDocument();
     });
 
-    it("renders Google AdSense tag when NEXT_PUBLIC_ADSENSE_CLIENT_ID is set", () => {
+    it("renders Google AdSense tag and pushes fill request when NEXT_PUBLIC_ADSENSE_CLIENT_ID is set", () => {
       process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = "ca-pub-1234567890";
-      window.adsbygoogle = [];
+      const pushSpy = vi.fn();
+      window.adsbygoogle = { push: pushSpy } as unknown as unknown[];
 
       const { container } = render(
         <AdBanner format="rectangle" slotId="9876543210" />
@@ -349,12 +417,32 @@ describe("Layout Components", () => {
       expect(ins).toHaveAttribute("data-ad-slot", "9876543210");
       expect(ins).toHaveAttribute("data-ad-format", "rectangle");
       expect(screen.queryByTestId("ad-placeholder")).not.toBeInTheDocument();
+      expect(pushSpy).toHaveBeenCalledWith({});
     });
   });
 
-  describe("RootLayout Metadata", () => {
-    it("exports metadata with required title, description, and keywords", () => {
-      expect(metadata.title).toBe("ConvertSheet - Fast, Private Structured Data Converter");
+  describe("RootLayout", () => {
+    const originalEnv = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+
+    beforeEach(() => {
+      delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+      document.querySelectorAll("script#adsbygoogle-init").forEach((s) => s.remove());
+    });
+
+    afterEach(() => {
+      if (originalEnv === undefined) {
+        delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+      } else {
+        process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = originalEnv;
+      }
+      document.querySelectorAll("script#adsbygoogle-init").forEach((s) => s.remove());
+    });
+
+    it("exports metadata with required title template, default, description, and keywords", () => {
+      expect(metadata.title).toEqual({
+        default: "ConvertSheet - Fast, Private Structured Data Converter",
+        template: "%s | ConvertSheet",
+      });
       expect(metadata.description).toContain("Convert JSON, XML, CSV, and Excel spreadsheets");
       expect(metadata.keywords).toContain("convert JSON to Excel");
       expect(metadata.keywords).toContain("XML to XLSX");
@@ -362,6 +450,46 @@ describe("Layout Components", () => {
         "ConvertSheet - Fast, Private Structured Data Converter"
       );
       expect(metadata.openGraph?.url).toBe("https://convertsheet.com");
+    });
+
+    it("renders skip-to-content anchor and main-content id", () => {
+      const { container } = render(
+        <RootLayout>
+          <div>Test Page Content</div>
+        </RootLayout>
+      );
+      const skipLink = screen.getByRole("link", { name: /Skip to content/i });
+      expect(skipLink).toBeInTheDocument();
+      expect(skipLink).toHaveAttribute("href", "#main-content");
+      expect(skipLink).toHaveClass("sr-only");
+      expect(skipLink).toHaveClass("focus:not-sr-only");
+
+      const main = container.querySelector("#main-content");
+      expect(main).toBeInTheDocument();
+      expect(main).toHaveTextContent("Test Page Content");
+    });
+
+    it("conditionally mounts AdSense Script when NEXT_PUBLIC_ADSENSE_CLIENT_ID is set", () => {
+      process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID = "ca-pub-1122334455";
+      render(
+        <RootLayout>
+          <div>Test Page Content</div>
+        </RootLayout>
+      );
+      const script = document.getElementById("adsbygoogle-init") as HTMLScriptElement | null;
+      expect(script).toBeInTheDocument();
+      expect(script?.src).toContain("ca-pub-1122334455");
+    });
+
+    it("omits AdSense Script when NEXT_PUBLIC_ADSENSE_CLIENT_ID is not set", () => {
+      delete process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+      render(
+        <RootLayout>
+          <div>Test Page Content</div>
+        </RootLayout>
+      );
+      const script = document.getElementById("adsbygoogle-init");
+      expect(script).not.toBeInTheDocument();
     });
   });
 });

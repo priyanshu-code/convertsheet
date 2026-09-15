@@ -12,15 +12,11 @@ import { CONVERTER_REGISTRY } from "@/lib/registry";
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
-  const converters = [
-    { name: "JSON to Excel", href: "/convert/json-to-excel", badge: "Popular" },
-    { name: "XML to Excel", href: "/convert/xml-to-excel" },
-    { name: "CSV to Excel", href: "/convert/csv-to-excel" },
-    { name: "Excel to JSON", href: "/convert/excel-to-json" },
-    { name: "Excel to CSV", href: "/convert/excel-to-csv" },
-    { name: "PDF to Excel", href: "/convert/pdf-to-excel", badge: "Pro OCR" },
-    { name: "Tally XML to Excel", href: "/convert/tally-xml-to-excel", badge: "Accounting" },
-  ];
+  const converters = Object.values(CONVERTER_REGISTRY).map((c) => ({
+    name: `${c.sourceFormat} to ${c.targetFormat}`,
+    href: `/convert/${c.slug}`,
+    badge: c.badge,
+  }));
 
   const features = [
     { name: "REST API", href: "/pricing#api" },

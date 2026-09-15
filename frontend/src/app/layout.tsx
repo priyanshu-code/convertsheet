@@ -1,4 +1,6 @@
+import React from "react";
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import { Navbar, Footer } from "@/components/layout";
 import "./globals.css";
@@ -6,7 +8,10 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "ConvertSheet - Fast, Private Structured Data Converter",
+  title: {
+    default: "ConvertSheet - Fast, Private Structured Data Converter",
+    template: "%s | ConvertSheet",
+  },
   description:
     "Convert JSON, XML, CSV, and Excel spreadsheets directly in your browser with zero server uploads. 100% private, fast, and secure data conversion.",
   keywords: [
@@ -59,6 +64,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const adsenseClientId = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -70,8 +77,24 @@ export default function RootLayout({
       <body
         className={`${inter.className} min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-emerald-500/20 selection:text-emerald-700 dark:selection:text-emerald-300`}
       >
+        {adsenseClientId && (
+          <Script
+            id="adsbygoogle-init"
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+          />
+        )}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+        >
+          Skip to content
+        </a>
         <Navbar />
-        <main className="min-h-[calc(100vh-140px)] flex-1">{children}</main>
+        <main id="main-content" className="min-h-[calc(100vh-140px)] flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

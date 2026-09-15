@@ -100,7 +100,15 @@ export function Navbar() {
             {/* Desktop Navigation Links */}
             <nav className="hidden md:flex items-center gap-1">
               {/* Tools Dropdown */}
-              <div className="relative" ref={toolsRef}>
+              <div
+                className="relative"
+                ref={toolsRef}
+                onBlur={(e) => {
+                  if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                    setIsToolsOpen(false);
+                  }
+                }}
+              >
                 <button
                   type="button"
                   onClick={() => setIsToolsOpen(!isToolsOpen)}
@@ -231,7 +239,10 @@ export function Navbar() {
 
       {/* Mobile Navigation Drawer */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 pt-3 pb-6 space-y-4 animate-in slide-in-from-top-2 duration-150">
+        <nav
+          aria-label="Mobile Navigation"
+          className="md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 pt-3 pb-6 space-y-4 max-h-[calc(100vh-4rem)] overflow-y-auto animate-in slide-in-from-top-2 duration-150"
+        >
           <div>
             <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
               Converters
@@ -281,7 +292,7 @@ export function Navbar() {
               <span>Upgrade to Pro</span>
             </Link>
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );

@@ -9,6 +9,22 @@ export interface ThemeToggleProps {
   className?: string;
 }
 
+function getStoredTheme(): string | null {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function setStoredTheme(theme: string): void {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // Ignore storage errors in restricted/private browsing modes
+  }
+}
+
 export function ThemeToggle({ className = "" }: ThemeToggleProps) {
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof document !== "undefined") {
@@ -20,7 +36,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
 
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    const stored = getStoredTheme();
     const hasDarkClass = document.documentElement.classList.contains("dark");
     const systemPrefersDark =
       typeof window !== "undefined" &&
@@ -42,11 +58,11 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
 
     if (nextDark) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem(THEME_STORAGE_KEY, "dark");
+      setStoredTheme("dark");
       setIsDark(true);
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem(THEME_STORAGE_KEY, "light");
+      setStoredTheme("light");
       setIsDark(false);
     }
   };
@@ -55,8 +71,8 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
     <button
       type="button"
       onClick={toggleTheme}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={mounted ? (isDark ? "Switch to light mode" : "Switch to dark mode") : "Toggle color theme"}
+      title={mounted ? (isDark ? "Switch to light mode" : "Switch to dark mode") : "Toggle color theme"}
       data-testid="theme-toggle"
       className={`relative inline-flex items-center justify-center p-2 rounded-lg text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${className}`}
     >
