@@ -1,0 +1,297 @@
+import { describe, it, expect, vi } from "vitest";
+import {
+  CONVERTER_REGISTRY,
+  getAllConverterSlugs,
+  getConverterBySlug,
+  getFeaturedConverters,
+  ALL_SUPPORTED_EXTENSIONS,
+} from "../registry";
+import {
+  formatBytes,
+  getFileExtension,
+  sanitizeSheetName,
+  cn,
+  downloadBlob,
+} from "../utils";
+
+describe("Converter Registry & Utilities", () => {
+  describe("getAllConverterSlugs", () => {
+    it("returns exactly 7 slugs for the MVP converters", () => {
+      const slugs = getAllConverterSlugs();
+      expect(slugs).toHaveLength(7);
+      expect(slugs).toEqual([
+        "json-to-excel",
+        "xml-to-excel",
+        "csv-to-excel",
+        "excel-to-json",
+        "excel-to-csv",
+        "pdf-to-excel",
+        "tally-xml-to-excel",
+      ]);
+    });
+  });
+
+  describe("CONVERTER_REGISTRY completeness and validity", () => {
+    const slugs = getAllConverterSlugs();
+
+    it.each(slugs)("registry entry for %s satisfies all schema constraints", (slug) => {
+      const config = CONVERTER_REGISTRY[slug];
+      expect(config).toBeDefined();
+
+      // Slug must match dictionary key
+      expect(config.slug).toBe(slug);
+
+      // Source and target formats
+      expect(config.sourceFormat).toBeTruthy();
+      expect(config.targetFormat).toBeTruthy();
+
+      // Extensions must start with dot and be non-empty
+      expect(config.sourceExtension).toMatch(/^\.[a-z0-9]+$/);
+      expect(config.targetExtension).toMatch(/^\.[a-z0-9]+$/);
+
+      // Accepted MIME types must be non-empty
+      expect(config.acceptedMimeTypes.length).toBeGreaterThan(0);
+      config.acceptedMimeTypes.forEach((mime) => {
+        expect(mime).toMatch(/^[a-z0-9.-]+\/[a-z0-9.+-]+$/);
+      });
+
+      // Title, Subtitle, MetaDescription must be non-empty strings
+      expect(config.title.trim().length).toBeGreaterThan(10);
+      expect(config.subtitle.trim().length).toBeGreaterThan(20);
+      expect(config.metaDescription.trim().length).toBeGreaterThan(30);
+
+      // isClientSide flag and engineId check
+      expect(typeof config.isClientSide).toBe("boolean");
+      if (config.isClientSide) {
+        expect(config.engineId).toBeDefined();
+      } else {
+        expect(config.engineId).toBeUndefined();
+      }
+
+      // FAQs: At least 3 FAQs, each with non-empty question and answer
+      expect(config.faqs.length).toBeGreaterThanOrEqual(3);
+      config.faqs.forEach((faq) => {
+        expect(faq.question.trim().length).toBeGreaterThan(5);
+        expect(faq.answer.trim().length).toBeGreaterThan(15);
+      });
+
+      // HowTo steps: Exactly 3 steps in sequential order (1, 2, 3)
+      expect(config.howTo).toHaveLength(3);
+      config.howTo.forEach((step, index) => {
+        expect(step.step).toBe(index + 1);
+        expect(step.title.trim().length).toBeGreaterThan(3);
+        expect(step.description.trim().length).toBeGreaterThan(10);
+      });
+    });
+
+    it("has pdf-to-excel configured as server-side (isClientSide: false, engineId: undefined)", () => {
+      const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
+      expect(pdfConfig.isClientSide).toBe(false);
+      expect(pdfConfig.engineId).toBeUndefined();
+    });
+
+    it("has tally-xml-to-excel configured with tally engineId", () => {
+      const tallyConfig = CONVERTER_REGISTRY["tally-xml-to-excel"];
+      expect(tallyConfig.isClientSide).toBe(true);
+      expect(tallyConfig.engineId).toBe("tally-xml-to-excel");
+    });
+  });
+
+  describe("getConverterBySlug", () => {
+    it("returns the converter config for valid slug", () => {
+      const config = getConverterBySlug("json-to-excel");
+      expect(config).toBeDefined();
+      expect(config?.slug).toBe("json-to-excel");
+      expect(config?.sourceExtension).toBe(".json");
+      expect(config?.targetExtension).toBe(".xlsx");
+    });
+
+    it("returns undefined for unknown or empty slug", () => {
+      expect(getConverterBySlug("non-existent-slug")).toBeUndefined();
+      expect(getConverterBySlug("")).toBeUndefined();
+    });
+  });
+
+  describe("getFeaturedConverters", () => {
+    it("returns all converters flagged as featured", () => {
+      const featured = getFeaturedConverters();
+      expect(featured.length).toBe(7);
+      featured.forEach((item) => {
+        expect(item.featured).toBe(true);
+      });
+    });
+  });
+
+  describe("ALL_SUPPORTED_EXTENSIONS", () => {
+    it("contains all necessary extensions with leading dots", () => {
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".json");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".xml");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".csv");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".xlsx");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".xls");
+      expect(ALL_SUPPORTED_EXTENSIONS).toContain(".pdf");
+      ALL_SUPPORTED_EXTENSIONS.forEach((ext) => {
+        expect(ext.startsWith(".")).toBe(true);
+      });
+    });
+  });
+
+  describe("formatBytes utility", () => {
+    it("formats 0 and invalid inputs accurately", () => {
+      expect(formatBytes(0)).toBe("0 Bytes");
+      expect(formatBytes(-100)).toBe("0 Bytes");
+      expect(formatBytes(NaN)).toBe("0 Bytes");
+    });
+
+    it("formats bytes, kilobytes, megabytes, and gigabytes accurately", () => {
+      expect(formatBytes(500)).toBe("500 Bytes");
+      expect(formatBytes(1024)).toBe("1 KB");
+      expect(formatBytes(1536)).toBe("1.5 KB");
+      expect(formatBytes(1048576)).toBe("1 MB");
+      expect(formatBytes(1048576 * 5)).toBe("5 MB");
+      expect(formatBytes(1073741824)).toBe("1 GB");
+      expect(formatBytes(1099511627776)).toBe("1 TB");
+    });
+
+    it("respects decimal places parameter", () => {
+      expect(formatBytes(1536, 0)).toBe("2 KB");
+      expect(formatBytes(1536, 2)).toBe("1.5 KB");
+      expect(formatBytes(1234567, 3)).toBe("1.177 MB");
+    });
+  });
+
+  describe("getFileExtension utility", () => {
+    it("extracts extension with lowercase normalization", () => {
+      expect(getFileExtension("data.JSON")).toBe("json");
+      expect(getFileExtension("report.XLSX")).toBe("xlsx");
+      expect(getFileExtension("file.CSV")).toBe("csv");
+    });
+
+    it("handles multiple dots and returns final extension", () => {
+      expect(getFileExtension("archive.tar.gz")).toBe("gz");
+      expect(getFileExtension("my.report.2024.final.xlsx")).toBe("xlsx");
+    });
+
+    it("handles dotfiles and hidden files", () => {
+      expect(getFileExtension(".env")).toBe("env");
+      expect(getFileExtension(".gitignore")).toBe("gitignore");
+      expect(getFileExtension(".hidden.json")).toBe("json");
+    });
+
+    it("returns empty string for inputs without extension", () => {
+      expect(getFileExtension("noextension")).toBe("");
+      expect(getFileExtension("file.")).toBe("");
+      expect(getFileExtension("")).toBe("");
+      expect(getFileExtension("   ")).toBe("");
+      expect(getFileExtension(null as any)).toBe("");
+      expect(getFileExtension(undefined as any)).toBe("");
+    });
+
+    it("trims surrounding whitespace from filename", () => {
+      expect(getFileExtension("   document.pdf   ")).toBe("pdf");
+    });
+  });
+
+  describe("sanitizeSheetName utility", () => {
+    it("trims leading and trailing single quotes", () => {
+      expect(sanitizeSheetName("'Quarterly Report'")).toBe("Quarterly Report");
+      expect(sanitizeSheetName("''Double Quoted''")).toBe("Double Quoted");
+      expect(sanitizeSheetName("'")).toBe("Sheet1");
+      expect(sanitizeSheetName("''''")).toBe("Sheet1");
+    });
+
+    it("preserves interior single quotes", () => {
+      expect(sanitizeSheetName("Company's Revenue")).toBe("Company's Revenue");
+      expect(sanitizeSheetName("'Company's Revenue'")).toBe("Company's Revenue");
+    });
+
+    it("strips invalid Excel characters: \\ / ? * [ ] :", () => {
+      expect(sanitizeSheetName("Sales [2024]: Total/Q1*?")).toBe("Sales 2024 TotalQ1");
+      expect(sanitizeSheetName(":::***???///[[[]]]")).toBe("Sheet1");
+    });
+
+    it("clamps sheet names to a maximum of 31 characters", () => {
+      const longName = "A".repeat(50);
+      const sanitized = sanitizeSheetName(longName);
+      expect(sanitized).toBe("A".repeat(31));
+      expect(sanitized.length).toBe(31);
+    });
+
+    it("defaults to Sheet1 for falsy or blank inputs", () => {
+      expect(sanitizeSheetName()).toBe("Sheet1");
+      expect(sanitizeSheetName("")).toBe("Sheet1");
+      expect(sanitizeSheetName("   ")).toBe("Sheet1");
+      expect(sanitizeSheetName(undefined)).toBe("Sheet1");
+      expect(sanitizeSheetName(null as any)).toBe("Sheet1");
+    });
+  });
+
+  describe("cn utility", () => {
+    it("merges class names and handles conflicting tailwind classes", () => {
+      expect(cn("px-2 py-1", "bg-red-500")).toBe("px-2 py-1 bg-red-500");
+      expect(cn("px-2", true && "text-white", false && "hidden")).toBe("px-2 text-white");
+      expect(cn("p-4", "p-2")).toBe("p-2");
+    });
+  });
+
+  describe("downloadBlob utility", () => {
+    it("safely handles server-side environment when window or document is undefined", () => {
+      const blob = new Blob(["test-content"], { type: "text/plain" });
+      expect(() => downloadBlob(blob, "output.txt")).not.toThrow();
+    });
+
+    it("triggers file download using temporary anchor element when window and document exist", () => {
+      const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");
+      const mockRevokeObjectURL = vi.fn();
+      const mockClick = vi.fn();
+
+      const mockAnchor = {
+        href: "",
+        download: "",
+        click: mockClick,
+      };
+
+      const mockAppendChild = vi.fn();
+      const mockRemoveChild = vi.fn();
+      const mockCreateElement = vi.fn().mockReturnValue(mockAnchor);
+
+      const fakeWindow = {} as any;
+      const fakeDocument = {
+        createElement: mockCreateElement,
+        body: {
+          appendChild: mockAppendChild,
+          removeChild: mockRemoveChild,
+        },
+      } as any;
+
+      const prevWindow = (globalThis as any).window;
+      const prevDocument = (globalThis as any).document;
+      const prevCreateObjectURL = URL.createObjectURL;
+      const prevRevokeObjectURL = URL.revokeObjectURL;
+
+      try {
+        (globalThis as any).window = fakeWindow;
+        (globalThis as any).document = fakeDocument;
+        URL.createObjectURL = mockCreateObjectURL;
+        URL.revokeObjectURL = mockRevokeObjectURL;
+
+        const blob = new Blob(["test-content"], { type: "text/plain" });
+        downloadBlob(blob, "output.txt");
+
+        expect(mockCreateObjectURL).toHaveBeenCalledWith(blob);
+        expect(mockCreateElement).toHaveBeenCalledWith("a");
+        expect(mockAnchor.href).toBe("blob:mock-url");
+        expect(mockAnchor.download).toBe("output.txt");
+        expect(mockAppendChild).toHaveBeenCalledWith(mockAnchor);
+        expect(mockClick).toHaveBeenCalled();
+        expect(mockRemoveChild).toHaveBeenCalledWith(mockAnchor);
+        expect(mockRevokeObjectURL).toHaveBeenCalledWith("blob:mock-url");
+      } finally {
+        (globalThis as any).window = prevWindow;
+        (globalThis as any).document = prevDocument;
+        URL.createObjectURL = prevCreateObjectURL;
+        URL.revokeObjectURL = prevRevokeObjectURL;
+      }
+    });
+  });
+});
