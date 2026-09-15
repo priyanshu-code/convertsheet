@@ -108,10 +108,11 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
               <button
                 type="button"
                 onClick={reset}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-zinc-200 dark:border-zinc-700 hover:border-rose-200 dark:hover:border-rose-900/60 transition-colors"
-                title="Remove file and choose another"
+                disabled={isConverting}
+                className="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 disabled:pointer-events-none disabled:opacity-50 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-400 dark:hover:border-red-900/50 dark:hover:bg-red-950/30 dark:hover:text-red-400"
+                aria-label="Remove selected file"
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="h-3.5 w-3.5" />
                 <span>Remove</span>
               </button>
             </div>

@@ -90,6 +90,7 @@ export function useConverter(
   const setFile = useCallback(
     async (newFile: File | null) => {
       const currentId = ++activeParseIdRef.current;
+      setIsParsing(false);
 
       if (!newFile) {
         setFileState(null);

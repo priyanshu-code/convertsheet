@@ -145,7 +145,7 @@ export function ProUpgradeModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="pro-modal-title"
-      aria-describedby="pro-modal-description"
+      aria-describedby={reason ? "pro-modal-description" : undefined}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
     >
       {/* Backdrop */}
