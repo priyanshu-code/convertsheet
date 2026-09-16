@@ -281,11 +281,9 @@ export default function ToolPage({ params }: ToolPageProps) {
         {/* FAQ Accordion */}
         <div className="max-w-4xl mx-auto">
           <FAQAccordion
-            config={{
-              sourceFormat: tool.name,
-              targetFormat: "Calculations",
-              faqs: tool.faqs,
-            } as any}
+            faqs={tool.faqs}
+            title={`Frequently Asked Questions: ${tool.name}`}
+            description="Answers to common questions regarding inputs, calculations, and mathematical methodology."
           />
         </div>
 

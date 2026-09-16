@@ -225,11 +225,9 @@ export default function ProgrammaticPresetPage({
         {preset.faqs && preset.faqs.length > 0 && (
           <div className="max-w-4xl mx-auto">
             <FAQAccordion
-              config={{
-                sourceFormat: preset.name,
-                targetFormat: "Analysis",
-                faqs: preset.faqs,
-              } as any}
+              faqs={preset.faqs}
+              title={`Frequently Asked Questions: ${preset.name}`}
+              description="Clear mathematical answers to key questions, calculations, and loan parameters."
             />
           </div>
         )}

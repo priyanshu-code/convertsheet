@@ -4,12 +4,23 @@ import { ConverterConfig } from "@/types/registry";
 import { cn } from "@/lib/utils";
 
 export interface FAQAccordionProps {
-  config: ConverterConfig;
+  config?: Partial<ConverterConfig>;
+  faqs?: FAQItem[];
+  title?: string;
+  description?: string;
   className?: string;
 }
 
-export function FAQAccordion({ config, className }: FAQAccordionProps) {
-  const faqs = config.faqs;
+export function FAQAccordion({ config, faqs: directFaqs, title, description, className }: FAQAccordionProps) {
+  const faqs = directFaqs || config?.faqs || [];
+
+  const defaultTitle = config?.sourceFormat && config?.targetFormat
+    ? `Frequently Asked Questions About ${config.sourceFormat.toUpperCase()} to ${config.targetFormat.toUpperCase()} Conversion`
+    : "Frequently Asked Questions";
+
+  const defaultDesc = config?.sourceFormat && config?.targetFormat
+    ? "Everything you need to know about formats, privacy, and browser-based file conversion."
+    : "Common questions and detailed answers regarding calculations, formulas, and usage.";
 
   return (
     <section
@@ -29,10 +40,10 @@ export function FAQAccordion({ config, className }: FAQAccordionProps) {
           id="faq-accordion-heading"
           className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
         >
-          Frequently Asked Questions About {config.sourceFormat.toUpperCase()} to {config.targetFormat.toUpperCase()} Conversion
+          {title || defaultTitle}
         </h2>
         <p className="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
-          Everything you need to know about formats, privacy, and browser-based file conversion.
+          {description || defaultDesc}
         </p>
       </div>
 
