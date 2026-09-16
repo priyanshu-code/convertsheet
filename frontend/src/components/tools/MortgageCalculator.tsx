@@ -11,8 +11,10 @@ import {
   CalcChart,
   CalcExportButton,
   CalcPromptButton,
+  CalcPdfReportButton,
 } from "@/components/calculator";
 import { calculateMortgage } from "@/lib/engines/financial-engine";
+import { generateMortgageDossierPdf } from "@/lib/engines/pdf-dossier-engine";
 import { formatDecimals } from "@/lib/math-utils";
 import { MortgageRatesCard } from "@/components/finance";
 
@@ -268,14 +270,37 @@ Provide financial advice on whether refinancing or making extra principal paymen
           ]}
         />
 
-        {/* Actions bar: Excel Export + ChatGPT Copilot */}
+        {/* Actions bar: Excel Export + PDF Dossier + ChatGPT Copilot */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <CalcExportButton
               data={exportData}
               filename={`mortgage_amortization_${homePrice}`}
               sheetName="Amortization"
               label={`Export ${scheduleView === "yearly" ? "Annual" : "Monthly"} Amortization (.xlsx)`}
+            />
+            <CalcPdfReportButton
+              filename={`mortgage_dossier_${homePrice}.pdf`}
+              label="Download Bank-Ready PDF"
+              onGenerate={() =>
+                generateMortgageDossierPdf({
+                  homePrice,
+                  downPayment,
+                  interestRate,
+                  loanTermYears,
+                  monthlyPAndI: mortgage.monthlyPrincipalAndInterest,
+                  monthlyPropertyTax: mortgage.monthlyPropertyTax,
+                  monthlyHomeInsurance: mortgage.monthlyInsurance,
+                  totalMonthlyPayment: mortgage.totalMonthlyPayment,
+                  totalInterest: mortgage.totalInterest,
+                  schedule: mortgage.yearlySchedule.map((row) => ({
+                    year: row.year,
+                    balance: row.balance,
+                    principal: row.principal,
+                    interest: row.interest,
+                  })),
+                })
+              }
             />
             <CalcPromptButton prompt={aiPrompt} toolName="Mortgage Analysis" />
           </div>

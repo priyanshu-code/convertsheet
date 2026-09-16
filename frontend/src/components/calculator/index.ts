@@ -9,3 +9,4 @@ export * from "./CalcResult";
 export * from "./CalcChart";
 export * from "./CalcPromptButton";
 export * from "./CalcExportButton";
+export * from "./CalcPdfReportButton";

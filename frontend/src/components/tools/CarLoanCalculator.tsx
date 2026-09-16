@@ -11,8 +11,10 @@ import {
   CalcChart,
   CalcExportButton,
   CalcPromptButton,
+  CalcPdfReportButton,
 } from "@/components/calculator";
 import { calculateCarLoan } from "@/lib/engines/financial-engine";
+import { generateCarLoanDossierPdf } from "@/lib/engines/pdf-dossier-engine";
 import { AutoLoanRatesCard } from "@/components/finance";
 
 export interface CarLoanCalculatorProps {
@@ -229,12 +231,34 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
 
         {/* Action Toolbar */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <CalcExportButton
               data={exportData}
               filename={`car_loan_schedule_${vehiclePrice}`}
               sheetName="AutoLoan"
               label="Export Loan Schedule (.xlsx)"
+            />
+            <CalcPdfReportButton
+              filename={`auto_loan_dossier_${vehiclePrice}.pdf`}
+              label="Download Bank-Ready PDF"
+              onGenerate={() =>
+                generateCarLoanDossierPdf({
+                  vehiclePrice,
+                  downPayment,
+                  tradeInValue,
+                  interestRate,
+                  loanTermMonths,
+                  monthlyPayment: carLoan.monthlyPayment,
+                  totalInterest: carLoan.totalInterest,
+                  totalCost: carLoan.totalCost,
+                  schedule: carLoan.yearlySchedule.map((row) => ({
+                    year: row.year,
+                    balance: row.balance,
+                    principal: row.principal,
+                    interest: row.interest,
+                  })),
+                })
+              }
             />
             <CalcPromptButton prompt={aiPrompt} toolName="Car Loan Advice" />
           </div>
