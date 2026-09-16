@@ -72,7 +72,7 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
   });
 
   describe("RetirementCalculator", () => {
-    it("renders retirement nest egg calculator with dual-phase metrics", () => {
+    it("renders retirement nest egg calculator with dual-phase metrics and donut breakdown", () => {
       render(<RetirementCalculator />);
 
       expect(
@@ -83,18 +83,39 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
 
       expect(screen.getByText(/Export to Excel/i)).toBeInTheDocument();
       expect(screen.getByText(/Ask AI to Analyze Plan/i)).toBeInTheDocument();
+
+      // Donut breakdown & results summary
+      expect(screen.getByText(/from Compounding/i)).toBeInTheDocument();
+      expect(screen.getAllByText("Personal Principal").length).toBeGreaterThanOrEqual(1);
+      expect(screen.getAllByText("Compound Growth").length).toBeGreaterThanOrEqual(1);
     });
 
-    it("allows adjusting monthly contribution and employer match", () => {
+    it("allows adjusting monthly contribution and employer match via modern numeric inputs", () => {
       render(<RetirementCalculator />);
 
-      const contribInput = screen.getByLabelText(/Monthly Contribution/i);
+      const contribInput = screen.getByLabelText("Monthly Contribution numeric input");
       fireEvent.change(contribInput, { target: { value: "1500" } });
       expect(contribInput).toHaveValue(1500);
 
-      const matchInput = screen.getByLabelText(/Employer Match/i);
+      const matchInput = screen.getByLabelText("Employer Match numeric input");
       fireEvent.change(matchInput, { target: { value: "100" } });
       expect(matchInput).toHaveValue(100);
+    });
+
+    it("toggles seamlessly between Interactive Playground and 3-Step Guided Journey", () => {
+      render(<RetirementCalculator />);
+
+      // Switch to Guided Journey
+      const wizardToggle = screen.getByRole("button", { name: /3-Step Guided Journey/i });
+      fireEvent.click(wizardToggle);
+
+      expect(screen.getByText(/Step 1 of 3: Your Timeline/i)).toBeInTheDocument();
+
+      // Switch back to Playground
+      const playgroundToggle = screen.getByRole("button", { name: /Interactive Playground/i });
+      fireEvent.click(playgroundToggle);
+
+      expect(screen.getByText(/Retirement & 401\(k\) Nest Egg Calculator/i)).toBeInTheDocument();
     });
   });
 
