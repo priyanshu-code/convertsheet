@@ -111,6 +111,18 @@ describe("Pluggable Affiliate Configuration Layer", () => {
     expect(result).toBe(malformedUrl);
   });
 
+  it("rejects non-http/https protocols safely by returning the fallbackUrl unchanged", () => {
+    process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = "true";
+    const dangerousUrl = "javascript:alert(1)";
+
+    const result = getAffiliatePartnerLink({
+      category: "mortgage",
+      fallbackUrl: dangerousUrl,
+    });
+
+    expect(result).toBe(dangerousUrl);
+  });
+
   it("appends arbitrary custom parameters when provided", () => {
     process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = "true";
     const fallbackUrl = "https://example.com/partner";

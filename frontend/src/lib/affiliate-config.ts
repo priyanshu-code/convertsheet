@@ -39,9 +39,11 @@ export function getAffiliatePartnerLink({
   if (!isAffiliateEnabled()) {
     return fallbackUrl;
   }
-
   try {
     const url = new URL(fallbackUrl);
+    if (url.protocol !== "http:" && url.protocol !== "https:") {
+      return fallbackUrl;
+    }
 
     // Default tracking parameters configurable via environment variables
     const utmSource = process.env.NEXT_PUBLIC_AFFILIATE_UTM_SOURCE || "convertsheet";

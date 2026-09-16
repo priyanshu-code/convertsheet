@@ -301,11 +301,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   });
 
   describe("Sitemap & Robots Handlers", () => {
-    it("sitemap returns home, all 15 converters, and all 34 tool routes", () => {
+    it("sitemap returns home, tools hub, 3 category silos, 15 converters, 41 tools, and 61 preset routes", () => {
       const entries = sitemap();
 
-      // Home (1) + 15 Converters + 34 Tools = 50 entries (pricing removed)
-      expect(entries).toHaveLength(50);
+      // Home (1) + Tools Hub (1) + 3 Category Silos + 15 Converters + 41 Tools + 61 Presets = 122 entries
+      expect(entries).toHaveLength(122);
 
       // Home entry
       const homeEntry = entries.find(
