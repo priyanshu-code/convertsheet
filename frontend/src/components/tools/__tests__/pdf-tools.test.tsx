@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { PdfMergeTool } from "../PdfMergeTool";
 import { PdfSplitTool } from "../PdfSplitTool";
@@ -47,6 +47,33 @@ describe("PDF Tool Components", () => {
       await waitFor(() => {
         expect(screen.getByText("6 Pages")).toBeInTheDocument();
         expect(screen.getByText(/Download convertsheet_merged\.pdf/i)).toBeInTheDocument();
+      });
+    });
+
+    it("handles drag-and-drop and clipboard paste (Ctrl/Cmd + V)", async () => {
+      render(<PdfMergeTool />);
+      const dropzone = screen.getByText(/Click to browse, drag & drop, or paste/i).closest("div")!;
+
+      const file1 = new File(["pdf1"], "dragged.pdf", { type: "application/pdf" });
+      await act(async () => {
+        fireEvent.drop(dropzone, {
+          dataTransfer: { files: [file1] },
+        });
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText("dragged.pdf")).toBeInTheDocument();
+      });
+
+      const file2 = new File(["pdf2"], "pasted.pdf", { type: "application/pdf" });
+      const pasteEvent = new Event("paste", { bubbles: true, cancelable: true }) as any;
+      pasteEvent.clipboardData = { files: [file2] };
+      await act(async () => {
+        window.dispatchEvent(pasteEvent);
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText("pasted.pdf")).toBeInTheDocument();
       });
     });
   });

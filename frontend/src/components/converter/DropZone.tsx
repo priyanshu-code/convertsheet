@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { UploadCloud, ShieldCheck, Zap } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,32 @@ export function DropZone({
     ...acceptedExtensions,
     ...(config.acceptedMimeTypes || []),
   ].join(",");
+
+  // Support Ctrl / Cmd + V file paste
+  useEffect(() => {
+    if (disabled) return;
+
+    const handlePaste = (e: ClipboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
+      const files = e.clipboardData?.files;
+      if (files && files.length > 0) {
+        e.preventDefault();
+        onFileSelect(files[0]);
+      }
+    };
+
+    window.addEventListener("paste", handlePaste);
+    return () => window.removeEventListener("paste", handlePaste);
+  }, [disabled, onFileSelect]);
 
   const handleDragOver = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -151,8 +177,11 @@ export function DropZone({
         </span>
       </h3>
 
-      <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-5 max-w-md">
-        Drag and drop from your computer or click to select a file
+      <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-5 max-w-md flex flex-wrap items-center justify-center gap-1.5">
+        <span>Drag and drop from your computer, browse, or paste</span>
+        <kbd className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold shadow-xs">
+          Ctrl / ⌘ + V
+        </kbd>
       </p>
 
       {/* Accepted formats pills */}

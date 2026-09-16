@@ -9,7 +9,8 @@ import {
   CalcResult,
 } from "@/components/calculator";
 import { convertImage, ImageConversionResult } from "@/lib/engines/image-engine";
-import { formatBytes } from "@/lib/utils";
+import { formatBytes, cn } from "@/lib/utils";
+import { useFileDropAndPaste } from "@/hooks/useFileDropAndPaste";
 
 interface ImageConverterToolProps {
   defaultTargetFormat?: "image/webp" | "image/png" | "image/jpeg";
@@ -63,6 +64,17 @@ export function ImageConverterTool({
     [targetFormat, quality, maxWidth, runConversion]
   );
 
+  const isImage = (f: File) =>
+    f.type.startsWith("image/") || f.name.toLowerCase().endsWith(".svg");
+
+  const { isDragOver, dragHandlers } = useFileDropAndPaste({
+    multiple: false,
+    accept: isImage,
+    onFiles: (files) => {
+      if (files[0]) handleFile(files[0]);
+    },
+  });
+
   // Live auto-update when sliders (quality, maxWidth) or target format changes
   useEffect(() => {
     if (!selectedFile) return;
@@ -107,8 +119,14 @@ export function ImageConverterTool({
         {/* Upload Dropzone */}
         {!selectedFile ? (
           <div
+            {...dragHandlers}
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500 rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-colors bg-zinc-50/50 dark:bg-zinc-800/30 group"
+            className={cn(
+              "border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all bg-zinc-50/50 dark:bg-zinc-800/30 group",
+              isDragOver
+                ? "border-emerald-500 bg-emerald-500/10 ring-4 ring-emerald-500/10 scale-[1.01]"
+                : "border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500"
+            )}
           >
             <input
               ref={fileInputRef}
@@ -120,14 +138,28 @@ export function ImageConverterTool({
                 if (file) handleFile(file);
               }}
             />
-            <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+            <div
+              className={cn(
+                "w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-transform",
+                isDragOver
+                  ? "bg-emerald-600 text-white scale-110"
+                  : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-110"
+              )}
+            >
               <UploadCloud className="w-6 h-6" />
             </div>
             <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-              Click to choose an image or drag &amp; drop
+              Click to choose an image, drag &amp; drop, or paste
             </p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-              Supports WEBP, PNG, JPG, JPEG, and SVG up to 50MB (Processed entirely in browser memory)
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 flex items-center justify-center gap-1.5">
+              <span>Supports WEBP, PNG, JPG, JPEG, and SVG up to 50MB</span>
+              <span>•</span>
+              <span className="inline-flex items-center gap-1">
+                <kbd className="px-1.5 py-0.5 text-[10px] font-mono rounded bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-semibold shadow-xs">
+                  Ctrl / ⌘ + V
+                </kbd>
+                <span>to paste</span>
+              </span>
             </p>
           </div>
         ) : (

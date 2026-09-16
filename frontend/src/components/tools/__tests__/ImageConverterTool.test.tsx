@@ -20,7 +20,7 @@ describe("ImageConverterTool", () => {
   it("renders upload dropzone initially", () => {
     render(<ImageConverterTool title="Test Image Converter" />);
     expect(screen.getByText("Test Image Converter")).toBeInTheDocument();
-    expect(screen.getByText(/Click to choose an image or drag & drop/i)).toBeInTheDocument();
+    expect(screen.getByText(/Click to choose an image/i)).toBeInTheDocument();
   });
 
   it("processes image and updates preview and metrics automatically", async () => {
