@@ -79,12 +79,13 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
         <div className="space-y-6 lg:col-span-6">
           <CalcCard
             title="Annual Compensation & Work Schedule"
-            description="Enter your yearly salary to instantly find out what it converts to on an hourly and per-paycheck basis."
+            subtitle="Enter your yearly salary to instantly find out what it converts to on an hourly and per-paycheck basis."
           >
             <div className="space-y-6">
               {/* Annual Salary */}
               <div className="space-y-3">
                 <CalcInput
+                  id="annualSalary"
                   label="Annual Salary"
                   value={annualSalary}
                   onChange={(val) => setAnnualSalary(Number(val) || 0)}
@@ -95,6 +96,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                   helpText="Gross annual salary before taxes and deductions"
                 />
                 <ModernSlider
+                  id="annualSalarySlider"
                   label="Annual Salary"
                   value={annualSalary}
                   min={20000}
@@ -108,6 +110,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
               {/* Hours Per Week */}
               <div className="space-y-3">
                 <CalcInput
+                  id="hoursPerWeek"
                   label="Hours Per Week"
                   value={hoursPerWeek}
                   onChange={(val) => setHoursPerWeek(Number(val) || 0)}
@@ -118,6 +121,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                   helpText="Standard full-time is 40 hours per week"
                 />
                 <ModernSlider
+                  id="hoursPerWeekSlider"
                   label="Hours Per Week"
                   value={hoursPerWeek}
                   min={10}
@@ -131,6 +135,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
               {/* Weeks Worked Per Year */}
               <div className="space-y-3">
                 <CalcInput
+                  id="weeksPerYear"
                   label="Weeks Worked Per Year"
                   value={weeksPerYear}
                   onChange={(val) => setWeeksPerYear(Number(val) || 0)}
@@ -141,6 +146,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                   helpText="52 weeks (including paid time off) or fewer for unpaid leave"
                 />
                 <ModernSlider
+                  id="weeksPerYearSlider"
                   label="Weeks Worked Per Year"
                   value={weeksPerYear}
                   min={40}
@@ -154,6 +160,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
               {/* Unpaid Leave Days */}
               <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 space-y-3 dark:border-zinc-800 dark:bg-zinc-900/40">
                 <CalcInput
+                  id="unpaidLeaveDays"
                   label="Unpaid Leave Days / Year"
                   value={unpaidLeaveDays}
                   onChange={(val) => setUnpaidLeaveDays(Number(val) || 0)}
@@ -172,7 +179,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
         <div className="space-y-6 lg:col-span-6">
           <CalcCard
             title="Converted Hourly Wage & Paycheck Breakdown"
-            description="Your exact hourly rate and earnings across standard payroll frequencies."
+            subtitle="Your exact hourly rate and earnings across standard payroll frequencies."
           >
             <div className="space-y-6">
               {/* Featured Primary Metric: Hourly Wage & Monthly Pay */}

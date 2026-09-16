@@ -97,12 +97,13 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
         <div className="space-y-6 lg:col-span-6">
           <CalcCard
             title="Hourly Wage & Hours Worked"
-            description="Adjust your hourly rate and weekly schedule to compute your exact paycheck intervals."
+            subtitle="Adjust your hourly rate and weekly schedule to compute your exact paycheck intervals."
           >
             <div className="space-y-6">
               {/* Hourly Rate */}
               <div className="space-y-3">
                 <CalcInput
+                  id="hourlyRate"
                   label="Hourly Wage"
                   value={hourlyRate}
                   onChange={(val) => setHourlyRate(Number(val) || 0)}
@@ -113,6 +114,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                   helpText="Standard base rate per hour before taxes"
                 />
                 <ModernSlider
+                  id="hourlyRateSlider"
                   label="Hourly Wage"
                   value={hourlyRate}
                   min={10}
@@ -126,6 +128,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
               {/* Hours Worked Per Week */}
               <div className="space-y-3">
                 <CalcInput
+                  id="hoursPerWeek"
                   label="Hours Per Week"
                   value={hoursPerWeek}
                   onChange={(val) => setHoursPerWeek(Number(val) || 0)}
@@ -136,6 +139,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                   helpText="Standard full-time is 40 hours per week"
                 />
                 <ModernSlider
+                  id="hoursPerWeekSlider"
                   label="Hours Per Week"
                   value={hoursPerWeek}
                   min={10}
@@ -149,6 +153,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
               {/* Weeks Worked Per Year */}
               <div className="space-y-3">
                 <CalcInput
+                  id="weeksPerYear"
                   label="Weeks Worked Per Year"
                   value={weeksPerYear}
                   onChange={(val) => setWeeksPerYear(Number(val) || 0)}
@@ -159,6 +164,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                   helpText="52 weeks (including paid time off) or fewer for unpaid leave"
                 />
                 <ModernSlider
+                  id="weeksPerYearSlider"
                   label="Weeks Worked Per Year"
                   value={weeksPerYear}
                   min={40}
@@ -176,6 +182,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <CalcInput
+                    id="overtimeHours"
                     label="Overtime Hours / Wk"
                     value={overtimeHours}
                     onChange={(val) => setOvertimeHours(Number(val) || 0)}
@@ -185,6 +192,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                     step={1}
                   />
                   <CalcInput
+                    id="overtimeMultiplier"
                     label="Overtime Rate Multiplier"
                     value={overtimeMultiplier}
                     onChange={(val) => setOvertimeMultiplier(Number(val) || 1.5)}
@@ -195,6 +203,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                   />
                 </div>
                 <CalcInput
+                  id="unpaidLeaveDays"
                   label="Unpaid Leave Days / Year"
                   value={unpaidLeaveDays}
                   onChange={(val) => setUnpaidLeaveDays(Number(val) || 0)}
@@ -213,7 +222,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
         <div className="space-y-6 lg:col-span-6">
           <CalcCard
             title="Converted Salary & Paycheck Intervals"
-            description="Equivalent gross earnings across all standard payroll schedules."
+            subtitle="Equivalent gross earnings across all standard payroll schedules."
           >
             <div className="space-y-6">
               {/* Big Featured Primary Metric: Annual & Monthly */}
