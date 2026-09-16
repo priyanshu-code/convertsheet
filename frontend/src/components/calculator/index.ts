@@ -10,3 +10,4 @@ export * from "./CalcChart";
 export * from "./CalcPromptButton";
 export * from "./CalcExportButton";
 export * from "./CalcPdfReportButton";
+export * from "./ModernSlider";
