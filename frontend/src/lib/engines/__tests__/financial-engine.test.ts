@@ -4,6 +4,8 @@ import {
   calculateCarLoan,
   calculateRetirement,
   calculateInflation,
+  calculateHourlyToSalary,
+  calculateAnnualToHourly,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -136,4 +138,61 @@ describe("financial-engine", () => {
       expect(res.yearlyProjection[0].futureNeeded).toBe(1000);
     });
   });
+
+  describe("calculateHourlyToSalary", () => {
+    it("converts standard $25/hr to exact daily, weekly, bi-weekly, monthly, and annual salaries", () => {
+      // @ts-expect-error test before implementation
+      const res = calculateHourlyToSalary({
+        hourlyRate: 25,
+        hoursPerWeek: 40,
+        weeksPerYear: 52,
+      });
+
+      expect(res.hourlyRate).toBe(25);
+      expect(res.dailyPay).toBe(200); // 25 * 8
+      expect(res.weeklyPay).toBe(1000); // 25 * 40
+      expect(res.biWeeklyPay).toBe(2000); // 25 * 80
+      expect(res.semiMonthlyPay).toBeCloseTo(2166.67, 1); // 52000 / 24
+      expect(res.monthlyPay).toBeCloseTo(4333.33, 1); // 52000 / 12
+      expect(res.annualSalary).toBe(52000); // 25 * 2080
+      expect(res.totalWorkHoursYearly).toBe(2080);
+    });
+
+    it("factors in unpaid holidays and overtime hours", () => {
+      // @ts-expect-error test before implementation
+      const res = calculateHourlyToSalary({
+        hourlyRate: 30,
+        hoursPerWeek: 40,
+        weeksPerYear: 50, // 2 weeks unpaid
+        overtimeHoursPerWeek: 5,
+        overtimeMultiplier: 1.5,
+      });
+
+      // Regular: 30 * 40 * 50 = 60,000
+      // Overtime: (30 * 1.5 = 45) * 5 * 50 = 11,250
+      // Total annual: 71,250
+      expect(res.annualSalary).toBe(71250);
+      expect(res.weeklyPay).toBe(1425);
+    });
+  });
+
+  describe("calculateAnnualToHourly", () => {
+    it("converts standard $100,000 annual salary to equivalent intervals", () => {
+      // @ts-expect-error test before implementation
+      const res = calculateAnnualToHourly({
+        annualSalary: 100000,
+        hoursPerWeek: 40,
+        weeksPerYear: 52,
+      });
+
+      expect(res.annualSalary).toBe(100000);
+      expect(res.monthlySalary).toBeCloseTo(8333.33, 1);
+      expect(res.semiMonthlySalary).toBeCloseTo(4166.67, 1);
+      expect(res.biWeeklySalary).toBeCloseTo(3846.15, 1);
+      expect(res.weeklySalary).toBeCloseTo(1923.08, 1);
+      expect(res.dailyWage).toBeCloseTo(384.62, 1);
+      expect(res.hourlyRate).toBeCloseTo(48.08, 1);
+    });
+  });
 });
+

@@ -410,3 +410,116 @@ export function calculateInflation(input: InflationInput): InflationResult {
     yearlyProjection,
   };
 }
+
+// ==========================================
+// 5. HOURLY TO SALARY & ANNUAL CONVERSIONS
+// ==========================================
+
+export interface HourlyToSalaryInput {
+  hourlyRate: number;
+  hoursPerWeek?: number; // default 40
+  weeksPerYear?: number; // default 52
+  paidVacationDays?: number; // default 0
+  paidHolidays?: number; // default 0
+  unpaidLeaveDays?: number; // default 0
+  overtimeHoursPerWeek?: number; // default 0
+  overtimeMultiplier?: number; // default 1.5
+}
+
+export interface HourlyToSalaryResult {
+  hourlyRate: number;
+  dailyPay: number;
+  weeklyPay: number;
+  biWeeklyPay: number; // 26 periods
+  semiMonthlyPay: number; // 24 periods
+  monthlyPay: number; // 12 periods
+  annualSalary: number;
+  totalWorkHoursYearly: number;
+  regularAnnualPay: number;
+  overtimeAnnualPay: number;
+}
+
+export function calculateHourlyToSalary(input: HourlyToSalaryInput): HourlyToSalaryResult {
+  const hourlyRate = Math.max(0, input.hourlyRate || 0);
+  const hoursPerWeek = Math.max(0, input.hoursPerWeek ?? 40);
+  const weeksPerYear = Math.max(0, Math.min(52, input.weeksPerYear ?? 52));
+  const unpaidLeaveDays = Math.max(0, input.unpaidLeaveDays ?? 0);
+  const overtimeHours = Math.max(0, input.overtimeHoursPerWeek ?? 0);
+  const overtimeMultiplier = Math.max(1, input.overtimeMultiplier ?? 1.5);
+
+  const hoursPerDay = hoursPerWeek > 0 ? hoursPerWeek / 5 : 8;
+  const regularHoursYearly = Math.max(0, hoursPerWeek * weeksPerYear - unpaidLeaveDays * hoursPerDay);
+  const overtimeHoursYearly = overtimeHours * weeksPerYear;
+  const totalWorkHoursYearly = regularHoursYearly + overtimeHoursYearly;
+
+  const regularAnnualPay = roundTo(regularHoursYearly * hourlyRate, 2);
+  const overtimeRate = hourlyRate * overtimeMultiplier;
+  const overtimeAnnualPay = roundTo(overtimeHoursYearly * overtimeRate, 2);
+  const annualSalary = roundTo(regularAnnualPay + overtimeAnnualPay, 2);
+
+  const weeklyPay = weeksPerYear > 0 ? roundTo(annualSalary / weeksPerYear, 2) : 0;
+  const dailyPay = hoursPerWeek > 0 ? roundTo(weeklyPay / 5, 2) : 0;
+  const biWeeklyPay = roundTo(annualSalary / 26, 2);
+  const semiMonthlyPay = roundTo(annualSalary / 24, 2);
+  const monthlyPay = roundTo(annualSalary / 12, 2);
+
+  return {
+    hourlyRate,
+    dailyPay,
+    weeklyPay,
+    biWeeklyPay,
+    semiMonthlyPay,
+    monthlyPay,
+    annualSalary,
+    totalWorkHoursYearly: roundTo(totalWorkHoursYearly, 1),
+    regularAnnualPay,
+    overtimeAnnualPay,
+  };
+}
+
+export interface AnnualToHourlyInput {
+  annualSalary: number;
+  hoursPerWeek?: number; // default 40
+  weeksPerYear?: number; // default 52
+  unpaidLeaveDays?: number; // default 0
+}
+
+export interface AnnualToHourlyResult {
+  annualSalary: number;
+  monthlySalary: number;
+  semiMonthlySalary: number;
+  biWeeklySalary: number;
+  weeklySalary: number;
+  dailyWage: number;
+  hourlyRate: number;
+  totalWorkHoursYearly: number;
+}
+
+export function calculateAnnualToHourly(input: AnnualToHourlyInput): AnnualToHourlyResult {
+  const annualSalary = Math.max(0, input.annualSalary || 0);
+  const hoursPerWeek = Math.max(1, input.hoursPerWeek ?? 40);
+  const weeksPerYear = Math.max(1, Math.min(52, input.weeksPerYear ?? 52));
+  const unpaidLeaveDays = Math.max(0, input.unpaidLeaveDays ?? 0);
+
+  const hoursPerDay = hoursPerWeek / 5;
+  const totalWorkHoursYearly = Math.max(1, hoursPerWeek * weeksPerYear - unpaidLeaveDays * hoursPerDay);
+
+  const hourlyRate = roundTo(annualSalary / totalWorkHoursYearly, 2);
+  const weeklySalary = roundTo(annualSalary / weeksPerYear, 2);
+  const dailyWage = roundTo(weeklySalary / 5, 2);
+  const biWeeklySalary = roundTo(annualSalary / 26, 2);
+  const semiMonthlySalary = roundTo(annualSalary / 24, 2);
+  const monthlySalary = roundTo(annualSalary / 12, 2);
+
+  return {
+    annualSalary,
+    monthlySalary,
+    semiMonthlySalary,
+    biWeeklySalary,
+    weeklySalary,
+    dailyWage,
+    hourlyRate,
+    totalWorkHoursYearly: roundTo(totalWorkHoursYearly, 1),
+  };
+}
+
