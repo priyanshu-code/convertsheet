@@ -21,7 +21,7 @@ export interface SeriesConfig {
   key: string;
   name: string;
   color: string;
-  gradientId: string;
+  gradientId?: string;
 }
 
 export interface CalcChartProps {
@@ -70,12 +70,15 @@ export const CalcChart = memo(function CalcChart({
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>
-              {series.map((s) => (
-                <linearGradient key={s.gradientId} id={s.gradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={s.color} stopOpacity={0.4} />
-                  <stop offset="95%" stopColor={s.color} stopOpacity={0.0} />
-                </linearGradient>
-              ))}
+              {series.map((s, idx) => {
+                const gid = s.gradientId || `calc-grad-${s.key}-${idx}`;
+                return (
+                  <linearGradient key={gid} id={gid} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={s.color} stopOpacity={0.4} />
+                    <stop offset="95%" stopColor={s.color} stopOpacity={0.0} />
+                  </linearGradient>
+                );
+              })}
             </defs>
 
             <CartesianGrid strokeDasharray="3 3" opacity={0.15} />

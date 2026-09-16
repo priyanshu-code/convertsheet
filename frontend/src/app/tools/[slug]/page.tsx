@@ -13,6 +13,7 @@ import type { ConverterConfig } from "@/types/registry";
 import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 import { HowToGuide, FAQAccordion } from "@/components/seo";
 import { AdBanner } from "@/components/layout";
+import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
 
 // Import all 18 tool components
 import { Base64Tool } from "@/components/tools/Base64Tool";
@@ -45,6 +46,13 @@ import { PdfSplitTool } from "@/components/tools/PdfSplitTool";
 import { PdfWatermarkTool } from "@/components/tools/PdfWatermarkTool";
 import { PdfPageNumberTool } from "@/components/tools/PdfPageNumberTool";
 import { PdfTableExtractorTool } from "@/components/tools/PdfTableExtractorTool";
+import { MortgageCalculator } from "@/components/tools/MortgageCalculator";
+import { CarLoanCalculator } from "@/components/tools/CarLoanCalculator";
+import { RetirementCalculator } from "@/components/tools/RetirementCalculator";
+import { InflationCalculator } from "@/components/tools/InflationCalculator";
+import { SqlStudioTool } from "@/components/tools/SqlStudioTool";
+import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
+import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
 
 export interface ToolPageProps {
   params: {
@@ -148,6 +156,13 @@ export default function ToolPage({ params }: ToolPageProps) {
     "watermark-pdf": PdfWatermarkTool,
     "page-number-pdf": PdfPageNumberTool,
     "pdf-table-extractor": PdfTableExtractorTool,
+    "mortgage-calculator": MortgageCalculator,
+    "car-loan-calculator": CarLoanCalculator,
+    "retirement-calculator": RetirementCalculator,
+    "inflation-calculator": InflationCalculator,
+    "sql-query-studio": SqlStudioTool,
+    "sheet-diff-checker": SheetDiffTool,
+    "data-anonymizer-cleaner": DataCleanerTool,
   };
 
   const ToolComponent = componentMap[tool.slug];
@@ -180,10 +195,19 @@ export default function ToolPage({ params }: ToolPageProps) {
             <li aria-hidden="true" className="text-zinc-400">/</li>
             <li>
               <Link
-                href="/#tools"
+                href="/tools"
                 className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
               >
-                Calculators &amp; Tools
+                Tools Hub
+              </Link>
+            </li>
+            <li aria-hidden="true" className="text-zinc-400">/</li>
+            <li>
+              <Link
+                href={`/tools/category/${tool.category}`}
+                className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors capitalize"
+              >
+                {tool.category.replace("-", " & ")}
               </Link>
             </li>
             <li aria-hidden="true" className="text-zinc-400">/</li>
@@ -195,9 +219,12 @@ export default function ToolPage({ params }: ToolPageProps) {
 
         {/* Answer-First AEO Hero Section */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>100% Client-Side • Private &amp; Free Forever</span>
+          <div className="flex items-center justify-center gap-2.5 flex-wrap">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span>100% Client-Side • Private &amp; Free Forever</span>
+            </div>
+            <EmbedTrigger tool={tool} />
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">

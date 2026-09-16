@@ -19,6 +19,7 @@ import { getAllTools } from "@/lib/tool-registry";
 import { ConverterConfig } from "@/types/registry";
 import { ThemeToggle } from "./ThemeToggle";
 import { CommandPalette } from "./CommandPalette";
+import { PwaInstallButton } from "@/components/pwa/PwaInstallButton";
 
 const CONVERTER_LIST = Object.values(CONVERTER_REGISTRY) as ConverterConfig[];
 const SPREADSHEET_CONVERTERS = CONVERTER_LIST.filter(
@@ -330,20 +331,20 @@ export function Navbar() {
                           <span>100% In-browser • Zero cloud servers</span>
                         </div>
                         <Link
-                          href="/#tools"
+                          href="/tools"
                           onClick={() => setIsToolsOpen(false)}
                           className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline flex items-center gap-1 text-xs"
                         >
-                          View All Utilities <ArrowRight className="w-3 h-3" />
+                          View All Tools Hub ({allTools.length}) <ArrowRight className="w-3 h-3" />
                         </Link>
                       </div>
                     </div>
                   )}
                 </div>
 
-                {/* Direct Anchor Link */}
+                {/* Direct Link to Tools Hub */}
                 <Link
-                  href="/#tools"
+                  href="/tools"
                   className="px-3 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   Calculators &amp; Tools
@@ -367,12 +368,15 @@ export function Navbar() {
                 </kbd>
               </button>
 
+              {/* PWA Install Prompt & Offline Badge */}
+              <PwaInstallButton />
+
               {/* Theme Toggle */}
               <ThemeToggle />
 
               {/* Free Tools Suite Button */}
               <Link
-                href="/#tools"
+                href="/tools"
                 className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm shadow-emerald-500/20 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
                 aria-label="Free Calculators and Tools"
               >
@@ -460,7 +464,7 @@ export function Navbar() {
 
             <div className="border-t border-zinc-200 dark:border-zinc-800 pt-3 space-y-2">
               <Link
-                href="/#tools"
+                href="/tools"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >

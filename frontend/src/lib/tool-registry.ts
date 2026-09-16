@@ -2,6 +2,8 @@ import { ToolConfig, ToolCategory } from "@/types/tool";
 import { PHASE2_TOOLS } from "./phase2-tools-data";
 import { IMAGE_TOOLS } from "./image-tools-data";
 import { PDF_TOOLS } from "./pdf-tools-data";
+import { FINANCIAL_CROWN_TOOLS } from "./financial-crown-tools-data";
+import { WORKBENCH_TOOLS } from "./workbench-tools-data";
 
 export const TOOL_REGISTRY = {
   // ==========================================
@@ -485,7 +487,9 @@ export const TOOL_REGISTRY = {
 
   ...PHASE2_TOOLS,
   ...IMAGE_TOOLS,
-  ...PDF_TOOLS
+  ...PDF_TOOLS,
+  ...FINANCIAL_CROWN_TOOLS,
+  ...WORKBENCH_TOOLS
 } as const satisfies Record<string, ToolConfig>;
 
 export type ToolSlug = keyof typeof TOOL_REGISTRY;

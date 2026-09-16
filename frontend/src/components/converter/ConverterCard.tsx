@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   FileSpreadsheet,
   Download,
@@ -8,6 +8,7 @@ import {
   Trash2,
   AlertCircle,
   Sparkles,
+  Archive,
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { formatBytes, cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ import { DropZone } from "./DropZone";
 import { DataPreviewTable } from "./DataPreviewTable";
 import { FormatSelector } from "./FormatSelector";
 import { ProUpgradeModal } from "./ProUpgradeModal";
+import { BatchConverterCard } from "./BatchConverterCard";
 
 export interface ConverterCardProps {
   config: ConverterConfig;
@@ -23,6 +25,7 @@ export interface ConverterCardProps {
 }
 
 export function ConverterCard({ config, className }: ConverterCardProps) {
+  const [mode, setMode] = useState<"single" | "batch">("single");
   const {
     file,
     preview,
@@ -58,12 +61,48 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
         className
       )}
     >
-      {/* Top Format Selector & Conversion Flow */}
-      <FormatSelector
-        config={config}
-        options={options}
-        onOptionsChange={setOptions}
-      />
+      {/* Mode Selector Tabs (Single File vs Batch ZIP) */}
+      <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-3">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setMode("single")}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              mode === "single"
+                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
+                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+            }`}
+          >
+            Single File
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("batch")}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+              mode === "batch"
+                ? "bg-emerald-600 text-white shadow-xs"
+                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+            }`}
+          >
+            <Archive className="w-3.5 h-3.5" />
+            <span>Batch ZIP Mode</span>
+            <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.2 rounded-full font-bold">
+              Multi-File
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {mode === "batch" ? (
+        <BatchConverterCard config={config} />
+      ) : (
+        <>
+          {/* Top Format Selector & Conversion Flow */}
+          <FormatSelector
+            config={config}
+            options={options}
+            onOptionsChange={setOptions}
+          />
 
       {/* Error Banner */}
       {error && (
@@ -188,6 +227,8 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
           </div>
         </div>
       )}
+      </>
+    )}
 
       {/* ConvertSheet Pro Upgrade Modal */}
       <ProUpgradeModal

@@ -100,16 +100,17 @@ describe("Layout Components", () => {
     it("renders navigation link to Calculators & Tools", () => {
       render(<Navbar />);
       const toolsLink = screen.getByRole("link", { name: "Calculators & Tools" });
-      expect(toolsLink).toHaveAttribute("href", "/#tools");
+      expect(toolsLink).toBeInTheDocument();
+      expect(toolsLink).toHaveAttribute("href", "/tools");
     });
 
     it("renders prominent Free Tools suite button", () => {
       render(<Navbar />);
       const freeToolsBtn = screen.getByRole("link", {
-        name: "Free Calculators and Tools",
+        name: /Free Calculators and Tools/i,
       });
       expect(freeToolsBtn).toBeInTheDocument();
-      expect(freeToolsBtn).toHaveAttribute("href", "/#tools");
+      expect(freeToolsBtn).toHaveAttribute("href", "/tools");
       expect(freeToolsBtn).toHaveTextContent("Free Tools");
     });
 

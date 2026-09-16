@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { getAllConverterSlugs } from "@/lib/registry";
 import { getAllToolSlugs } from "@/lib/tool-registry";
+import { getAllPresetStaticParams } from "@/lib/programmatic-presets";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://convertsheet.com";
@@ -15,12 +16,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
+  const categorySiloRoutes: MetadataRoute.Sitemap = [
+    "financial",
+    "data-developer",
+    "utility",
+  ].map((category) => ({
+    url: `${baseUrl}/tools/category/${category}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+
   const toolRoutes: MetadataRoute.Sitemap = getAllToolSlugs().map((slug) => ({
     url: `${baseUrl}/tools/${slug}`,
     lastModified: currentDate,
     changeFrequency: "weekly",
     priority: 0.85,
   }));
+
+  const presetRoutes: MetadataRoute.Sitemap = getAllPresetStaticParams().map(
+    ({ slug, preset }) => ({
+      url: `${baseUrl}/tools/${slug}/${preset}`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    })
+  );
 
   return [
     {
@@ -29,7 +50,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 1.0,
     },
+    {
+      url: `${baseUrl}/tools`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.95,
+    },
+    ...categorySiloRoutes,
     ...converterRoutes,
     ...toolRoutes,
+    ...presetRoutes,
   ];
 }

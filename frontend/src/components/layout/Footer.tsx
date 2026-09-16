@@ -22,6 +22,9 @@ export function Footer() {
   }));
 
   const toolsLinks = [
+    { name: "Tools Directory Hub", href: "/tools" },
+    { name: "Mortgage Calculator", href: "/tools/mortgage-calculator" },
+    { name: "Retirement Calculator", href: "/tools/retirement-calculator" },
     { name: "SIP Calculator", href: "/tools/sip-calculator" },
     { name: "EMI Calculator", href: "/tools/emi-calculator" },
     { name: "JSON Formatter", href: "/tools/json-formatter-validator" },

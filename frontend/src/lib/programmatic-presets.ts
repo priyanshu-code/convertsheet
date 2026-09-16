@@ -1738,21 +1738,31 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
   }
 ];
 
+// Indexed Maps for O(1) SSG and metadata lookups
+const PRESET_LOOKUP_MAP = new Map<string, ProgrammaticPreset>(
+  PROGRAMMATIC_PRESETS.map((p) => [`${p.toolSlug}:${p.presetSlug}`, p])
+);
+
+const PRESETS_BY_TOOL_MAP = new Map<string, ProgrammaticPreset[]>();
+for (const p of PROGRAMMATIC_PRESETS) {
+  const existing = PRESETS_BY_TOOL_MAP.get(p.toolSlug) || [];
+  existing.push(p);
+  PRESETS_BY_TOOL_MAP.set(p.toolSlug, existing);
+}
+
 export function getAllProgrammaticPresets(): ProgrammaticPreset[] {
   return PROGRAMMATIC_PRESETS;
 }
 
 export function getProgrammaticPresetsByTool(toolSlug: string): ProgrammaticPreset[] {
-  return PROGRAMMATIC_PRESETS.filter((p) => p.toolSlug === toolSlug);
+  return PRESETS_BY_TOOL_MAP.get(toolSlug) || [];
 }
 
 export function getProgrammaticPreset(
   toolSlug: string,
   presetSlug: string
 ): ProgrammaticPreset | undefined {
-  return PROGRAMMATIC_PRESETS.find(
-    (p) => p.toolSlug === toolSlug && p.presetSlug === presetSlug
-  );
+  return PRESET_LOOKUP_MAP.get(`${toolSlug}:${presetSlug}`);
 }
 
 export function getAllPresetStaticParams() {

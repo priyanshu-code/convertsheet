@@ -1,0 +1,274 @@
+"use client";
+
+import React, { useState, useMemo } from "react";
+import { Car } from "lucide-react";
+import {
+  CalcCard,
+  CalcInput,
+  CalcSlider,
+  CalcSelect,
+  CalcResult,
+  CalcChart,
+  CalcExportButton,
+  CalcPromptButton,
+} from "@/components/calculator";
+import { calculateCarLoan } from "@/lib/engines/financial-engine";
+import { AutoLoanRatesCard } from "@/components/finance";
+
+export interface CarLoanCalculatorProps {
+  initialValues?: Partial<{
+    vehiclePrice: number;
+    downPayment: number;
+    tradeInValue: number;
+    interestRate: number;
+    loanTermMonths: number;
+    salesTaxPercent: number;
+    dealerFees: number;
+  }>;
+}
+
+export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}) {
+  const [vehiclePrice, setVehiclePrice] = useState<number>(Number(initialValues?.vehiclePrice) || 35000);
+  const [downPayment, setDownPayment] = useState<number>(Number(initialValues?.downPayment) || 5000);
+  const [tradeInValue, setTradeInValue] = useState<number>(Number(initialValues?.tradeInValue) ?? 3000);
+  const [interestRate, setInterestRate] = useState<number>(Number(initialValues?.interestRate) || 5.9);
+  const [loanTermMonths, setLoanTermMonths] = useState<number>(Number(initialValues?.loanTermMonths) || 60);
+  const [salesTaxPercent, setSalesTaxPercent] = useState<number>(Number(initialValues?.salesTaxPercent) ?? 7.0);
+  const [dealerFees, setDealerFees] = useState<number>(Number(initialValues?.dealerFees) ?? 500);
+
+  const carLoan = useMemo(() => {
+    return calculateCarLoan({
+      vehiclePrice,
+      downPayment,
+      tradeInValue,
+      interestRate,
+      loanTermMonths,
+      salesTaxPercent,
+      dealerFees,
+    });
+  }, [
+    vehiclePrice,
+    downPayment,
+    tradeInValue,
+    interestRate,
+    loanTermMonths,
+    salesTaxPercent,
+    dealerFees,
+  ]);
+
+  const chartData = useMemo(() => {
+    let cumPrincipal = 0;
+    return carLoan.yearlySchedule.map((row) => {
+      cumPrincipal += row.principal;
+      return {
+        label: `Yr ${row.year}`,
+        balance: row.balance,
+        principalPaid: Math.round(cumPrincipal),
+        interestPaid: Math.round(row.interest),
+      };
+    });
+  }, [carLoan.yearlySchedule]);
+
+  const exportData = useMemo(() => {
+    return carLoan.yearlySchedule.map((row) => ({
+      Year: `Year ${row.year}`,
+      "Remaining Balance": `$${row.balance.toLocaleString()}`,
+      "Principal Paid This Year": `$${row.principal.toLocaleString()}`,
+      "Interest Paid This Year": `$${row.interest.toLocaleString()}`,
+    }));
+  }, [carLoan.yearlySchedule]);
+
+  const aiPrompt = useMemo(() => {
+    return `Analyze this auto loan financing scenario:
+- Vehicle Price: $${vehiclePrice.toLocaleString()}
+- Trade-in Value: $${tradeInValue.toLocaleString()}
+- Cash Down Payment: $${downPayment.toLocaleString()}
+- Sales Tax: ${salesTaxPercent}% • Fees: $${dealerFees.toLocaleString()}
+- Net Financed Loan: $${carLoan.netLoanAmount.toLocaleString()}
+- Interest Rate (APR): ${interestRate}%
+- Loan Term: ${loanTermMonths} months (${loanTermMonths / 12} years)
+- Monthly Car Payment: $${carLoan.monthlyPayment.toLocaleString()}
+- Total Interest Cost: $${carLoan.totalInterest.toLocaleString()}
+- Total True Vehicle Cost: $${carLoan.totalCost.toLocaleString()}
+
+Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/72 months) or paying cash upfront would save significant interest.`;
+  }, [
+    vehiclePrice,
+    tradeInValue,
+    downPayment,
+    salesTaxPercent,
+    dealerFees,
+    carLoan,
+    interestRate,
+    loanTermMonths,
+  ]);
+
+  return (
+    <div className="space-y-8">
+      <CalcCard
+        title="Auto Loan & Car Payment Calculator"
+      subtitle="Calculate your monthly car payment, total interest, sales taxes, and net financed amount with visual payoff curves."
+      icon={Car}
+      badge="SheetJS Export"
+    >
+      <div className="space-y-6">
+        {/* Input Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CalcInput
+            id="car-price"
+            label="Vehicle Purchase Price"
+            value={vehiclePrice}
+            onChange={(val) => setVehiclePrice(Number(val) || 0)}
+            type="number"
+            min={1000}
+            step={500}
+            prefix="$"
+          />
+
+          <CalcInput
+            id="car-down-payment"
+            label="Cash Down Payment"
+            value={downPayment}
+            onChange={(val) => setDownPayment(Number(val) || 0)}
+            type="number"
+            min={0}
+            step={500}
+            prefix="$"
+          />
+
+          <CalcInput
+            id="car-trade-in"
+            label="Trade-in Value / Allowance"
+            value={tradeInValue}
+            onChange={(val) => setTradeInValue(Number(val) || 0)}
+            type="number"
+            min={0}
+            step={500}
+            prefix="$"
+            helpText="Subtracted from taxable price"
+          />
+
+          <CalcInput
+            id="car-apr"
+            label="Interest Rate (APR %)"
+            value={interestRate}
+            onChange={(val) => setInterestRate(Number(val) || 0)}
+            type="number"
+            min={0}
+            max={30}
+            step={0.1}
+            suffix="%"
+          />
+
+          <CalcSelect
+            id="car-term"
+            label="Loan Term"
+            value={loanTermMonths.toString()}
+            onChange={(val) => setLoanTermMonths(Number(val))}
+            options={[
+              { label: "36 Months (3 Years)", value: "36" },
+              { label: "48 Months (4 Years)", value: "48" },
+              { label: "60 Months (5 Years - Standard)", value: "60" },
+              { label: "72 Months (6 Years)", value: "72" },
+              { label: "84 Months (7 Years)", value: "84" },
+            ]}
+          />
+
+          <div className="grid grid-cols-2 gap-3">
+            <CalcInput
+              id="car-tax-rate"
+              label="Sales Tax Rate"
+              value={salesTaxPercent}
+              onChange={(val) => setSalesTaxPercent(Number(val) || 0)}
+              type="number"
+              min={0}
+              max={20}
+              step={0.1}
+              suffix="%"
+            />
+
+            <CalcInput
+              id="car-dealer-fees"
+              label="Dealer & Doc Fees"
+              value={dealerFees}
+              onChange={(val) => setDealerFees(Number(val) || 0)}
+              type="number"
+              min={0}
+              step={50}
+              prefix="$"
+            />
+          </div>
+        </div>
+
+        {/* Results */}
+        <CalcResult
+          title="Financing Summary"
+          primaryLabel="Monthly Auto Loan Payment"
+          primaryValue={`$${carLoan.monthlyPayment.toLocaleString()}`}
+          primarySubtext={`Based on $${carLoan.netLoanAmount.toLocaleString()} financed over ${loanTermMonths} months at ${interestRate}% APR.`}
+          items={[
+            {
+              label: "Net Loan Financed",
+              value: `$${carLoan.netLoanAmount.toLocaleString()}`,
+            },
+            {
+              label: "Total Interest Paid",
+              value: `$${carLoan.totalInterest.toLocaleString()}`,
+              highlight: true,
+            },
+            {
+              label: "Sales Taxes & Fees",
+              value: `$${carLoan.totalTaxesAndFees.toLocaleString()}`,
+            },
+            {
+              label: "Total Out-of-Pocket Cost",
+              value: `$${carLoan.totalCost.toLocaleString()}`,
+            },
+          ]}
+        />
+
+        {/* Action Toolbar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+          <div className="flex items-center gap-2">
+            <CalcExportButton
+              data={exportData}
+              filename={`car_loan_schedule_${vehiclePrice}`}
+              sheetName="AutoLoan"
+              label="Export Loan Schedule (.xlsx)"
+            />
+            <CalcPromptButton prompt={aiPrompt} toolName="Car Loan Advice" />
+          </div>
+        </div>
+
+        {/* Amortization Chart */}
+        <CalcChart
+          title="Auto Loan Payoff & Principal Balance Reduction"
+          data={chartData}
+          series={[
+            {
+              key: "balance",
+              name: "Remaining Loan Balance",
+              color: "#EF4444",
+              gradientId: "carBalanceGrad",
+            },
+            {
+              key: "principalPaid",
+              name: "Principal Paid",
+              color: "#10B981",
+              gradientId: "carPrincGrad",
+            },
+            {
+              key: "interestPaid",
+              name: "Interest Paid",
+              color: "#F59E0B",
+              gradientId: "carIntGrad",
+            },
+          ]}
+        />
+      </div>
+    </CalcCard>
+
+    <AutoLoanRatesCard financedAmount={carLoan.netLoanAmount} loanTermMonths={loanTermMonths} />
+  </div>
+  );
+}
