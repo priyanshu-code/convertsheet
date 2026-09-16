@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
-import { Image as ImageIcon, Download, UploadCloud, RefreshCw, Sliders, Check } from "lucide-react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import { Image as ImageIcon, Download, UploadCloud, RefreshCw, Check } from "lucide-react";
 import {
   CalcCard,
   CalcSelect,
   CalcSlider,
   CalcResult,
-  CalcCopyButton,
 } from "@/components/calculator";
 import { convertImage, ImageConversionResult } from "@/lib/engines/image-engine";
 import { formatBytes } from "@/lib/utils";
@@ -32,30 +31,56 @@ export function ImageConverterTool({
   const [error, setError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleFile = useCallback(async (file: File) => {
-    setSelectedFile(file);
-    setError(null);
-    setIsProcessing(true);
-    try {
-      const res = await convertImage(file, {
-        format: targetFormat,
-        quality: quality / 100,
-        maxWidth: maxWidth,
-      });
-      setResult(res);
-    } catch (e: any) {
-      setError(e.message || "Failed to process image.");
-      setResult(null);
-    } finally {
-      setIsProcessing(false);
-    }
-  }, [targetFormat, quality, maxWidth]);
+  // Core conversion execution with specific parameters
+  const runConversion = useCallback(
+    async (file: File, format: "image/webp" | "image/png" | "image/jpeg", q: number, w: number) => {
+      setError(null);
+      setIsProcessing(true);
+      try {
+        const res = await convertImage(file, {
+          format,
+          quality: q / 100,
+          maxWidth: w,
+        });
+        setResult(res);
+      } catch (e: any) {
+        setError(e.message || "Failed to process image.");
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    []
+  );
 
-  const handleConvertAgain = useCallback(async () => {
+  // Initial file upload
+  const handleFile = useCallback(
+    (file: File) => {
+      setSelectedFile(file);
+      runConversion(file, targetFormat, quality, maxWidth);
+    },
+    [targetFormat, quality, maxWidth, runConversion]
+  );
+
+  // Live auto-update when sliders (quality, maxWidth) or target format changes
+  useEffect(() => {
     if (!selectedFile) return;
-    await handleFile(selectedFile);
-  }, [selectedFile, handleFile]);
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      runConversion(selectedFile, targetFormat, quality, maxWidth);
+    }, 150);
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [selectedFile, targetFormat, quality, maxWidth, runConversion]);
 
   const handleDownload = () => {
     if (!result) return;
@@ -160,7 +185,7 @@ export function ImageConverterTool({
                 max={100}
                 step={5}
                 unit="%"
-                helpText="Lower quality produces smaller file size"
+                helpText="Live compression quantization"
               />
 
               <CalcSlider
@@ -170,32 +195,29 @@ export function ImageConverterTool({
                 onChange={setMaxWidth}
                 min={320}
                 max={3840}
-                step={160}
+                step={80}
                 unit="px"
-                helpText="Downscale resolution to reduce size"
+                helpText="Live downscale resolution limit"
               />
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={handleConvertAgain}
-                disabled={isProcessing}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm transition-colors shadow-sm disabled:opacity-50"
-              >
-                <RefreshCw className={`w-4 h-4 ${isProcessing ? "animate-spin" : ""}`} />
-                {isProcessing ? "Processing..." : "Re-apply Settings"}
-              </button>
-
               {result && (
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-black dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 font-medium text-sm transition-colors shadow-sm"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm transition-colors shadow-sm"
                 >
                   <Download className="w-4 h-4" />
                   Download {result.filename} ({formatBytes(result.sizeBytes)})
                 </button>
+              )}
+
+              {isProcessing && (
+                <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  Updating preview...
+                </span>
               )}
             </div>
 
@@ -205,7 +227,7 @@ export function ImageConverterTool({
                 <CalcResult
                   title="Resolution"
                   primaryLabel="Dimensions"
-                  primaryValue={`${result.width}×${result.height}`}
+                  primaryValue={`${result.width} × ${result.height}`}
                 />
                 <CalcResult
                   title="New File Size"
@@ -215,8 +237,8 @@ export function ImageConverterTool({
                 <CalcResult
                   title="Savings"
                   primaryLabel="Size Reduction"
-                  primaryValue={compressionRatio > 0 ? `-${compressionRatio}%` : "No Change"}
-                  primarySubtext={compressionRatio > 0 ? "Saved bandwidth" : "Minimal change"}
+                  primaryValue={compressionRatio > 0 ? `-${compressionRatio}%` : `${Math.abs(compressionRatio)}%`}
+                  primarySubtext={compressionRatio > 0 ? "Saved bandwidth" : "Uncompressed gain"}
                 />
                 <CalcResult
                   title="Format"
@@ -229,15 +251,18 @@ export function ImageConverterTool({
             {/* Visual Preview */}
             {result && (
               <div className="space-y-2 pt-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                  Real-time Preview
-                </span>
-                <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/80 flex items-center justify-center overflow-hidden max-h-96">
+                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                  <span className="font-semibold uppercase tracking-wider">
+                    Real-time Output Preview
+                  </span>
+                  <span>{result.width} × {result.height} px</span>
+                </div>
+                <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900/80 flex items-center justify-center overflow-hidden min-h-[220px] max-h-[480px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={result.dataUrl}
                     alt="Converted output preview"
-                    className="max-h-80 max-w-full rounded-lg object-contain shadow-sm"
+                    className="max-h-[440px] max-w-full rounded-lg object-contain shadow-sm transition-all duration-150"
                   />
                 </div>
               </div>

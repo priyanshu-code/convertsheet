@@ -52,7 +52,7 @@ export const CalcResult = memo(function CalcResult({
               {primaryLabel}
             </span>
           )}
-          <div className="text-2xl sm:text-4xl font-extrabold font-mono tracking-tight text-emerald-700 dark:text-emerald-300 break-all">
+          <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold font-mono tracking-tight text-emerald-700 dark:text-emerald-300 truncate">
             {primaryValue}
           </div>
           {primarySubtext && (
