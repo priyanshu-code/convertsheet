@@ -523,3 +523,183 @@ export function calculateAnnualToHourly(input: AnnualToHourlyInput): AnnualToHou
   };
 }
 
+// ==========================================
+// 6. DEBT PAYOFF & CREDIT CARD ACCELERATOR
+// ==========================================
+
+export interface DebtItem {
+  id: string;
+  name: string;
+  balance: number;
+  interestRate: number; // Annual %
+  minimumPayment: number;
+}
+
+export interface DebtPayoffInput {
+  debts: DebtItem[];
+  extraMonthlyPayment?: number;
+  strategy?: "snowball" | "avalanche";
+}
+
+export interface DebtPayoffMonthlyScheduleRow {
+  month: number;
+  payment: number;
+  principal: number;
+  interest: number;
+  remainingBalance: number;
+  debtsPaidOff: string[];
+}
+
+export interface DebtPayoffResult {
+  strategy: "snowball" | "avalanche";
+  totalOriginalBalance: number;
+  totalMonthlyPayment: number;
+  totalInterestPaid: number;
+  totalPayment: number;
+  payoffMonths: number;
+  payoffYears: number;
+  interestSavedComparedToMinOnly: number;
+  monthsSavedComparedToMinOnly: number;
+  monthlySchedule: DebtPayoffMonthlyScheduleRow[];
+}
+
+export function calculateDebtPayoff(input: DebtPayoffInput): DebtPayoffResult {
+  const strategy = input.strategy || "avalanche";
+  const extraMonthly = Math.max(0, input.extraMonthlyPayment || 0);
+
+  const initialDebts = (input.debts || [])
+    .filter((d) => d.balance > 0)
+    .map((d) => ({
+      ...d,
+      balance: Math.max(0, d.balance),
+      interestRate: Math.max(0, d.interestRate),
+      minimumPayment: Math.max(0, d.minimumPayment),
+    }));
+
+  const totalOriginalBalance = roundTo(
+    initialDebts.reduce((sum, d) => sum + d.balance, 0),
+    2
+  );
+
+  const baseMinMonthlyPayment = roundTo(
+    initialDebts.reduce((sum, d) => sum + d.minimumPayment, 0),
+    2
+  );
+
+  // Helper simulation
+  function simulate(withExtra: number, sortStrategy: "snowball" | "avalanche") {
+    let currentDebts = initialDebts.map((d) => ({ ...d }));
+    let month = 0;
+    let totalInterest = 0;
+    let totalPaid = 0;
+    const schedule: DebtPayoffMonthlyScheduleRow[] = [];
+    const MAX_MONTHS = 600; // 50 years sanity limit
+
+    while (currentDebts.some((d) => d.balance > 0.01) && month < MAX_MONTHS) {
+      month++;
+      let monthlyInterest = 0;
+      let monthlyPrincipal = 0;
+      let monthlyTotalPaid = 0;
+      const debtsPaidThisMonth: string[] = [];
+
+      // Accrue monthly interest on each active debt
+      currentDebts.forEach((debt) => {
+        if (debt.balance > 0) {
+          const mRate = debt.interestRate / 100 / 12;
+          const interest = roundTo(debt.balance * mRate, 2);
+          debt.balance = roundTo(debt.balance + interest, 2);
+          monthlyInterest = roundTo(monthlyInterest + interest, 2);
+        }
+      });
+
+      // Pay minimum payments first
+      let leftoverExtra = withExtra;
+      currentDebts.forEach((debt) => {
+        if (debt.balance > 0) {
+          const toPay = Math.min(debt.balance, debt.minimumPayment);
+          debt.balance = roundTo(debt.balance - toPay, 2);
+          monthlyTotalPaid = roundTo(monthlyTotalPaid + toPay, 2);
+          if (debt.balance <= 0.01) {
+            debt.balance = 0;
+            debtsPaidThisMonth.push(debt.name);
+            leftoverExtra += debt.minimumPayment; // Rollover freed cashflow
+          }
+        }
+      });
+
+      // Sort remaining active debts by strategy for extra accelerated payment
+      const activeDebts = currentDebts.filter((d) => d.balance > 0);
+      if (activeDebts.length > 0 && leftoverExtra > 0) {
+        if (sortStrategy === "snowball") {
+          activeDebts.sort((a, b) => a.balance - b.balance);
+        } else {
+          // Avalanche: highest interest rate first
+          activeDebts.sort((a, b) => b.interestRate - a.interestRate);
+        }
+
+        let remainingExtraToApply = leftoverExtra;
+        for (const targetDebt of activeDebts) {
+          if (remainingExtraToApply <= 0) break;
+          const extraToPay = Math.min(targetDebt.balance, remainingExtraToApply);
+          targetDebt.balance = roundTo(targetDebt.balance - extraToPay, 2);
+          monthlyTotalPaid = roundTo(monthlyTotalPaid + extraToPay, 2);
+          remainingExtraToApply = roundTo(remainingExtraToApply - extraToPay, 2);
+
+          if (targetDebt.balance <= 0.01) {
+            targetDebt.balance = 0;
+            if (!debtsPaidThisMonth.includes(targetDebt.name)) {
+              debtsPaidThisMonth.push(targetDebt.name);
+            }
+          }
+        }
+      }
+
+      monthlyPrincipal = roundTo(Math.max(0, monthlyTotalPaid - monthlyInterest), 2);
+      totalInterest = roundTo(totalInterest + monthlyInterest, 2);
+      totalPaid = roundTo(totalPaid + monthlyTotalPaid, 2);
+
+      const remainingBalance = roundTo(
+        currentDebts.reduce((sum, d) => sum + d.balance, 0),
+        2
+      );
+
+      schedule.push({
+        month,
+        payment: monthlyTotalPaid,
+        principal: monthlyPrincipal,
+        interest: monthlyInterest,
+        remainingBalance,
+        debtsPaidOff: debtsPaidThisMonth,
+      });
+    }
+
+    return {
+      month,
+      totalInterest,
+      totalPaid,
+      schedule,
+    };
+  }
+
+  const baseline = simulate(0, strategy);
+  const accelerated = simulate(extraMonthly, strategy);
+
+  const interestSaved = Math.max(
+    0,
+    roundTo(baseline.totalInterest - accelerated.totalInterest, 2)
+  );
+  const monthsSaved = Math.max(0, baseline.month - accelerated.month);
+
+  return {
+    strategy,
+    totalOriginalBalance,
+    totalMonthlyPayment: roundTo(baseMinMonthlyPayment + extraMonthly, 2),
+    totalInterestPaid: accelerated.totalInterest,
+    totalPayment: accelerated.totalPaid,
+    payoffMonths: accelerated.month,
+    payoffYears: roundTo(accelerated.month / 12, 1),
+    interestSavedComparedToMinOnly: interestSaved,
+    monthsSavedComparedToMinOnly: monthsSaved,
+    monthlySchedule: accelerated.schedule,
+  };
+}

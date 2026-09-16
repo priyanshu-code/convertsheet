@@ -52,6 +52,7 @@ import { RetirementCalculator } from "@/components/tools/RetirementCalculator";
 import { InflationCalculator } from "@/components/tools/InflationCalculator";
 import { HourlyToSalaryCalculator } from "@/components/tools/HourlyToSalaryCalculator";
 import { AnnualToHourlyCalculator } from "@/components/tools/AnnualToHourlyCalculator";
+import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
 import { SqlStudioTool } from "@/components/tools/SqlStudioTool";
 import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
 import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
@@ -164,6 +165,7 @@ export default function ToolPage({ params }: ToolPageProps) {
     "inflation-calculator": InflationCalculator,
     "hourly-to-salary-calculator": HourlyToSalaryCalculator,
     "annual-to-hourly-calculator": AnnualToHourlyCalculator,
+    "debt-payoff-calculator": DebtPayoffCalculator,
     "sql-query-studio": SqlStudioTool,
     "sheet-diff-checker": SheetDiffTool,
     "data-anonymizer-cleaner": DataCleanerTool,

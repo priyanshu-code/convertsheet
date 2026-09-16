@@ -144,4 +144,27 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(rateInput).toHaveValue(2.0);
     });
   });
+
+  describe("DebtPayoffCalculator", () => {
+    it("renders debt payoff calculator with strategy selector and debt cards", async () => {
+      const { DebtPayoffCalculator } = await import("../DebtPayoffCalculator");
+      render(<DebtPayoffCalculator />);
+
+      expect(screen.getByText(/Payoff Acceleration Strategy:/i)).toBeInTheDocument();
+      expect(screen.getByText(/Debt Avalanche \(Save Most Interest\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Debt Snowball \(Quick Wins\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Debt Elimination Summary/i)).toBeInTheDocument();
+      expect(screen.getByText(/Export Payoff Amortization/i)).toBeInTheDocument();
+    });
+
+    it("allows switching strategies between Avalanche and Snowball", async () => {
+      const { DebtPayoffCalculator } = await import("../DebtPayoffCalculator");
+      render(<DebtPayoffCalculator />);
+
+      const snowballBtn = screen.getByText(/Debt Snowball \(Quick Wins\)/i);
+      fireEvent.click(snowballBtn);
+
+      expect(screen.getByText(/Debt Elimination Summary/i)).toBeInTheDocument();
+    });
+  });
 });

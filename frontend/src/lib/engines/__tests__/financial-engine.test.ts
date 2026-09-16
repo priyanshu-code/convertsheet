@@ -6,6 +6,7 @@ import {
   calculateInflation,
   calculateHourlyToSalary,
   calculateAnnualToHourly,
+  calculateDebtPayoff,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -192,6 +193,42 @@ describe("financial-engine", () => {
       expect(res.weeklySalary).toBeCloseTo(1923.08, 1);
       expect(res.dailyWage).toBeCloseTo(384.62, 1);
       expect(res.hourlyRate).toBeCloseTo(48.08, 1);
+    });
+  });
+
+  describe("calculateDebtPayoff", () => {
+    const sampleDebts = [
+      { id: "1", name: "Credit Card A", balance: 5000, interestRate: 22.0, minimumPayment: 150 },
+      { id: "2", name: "Credit Card B", balance: 2000, interestRate: 15.0, minimumPayment: 60 },
+      { id: "3", name: "Auto Loan", balance: 8000, interestRate: 6.5, minimumPayment: 200 },
+    ];
+
+    it("simulates debt payoff with avalanche strategy and extra payments", () => {
+      const res = calculateDebtPayoff({
+        debts: sampleDebts,
+        extraMonthlyPayment: 200,
+        strategy: "avalanche",
+      });
+
+      expect(res.totalOriginalBalance).toBe(15000);
+      expect(res.totalMonthlyPayment).toBe(610); // 150 + 60 + 200 + 200 extra
+      expect(res.payoffMonths).toBeGreaterThan(0);
+      expect(res.interestSavedComparedToMinOnly).toBeGreaterThan(0);
+      expect(res.monthsSavedComparedToMinOnly).toBeGreaterThan(0);
+      expect(res.monthlySchedule.length).toBe(res.payoffMonths);
+      expect(res.monthlySchedule[res.payoffMonths - 1].remainingBalance).toBe(0);
+    });
+
+    it("supports snowball strategy paying smallest balance first", () => {
+      const res = calculateDebtPayoff({
+        debts: sampleDebts,
+        extraMonthlyPayment: 200,
+        strategy: "snowball",
+      });
+
+      expect(res.strategy).toBe("snowball");
+      expect(res.totalOriginalBalance).toBe(15000);
+      expect(res.payoffMonths).toBeGreaterThan(0);
     });
   });
 });

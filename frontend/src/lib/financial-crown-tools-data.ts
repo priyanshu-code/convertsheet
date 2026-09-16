@@ -389,4 +389,67 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
     relatedConverters: ["excel-to-json", "excel-to-csv"],
     relatedTools: ["hourly-to-salary-calculator", "salary-calculator", "mortgage-calculator"],
   },
+  "debt-payoff-calculator": {
+    slug: "debt-payoff-calculator",
+    name: "Debt Payoff & Credit Card Payoff Calculator",
+    category: "financial",
+    title: "Debt Payoff Calculator: Snowball vs Avalanche with Excel Export",
+    subtitle: "Accelerate debt elimination using Debt Avalanche or Debt Snowball strategies. Simulate monthly extra payments and export full payoff amortization schedules to Excel.",
+    metaDescription: "Free debt payoff and credit card payoff calculator. Compare Debt Avalanche vs Snowball methods, calculate interest savings, and export amortization schedules to Excel (.xlsx).",
+    answerSummary: "Compare Debt Avalanche (saves the most interest) and Debt Snowball (fast psychological wins). Simulate adding an extra monthly accelerator payment and export your full schedule to Excel.",
+    badge: "High-Intent Financial Tool",
+    featured: true,
+    keywords: [
+      "debt payoff calculator",
+      "credit card payoff calculator",
+      "debt avalanche calculator",
+      "debt snowball calculator",
+      "debt consolidation payoff excel",
+      "credit card interest calculator",
+      "accelerated debt payoff schedule",
+    ],
+    formulaDescription:
+      "Avalanche sorts by highest APR descending; Snowball sorts by lowest balance ascending. Freed minimum payments rollover automatically into the next target debt.",
+    about:
+      "Eliminating high-interest consumer debt and credit card balances is one of the highest risk-adjusted returns on capital available. ConvertSheet's Debt Payoff Calculator models your complete debt elimination journey. Switch seamlessly between Debt Avalanche (mathematically optimal, minimizing total interest) and Debt Snowball (behaviorally motivating, maximizing quick wins), simulate custom extra monthly payments, and export your entire month-by-month payoff schedule to Microsoft Excel (.xlsx).",
+    howTo: [
+      {
+        step: 1,
+        title: "List Your Debts",
+        description:
+          "Enter your credit card balances, APR interest rates, and current minimum monthly payments.",
+      },
+      {
+        step: 2,
+        title: "Choose Payoff Strategy",
+        description:
+          "Select Debt Avalanche (highest interest rate first) or Debt Snowball (lowest balance first).",
+      },
+      {
+        step: 3,
+        title: "Set Extra Accelerator & Export",
+        description:
+          "Adjust your extra monthly payment amount, review interest saved and months shaved off, and export the schedule to Excel.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the difference between Debt Avalanche and Debt Snowball?",
+        answer:
+          "Debt Avalanche targets debts with the highest interest rate (APR) first, which saves you the maximum amount of money in total interest. Debt Snowball targets debts with the smallest balance first, giving you faster psychological wins as accounts reach zero.",
+      },
+      {
+        question: "How does the debt rollover (snowball effect) work?",
+        answer:
+          "When an individual debt or card is paid off, its required minimum payment is not spent—it is automatically rolled over and added to the payment of the next priority debt, accelerating your progress exponentially over time.",
+      },
+      {
+        question: "Can I download the payoff schedule into Microsoft Excel or Google Sheets?",
+        answer:
+          "Yes! Click 'Export Payoff Amortization (.xlsx)' to download your complete month-by-month balance breakdown and payoff milestone dates.",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: ["mortgage-calculator", "car-loan-calculator", "hourly-to-salary-calculator"],
+  },
 };
