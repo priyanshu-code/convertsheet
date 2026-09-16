@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
-import { ConverterConfig } from "@/types/registry";
+import { ConverterConfig, FAQItem } from "@/types/registry";
 import { cn } from "@/lib/utils";
 
 export interface FAQAccordionProps {

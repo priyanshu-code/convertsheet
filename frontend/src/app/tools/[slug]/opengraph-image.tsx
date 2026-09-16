@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getToolBySlug } from "@/lib/tool-registry";
+import { getToolBySlug, getAllToolSlugs } from "@/lib/tool-registry";
 
 export const size = {
   width: 1200,
@@ -7,6 +7,10 @@ export const size = {
 };
 
 export const contentType = "image/png";
+
+export function generateStaticParams() {
+  return getAllToolSlugs().map((slug) => ({ slug }));
+}
 
 export default async function Image({
   params,

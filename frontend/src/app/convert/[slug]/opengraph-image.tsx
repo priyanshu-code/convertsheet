@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getConverterBySlug } from "@/lib/registry";
+import { getConverterBySlug, getAllConverterSlugs } from "@/lib/registry";
 
 export const size = {
   width: 1200,
@@ -7,6 +7,10 @@ export const size = {
 };
 
 export const contentType = "image/png";
+
+export function generateStaticParams() {
+  return getAllConverterSlugs().map((slug) => ({ slug }));
+}
 
 export default async function Image({
   params,

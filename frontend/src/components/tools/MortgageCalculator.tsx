@@ -294,7 +294,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
                   totalMonthlyPayment: mortgage.totalMonthlyPayment,
                   totalInterest: mortgage.totalInterest,
                   schedule: mortgage.yearlySchedule.map((row) => ({
-                    year: row.year,
+                    year: row.period,
                     balance: row.balance,
                     principal: row.principal,
                     interest: row.interest,
