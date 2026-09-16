@@ -39,6 +39,7 @@ import { JwtDecoderTool } from "@/components/tools/JwtDecoderTool";
 import { UuidGeneratorTool } from "@/components/tools/UuidGeneratorTool";
 import { MarginCalculator } from "@/components/tools/MarginCalculator";
 import { RoiCalculator } from "@/components/tools/RoiCalculator";
+import { ImageConverterTool } from "@/components/tools/ImageConverterTool";
 
 export interface ToolPageProps {
   params: {
@@ -132,6 +133,11 @@ export default function ToolPage({ params }: ToolPageProps) {
     "uuid-generator": UuidGeneratorTool,
     "margin-calculator": MarginCalculator,
     "roi-calculator": RoiCalculator,
+    "webp-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="WebP to PNG Converter" subtitle="Convert WebP images to lossless transparent PNG format." />,
+    "png-to-webp": () => <ImageConverterTool defaultTargetFormat="image/webp" title="PNG to WebP Converter" subtitle="Compress PNG images to next-gen WebP format to speed up web pages." />,
+    "jpeg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="JPEG to PNG Converter" subtitle="Convert JPEG photos to uncompressed PNG format." />,
+    "image-compressor": () => <ImageConverterTool defaultTargetFormat="image/webp" title="Image Resizer & Compressor" subtitle="Compress and resize WebP, PNG, and JPEG images." />,
+    "svg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="SVG to PNG Rasterizer" subtitle="Render vector SVGs to crisp transparent PNG images at any resolution." />,
   };
 
   const ToolComponent = componentMap[tool.slug];

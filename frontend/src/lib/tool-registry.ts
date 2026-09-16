@@ -1,5 +1,6 @@
 import { ToolConfig, ToolCategory } from "@/types/tool";
 import { PHASE2_TOOLS } from "./phase2-tools-data";
+import { IMAGE_TOOLS } from "./image-tools-data";
 
 export const TOOL_REGISTRY = {
   // ==========================================
@@ -481,7 +482,8 @@ export const TOOL_REGISTRY = {
     relatedTools: ["base64-encoder-decoder", "unit-converter"]
   },
 
-  ...PHASE2_TOOLS
+  ...PHASE2_TOOLS,
+  ...IMAGE_TOOLS
 } as const satisfies Record<string, ToolConfig>;
 
 export type ToolSlug = keyof typeof TOOL_REGISTRY;
