@@ -40,6 +40,9 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
     title: `${post.title} | ConvertSheet Blog`,
     description: post.description,
     authors: [{ name: post.author.name }],
+    alternates: {
+      canonical: `https://convertsheet.com/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.description,
@@ -166,8 +169,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </header>
 
-      {/* Main Body with Sticky Sidebar TOC and Content */}
-      <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      {/* Article Body with Sticky Sidebar TOC and Content */}
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
           {/* Table of Contents - Desktop sticky navigation */}
           <aside className="hidden lg:col-span-4 lg:block">
@@ -199,6 +202,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             <ToolEmbedBanner
               toolSlug={post.attachedToolSlug}
               toolTitle={post.attachedToolTitle}
+              ariaLabel={`Try Tool: ${post.attachedToolTitle}`}
             />
 
             {/* Render Article HTML Content */}
@@ -212,11 +216,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               <ToolEmbedBanner
                 toolSlug={post.attachedToolSlug}
                 toolTitle={post.attachedToolTitle}
+                ariaLabel={`Convert Now: ${post.attachedToolTitle}`}
               />
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </article>
   );
 }

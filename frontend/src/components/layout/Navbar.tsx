@@ -349,6 +349,14 @@ export function Navbar() {
                 >
                   Calculators &amp; Tools
                 </Link>
+
+                {/* Direct Link to Blog */}
+                <Link
+                  href="/blog"
+                  className="px-3 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  Blog
+                </Link>
               </nav>
             </div>
 
@@ -469,6 +477,13 @@ export function Navbar() {
                 className="block px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >
                 Calculators &amp; Free Tools
+              </Link>
+              <Link
+                href="/blog"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-3 py-2 text-sm font-medium rounded-lg text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              >
+                Blog &amp; Data Guides
               </Link>
             </div>
           </nav>

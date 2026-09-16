@@ -5,12 +5,17 @@ import { ArrowRight, Wrench, ShieldCheck, Zap } from "lucide-react";
 interface ToolEmbedBannerProps {
   toolSlug: string;
   toolTitle: string;
+  ariaLabel?: string;
 }
 
-export function ToolEmbedBanner({ toolSlug, toolTitle }: ToolEmbedBannerProps) {
+export function ToolEmbedBanner({
+  toolSlug,
+  toolTitle,
+  ariaLabel,
+}: ToolEmbedBannerProps) {
   return (
     <aside
-      aria-label={`Interactive Tool: ${toolTitle}`}
+      aria-label={ariaLabel || `Interactive Tool: ${toolTitle}`}
       className="my-8 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-50/80 via-emerald-500/5 to-teal-50/50 p-6 shadow-sm dark:border-emerald-500/20 dark:from-emerald-950/30 dark:via-zinc-900/60 dark:to-teal-950/20"
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -19,9 +24,9 @@ export function ToolEmbedBanner({ toolSlug, toolTitle }: ToolEmbedBannerProps) {
             <Wrench className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Interactive Tool</span>
           </div>
-          <h3 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
+          <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
             {toolTitle}
-          </h3>
+          </h2>
           <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-zinc-600 dark:text-zinc-400">
             <span className="flex items-center gap-1">
               <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />

@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Engineering Blog & Data Guides | ConvertSheet",
   description:
     "In-depth guides, privacy-first data processing tutorials, and conversion benchmarks from the ConvertSheet engineering team.",
+  alternates: {
+    canonical: "https://convertsheet.com/blog",
+  },
   openGraph: {
     title: "ConvertSheet Engineering & Data Privacy Blog",
     description:
@@ -53,7 +56,7 @@ export default function BlogIndexPage() {
       </section>
 
       {/* Blog Cards Grid */}
-      <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8" aria-label="Latest Articles">
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
             Latest Articles & Guides
@@ -68,7 +71,7 @@ export default function BlogIndexPage() {
             <BlogCard key={post.slug} post={post} />
           ))}
         </div>
-      </main>
+      </section>
     </div>
   );
 }
