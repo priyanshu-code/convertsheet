@@ -57,7 +57,7 @@ export const RetirementDonutBreakdown = memo(function RetirementDonutBreakdown({
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Tooltip
-              formatter={(val: number) => [`$${Number(val).toLocaleString()}`, "Amount"]}
+              formatter={(val: any) => [`$${Number(val || 0).toLocaleString()}`, "Amount"]}
               contentStyle={{
                 backgroundColor: "#18181b",
                 borderColor: "#27272a",
