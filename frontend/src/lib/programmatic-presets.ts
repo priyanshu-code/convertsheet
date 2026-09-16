@@ -1735,6 +1735,310 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         "answer": "You will need approximately $160,441 in 15 years to match today's standard of living."
       }
     ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "15-an-hour-salary",
+    "name": "$15 an Hour is How Much a Year?",
+    "title": "$15 an Hour is How Much a Year? Hourly to Salary Calculator | ConvertSheet",
+    "metaDescription": "$15 an hour equals $31,200 per year for full-time work (40 hrs/wk, 52 wks/yr). See weekly ($600), bi-weekly ($1,200), and monthly ($2,600) paycheck breakdowns.",
+    "answerSummary": "$15 an hour is $31,200 per year before taxes, assuming 40 hours per week across 52 weeks. Your gross monthly pay is $2,600, bi-weekly pay is $1,200, and weekly pay is $600.",
+    "about": "Calculate annual salary, monthly take-home estimates, and overtime pay when earning $15.00 per hour. Adjust paid time off (PTO), unpaid vacation weeks, and overtime multipliers with instant export to Excel.",
+    "initialValues": {
+      "hourlyWage": 15,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "$15 an hour is how much a year?",
+        "answer": "At 40 hours per week and 52 weeks per year, $15 an hour equals $31,200 per year before taxes and deductions."
+      },
+      {
+        "question": "How much is $15 an hour bi-weekly?",
+        "answer": "At 40 hours per week (80 hours per pay period), $15 an hour is $1,200 every two weeks gross."
+      },
+      {
+        "question": "How much is $15 an hour monthly?",
+        "answer": "On average, $15 an hour equals $2,600 per month ($31,200 divided by 12 months)."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "20-an-hour-salary",
+    "name": "$20 an Hour is How Much a Year?",
+    "title": "$20 an Hour is How Much a Year? Hourly to Salary Calculator | ConvertSheet",
+    "metaDescription": "$20 an hour equals $41,600 per year for full-time work (40 hrs/wk). See weekly ($800), bi-weekly ($1,600), and monthly ($3,467) paycheck breakdowns.",
+    "answerSummary": "$20 an hour is $41,600 per year before taxes based on a 40-hour work week. That breaks down to $3,467 per month, $1,600 bi-weekly, and $800 weekly.",
+    "about": "Explore salary breakdowns for $20 per hour. Factor in unpaid time off, overtime premiums, and generate a downloadable Microsoft Excel compensation schedule.",
+    "initialValues": {
+      "hourlyWage": 20,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "What is $20 an hour annually?",
+        "answer": "Working 40 hours a week for 52 weeks at $20 an hour yields $41,600 gross salary per year."
+      },
+      {
+        "question": "How much is $20 an hour a month?",
+        "answer": "Gross monthly pay at $20 per hour is approximately $3,466.67."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "25-an-hour-salary",
+    "name": "$25 an Hour is How Much a Year?",
+    "title": "$25 an Hour is How Much a Year? Hourly to Salary Calculator | ConvertSheet",
+    "metaDescription": "$25 an hour equals $52,000 per year for standard 40-hour work weeks. See monthly ($4,333), bi-weekly ($2,000), and weekly ($1,000) salary breakdown.",
+    "answerSummary": "$25 an hour is $52,000 per year before taxes. This equals $4,333 per month, $2,000 every two weeks, and $1,000 per week.",
+    "about": "Convert a $25/hour wage into annual compensation. Compare full-time 40-hour schedules versus part-time or overtime scenarios with instant browser calculations.",
+    "initialValues": {
+      "hourlyWage": 25,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "Is $25 an hour a good salary?",
+        "answer": "At $52,000 annually, $25/hour meets or exceeds the individual median wage in many US metropolitan areas and offers stable baseline budgeting."
+      },
+      {
+        "question": "How much is $25 an hour bi-weekly?",
+        "answer": "Bi-weekly gross compensation for 80 hours at $25 per hour equals $2,000.00."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "30-an-hour-salary",
+    "name": "$30 an Hour is How Much a Year?",
+    "title": "$30 an Hour is How Much a Year? Hourly to Salary Calculator | ConvertSheet",
+    "metaDescription": "$30 an hour equals $62,400 per year for full-time work. Calculate monthly ($5,200), bi-weekly ($2,400), and weekly ($1,200) pay with overtime options.",
+    "answerSummary": "$30 an hour translates to $62,400 gross salary per year for full-time employment (2,080 hours). Monthly pay is $5,200 and bi-weekly pay is $2,400.",
+    "about": "Model gross earnings at $30/hour. Adjust your schedule for unpaid vacation or overtime to determine exact annual cash flow.",
+    "initialValues": {
+      "hourlyWage": 30,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "$30 an hour is how much yearly?",
+        "answer": "Working standard 40 hours each week for 52 weeks, $30 per hour generates $62,400 per year."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "40-an-hour-salary",
+    "name": "$40 an Hour is How Much a Year?",
+    "title": "$40 an Hour is How Much a Year? Hourly to Salary Calculator | ConvertSheet",
+    "metaDescription": "$40 an hour is $83,200 per year before taxes. See monthly ($6,933), bi-weekly ($3,200), and weekly ($1,600) paycheck amounts.",
+    "answerSummary": "$40 an hour is $83,200 per year for a standard 40-hour work week. Monthly gross income is $6,933 and bi-weekly income is $3,200.",
+    "about": "Evaluate compensation at $40 an hour. Discover total gross earnings, paycheck intervals, and export a compensation schedule.",
+    "initialValues": {
+      "hourlyWage": 40,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "$40 an hour is how much a year full-time?",
+        "answer": "$40 an hour is $83,200 per year across 2,080 work hours (40 hours x 52 weeks)."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "50-an-hour-salary",
+    "name": "$50 an Hour is How Much a Year?",
+    "title": "$50 an Hour is How Much a Year? Hourly to Salary Calculator | ConvertSheet",
+    "metaDescription": "$50 an hour equals $104,000 per year (six figures) for 40 hours/week. See monthly ($8,667), bi-weekly ($4,000), and weekly breakdowns.",
+    "answerSummary": "$50 an hour reaches six figures at $104,000 per year before taxes (40 hrs/wk, 52 wks/yr). That amounts to $8,667 per month and $4,000 bi-weekly.",
+    "about": "Calculate salary benchmarks for $50 per hour. Compare gross income against benefits, vacation deductions, or contractor rates.",
+    "initialValues": {
+      "hourlyWage": 50,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "Is $50 an hour six figures?",
+        "answer": "Yes! At 40 hours a week for 52 weeks, $50 an hour equals exactly $104,000 per year, surpassing the $100,000 threshold."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "40k-a-year-hourly",
+    "name": "$40,000 a Year is How Much an Hour?",
+    "title": "$40,000 a Year is How Much an Hour? Salary to Hourly Calculator | ConvertSheet",
+    "metaDescription": "$40,000 a year is $19.23 per hour for a 40-hour work week (2,080 hours/year). See monthly, bi-weekly, and weekly equivalents.",
+    "answerSummary": "$40,000 a year is $19.23 per hour assuming full-time 40 hours per week and 52 weeks per year. Monthly gross salary is $3,333 and bi-weekly pay is $1,538.",
+    "about": "Convert a $40,000 annual salary into hourly wages. Factor in paid versus unpaid holidays and compute exact unadjusted versus adjusted hourly rates.",
+    "initialValues": {
+      "annualSalary": 40000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "How much is $40,000 a year per hour?",
+        "answer": "$40,000 divided by 2,080 standard annual work hours equals $19.23 per hour."
+      },
+      {
+        "question": "What is $40,000 a year monthly?",
+        "answer": "Gross monthly pay is $3,333.33 per month."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "50k-a-year-hourly",
+    "name": "$50,000 a Year is How Much an Hour?",
+    "title": "$50,000 a Year is How Much an Hour? Salary to Hourly Calculator | ConvertSheet",
+    "metaDescription": "$50,000 a year is $24.04 per hour for standard full-time employment (40 hrs/wk). See monthly ($4,167), bi-weekly, and weekly rates.",
+    "answerSummary": "$50,000 a year is $24.04 per hour for a 40-hour work week across 52 weeks. Gross monthly salary is $4,167 and bi-weekly pay is $1,923.",
+    "about": "Calculate hourly wage equivalent for a $50k salary. Examine how working fewer weeks or receiving paid vacation affects your effective hourly rate.",
+    "initialValues": {
+      "annualSalary": 50000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "What is $50,000 a year hourly?",
+        "answer": "Based on 2,080 hours per year, a $50,000 annual salary breaks down to $24.04 per hour."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "60k-a-year-hourly",
+    "name": "$60,000 a Year is How Much an Hour?",
+    "title": "$60,000 a Year is How Much an Hour? Salary to Hourly Calculator | ConvertSheet",
+    "metaDescription": "$60,000 a year equals $28.85 per hour for 40-hour work weeks. View weekly ($1,154), bi-weekly ($2,308), and monthly ($5,000) breakdowns.",
+    "answerSummary": "$60,000 a year is $28.85 per hour assuming full-time 40 hours per week. Your gross monthly pay is $5,000 and bi-weekly pay is $2,308.",
+    "about": "Evaluate a $60,000 compensation package by converting it into hourly earnings, daily rates, and bi-weekly paycheck sums.",
+    "initialValues": {
+      "annualSalary": 60000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "$60,000 a year is how much an hour?",
+        "answer": "$60,000 per year equals $28.85 per hour for standard 40-hour work weeks."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "75k-a-year-hourly",
+    "name": "$75,000 a Year is How Much an Hour?",
+    "title": "$75,000 a Year is How Much an Hour? Salary to Hourly Calculator | ConvertSheet",
+    "metaDescription": "$75,000 a year is $36.06 per hour for standard full-time employment. See monthly ($6,250), bi-weekly ($2,885), and weekly breakdowns.",
+    "answerSummary": "$75,000 a year translates to $36.06 per hour for 40 hours per week (2,080 annual hours). Monthly pay is $6,250 and bi-weekly pay is $2,885.",
+    "about": "Discover your effective hourly rate at $75,000 annual income. Test different weekly hour assumptions and paid holiday allocations.",
+    "initialValues": {
+      "annualSalary": 75000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "What is $75,000 a year broken down hourly?",
+        "answer": "Divided across 2,080 hours per year, $75,000 equates to $36.06 per hour."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "100k-a-year-hourly",
+    "name": "$100,000 a Year is How Much an Hour?",
+    "title": "$100,000 a Year is How Much an Hour? Salary to Hourly Calculator | ConvertSheet",
+    "metaDescription": "$100,000 a year is $48.08 per hour for full-time work (40 hrs/wk). View monthly ($8,333), bi-weekly ($3,846), and daily salary breakdown.",
+    "answerSummary": "$100,000 a year is $48.08 per hour based on a 40-hour work week over 52 weeks. Gross monthly compensation is $8,333 and bi-weekly pay is $3,846.",
+    "about": "Break down a six-figure $100k salary into hourly, daily, and weekly cash figures. Compare full-time corporate rates against 1099 freelance contract rates.",
+    "initialValues": {
+      "annualSalary": 100000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "$100k a year is how much an hour?",
+        "answer": "At 40 hours per week, $100,000 per year is $48.08 per hour ($100,000 / 2,080 hours)."
+      },
+      {
+        "question": "How much is $100k a year monthly?",
+        "answer": "Gross monthly pay is $8,333.33 before income taxes and retirement contributions."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "150k-a-year-hourly",
+    "name": "$150,000 a Year is How Much an Hour?",
+    "title": "$150,000 a Year is How Much an Hour? Salary to Hourly Calculator | ConvertSheet",
+    "metaDescription": "$150,000 a year is $72.12 per hour for 40-hour work weeks. View monthly ($12,500), bi-weekly ($5,769), and weekly paycheck breakdowns.",
+    "answerSummary": "$150,000 a year is $72.12 per hour for full-time 40-hour work weeks. Monthly gross pay is $12,500, bi-weekly pay is $5,769, and weekly pay is $2,885.",
+    "about": "Convert a $150,000 executive or senior engineering salary into precise hourly rates and paycheck breakdowns. Export schedules directly to Excel.",
+    "initialValues": {
+      "annualSalary": 150000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "How much is $150,000 a year per hour?",
+        "answer": "A $150,000 salary broken down by 2,080 annual working hours equals $72.12 per hour."
+      },
+      {
+        "question": "What is $150,000 a year bi-weekly?",
+        "answer": "Bi-weekly gross pay for a $150,000 annual salary is $5,769.23 across 26 pay periods."
+      }
+    ]
   }
 ];
 

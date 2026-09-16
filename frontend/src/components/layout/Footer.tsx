@@ -23,6 +23,8 @@ export function Footer() {
 
   const toolsLinks = [
     { name: "Tools Directory Hub", href: "/tools" },
+    { name: "Hourly to Salary", href: "/tools/hourly-to-salary-calculator" },
+    { name: "Annual to Hourly", href: "/tools/annual-to-hourly-calculator" },
     { name: "Mortgage Calculator", href: "/tools/mortgage-calculator" },
     { name: "Retirement Calculator", href: "/tools/retirement-calculator" },
     { name: "SIP Calculator", href: "/tools/sip-calculator" },
