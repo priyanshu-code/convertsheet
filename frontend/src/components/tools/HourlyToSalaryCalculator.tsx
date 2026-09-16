@@ -27,7 +27,7 @@ export function HourlyToSalaryCalculator({
   initialValues,
 }: HourlyToSalaryCalculatorProps = {}) {
   const [hourlyRate, setHourlyRate] = useState<number>(
-    Number(initialValues?.hourlyRate) || 25
+    Number(initialValues?.hourlyRate ?? (initialValues as Record<string, unknown>)?.hourlyWage) || 25
   );
   const [hoursPerWeek, setHoursPerWeek] = useState<number>(
     Number(initialValues?.hoursPerWeek) || 40

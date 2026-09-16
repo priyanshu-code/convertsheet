@@ -2063,6 +2063,214 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         "answer": "Bi-weekly gross pay for a $150,000 annual salary is $5,769.23 across 26 pay periods."
       }
     ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "california-hourly-paycheck-calculator",
+    "name": "California Hourly Paycheck & Salary Calculator",
+    "title": "California Hourly Paycheck & Salary Calculator (2026) | ConvertSheet",
+    "metaDescription": "Calculate California hourly paycheck take-home and salary conversions. Model regular vs overtime rates, SDI, and estimated California state tax brackets.",
+    "answerSummary": "In California, standard full-time employment at $25/hour yields $52,000 gross salary ($4,333/month). California enforces overtime at 1.5x after 8 hours in a single workday and double time after 12 hours.",
+    "about": "Calculate your California hourly pay converted to annual salary, weekly earnings, and overtime compensation. California mandates daily overtime rules (1.5x after 8 hours/day and 40 hours/week) and state disability insurance (SDI). Model your exact hours and export full payroll schedules to Excel.",
+    "initialValues": {
+      "hourlyRate": 25,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "How does overtime work for hourly workers in California?",
+        "answer": "California requires non-exempt employees to be paid 1.5 times their regular rate for all hours worked beyond 8 up to 12 in a single workday and beyond 40 regular hours in a workweek, plus double time for hours exceeding 12 in a workday."
+      },
+      {
+        "question": "Does California tax hourly income?",
+        "answer": "Yes. California levies progressive state income tax brackets ranging from 1% to 12.3% (plus a 1% mental health surcharge on income over $1M), in addition to mandatory CA SDI (State Disability Insurance)."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "texas-hourly-paycheck-calculator",
+    "name": "Texas Hourly Paycheck & Salary Calculator",
+    "title": "Texas Hourly Paycheck & Salary Calculator (No State Income Tax) | ConvertSheet",
+    "metaDescription": "Calculate your Texas hourly paycheck and take-home salary. Texas has 0% state income tax. Convert hourly wages to weekly, bi-weekly, and annual earnings.",
+    "answerSummary": "In Texas, hourly workers benefit from 0% state income tax. At $25/hour for 40 hours/week, your gross annual pay is $52,000 ($2,000 bi-weekly), retaining more net take-home pay than high-tax states.",
+    "about": "Model your Texas hourly earnings without state income tax deductions. Texas does not levy personal state income tax, meaning your paycheck deductions are limited to federal income tax, Social Security (6.2%), and Medicare (1.45%). Calculate your precise wages and download your amortization or payroll breakdown in Excel.",
+    "initialValues": {
+      "hourlyRate": 25,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "Does Texas have state income tax on hourly wages?",
+        "answer": "No. Texas is one of 9 states with no personal state income tax. Hourly workers only pay federal income taxes and FICA (Social Security & Medicare)."
+      },
+      {
+        "question": "How much is $25 an hour after taxes in Texas?",
+        "answer": "At $25 an hour ($52,000 gross annually), standard federal income tax and FICA deductions average around 15% to 18% for single filers with standard deduction, yielding approximately $42,500 to $44,000 net take-home."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "florida-hourly-paycheck-calculator",
+    "name": "Florida Hourly Paycheck & Salary Calculator",
+    "title": "Florida Hourly Paycheck & Salary Calculator (0% State Tax) | ConvertSheet",
+    "metaDescription": "Calculate Florida hourly paycheck conversions and salary estimates. 0% state income tax. Compute weekly, bi-weekly, monthly, and overtime wages in Excel.",
+    "answerSummary": "Florida has no state individual income tax. A $30/hour wage translates to $62,400 per year ($5,200/month, $2,400 bi-weekly) with zero state tax withholdings.",
+    "about": "Calculate your earnings in Florida where workers pay 0% personal income tax. With standard 40-hour work weeks, your full gross salary goes straight into federal withholding and FICA deductions with zero state tax drag. Easily factor in overtime and download detailed spreadsheet logs.",
+    "initialValues": {
+      "hourlyRate": 30,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "Are hourly workers taxed by the state in Florida?",
+        "answer": "No. The Florida state constitution prohibits personal income tax. Only federal taxes apply to wage earners."
+      },
+      {
+        "question": "How much is $30 an hour annually in Florida?",
+        "answer": "Working 40 hours per week for 52 weeks at $30/hr yields $62,400 in gross annual compensation."
+      }
+    ]
+  },
+  {
+    "toolSlug": "hourly-to-salary-calculator",
+    "presetSlug": "new-york-hourly-paycheck-calculator",
+    "name": "New York Hourly Paycheck & Salary Calculator",
+    "title": "New York Hourly Paycheck & Salary Calculator (NYS & NYC) | ConvertSheet",
+    "metaDescription": "Calculate New York hourly paychecks including NY State and NYC local tax considerations. Convert hourly wages to annual salary with private offline calculations.",
+    "answerSummary": "In New York, hourly wages are subject to NY State income tax (4% to 10.9%) plus NYC local income tax (~3.078% to 3.876%) for NYC residents. Full-time $35/hour yields $72,800 gross annually.",
+    "about": "Calculate gross and net hourly paycheck intervals for New York employees. Factor in NY State progressive tax brackets, local New York City wage taxes, overtime pay, and paid leave considerations with privacy-first client-side calculation and Excel export.",
+    "initialValues": {
+      "hourlyRate": 35,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "overtimeHoursPerWeek": 0,
+      "overtimeMultiplier": 1.5
+    },
+    "faqs": [
+      {
+        "question": "Do I pay local tax if I work in New York City?",
+        "answer": "If you are a resident of New York City, you pay NYC personal income tax in addition to New York State income tax and federal taxes."
+      },
+      {
+        "question": "What is $35 an hour annually in New York?",
+        "answer": "At 40 hours per week across 52 weeks, $35/hr generates $72,800 gross salary annually before taxes."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "california-salary-to-hourly-calculator",
+    "name": "California Salary to Hourly Paycheck Calculator",
+    "title": "California Salary to Hourly Calculator ($100k Benchmark) | ConvertSheet",
+    "metaDescription": "Convert California annual salary into equivalent hourly wage, overtime rates, and paycheck periods. Model 2,080 annual hours with SheetJS Excel export.",
+    "answerSummary": "A $100,000 salary in California equates to $48.08 per hour for standard 40-hour weeks. Factoring in California's high cost of living and tax brackets helps evaluate remote vs local job offers.",
+    "about": "Convert your annual salaried compensation into precise hourly pay rates for California workers. Determine your equivalent hourly rate to compare salaried corporate employment against hourly contract consulting (1099/W2).",
+    "initialValues": {
+      "annualSalary": 100000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "What is $100,000 a year hourly in California?",
+        "answer": "A $100,000 annual salary breaks down to $48.08 per hour based on the standard 2,080 working hours per year."
+      },
+      {
+        "question": "Is $100,000 a good salary in California?",
+        "answer": "While $100,000 is above national median income, in high-cost California metropolitan areas like the Bay Area or Los Angeles, it represents moderate income after state income taxes and housing costs."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "texas-salary-to-hourly-calculator",
+    "name": "Texas Salary to Hourly Paycheck Calculator",
+    "title": "Texas Salary to Hourly Calculator (Zero State Income Tax) | ConvertSheet",
+    "metaDescription": "Convert your Texas annual salary into hourly, daily, and bi-weekly pay. Benefit from zero state income tax with downloadable spreadsheet exports.",
+    "answerSummary": "In Texas, an $85,000 salary equals $40.87 per hour ($7,083/month, $3,269 bi-weekly). With zero state income tax, your take-home pay is significantly higher than in states with income taxes.",
+    "about": "Determine your true hourly wage from an annual Texas salary. With zero Texas state income tax, compare take-home earnings against offers in California, New York, or Illinois. Export your complete salary breakdown to Microsoft Excel.",
+    "initialValues": {
+      "annualSalary": 85000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "What is $85,000 a year hourly in Texas?",
+        "answer": "An $85,000 annual salary converts to $40.87 per hour based on 40 hours per week for 52 weeks (2,080 hours)."
+      },
+      {
+        "question": "How much is $85,000 a year bi-weekly in Texas?",
+        "answer": "Bi-weekly gross pay for an $85,000 salary is $3,269.23 across 26 annual paychecks."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "florida-salary-to-hourly-calculator",
+    "name": "Florida Salary to Hourly Paycheck Calculator",
+    "title": "Florida Salary to Hourly Calculator ($75k Benchmark) | ConvertSheet",
+    "metaDescription": "Convert Florida annual salary to hourly, weekly, and monthly rates. Zero Florida state income tax. Export amortization and payroll schedules to Excel.",
+    "answerSummary": "A $75,000 annual salary in Florida converts to $36.06 per hour ($6,250/month, $2,885 bi-weekly). No state income tax means 100% of state deductions are avoided.",
+    "about": "Evaluate Florida employment packages by translating annual salary figures into granular hourly rates. Florida has no personal income tax, making it a favored relocation destination for remote workers and professionals.",
+    "initialValues": {
+      "annualSalary": 75000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "What is a $75,000 salary broken down hourly in Florida?",
+        "answer": "$75,000 divided by 2,080 hours equals $36.06 per hour."
+      },
+      {
+        "question": "Does Florida withhold state tax from salaried paychecks?",
+        "answer": "No. Florida employers do not withhold state income tax because Florida has no personal state income tax."
+      }
+    ]
+  },
+  {
+    "toolSlug": "annual-to-hourly-calculator",
+    "presetSlug": "washington-salary-to-hourly-calculator",
+    "name": "Washington State Salary to Hourly Calculator",
+    "title": "Washington State Salary to Hourly Calculator (No Income Tax) | ConvertSheet",
+    "metaDescription": "Convert Washington state annual salaries ($120k tech benchmark) into hourly wages. 0% WA state income tax with instant spreadsheet download.",
+    "answerSummary": "A $120,000 salary in Washington state equals $57.69 per hour ($10,000/month, $4,615 bi-weekly). Washington has no state individual income tax (though it has a capital gains tax).",
+    "about": "Convert Pacific Northwest and Seattle tech or enterprise salaries into equivalent hourly wages. Washington state imposes no personal state income tax on earned wages, allowing workers to retain more income compared to neighboring Oregon or California.",
+    "initialValues": {
+      "annualSalary": 120000,
+      "hoursPerWeek": 40,
+      "weeksPerYear": 52,
+      "paidHolidays": 0,
+      "paidVacationDays": 0
+    },
+    "faqs": [
+      {
+        "question": "What is $120,000 a year hourly in Washington state?",
+        "answer": "Based on 2,080 annual work hours, $120,000 equals $57.69 per hour."
+      },
+      {
+        "question": "Does Washington state tax earned income from wages?",
+        "answer": "No. Washington does not tax personal earned income or wages from employment."
+      }
+    ]
   }
 ];
 
