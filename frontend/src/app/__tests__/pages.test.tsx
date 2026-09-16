@@ -91,5 +91,26 @@ describe("Pages (Home)", () => {
       expect(screen.getByText("The ConvertSheet Solution")).toBeInTheDocument();
       expect(screen.getByText("DuckDB-Wasm & Apache Arrow")).toBeInTheDocument();
     });
+
+    it("renders BlogIndexPage with headline, guides, and cards", async () => {
+      const BlogIndexPage = (await import("../blog/page")).default;
+      render(<BlogIndexPage />);
+      expect(
+        screen.getByRole("heading", {
+          level: 1,
+          name: "Guides, Benchmarks & Privacy Insights",
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", {
+          level: 2,
+          name: "Latest Articles & Guides",
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText("How to Convert 50,000+ Rows of Nested JSON to Excel Without Leaking Data")
+      ).toBeInTheDocument();
+    });
   });
 });
+
