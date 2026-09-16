@@ -51,6 +51,16 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-192.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icons/icon-192.svg" },
+    ],
+    shortcut: ["/favicon.ico"],
+  },
 };
 
 const themeScript = `
