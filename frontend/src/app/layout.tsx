@@ -90,7 +90,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="impact-site-verification" value="695c529b-84ff-4db9-ac84-c761cca5c2c8" />
+        <meta name="impact-site-verification" content="695c529b-84ff-4db9-ac84-c761cca5c2c8" />
         <script
           id="theme-initializer"
           dangerouslySetInnerHTML={{ __html: themeScript }}
