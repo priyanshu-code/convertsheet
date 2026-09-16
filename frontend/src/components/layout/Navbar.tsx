@@ -258,16 +258,15 @@ export function Navbar() {
                           </div>
                         </div>
                       ) : (
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-3 gap-3 max-h-80 overflow-y-auto pr-1">
                           {/* Data & Dev Tools */}
                           <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block mb-1.5">
-                              Data &amp; Developer
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block mb-1.5 sticky top-0 bg-white dark:bg-zinc-900 py-1">
+                              Data &amp; Developer ({allTools.filter((t) => t.category === "data-developer").length})
                             </span>
                             <div className="space-y-0.5">
                               {allTools
                                 .filter((t) => t.category === "data-developer")
-                                .slice(0, 5)
                                 .map((tool) => (
                                   <Link
                                     key={tool.slug}
@@ -283,13 +282,12 @@ export function Navbar() {
 
                           {/* Financial Calculators */}
                           <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-teal-600 block mb-1.5">
-                              Financial Math
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-teal-600 block mb-1.5 sticky top-0 bg-white dark:bg-zinc-900 py-1">
+                              Financial Math ({allTools.filter((t) => t.category === "financial").length})
                             </span>
                             <div className="space-y-0.5">
                               {allTools
                                 .filter((t) => t.category === "financial")
-                                .slice(0, 5)
                                 .map((tool) => (
                                   <Link
                                     key={tool.slug}
@@ -305,13 +303,12 @@ export function Navbar() {
 
                           {/* Utility Calculators */}
                           <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-600 block mb-1.5">
-                              Everyday Utility
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-600 block mb-1.5 sticky top-0 bg-white dark:bg-zinc-900 py-1">
+                              Utility &amp; Images ({allTools.filter((t) => t.category === "utility").length})
                             </span>
                             <div className="space-y-0.5">
                               {allTools
                                 .filter((t) => t.category === "utility")
-                                .slice(0, 5)
                                 .map((tool) => (
                                   <Link
                                     key={tool.slug}
