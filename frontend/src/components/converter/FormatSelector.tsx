@@ -89,7 +89,7 @@ export function FormatSelector({
           {/* Source badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-mono font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">
             <span>{config.sourceFormat}</span>
-            <span className="text-zinc-400 dark:text-zinc-500 font-normal">
+            <span className="text-zinc-600 dark:text-zinc-400 font-medium">
               {config.sourceExtension}
             </span>
           </div>

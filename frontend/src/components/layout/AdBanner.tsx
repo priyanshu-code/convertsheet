@@ -79,10 +79,10 @@ export function AdBanner({
           data-testid="ad-placeholder"
           className="w-full h-full flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40 text-center"
         >
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
             Advertisement / Sponsored
           </span>
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-1">
             {formatConfig.label} ({formatConfig.dimensions})
           </p>
         </div>

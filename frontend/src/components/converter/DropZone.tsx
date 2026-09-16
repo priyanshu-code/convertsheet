@@ -170,12 +170,12 @@ export function DropZone({
       </div>
 
       {/* Primary prompt */}
-      <h3 className="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+      <h2 className="text-lg sm:text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
         Drop your {config.sourceFormat} file here or{" "}
         <span className="text-emerald-600 dark:text-emerald-400 font-medium underline underline-offset-4 group-hover:text-emerald-500">
           browse
         </span>
-      </h3>
+      </h2>
 
       <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-5 max-w-md flex flex-wrap items-center justify-center gap-1.5">
         <span>Drag and drop from your computer, browse, or paste</span>
@@ -186,7 +186,7 @@ export function DropZone({
 
       {/* Accepted formats pills */}
       <div className="flex flex-wrap items-center justify-center gap-1.5 mb-6">
-        <span className="text-xs text-zinc-400 dark:text-zinc-500 mr-1">
+        <span className="text-xs text-zinc-600 dark:text-zinc-400 font-medium mr-1">
           Accepted:
         </span>
         {acceptedExtensions.map((ext) => (

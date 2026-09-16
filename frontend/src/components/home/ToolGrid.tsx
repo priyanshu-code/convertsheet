@@ -38,7 +38,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
         >
           <Layers className="w-4 h-4" />
           <span>All Tools</span>
-          <span className="font-mono text-xs opacity-75">({tools.length})</span>
+          <span className="font-mono text-xs font-semibold">({tools.length})</span>
         </button>
 
         <button
@@ -52,7 +52,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
         >
           <Terminal className="w-4 h-4 text-emerald-500" />
           <span>Data &amp; Dev</span>
-          <span className="font-mono text-xs opacity-75">({devCount})</span>
+          <span className="font-mono text-xs font-semibold">({devCount})</span>
         </button>
 
         <button
@@ -66,7 +66,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
         >
           <Calculator className="w-4 h-4 text-teal-500" />
           <span>Financial Calculators</span>
-          <span className="font-mono text-xs opacity-75">({financialCount})</span>
+          <span className="font-mono text-xs font-semibold">({financialCount})</span>
         </button>
 
         <button
@@ -80,7 +80,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
         >
           <SlidersHorizontal className="w-4 h-4 text-emerald-500" />
           <span>General Utility</span>
-          <span className="font-mono text-xs opacity-75">({utilityCount})</span>
+          <span className="font-mono text-xs font-semibold">({utilityCount})</span>
         </button>
       </div>
 

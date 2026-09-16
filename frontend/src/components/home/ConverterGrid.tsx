@@ -47,7 +47,7 @@ export function ConverterGrid({ converters }: ConverterGridProps) {
         >
           <Layers className="w-4 h-4" />
           <span>All Converters</span>
-          <span className="font-mono text-xs opacity-75">({converters.length})</span>
+          <span className="font-mono text-xs font-semibold">({converters.length})</span>
         </button>
 
         <button
@@ -61,7 +61,7 @@ export function ConverterGrid({ converters }: ConverterGridProps) {
         >
           <Table className="w-4 h-4" />
           <span>Spreadsheets &amp; Docs</span>
-          <span className="font-mono text-xs opacity-75">({spreadsheetCount})</span>
+          <span className="font-mono text-xs font-semibold">({spreadsheetCount})</span>
         </button>
 
         <button
@@ -75,7 +75,7 @@ export function ConverterGrid({ converters }: ConverterGridProps) {
         >
           <Database className="w-4 h-4" />
           <span>Data Engineering (DuckDB)</span>
-          <span className="font-mono text-xs opacity-75">({dataEngCount})</span>
+          <span className="font-mono text-xs font-semibold">({dataEngCount})</span>
         </button>
       </div>
 

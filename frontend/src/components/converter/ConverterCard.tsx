@@ -81,7 +81,7 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
               mode === "batch"
                 ? "bg-emerald-600 text-white shadow-xs"
-                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
             }`}
           >
             <Archive className="w-3.5 h-3.5" />
