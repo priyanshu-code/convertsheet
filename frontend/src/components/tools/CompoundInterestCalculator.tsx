@@ -8,6 +8,7 @@ import {
   CalcSlider,
   CalcSelect,
   CalcResult,
+  CalcChart,
 } from "@/components/calculator";
 
 export function CompoundInterestCalculator() {
@@ -30,6 +31,27 @@ export function CompoundInterestCalculator() {
       maturityAmount: Math.round(A),
       totalInterest: Math.round(interest),
     };
+  }, [principal, annualRate, years, frequency]);
+
+  // Year by year compounding balance curve
+  const chartData = useMemo(() => {
+    const P = Math.max(0, principal);
+    const r = Math.max(0, annualRate) / 100;
+    const t = Math.max(1, years);
+    const n = Number(frequency) || 1;
+
+    const data = [];
+    for (let yr = 1; yr <= t; yr++) {
+      const A = P * Math.pow(1 + r / n, n * yr);
+      const interest = Math.max(0, A - P);
+      data.push({
+        label: `Yr ${yr}`,
+        principal: Math.round(P),
+        interestEarned: Math.round(interest),
+        totalBalance: Math.round(A),
+      });
+    }
+    return data;
   }, [principal, annualRate, years, frequency]);
 
   return (
@@ -141,6 +163,26 @@ export function CompoundInterestCalculator() {
           {
             label: "Growth Rate",
             value: principal > 0 ? `${((totalInterest / principal) * 100).toFixed(1)}%` : "0%",
+          },
+        ]}
+      />
+
+      {/* Interactive Compounding Curve Chart */}
+      <CalcChart
+        title="Compound Savings Trajectory"
+        data={chartData}
+        series={[
+          {
+            key: "principal",
+            name: "Initial Principal",
+            color: "#6366F1",
+            gradientId: "ciPrincipalGrad",
+          },
+          {
+            key: "interestEarned",
+            name: "Compound Interest Earned",
+            color: "#10B981",
+            gradientId: "ciInterestGrad",
           },
         ]}
       />

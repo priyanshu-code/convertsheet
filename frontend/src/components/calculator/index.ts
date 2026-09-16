@@ -6,3 +6,4 @@ export * from "./CalcToggle";
 export * from "./CalcTextarea";
 export * from "./CalcCopyButton";
 export * from "./CalcResult";
+export * from "./CalcChart";

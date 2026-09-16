@@ -7,6 +7,7 @@ import {
   CalcInput,
   CalcSlider,
   CalcResult,
+  CalcChart,
 } from "@/components/calculator";
 
 export function SipCalculator() {
@@ -39,6 +40,28 @@ export function SipCalculator() {
       wealthGained: Math.round(gains),
       totalMaturity: Math.round(maturity),
     };
+  }, [monthlyInvestment, annualReturnRate, timeYears]);
+
+  // Year by year trajectory for interactive Recharts area graph
+  const chartData = useMemo(() => {
+    const P = Math.max(0, monthlyInvestment);
+    const r = Math.max(0, annualReturnRate);
+    const t = Math.max(1, timeYears);
+    const i = r / 12 / 100;
+
+    const data = [];
+    for (let yr = 1; yr <= t; yr++) {
+      const n = yr * 12;
+      const inv = P * n;
+      const mat = i === 0 ? inv : P * ((Math.pow(1 + i, n) - 1) / i) * (1 + i);
+      data.push({
+        label: `Yr ${yr}`,
+        invested: Math.round(inv),
+        wealthGained: Math.round(Math.max(0, mat - inv)),
+        totalValue: Math.round(mat),
+      });
+    }
+    return data;
   }, [monthlyInvestment, annualReturnRate, timeYears]);
 
   return (
@@ -135,6 +158,26 @@ export function SipCalculator() {
             label: "Wealth Multiplier",
             value: totalInvested > 0 ? `${(totalMaturity / totalInvested).toFixed(2)}x` : "1x",
             badge: "Growth",
+          },
+        ]}
+      />
+
+      {/* Interactive Growth Curve Chart */}
+      <CalcChart
+        title="SIP Compounding Wealth Curve (Year-by-Year)"
+        data={chartData}
+        series={[
+          {
+            key: "invested",
+            name: "Invested Capital",
+            color: "#3B82F6",
+            gradientId: "sipInvestedGrad",
+          },
+          {
+            key: "wealthGained",
+            name: "Estimated Gains",
+            color: "#10B981",
+            gradientId: "sipGainsGrad",
           },
         ]}
       />

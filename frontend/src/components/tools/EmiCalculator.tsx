@@ -7,6 +7,7 @@ import {
   CalcInput,
   CalcSlider,
   CalcResult,
+  CalcChart,
 } from "@/components/calculator";
 
 export function EmiCalculator() {
@@ -32,6 +33,36 @@ export function EmiCalculator() {
       totalInterest: Math.round(totalInt),
       totalPayment: Math.round(totalPay),
     };
+  // Loan balance amortization curve year by year
+  const chartData = useMemo(() => {
+    const P = Math.max(0, loanAmount);
+    const annualR = Math.max(0.1, interestRate);
+    const years = Math.max(1, loanTenureYears);
+    const r = annualR / 12 / 100;
+    const n = years * 12;
+    const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+
+    const data = [];
+    let balance = P;
+    let cumInterest = 0;
+    let cumPrincipal = 0;
+
+    for (let yr = 1; yr <= years; yr++) {
+      for (let m = 0; m < 12; m++) {
+        const intPayment = balance * r;
+        const princPayment = emi - intPayment;
+        balance = Math.max(0, balance - princPayment);
+        cumInterest += intPayment;
+        cumPrincipal += princPayment;
+      }
+      data.push({
+        label: `Yr ${yr}`,
+        remainingBalance: Math.round(balance),
+        principalPaid: Math.round(cumPrincipal),
+        interestPaid: Math.round(cumInterest),
+      });
+    }
+    return data;
   }, [loanAmount, interestRate, loanTenureYears]);
 
   return (
@@ -127,6 +158,32 @@ export function EmiCalculator() {
           {
             label: "Total Repayment (P + I)",
             value: `₹${totalPayment.toLocaleString("en-IN")}`,
+          },
+        ]}
+      />
+
+      {/* Interactive Amortization Chart */}
+      <CalcChart
+        title="Loan Amortization & Balance Payoff Curve"
+        data={chartData}
+        series={[
+          {
+            key: "remainingBalance",
+            name: "Remaining Principal",
+            color: "#EF4444",
+            gradientId: "emiBalanceGrad",
+          },
+          {
+            key: "principalPaid",
+            name: "Cumulative Principal Paid",
+            color: "#10B981",
+            gradientId: "emiPrincGrad",
+          },
+          {
+            key: "interestPaid",
+            name: "Cumulative Interest Paid",
+            color: "#F59E0B",
+            gradientId: "emiIntGrad",
           },
         ]}
       />
