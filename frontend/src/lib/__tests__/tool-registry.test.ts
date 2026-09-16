@@ -12,16 +12,16 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
   const allSlugs = getAllToolSlugs();
   const allTools = getAllTools();
 
-  it("registers exactly 18 tools across 3 categories", () => {
-    expect(allSlugs).toHaveLength(18);
-    expect(allTools).toHaveLength(18);
+  it("registers exactly 24 tools across 3 categories", () => {
+    expect(allSlugs).toHaveLength(24);
+    expect(allTools).toHaveLength(24);
 
     const devTools = getToolsByCategory("data-developer");
     const financialTools = getToolsByCategory("financial");
     const utilityTools = getToolsByCategory("utility");
 
-    expect(devTools).toHaveLength(6);
-    expect(financialTools).toHaveLength(6);
+    expect(devTools).toHaveLength(8);
+    expect(financialTools).toHaveLength(10);
     expect(utilityTools).toHaveLength(6);
   });
 

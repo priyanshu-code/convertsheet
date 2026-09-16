@@ -33,6 +33,8 @@ export function EmiCalculator() {
       totalInterest: Math.round(totalInt),
       totalPayment: Math.round(totalPay),
     };
+  }, [loanAmount, interestRate, loanTenureYears]);
+
   // Loan balance amortization curve year by year
   const chartData = useMemo(() => {
     const P = Math.max(0, loanAmount);

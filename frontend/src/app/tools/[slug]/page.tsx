@@ -33,6 +33,12 @@ import { BmiCalculator } from "@/components/tools/BmiCalculator";
 import { UnitConverterTool } from "@/components/tools/UnitConverterTool";
 import { TipCalculator } from "@/components/tools/TipCalculator";
 import { ByteConverterTool } from "@/components/tools/ByteConverterTool";
+import { SalaryCalculator } from "@/components/tools/SalaryCalculator";
+import { IncomeTaxCalculator } from "@/components/tools/IncomeTaxCalculator";
+import { JwtDecoderTool } from "@/components/tools/JwtDecoderTool";
+import { UuidGeneratorTool } from "@/components/tools/UuidGeneratorTool";
+import { MarginCalculator } from "@/components/tools/MarginCalculator";
+import { RoiCalculator } from "@/components/tools/RoiCalculator";
 
 export interface ToolPageProps {
   params: {
@@ -120,6 +126,12 @@ export default function ToolPage({ params }: ToolPageProps) {
     "unit-converter": UnitConverterTool,
     "tip-calculator": TipCalculator,
     "byte-converter": ByteConverterTool,
+    "salary-calculator": SalaryCalculator,
+    "income-tax-calculator": IncomeTaxCalculator,
+    "jwt-decoder": JwtDecoderTool,
+    "uuid-generator": UuidGeneratorTool,
+    "margin-calculator": MarginCalculator,
+    "roi-calculator": RoiCalculator,
   };
 
   const ToolComponent = componentMap[tool.slug];
