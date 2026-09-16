@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { Percent } from "lucide-react";
+import { roundTo } from "@/lib/math-utils";
 import {
   CalcCard,
   CalcInput,
@@ -25,7 +26,7 @@ export function PercentageCalculator() {
   const [valY3, setValY3] = useState<number>(125);
 
   const result1 = useMemo(() => {
-    const res = (valX1 / 100) * valY1;
+    const res = roundTo((valX1 / 100) * valY1, 4);
     return {
       value: res.toLocaleString(),
       formula: `${valX1}% × ${valY1} = ${res}`,
@@ -34,21 +35,21 @@ export function PercentageCalculator() {
 
   const result2 = useMemo(() => {
     if (valY2 === 0) return { value: "Undefined (div by 0)", formula: "" };
-    const res = (valX2 / valY2) * 100;
+    const res = roundTo((valX2 / valY2) * 100, 2);
     return {
-      value: `${res.toFixed(2)}%`,
-      formula: `(${valX2} / ${valY2}) × 100 = ${res.toFixed(2)}%`,
+      value: `${res}%`,
+      formula: `(${valX2} / ${valY2}) × 100 = ${res}%`,
     };
   }, [valX2, valY2]);
 
   const result3 = useMemo(() => {
     if (valX3 === 0) return { value: "Undefined (initial value is 0)", formula: "", type: "neutral" };
-    const diff = valY3 - valX3;
-    const pct = (diff / valX3) * 100;
+    const diff = roundTo(valY3 - valX3, 4);
+    const pct = roundTo((diff / valX3) * 100, 2);
     const isIncrease = diff >= 0;
     return {
-      value: `${isIncrease ? "+" : ""}${pct.toFixed(2)}%`,
-      formula: `((${valY3} - ${valX3}) / ${valX3}) × 100 = ${pct.toFixed(2)}%`,
+      value: `${isIncrease ? "+" : ""}${pct}%`,
+      formula: `((${valY3} - ${valX3}) / ${valX3}) × 100 = ${pct}%`,
       type: isIncrease ? "increase" : "decrease",
       diff: diff.toLocaleString(),
     };
