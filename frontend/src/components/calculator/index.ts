@@ -12,3 +12,4 @@ export * from "./CalcExportButton";
 export * from "./CalcPdfReportButton";
 export * from "./ModernSlider";
 export * from "./RetirementDonutBreakdown";
+export * from "./RetirementWizard";
