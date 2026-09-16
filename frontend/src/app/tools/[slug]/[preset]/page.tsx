@@ -48,6 +48,7 @@ export async function generateMetadata({
   }
 
   const canonicalUrl = `https://convertsheet.com/tools/${params.slug}/${params.preset}`;
+  const ogImage = `https://convertsheet.com/tools/${params.slug}/${params.preset}/opengraph-image`;
 
   return {
     title: preset.title,
@@ -60,11 +61,20 @@ export async function generateMetadata({
       description: preset.metaDescription,
       url: canonicalUrl,
       type: "website",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${preset.name} - ConvertSheet Free Calculations`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: preset.title,
       description: preset.metaDescription,
+      images: [ogImage],
     },
   };
 }

@@ -27,6 +27,10 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
     });
     expect(meta.title).toContain("$400,000 Mortgage");
     expect(meta.description).toContain("$400,000");
+    expect(meta.openGraph?.images).toBeDefined();
+    expect((meta.openGraph?.images as any[])[0].url).toContain(
+      "/tools/mortgage-calculator/400k-mortgage/opengraph-image"
+    );
   });
 
   it("renders the pre-populated calculator and answer box", () => {
