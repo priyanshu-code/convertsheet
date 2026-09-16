@@ -40,6 +40,8 @@ import { MortgageCalculator } from "@/components/tools/MortgageCalculator";
 import { CarLoanCalculator } from "@/components/tools/CarLoanCalculator";
 import { RetirementCalculator } from "@/components/tools/RetirementCalculator";
 import { InflationCalculator } from "@/components/tools/InflationCalculator";
+import { HourlyToSalaryCalculator } from "@/components/tools/HourlyToSalaryCalculator";
+import { AnnualToHourlyCalculator } from "@/components/tools/AnnualToHourlyCalculator";
 import { SqlStudioTool } from "@/components/tools/SqlStudioTool";
 import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
 import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
@@ -156,6 +158,8 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
     "car-loan-calculator": CarLoanCalculator,
     "retirement-calculator": RetirementCalculator,
     "inflation-calculator": InflationCalculator,
+    "hourly-to-salary-calculator": HourlyToSalaryCalculator,
+    "annual-to-hourly-calculator": AnnualToHourlyCalculator,
     "sql-query-studio": SqlStudioTool,
     "sheet-diff-checker": SheetDiffTool,
     "data-anonymizer-cleaner": DataCleanerTool,

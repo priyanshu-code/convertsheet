@@ -260,4 +260,133 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
     relatedConverters: ["excel-to-csv"],
     relatedTools: ["retirement-calculator", "compound-interest-calculator", "salary-calculator"],
   },
+
+  "hourly-to-salary-calculator": {
+    slug: "hourly-to-salary-calculator",
+    name: "Hourly to Salary Calculator",
+    category: "financial",
+    title: "Hourly to Salary Calculator - Convert Hourly Wage to Annual & Monthly Pay",
+    subtitle: "Convert your hourly wage into annual salary, monthly pay, bi-weekly, weekly, and daily paycheck intervals with paid time off and overtime adjustments.",
+    metaDescription: "Free online hourly to salary calculator. Convert hourly rate ($15, $20, $25, $30, $50/hr) into annual salary, monthly gross pay, and bi-weekly paychecks with Excel export.",
+    answerSummary: "Multiply your hourly wage by hours worked per week, then multiply by weeks worked per year. For standard full-time (40 hrs/wk, 52 wks/yr = 2,080 hours), multiply your hourly rate by 2,080. E.g., $25/hour equals $52,000/year or $4,333.33/month.",
+    badge: "Omni Favorite",
+    featured: true,
+    keywords: [
+      "hourly to salary calculator",
+      "hourly to annual salary",
+      "hourly to monthly pay",
+      "wage to salary converter",
+      "how much is 25 an hour annually",
+      "how much is 20 an hour a year",
+      "bi weekly paycheck from hourly rate",
+      "overtime wage calculator",
+    ],
+    formulaDescription:
+      "Annual Salary = (Hourly Rate * Regular Hours/Week * Weeks/Year) + (Overtime Rate * Overtime Hours/Week * Weeks/Year). Monthly = Annual / 12. Bi-Weekly = Annual / 26.",
+    about:
+      "Evaluating job offers or requesting a raise requires knowing exactly what an hourly wage translates to on a monthly or annual budget. ConvertSheet's Hourly to Salary Calculator computes earnings across every standard payroll interval: daily, weekly, bi-weekly (26 pay periods), semi-monthly (24 pay periods), monthly, and annual gross pay. Adjust for unpaid time off, paid holidays, and overtime hours (1.5x) with instant export of your entire paycheck schedule to Microsoft Excel (.xlsx).",
+    howTo: [
+      {
+        step: 1,
+        title: "Input Hourly Wage",
+        description:
+          "Enter your base hourly pay rate (e.g. $25/hour) using the input field or interactive slider.",
+      },
+      {
+        step: 2,
+        title: "Set Working Schedule",
+        description:
+          "Configure standard hours worked per week (default 40) and active working weeks per year (default 52).",
+      },
+      {
+        step: 3,
+        title: "Adjust Overtime & Export",
+        description:
+          "Add optional overtime hours to see immediate paycheck increases and download your custom payroll breakdown table to Excel.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How do you calculate salary from hourly wage?",
+        answer:
+          "For standard full-time employment (40 hours/week, 52 weeks/year = 2,080 working hours annually), simply multiply your hourly rate by 2,080. For example, $30/hour * 2,080 = $62,400/year.",
+      },
+      {
+        question: "How many working hours are in a standard year?",
+        answer:
+          "A standard 40-hour work week across 52 weeks contains 2,080 working hours. If you take 2 weeks of unpaid leave, your working hours equal 2,000 hours per year.",
+      },
+      {
+        question: "What is the difference between bi-weekly and semi-monthly pay?",
+        answer:
+          "Bi-weekly pay occurs every two weeks (resulting in 26 paychecks per year, including two months with three paychecks). Semi-monthly pay occurs twice per month on fixed dates like the 1st and 15th (resulting in 24 paychecks per year).",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: ["annual-to-hourly-calculator", "salary-calculator", "income-tax-calculator"],
+  },
+
+  "annual-to-hourly-calculator": {
+    slug: "annual-to-hourly-calculator",
+    name: "Annual to Hourly Calculator",
+    category: "financial",
+    title: "Annual to Hourly Salary Calculator - Convert Yearly Income to Hourly Wage",
+    subtitle: "Convert your annual gross salary into an equivalent hourly wage, daily earnings, weekly salary, and monthly paycheck with custom work hours and unpaid leave.",
+    metaDescription: "Free online annual to hourly calculator. Convert yearly salary ($50k, $75k, $100k, $150k) to hourly wage, monthly pay, and bi-weekly paychecks with instant Excel export.",
+    answerSummary: "Divide your annual salary by your total working hours in a year (standard 2,080 hours for 40h/week, 52 weeks/year). E.g., a $100,000 annual salary converts to $48.08/hour, $384.62/day, or $8,333.33/month.",
+    badge: "Popular Utility",
+    featured: true,
+    keywords: [
+      "annual to hourly calculator",
+      "salary to hourly converter",
+      "yearly salary to hourly wage",
+      "how much is 100k a year hourly",
+      "how much is 75k a year per hour",
+      "convert 50000 salary to hourly",
+      "salary to daily rate calculator",
+    ],
+    formulaDescription:
+      "Hourly Wage = Annual Salary / (Hours per Week * Weeks per Year - Unpaid Leave Hours). Monthly = Annual / 12.",
+    about:
+      "When comparing salaried employment offers with 1099 independent contracting or hourly freelance roles, knowing your true equivalent hourly wage is crucial. ConvertSheet's Annual to Hourly Calculator translates your yearly compensation into accurate hourly, daily, weekly, bi-weekly, and monthly wages. Model the impact of unpaid time off or non-standard work weeks (e.g. 35 or 45 hours) and export your full compensation breakdown to Excel (.xlsx).",
+    howTo: [
+      {
+        step: 1,
+        title: "Enter Annual Salary",
+        description:
+          "Input your gross yearly salary (e.g. $75,000) using the numeric input or responsive slider.",
+      },
+      {
+        step: 2,
+        title: "Configure Work Schedule",
+        description:
+          "Set your expected hours per week (typically 40) and working weeks per year (typically 52).",
+      },
+      {
+        step: 3,
+        title: "Review & Export",
+        description:
+          "Instantly view your equivalent hourly rate, daily earnings, and export the entire paycheck comparison to Excel.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How much is $100,000 a year hourly?",
+        answer:
+          "At a standard full-time schedule of 40 hours per week (2,080 hours/year), a $100,000 annual salary equals approximately $48.08 per hour.",
+      },
+      {
+        question: "How do I calculate my hourly rate from salary?",
+        answer:
+          "Divide your annual salary by 2,080 (40 hours * 52 weeks). For quick estimation in your head, drop the last three zeros and divide by 2: a $60,000 salary is roughly $30/hour.",
+      },
+      {
+        question: "Does salary include paid vacation days?",
+        answer:
+          "Yes, standard exempt salary packages include paid time off (PTO) and paid holidays within the 52-week annual compensation. If taking unpaid leave, your effective hourly rate increases because you work fewer total hours for the base salary.",
+      },
+    ],
+    relatedConverters: ["excel-to-json", "excel-to-csv"],
+    relatedTools: ["hourly-to-salary-calculator", "salary-calculator", "mortgage-calculator"],
+  },
 };

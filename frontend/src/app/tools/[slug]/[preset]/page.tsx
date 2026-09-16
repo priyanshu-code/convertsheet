@@ -19,6 +19,8 @@ import { MortgageCalculator } from "@/components/tools/MortgageCalculator";
 import { CarLoanCalculator } from "@/components/tools/CarLoanCalculator";
 import { RetirementCalculator } from "@/components/tools/RetirementCalculator";
 import { InflationCalculator } from "@/components/tools/InflationCalculator";
+import { HourlyToSalaryCalculator } from "@/components/tools/HourlyToSalaryCalculator";
+import { AnnualToHourlyCalculator } from "@/components/tools/AnnualToHourlyCalculator";
 
 export interface ProgrammaticPresetPageProps {
   params: {
@@ -92,6 +94,10 @@ export default function ProgrammaticPresetPage({
         return <RetirementCalculator initialValues={preset.initialValues} />;
       case "inflation-calculator":
         return <InflationCalculator initialValues={preset.initialValues} />;
+      case "hourly-to-salary-calculator":
+        return <HourlyToSalaryCalculator initialValues={preset.initialValues} />;
+      case "annual-to-hourly-calculator":
+        return <AnnualToHourlyCalculator initialValues={preset.initialValues} />;
       default:
         return null;
     }
