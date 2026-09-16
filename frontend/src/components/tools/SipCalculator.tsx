@@ -8,6 +8,8 @@ import {
   CalcSlider,
   CalcResult,
   CalcChart,
+  CalcPromptButton,
+  CalcExportButton,
 } from "@/components/calculator";
 
 export function SipCalculator() {
@@ -181,6 +183,26 @@ export function SipCalculator() {
           },
         ]}
       />
+
+      {/* AEO / GEO Actions & Export Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+        <CalcPromptButton
+          promptText={`Analyze this SIP investment strategy: I am investing ₹${monthlyInvestment.toLocaleString('en-IN')}/month for ${timeYears} years at an expected return of ${annualReturnRate}%. My projected maturity value is ₹${totalMaturity.toLocaleString('en-IN')} (₹${totalInvested.toLocaleString('en-IN')} invested + ₹${wealthGained.toLocaleString('en-IN')} gains). Is this realistic, what are the inflation-adjusted returns, and what mutual fund categories are recommended?`}
+          label="Copy Prompt for ChatGPT / Claude"
+        />
+
+        <CalcExportButton
+          filename={`convertsheet_sip_${monthlyInvestment}_pm_${timeYears}yrs`}
+          sheetName="SIP Projections"
+          data={chartData.map((d) => ({
+            Year: d.label,
+            "Invested Capital (INR)": d.invested,
+            "Wealth Gained (INR)": d.wealthGained,
+            "Total Portfolio Value (INR)": d.totalValue,
+          }))}
+          label="Download Schedule (.xlsx)"
+        />
+      </div>
     </CalcCard>
   );
 }

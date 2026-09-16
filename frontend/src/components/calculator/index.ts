@@ -7,3 +7,5 @@ export * from "./CalcTextarea";
 export * from "./CalcCopyButton";
 export * from "./CalcResult";
 export * from "./CalcChart";
+export * from "./CalcPromptButton";
+export * from "./CalcExportButton";
