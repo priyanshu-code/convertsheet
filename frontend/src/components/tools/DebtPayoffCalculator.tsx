@@ -282,26 +282,30 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
               </div>
 
               {/* Secondary Breakdown */}
-              <div className="space-y-3 pt-2">
+              <div className="pt-2">
                 <CalcResult
-                  label="Total Starting Debt"
-                  value={`$${Math.round(payoffResult.totalOriginalBalance).toLocaleString()}`}
-                  subtext="Cumulative principal balances across all accounts"
-                />
-                <CalcResult
-                  label="Monthly Commitment"
-                  value={`$${Math.round(payoffResult.totalMonthlyPayment).toLocaleString()}/mo`}
-                  subtext="Minimums + your extra accelerator contribution"
-                />
-                <CalcResult
-                  label="Total Interest Paid"
-                  value={`$${Math.round(payoffResult.totalInterestPaid).toLocaleString()}`}
-                  subtext="Total cost of borrowing over entire payoff period"
-                />
-                <CalcResult
-                  label="Total Cumulative Payments"
-                  value={`$${Math.round(payoffResult.totalPayment).toLocaleString()}`}
-                  subtext="Principal + interest to reach zero debt"
+                  items={[
+                    {
+                      label: "Total Starting Debt",
+                      value: `$${Math.round(payoffResult.totalOriginalBalance).toLocaleString()}`,
+                      subtext: "Cumulative principal balances across all accounts",
+                    },
+                    {
+                      label: "Monthly Commitment",
+                      value: `$${Math.round(payoffResult.totalMonthlyPayment).toLocaleString()}/mo`,
+                      subtext: "Minimums + your extra accelerator contribution",
+                    },
+                    {
+                      label: "Total Interest Paid",
+                      value: `$${Math.round(payoffResult.totalInterestPaid).toLocaleString()}`,
+                      subtext: "Total cost of borrowing over entire payoff period",
+                    },
+                    {
+                      label: "Total Cumulative Payments",
+                      value: `$${Math.round(payoffResult.totalPayment).toLocaleString()}`,
+                      subtext: "Principal + interest to reach zero debt",
+                    },
+                  ]}
                 />
               </div>
 
