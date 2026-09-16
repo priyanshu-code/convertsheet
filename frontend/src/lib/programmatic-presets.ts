@@ -1845,6 +1845,10 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         "question": "$30 an hour is how much yearly?",
         "answer": "Working standard 40 hours each week for 52 weeks, $30 per hour generates $62,400 per year."
+      },
+      {
+        "question": "How much is $30 an hour monthly?",
+        "answer": "$30 an hour equals $5,200 per month before taxes ($62,400 divided by 12 months)."
       }
     ]
   },
@@ -1869,6 +1873,10 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         "question": "$40 an hour is how much a year full-time?",
         "answer": "$40 an hour is $83,200 per year across 2,080 work hours (40 hours x 52 weeks)."
+      },
+      {
+        "question": "What is $40 an hour bi-weekly?",
+        "answer": "For an 80-hour pay period, $40 an hour generates $3,200 in gross pay every two weeks."
       }
     ]
   },
@@ -1893,6 +1901,10 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         "question": "Is $50 an hour six figures?",
         "answer": "Yes! At 40 hours a week for 52 weeks, $50 an hour equals exactly $104,000 per year, surpassing the $100,000 threshold."
+      },
+      {
+        "question": "How much is $50 an hour per month?",
+        "answer": "Gross monthly earnings at $50 per hour equal $8,666.67."
       }
     ]
   },
@@ -1941,6 +1953,10 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         "question": "What is $50,000 a year hourly?",
         "answer": "Based on 2,080 hours per year, a $50,000 annual salary breaks down to $24.04 per hour."
+      },
+      {
+        "question": "How much is $50,000 a year bi-weekly?",
+        "answer": "Bi-weekly gross pay for a $50,000 annual salary is $1,923.08 across 26 pay periods."
       }
     ]
   },
@@ -1963,6 +1979,10 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         "question": "$60,000 a year is how much an hour?",
         "answer": "$60,000 per year equals $28.85 per hour for standard 40-hour work weeks."
+      },
+      {
+        "question": "How much is $60k a year monthly?",
+        "answer": "$60,000 per year equals $5,000 per month gross."
       }
     ]
   },
@@ -1985,6 +2005,10 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         "question": "What is $75,000 a year broken down hourly?",
         "answer": "Divided across 2,080 hours per year, $75,000 equates to $36.06 per hour."
+      },
+      {
+        "question": "How much is $75,000 a year monthly?",
+        "answer": "Gross monthly pay for a $75,000 salary equals $6,250 per month."
       }
     ]
   },
