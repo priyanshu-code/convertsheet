@@ -162,12 +162,9 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-1">
-                        Current Balance
-                      </label>
                       <CalcInput
                         id={`balance-${debt.id}`}
-                        label=""
+                        label="Current Balance"
                         value={debt.balance}
                         onChange={(v) => updateDebt(debt.id, "balance", Number(v) || 0)}
                         prefix="$"
@@ -177,12 +174,9 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-1">
-                        Interest Rate (APR)
-                      </label>
                       <CalcInput
                         id={`rate-${debt.id}`}
-                        label=""
+                        label="Interest Rate (APR)"
                         value={debt.interestRate}
                         onChange={(v) => updateDebt(debt.id, "interestRate", Number(v) || 0)}
                         suffix="%"
@@ -192,12 +186,9 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-1">
-                        Minimum Payment
-                      </label>
                       <CalcInput
                         id={`min-${debt.id}`}
-                        label=""
+                        label="Minimum Payment"
                         value={debt.minimumPayment}
                         onChange={(v) => updateDebt(debt.id, "minimumPayment", Number(v) || 0)}
                         prefix="$"
