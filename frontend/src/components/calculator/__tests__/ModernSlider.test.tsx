@@ -42,16 +42,20 @@ describe("ModernSlider", () => {
     expect(slider).toHaveAttribute("aria-valuenow", "30");
     expect(slider).toHaveAttribute("aria-valuemin", "18");
     expect(slider).toHaveAttribute("aria-valuemax", "80");
+    expect(slider).toHaveAttribute("aria-valuetext", "30 yrs");
+    expect(slider).toHaveAttribute("aria-describedby", "test-age-help");
     expect(slider).toHaveValue("30");
 
     // Dynamic gradient background style should be set on slider
     expect(slider).toHaveStyle({
       background:
-        "linear-gradient(to right, #10b981 0%, #10b981 19.35483870967742%, #e4e4e7 19.35483870967742%, #e4e4e7 100%)",
+        "linear-gradient(to right, #10b981 0%, #10b981 19.35483870967742%, var(--border, #e4e4e7) 19.35483870967742%, var(--border, #e4e4e7) 100%)",
     });
 
     // Check help text
-    expect(screen.getByText("Enter your age in years")).toBeInTheDocument();
+    const helpEl = screen.getByText("Enter your age in years");
+    expect(helpEl).toBeInTheDocument();
+    expect(helpEl).toHaveAttribute("id", "test-age-help");
   });
 
   it("renders preset chips and fires onChange when preset chip is clicked", () => {
@@ -63,12 +67,16 @@ describe("ModernSlider", () => {
     expect(screen.getByText("30 yrs")).toBeInTheDocument();
     expect(screen.getByText("40 yrs")).toBeInTheDocument();
 
-    // Active preset (value 30) should have active styling class
+    // Active preset (value 30) should have active styling class and aria-pressed=true
     const activeChip = screen.getByRole("button", { name: "30 yrs" });
     expect(activeChip.className).toContain("bg-emerald-600");
+    expect(activeChip).toHaveAttribute("aria-pressed", "true");
+
+    // Inactive preset should have aria-pressed=false
+    const chip40 = screen.getByRole("button", { name: "40 yrs" });
+    expect(chip40).toHaveAttribute("aria-pressed", "false");
 
     // Click inactive preset
-    const chip40 = screen.getByRole("button", { name: "40 yrs" });
     fireEvent.click(chip40);
     expect(onChange).toHaveBeenCalledWith(40);
   });
@@ -86,6 +94,28 @@ describe("ModernSlider", () => {
     const numericInput = screen.getByLabelText("Current Age numeric input");
     fireEvent.change(numericInput, { target: { value: "45" } });
     expect(onChange).toHaveBeenCalledWith(45);
+
+    // Empty string input should not trigger onChange(0)
+    onChange.mockClear();
+    fireEvent.change(numericInput, { target: { value: "" } });
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("clamps out-of-bounds values on blur", () => {
+    const onChange = vi.fn();
+    // value is less than min (18)
+    const { rerender } = render(
+      <ModernSlider {...defaultProps} value={10} onChange={onChange} />
+    );
+    const numericInput = screen.getByLabelText("Current Age numeric input");
+    fireEvent.blur(numericInput);
+    expect(onChange).toHaveBeenCalledWith(18);
+
+    // value is greater than max (80)
+    onChange.mockClear();
+    rerender(<ModernSlider {...defaultProps} value={100} onChange={onChange} />);
+    fireEvent.blur(numericInput);
+    expect(onChange).toHaveBeenCalledWith(80);
   });
 
   it("renders prefix and handles disabled state", () => {

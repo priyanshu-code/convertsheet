@@ -43,6 +43,9 @@ export const ModernSlider = memo(function ModernSlider({
     Math.max(0, ((value - min) / (max - min || 1)) * 100)
   );
 
+  const helpId = helpText ? `${id}-help` : undefined;
+  const formattedValueText = `${prefix}${value}${suffix ? ` ${suffix}` : ""}`.trim();
+
   return (
     <div className={`space-y-2.5 w-full ${className}`}>
       <div className="flex items-center justify-between">
@@ -52,9 +55,9 @@ export const ModernSlider = memo(function ModernSlider({
         >
           {label}
         </label>
-        <div className="relative flex items-center rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/80 px-2.5 py-1 shadow-sm">
+        <div className="relative flex items-center rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/80 px-2.5 py-1 shadow-sm transition-all focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20">
           {prefix && (
-            <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 mr-1">
+            <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 mr-1 select-none">
               {prefix}
             </span>
           )}
@@ -66,14 +69,20 @@ export const ModernSlider = memo(function ModernSlider({
             value={value}
             disabled={disabled}
             aria-label={`${label} numeric input`}
+            aria-describedby={helpId}
             onChange={(e) => {
+              if (e.target.value === "") return;
               const num = Number(e.target.value);
               if (!isNaN(num)) onChange(num);
+            }}
+            onBlur={() => {
+              if (value < min) onChange(min);
+              else if (value > max) onChange(max);
             }}
             className="w-16 sm:w-20 text-xs sm:text-sm font-bold font-mono text-emerald-700 dark:text-emerald-300 bg-transparent text-right focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           />
           {suffix && (
-            <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 ml-1">
+            <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 ml-1 select-none">
               {suffix}
             </span>
           )}
@@ -94,9 +103,11 @@ export const ModernSlider = memo(function ModernSlider({
           aria-valuenow={value}
           aria-valuemin={min}
           aria-valuemax={max}
+          aria-valuetext={formattedValueText}
+          aria-describedby={helpId}
           onChange={(e) => onChange(Number(e.target.value))}
           style={{
-            background: `linear-gradient(to right, #10b981 0%, #10b981 ${percentage}%, #e4e4e7 ${percentage}%, #e4e4e7 100%)`,
+            background: `linear-gradient(to right, #10b981 0%, #10b981 ${percentage}%, var(--border, #e4e4e7) ${percentage}%, var(--border, #e4e4e7) 100%)`,
           }}
           className="w-full h-2.5 rounded-lg appearance-none cursor-pointer accent-emerald-600 dark:accent-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
         />
@@ -106,21 +117,24 @@ export const ModernSlider = memo(function ModernSlider({
         <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
           {presets.map((preset) => {
             const isActive = preset.value === value;
+            const hasPrefix = prefix && preset.label.startsWith(prefix);
+            const hasSuffix = suffix && preset.label.endsWith(suffix);
+            const displayLabel = `${hasPrefix ? "" : prefix}${preset.label}${hasSuffix || !suffix ? "" : ` ${suffix}`}`;
+
             return (
               <button
-                key={preset.label}
+                key={`${preset.label}-${preset.value}`}
                 type="button"
                 disabled={disabled}
+                aria-pressed={isActive}
                 onClick={() => onChange(preset.value)}
-                className={`px-2.5 py-1 text-[11px] font-mono font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`px-2.5 py-1 text-[11px] font-mono font-medium rounded-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed ${
                   isActive
                     ? "bg-emerald-600 text-white font-bold shadow-sm scale-105"
                     : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 border border-zinc-200/60 dark:border-zinc-700/60"
                 }`}
               >
-                {prefix}
-                {preset.label}
-                {suffix && ` ${suffix}`}
+                {displayLabel}
               </button>
             );
           })}
@@ -128,7 +142,7 @@ export const ModernSlider = memo(function ModernSlider({
       )}
 
       {helpText && (
-        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+        <p id={helpId} className="text-[11px] text-zinc-500 dark:text-zinc-400">
           {helpText}
         </p>
       )}
