@@ -377,11 +377,11 @@ export function Navbar() {
               {/* Free Tools Suite Button */}
               <Link
                 href="/tools"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm shadow-emerald-500/20 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-600/20 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
                 aria-label="Free Calculators and Tools"
               >
-                <Sparkles className="w-3.5 h-3.5 text-emerald-100" />
-                <span>Free Tools</span>
+                <Sparkles className="w-3.5 h-3.5 text-white" />
+                <span className="font-bold text-white">Free Tools</span>
               </Link>
 
               {/* Mobile Hamburger Toggle */}
