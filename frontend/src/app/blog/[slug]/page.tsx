@@ -207,7 +207,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Render Article HTML Content */}
             <div
-              className="prose prose-zinc max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-headings:font-bold prose-headings:tracking-tight prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:rounded-2xl"
+              className="prose prose-zinc max-w-none dark:prose-invert [&_section]:scroll-mt-24 prose-headings:scroll-mt-24 prose-headings:font-bold prose-headings:tracking-tight prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:rounded-2xl"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 

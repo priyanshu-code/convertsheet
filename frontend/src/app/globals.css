@@ -21,6 +21,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem; /* 88px offset for sticky 64px header + breathing room */
+  }
   * {
     border-color: var(--border);
   }
