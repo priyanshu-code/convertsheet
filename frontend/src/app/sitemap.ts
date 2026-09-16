@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { getAllConverterSlugs } from "@/lib/registry";
 import { getAllToolSlugs } from "@/lib/tool-registry";
 import { getAllPresetStaticParams } from "@/lib/programmatic-presets";
+import { getAllBlogPostSlugs } from "@/lib/blog-registry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://convertsheet.com";
@@ -43,6 +44,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
+  const blogPostRoutes: MetadataRoute.Sitemap = getAllBlogPostSlugs().map(
+    (slug) => ({
+      url: `${baseUrl}/blog/${slug}`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    })
+  );
+
   return [
     {
       url: baseUrl,
@@ -55,6 +65,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: currentDate,
       changeFrequency: "daily",
       priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: currentDate,
+      changeFrequency: "daily",
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/about`,
@@ -78,5 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...converterRoutes,
     ...toolRoutes,
     ...presetRoutes,
+    ...blogPostRoutes,
   ];
 }
+
