@@ -4,27 +4,33 @@ import React, { useState, memo, useCallback } from "react";
 import { Bot, Check } from "lucide-react";
 
 export interface CalcPromptButtonProps {
-  promptText: string;
+  promptText?: string;
+  prompt?: string;
+  toolName?: string;
   label?: string;
   className?: string;
 }
 
 export const CalcPromptButton = memo(function CalcPromptButton({
   promptText,
-  label = "Copy Prompt for ChatGPT",
+  prompt,
+  toolName,
+  label,
   className = "",
 }: CalcPromptButtonProps) {
   const [copied, setCopied] = useState(false);
+  const effectivePrompt = promptText || prompt || "";
+  const effectiveLabel = label || (toolName ? `Copy ${toolName} Prompt` : "Copy Prompt for ChatGPT");
 
   const handleCopy = useCallback(async () => {
-    if (!promptText) return;
+    if (!effectivePrompt) return;
     try {
-      await navigator.clipboard.writeText(promptText);
+      await navigator.clipboard.writeText(effectivePrompt);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
       const textarea = document.createElement("textarea");
-      textarea.value = promptText;
+      textarea.value = effectivePrompt;
       document.body.appendChild(textarea);
       textarea.select();
       document.execCommand("copy");
@@ -32,13 +38,13 @@ export const CalcPromptButton = memo(function CalcPromptButton({
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     }
-  }, [promptText]);
+  }, [effectivePrompt]);
 
   return (
     <button
       type="button"
       onClick={handleCopy}
-      aria-label={copied ? "Copied Prompt" : label}
+      aria-label={copied ? "Copied Prompt" : effectiveLabel}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
         copied
           ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
@@ -53,7 +59,7 @@ export const CalcPromptButton = memo(function CalcPromptButton({
       ) : (
         <>
           <Bot className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
-          <span>{label}</span>
+          <span>{effectiveLabel}</span>
         </>
       )}
     </button>

@@ -6,7 +6,7 @@ export interface CalcInputProps {
   id: string;
   label: string;
   value: number | string;
-  onChange: (val: string) => void;
+  onChange: (val: any) => void;
   type?: "number" | "text" | "date";
   min?: number;
   max?: number;
@@ -15,6 +15,7 @@ export interface CalcInputProps {
   suffix?: string;
   placeholder?: string;
   helperText?: string;
+  helpText?: string;
   disabled?: boolean;
 }
 
@@ -31,6 +32,7 @@ export const CalcInput = memo(function CalcInput({
   suffix,
   placeholder,
   helperText,
+  helpText,
   disabled = false,
 }: CalcInputProps) {
   return (
@@ -74,9 +76,9 @@ export const CalcInput = memo(function CalcInput({
         )}
       </div>
 
-      {helperText && (
+      {(helperText || helpText) && (
         <p className="text-[11px] text-zinc-500 dark:text-zinc-400 leading-tight">
-          {helperText}
+          {helperText || helpText}
         </p>
       )}
     </div>

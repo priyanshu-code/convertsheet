@@ -123,23 +123,23 @@ Please verify the claims, standard security headers, algorithm suitability, and 
         )}
 
         {payload && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <CalcResult
-              label="Token Status"
-              value={isExpired === null ? "No Expiry Claim" : isExpired ? "Expired" : "Active / Valid"}
-              highlight={isExpired === true ? "danger" : isExpired === false ? "success" : "neutral"}
-            />
-            <CalcResult
-              label="Issued At (iat)"
-              value={iatDate || "Not Specified"}
-              highlight="neutral"
-            />
-            <CalcResult
-              label="Expires At (exp)"
-              value={expDate || "No Exp Limit"}
-              highlight="neutral"
-            />
-          </div>
+          <CalcResult
+            title="Token Claims & Expiry"
+            primaryLabel="Token Status"
+            primaryValue={isExpired === null ? "No Expiry Claim" : isExpired ? "Expired" : "Active / Valid"}
+            primarySubtext={isExpired === true ? "This token has expired" : "Valid active token signature format"}
+            items={[
+              {
+                label: "Issued At (iat)",
+                value: iatDate || "Not Specified",
+              },
+              {
+                label: "Expires At (exp)",
+                value: expDate || "No Exp Limit",
+                highlight: isExpired === false,
+              },
+            ]}
+          />
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

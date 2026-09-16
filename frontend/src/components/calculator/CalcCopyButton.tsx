@@ -4,28 +4,31 @@ import React, { useState, memo, useCallback } from "react";
 import { Copy, Check } from "lucide-react";
 
 export interface CalcCopyButtonProps {
-  textToCopy: string;
+  textToCopy?: string;
+  text?: string;
   label?: string;
   className?: string;
 }
 
 export const CalcCopyButton = memo(function CalcCopyButton({
   textToCopy,
+  text,
   label = "Copy",
   className = "",
 }: CalcCopyButtonProps) {
   const [copied, setCopied] = useState(false);
+  const targetText = textToCopy || text || "";
 
   const handleCopy = useCallback(async () => {
-    if (!textToCopy) return;
+    if (!targetText) return;
     try {
-      await navigator.clipboard.writeText(textToCopy);
+      await navigator.clipboard.writeText(targetText);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback
       const textarea = document.createElement("textarea");
-      textarea.value = textToCopy;
+      textarea.value = targetText;
       document.body.appendChild(textarea);
       textarea.select();
       document.execCommand("copy");
@@ -33,13 +36,13 @@ export const CalcCopyButton = memo(function CalcCopyButton({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
-  }, [textToCopy]);
+  }, [targetText]);
 
   return (
     <button
       type="button"
       onClick={handleCopy}
-      disabled={!textToCopy}
+      disabled={!targetText}
       aria-label={copied ? "Copied" : label}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
         copied

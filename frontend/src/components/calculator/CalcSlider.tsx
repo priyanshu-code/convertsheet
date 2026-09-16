@@ -12,6 +12,7 @@ export interface CalcSliderProps {
   onChange: (val: number) => void;
   unit?: string;
   prefix?: string;
+  helpText?: string;
 }
 
 export const CalcSlider = memo(function CalcSlider({
@@ -24,6 +25,7 @@ export const CalcSlider = memo(function CalcSlider({
   onChange,
   unit = "",
   prefix = "",
+  helpText,
 }: CalcSliderProps) {
   return (
     <div className="space-y-2 w-full">
@@ -61,6 +63,12 @@ export const CalcSlider = memo(function CalcSlider({
           {max} {unit}
         </span>
       </div>
+
+      {helpText && (
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          {helpText}
+        </p>
+      )}
     </div>
   );
 });
