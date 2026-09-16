@@ -292,9 +292,9 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
 
         {/* Visual Accumulation & Drawdown Curve */}
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Portfolio Growth &amp; Drawdown Curve (Age {currentAge} to 100)
-          </h4>
+          </h3>
           <CalcChart
             data={chartData}
             xAxisKey="label"

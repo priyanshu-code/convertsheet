@@ -124,6 +124,7 @@ export function PdfMergeTool() {
           type="file"
           accept=".pdf,application/pdf"
           multiple
+          aria-label="Select PDF files to merge"
           className="hidden"
           onChange={(e) => {
             handleFileChange(e.target.files);

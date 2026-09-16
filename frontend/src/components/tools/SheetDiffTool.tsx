@@ -147,7 +147,7 @@ export function SheetDiffTool() {
             </div>
 
             <label className="flex flex-col items-center justify-center p-6 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 cursor-pointer transition-colors text-center">
-              <input type="file" accept=".csv,.xlsx,.xls,.tsv" onChange={handleFileA} className="hidden" />
+              <input type="file" accept=".csv,.xlsx,.xls,.tsv" aria-label="Upload File A (Original Version)" onChange={handleFileA} className="hidden" />
               <FileSpreadsheet className="w-8 h-8 text-zinc-400 mb-2" />
               <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate max-w-[200px]">
                 {fileA ? fileA.name : "Choose or drop File A"}
@@ -164,7 +164,7 @@ export function SheetDiffTool() {
             </div>
 
             <label className="flex flex-col items-center justify-center p-6 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 cursor-pointer transition-colors text-center">
-              <input type="file" accept=".csv,.xlsx,.xls,.tsv" onChange={handleFileB} className="hidden" />
+              <input type="file" accept=".csv,.xlsx,.xls,.tsv" aria-label="Upload File B (Modified Version)" onChange={handleFileB} className="hidden" />
               <FileSpreadsheet className="w-8 h-8 text-emerald-500 mb-2" />
               <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate max-w-[200px]">
                 {fileB ? fileB.name : "Choose or drop File B"}

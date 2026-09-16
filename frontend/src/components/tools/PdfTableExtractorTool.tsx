@@ -95,6 +95,7 @@ export function PdfTableExtractorTool() {
           ref={fileInputRef}
           type="file"
           accept=".pdf,application/pdf"
+          aria-label="Select PDF file to extract tabular data"
           className="hidden"
           onChange={(e) => {
             const f = e.target.files?.[0];

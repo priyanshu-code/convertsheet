@@ -125,6 +125,7 @@ Please help me write a SQL or TypeScript migration seeding script using these UU
                   onClick={() => navigator.clipboard.writeText(id)}
                   className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-zinc-400 hover:text-white"
                   title="Copy UUID"
+                  aria-label={`Copy UUID ${id}`}
                 >
                   <Copy className="w-3.5 h-3.5" />
                 </button>

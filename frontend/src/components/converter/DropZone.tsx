@@ -125,26 +125,7 @@ export function DropZone({
   );
 
   return (
-    <div
-      role="button"
-      tabIndex={disabled ? -1 : 0}
-      aria-label={`Upload ${config.sourceFormat} file`}
-      aria-disabled={disabled}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      className={cn(
-        "group relative flex flex-col items-center justify-center text-center",
-        "border-2 border-dashed rounded-2xl p-8 sm:p-12 transition-all duration-200 cursor-pointer select-none outline-none",
-        isDragOver
-          ? "border-emerald-500 bg-emerald-500/10 ring-4 ring-emerald-500/10 scale-[1.005]"
-          : "border-zinc-300 dark:border-zinc-700/80 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-emerald-500/60 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/10",
-        disabled && "opacity-50 cursor-not-allowed pointer-events-none",
-        className
-      )}
-    >
+    <>
       <input
         ref={fileInputRef}
         type="file"
@@ -156,6 +137,27 @@ export function DropZone({
         aria-hidden="true"
         tabIndex={-1}
       />
+      <div
+        data-testid="dropzone-area"
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={`Upload ${config.sourceFormat} file`}
+        aria-disabled={disabled}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={cn(
+          "group relative flex flex-col items-center justify-center text-center",
+          "border-2 border-dashed rounded-2xl p-8 sm:p-12 transition-all duration-200 cursor-pointer select-none outline-none",
+          isDragOver
+            ? "border-emerald-500 bg-emerald-500/10 ring-4 ring-emerald-500/10 scale-[1.005]"
+            : "border-zinc-300 dark:border-zinc-700/80 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-emerald-500/60 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/10",
+          disabled && "opacity-50 cursor-not-allowed pointer-events-none",
+          className
+        )}
+      >
 
       {/* Upload icon circle */}
       <div
@@ -211,5 +213,6 @@ export function DropZone({
         </div>
       </div>
     </div>
+    </>
   );
 }

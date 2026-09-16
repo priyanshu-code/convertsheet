@@ -132,6 +132,7 @@ export function ImageConverterTool({
               ref={fileInputRef}
               type="file"
               accept="image/*,.svg"
+              aria-label="Select image file to convert"
               className="hidden"
               onChange={(e) => {
                 const file = e.target.files?.[0];

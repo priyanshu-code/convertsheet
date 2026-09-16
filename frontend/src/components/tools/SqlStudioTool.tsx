@@ -179,6 +179,7 @@ export function SqlStudioTool() {
               ref={fileInputRef}
               type="file"
               accept=".csv,.parquet,.xlsx,.xls,.json,.jsonl,.tsv"
+              aria-label="Select structured dataset file to query with SQL"
               onChange={(e) => e.target.files?.[0] && loadFileIntoDuckDb(e.target.files[0])}
               className="hidden"
             />

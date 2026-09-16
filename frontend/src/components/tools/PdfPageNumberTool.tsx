@@ -99,6 +99,7 @@ export function PdfPageNumberTool() {
           ref={fileInputRef}
           type="file"
           accept=".pdf,application/pdf"
+          aria-label="Select PDF file to add page numbers"
           className="hidden"
           onChange={(e) => {
             const f = e.target.files?.[0];

@@ -47,8 +47,8 @@ describe("Converter Components", () => {
     });
 
     it("prevents drag leave flicker when relatedTarget is inside dropzone", () => {
-      const { container } = render(<DropZone config={jsonConfig} onFileSelect={() => {}} />);
-      const dropzone = container.firstElementChild as HTMLElement;
+      const { getByTestId } = render(<DropZone config={jsonConfig} onFileSelect={() => {}} />);
+      const dropzone = getByTestId("dropzone-area");
       const child = dropzone.querySelector("h2") as HTMLElement;
 
       fireEvent.dragOver(dropzone, { dataTransfer: { files: [] } });

@@ -201,9 +201,9 @@ Provide actionable asset allocation advice to protect wealth against this inflat
 
         {/* Visual Chart: Future Cost Needed vs Purchasing Power */}
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Cost Escalation vs. Purchasing Power Erosion ({years} Years)
-          </h4>
+          </h3>
           <CalcChart
             data={chartData}
             xAxisKey="label"

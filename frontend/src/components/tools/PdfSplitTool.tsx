@@ -115,6 +115,7 @@ export function PdfSplitTool() {
           ref={fileInputRef}
           type="file"
           accept=".pdf,application/pdf"
+          aria-label="Select PDF file to split"
           className="hidden"
           onChange={(e) => {
             const f = e.target.files?.[0];

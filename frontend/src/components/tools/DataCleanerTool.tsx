@@ -128,6 +128,7 @@ export function DataCleanerTool() {
               ref={fileInputRef}
               type="file"
               accept=".csv,.xlsx,.xls,.tsv"
+              aria-label="Select CSV or Excel file to clean"
               onChange={(e) => e.target.files?.[0] && parseFile(e.target.files[0])}
               className="hidden"
             />
