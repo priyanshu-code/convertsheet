@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { TrendingDown, Shield, ExternalLink, Info, CheckCircle2 } from "lucide-react";
-import { getAffiliatePartnerLink } from "@/lib/affiliate-config";
+import { getAffiliatePartnerLink, AFFILIATE_DISCLOSURE } from "@/lib/affiliate-config";
 
 export interface MortgageRatesCardProps {
   loanAmount?: number;
@@ -145,9 +145,7 @@ export function MortgageRatesCard({ loanAmount = 320000 }: MortgageRatesCardProp
       {/* Transparent Affiliate & Advertising Disclosure */}
       <div className="flex items-start gap-2 pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-800">
         <Info className="w-3.5 h-3.5 text-zinc-400 shrink-0 mt-0.5" />
-        <p>
-          <strong>Advertising &amp; Rate Disclosure:</strong> National benchmark interest rates and APRs are updated weekly based on prime borrower profiles (740+ FICO, 20% down). ConvertSheet is an independent educational calculation service and may receive compensation from partner financial institutions when users click to compare rates. Zero client data or calculated figures are ever shared.
-        </p>
+        <p>{AFFILIATE_DISCLOSURE}</p>
       </div>
     </div>
   );

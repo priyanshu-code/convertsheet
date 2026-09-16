@@ -2,7 +2,7 @@
 
 import React from "react";
 import { PiggyBank, ShieldCheck, Sparkles, ExternalLink, Info, ArrowUpRight } from "lucide-react";
-import { getAffiliatePartnerLink } from "@/lib/affiliate-config";
+import { getAffiliatePartnerLink, AFFILIATE_DISCLOSURE } from "@/lib/affiliate-config";
 
 export interface RetirementAccountsCardProps {
   monthlySavings?: number;
@@ -145,9 +145,7 @@ export function RetirementAccountsCard({ monthlySavings = 750 }: RetirementAccou
       {/* Advertising Disclosure */}
       <div className="flex items-start gap-2 pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-800">
         <Info className="w-3.5 h-3.5 text-zinc-400 shrink-0 mt-0.5" />
-        <p>
-          <strong>Affiliate Disclosure:</strong> ConvertSheet may receive compensation when you explore products through partner links. Our educational reviews and rate projections remain objective, rigorous, and 100% independent. Always verify APYs and term disclosures with financial institutions.
-        </p>
+        <p>{AFFILIATE_DISCLOSURE}</p>
       </div>
     </div>
   );

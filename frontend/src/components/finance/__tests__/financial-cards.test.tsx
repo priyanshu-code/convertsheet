@@ -22,11 +22,27 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
       // Check loan amount display
       expect(screen.getByText(/\$400,000/i)).toBeInTheDocument();
 
-      // Advertising disclosure
-      expect(screen.getByText(/Advertising & Rate Disclosure/i)).toBeInTheDocument();
+      // Advertising disclosure rendered via AFFILIATE_DISCLOSURE
+      expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
 
       const link = screen.getAllByRole("link", { name: /Check Rates/i })[0];
       expect(link).toHaveAttribute("href", "https://www.bankrate.com/mortgages/mortgage-rates/");
+    });
+
+    it("decorates outbound link with affiliate tracking when enabled", () => {
+      const originalEnv = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED;
+      process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = "true";
+
+      render(<MortgageRatesCard loanAmount={450000} />);
+      const link = screen.getAllByRole("link", { name: /Check Rates/i })[0];
+      const href = link.getAttribute("href") || "";
+      const url = new URL(href);
+
+      expect(url.searchParams.get("utm_source")).toBe("convertsheet");
+      expect(url.searchParams.get("utm_campaign")).toBe("mortgage");
+      expect(url.searchParams.get("loanAmount")).toBe("450000");
+
+      process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = originalEnv;
     });
   });
 
@@ -40,12 +56,28 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
       expect(screen.getByText(/Traditional IRA & 401\(k\) Rollover/i)).toBeInTheDocument();
       expect(screen.getByText(/FDIC Insured Up To \$250k\+/i)).toBeInTheDocument();
 
-      // Affiliate disclosure
-      expect(screen.getByText(/Affiliate Disclosure/i)).toBeInTheDocument();
+      // Affiliate disclosure rendered via AFFILIATE_DISCLOSURE
+      expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
 
       const links = screen.getAllByRole("link", { name: /Compare/i });
       expect(links.length).toBe(3);
       expect(links[0]).toHaveAttribute("href", "https://www.nerdwallet.com/best/banking/high-yield-online-savings-accounts");
+    });
+
+    it("decorates outbound links with affiliate tracking when enabled", () => {
+      const originalEnv = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED;
+      process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = "true";
+
+      render(<RetirementAccountsCard monthlySavings={800} />);
+      const links = screen.getAllByRole("link", { name: /Compare/i });
+      const href = links[0].getAttribute("href") || "";
+      const url = new URL(href);
+
+      expect(url.searchParams.get("utm_source")).toBe("convertsheet");
+      expect(url.searchParams.get("utm_campaign")).toBe("savings");
+      expect(url.searchParams.get("monthlySavings")).toBe("800");
+
+      process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = originalEnv;
     });
   });
 
@@ -61,8 +93,28 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
       expect(screen.getByText(/Credit Score Impact Insight/i)).toBeInTheDocument();
       expect(screen.getByText(/Experian Benchmark Data/i)).toBeInTheDocument();
 
+      // Disclosure rendered via AFFILIATE_DISCLOSURE
+      expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
+
       const link = screen.getByRole("link", { name: /Compare Auto Lenders/i });
       expect(link).toHaveAttribute("href", "https://www.bankrate.com/loans/auto-loans/rates/");
+    });
+
+    it("decorates outbound link with affiliate tracking when enabled", () => {
+      const originalEnv = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED;
+      process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = "true";
+
+      render(<AutoLoanRatesCard financedAmount={30000} loanTermMonths={72} />);
+      const link = screen.getByRole("link", { name: /Compare Auto Lenders/i });
+      const href = link.getAttribute("href") || "";
+      const url = new URL(href);
+
+      expect(url.searchParams.get("utm_source")).toBe("convertsheet");
+      expect(url.searchParams.get("utm_campaign")).toBe("auto_loan");
+      expect(url.searchParams.get("loanAmount")).toBe("30000");
+      expect(url.searchParams.get("term")).toBe("72");
+
+      process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = originalEnv;
     });
   });
 

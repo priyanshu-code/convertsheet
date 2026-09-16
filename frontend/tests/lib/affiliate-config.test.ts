@@ -98,6 +98,39 @@ describe("Pluggable Affiliate Configuration Layer", () => {
     expect(parsed.searchParams.get("utm_source")).toBe("convertsheet");
   });
 
+  it("handles malformed fallback URLs safely by returning the original string", () => {
+    process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = "true";
+    const malformedUrl = "not-a-valid-url";
+
+    const result = getAffiliatePartnerLink({
+      category: "mortgage",
+      fallbackUrl: malformedUrl,
+      loanAmount: 250000,
+    });
+
+    expect(result).toBe(malformedUrl);
+  });
+
+  it("appends arbitrary custom parameters when provided", () => {
+    process.env.NEXT_PUBLIC_AFFILIATE_ENABLED = "true";
+    const fallbackUrl = "https://example.com/partner";
+
+    const result = getAffiliatePartnerLink({
+      category: "general",
+      fallbackUrl,
+      params: {
+        partnerId: "123",
+        creditScore: "720",
+        optionalUndefined: undefined,
+      },
+    });
+
+    const parsed = new URL(result);
+    expect(parsed.searchParams.get("partnerId")).toBe("123");
+    expect(parsed.searchParams.get("creditScore")).toBe("720");
+    expect(parsed.searchParams.has("optionalUndefined")).toBe(false);
+  });
+
   it("provides non-empty rate disclosure text", () => {
     expect(AFFILIATE_DISCLOSURE).toBeDefined();
     expect(typeof AFFILIATE_DISCLOSURE).toBe("string");

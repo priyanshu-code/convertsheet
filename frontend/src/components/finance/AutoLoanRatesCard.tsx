@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { Car, TrendingDown, ShieldCheck, ExternalLink, Info, Award } from "lucide-react";
-import { getAffiliatePartnerLink } from "@/lib/affiliate-config";
+import { getAffiliatePartnerLink, AFFILIATE_DISCLOSURE } from "@/lib/affiliate-config";
 
 export interface AutoLoanRatesCardProps {
   financedAmount?: number;
@@ -163,9 +163,7 @@ export function AutoLoanRatesCard({
       {/* Advertising Disclosure */}
       <div className="flex items-start gap-2 pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 leading-relaxed border-t border-zinc-100 dark:border-zinc-800">
         <Info className="w-3.5 h-3.5 text-zinc-400 shrink-0 mt-0.5" />
-        <p>
-          <strong>Disclosure:</strong> Auto loan APR benchmarks are based on nationwide Experian State of the Automotive Finance Market quarterly reporting. ConvertSheet provides unbiased mathematical models and may receive referral fees from lenders.
-        </p>
+        <p>{AFFILIATE_DISCLOSURE}</p>
       </div>
     </div>
   );
