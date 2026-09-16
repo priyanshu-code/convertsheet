@@ -12,6 +12,7 @@ import {
   CalcExportButton,
   CalcPromptButton,
   CalcPdfReportButton,
+  CalcSaveButton,
 } from "@/components/calculator";
 import { calculateMortgage } from "@/lib/engines/financial-engine";
 import { generateMortgageDossierPdf } from "@/lib/engines/pdf-dossier-engine";
@@ -301,6 +302,17 @@ Provide financial advice on whether refinancing or making extra principal paymen
                   })),
                 })
               }
+            />
+            <CalcSaveButton
+              toolSlug="mortgage-calculator"
+              toolName="Mortgage & Amortization Calculator"
+              summaryTitle={`$${homePrice.toLocaleString()} Home (${loanTermYears}yr @ ${interestRate}%)`}
+              summaryMetrics={[
+                { label: "Monthly Payment", value: `$${mortgage.totalMonthlyPayment.toLocaleString()}/mo` },
+                { label: "Principal & Interest", value: `$${mortgage.monthlyPrincipalAndInterest.toLocaleString()}/mo` },
+                { label: "Loan Amount", value: `$${mortgage.loanAmount.toLocaleString()}` },
+                { label: "Total Interest", value: `$${mortgage.totalInterest.toLocaleString()}` },
+              ]}
             />
             <CalcPromptButton prompt={aiPrompt} toolName="Mortgage Analysis" />
           </div>

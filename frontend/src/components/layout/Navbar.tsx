@@ -20,6 +20,7 @@ import { ConverterConfig } from "@/types/registry";
 import { ThemeToggle } from "./ThemeToggle";
 import { CommandPalette } from "./CommandPalette";
 import { PwaInstallButton } from "@/components/pwa/PwaInstallButton";
+import { SavedCalculationsDrawer } from "@/components/calculator/SavedCalculationsDrawer";
 
 const CONVERTER_LIST = Object.values(CONVERTER_REGISTRY) as ConverterConfig[];
 const SPREADSHEET_CONVERTERS = CONVERTER_LIST.filter(
@@ -375,6 +376,9 @@ export function Navbar() {
                   ⌘K
                 </kbd>
               </button>
+
+              {/* Saved Calculations History Drawer */}
+              <SavedCalculationsDrawer />
 
               {/* PWA Install Prompt & Offline Badge */}
               <PwaInstallButton />

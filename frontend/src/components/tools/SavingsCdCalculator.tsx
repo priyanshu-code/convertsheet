@@ -9,6 +9,7 @@ import {
   CalcResult,
   CalcExportButton,
   CalcPromptButton,
+  CalcSaveButton,
   ModernSlider,
 } from "@/components/calculator";
 import {
@@ -359,6 +360,17 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                   sheetName="GrowthSchedule"
                   data={exportData}
                   label="Export Schedule to Excel (.xlsx)"
+                />
+                <CalcSaveButton
+                  toolSlug="high-yield-savings-cd-calculator"
+                  toolName="High-Yield Savings & CD Calculator"
+                  summaryTitle={`${mode === "hysa" ? "HYSA" : "CD"}: $${initialDeposit.toLocaleString()} at ${annualInterestRate}% APY`}
+                  summaryMetrics={[
+                    { label: "Final Balance", value: `$${Math.round(result.finalBalance).toLocaleString()}` },
+                    { label: "Interest Earned", value: `+$${Math.round(result.totalInterestEarned).toLocaleString()}` },
+                    { label: "APY", value: `${result.effectiveApy}%` },
+                    { label: "Horizon", value: `${termMonths} mos` },
+                  ]}
                 />
                 <CalcPromptButton prompt={aiPrompt} label="Analyze Yield with AI" />
               </div>

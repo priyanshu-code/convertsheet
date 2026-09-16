@@ -8,6 +8,7 @@ import {
   CalcResult,
   CalcExportButton,
   CalcPromptButton,
+  CalcSaveButton,
   ModernSlider,
 } from "@/components/calculator";
 import { calculateDebtPayoff, DebtItem } from "@/lib/engines/financial-engine";
@@ -307,6 +308,17 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
                   sheetName="PayoffSchedule"
                   data={exportData}
                   label="Export Payoff Amortization (.xlsx)"
+                />
+                <CalcSaveButton
+                  toolSlug="credit-card-payoff-calculator"
+                  toolName="Debt Payoff & Accelerator Calculator"
+                  summaryTitle={`${strategy === "avalanche" ? "Avalanche" : "Snowball"}: $${Math.round(payoffResult.totalOriginalBalance).toLocaleString()} Debt (${payoffResult.payoffMonths} mos)`}
+                  summaryMetrics={[
+                    { label: "Payoff Time", value: `${payoffResult.payoffMonths} months` },
+                    { label: "Total Debt", value: `$${Math.round(payoffResult.totalOriginalBalance).toLocaleString()}` },
+                    { label: "Total Interest", value: `$${Math.round(payoffResult.totalInterestPaid).toLocaleString()}` },
+                    { label: "Accelerator", value: `+$${extraMonthlyPayment}/mo` },
+                  ]}
                 />
                 <CalcPromptButton prompt={aiPrompt} label="Analyze with AI" />
               </div>

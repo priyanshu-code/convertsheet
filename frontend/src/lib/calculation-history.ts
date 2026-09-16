@@ -1,0 +1,69 @@
+"use client";
+
+export interface SavedCalculationItem {
+  id: string;
+  toolSlug: string;
+  toolName: string;
+  timestamp: number;
+  summaryTitle: string;
+  summaryMetrics: { label: string; value: string }[];
+  path: string;
+}
+
+const STORAGE_KEY = "convertsheet_saved_calculations";
+
+export function getSavedCalculations(): SavedCalculationItem[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error("Failed to load saved calculations:", err);
+    return [];
+  }
+}
+
+export function saveCalculation(item: Omit<SavedCalculationItem, "id" | "timestamp">): SavedCalculationItem {
+  if (typeof window === "undefined") {
+    return { ...item, id: "temp", timestamp: Date.now() };
+  }
+  try {
+    const existing = getSavedCalculations();
+    const newItem: SavedCalculationItem = {
+      ...item,
+      id: `${item.toolSlug}-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      timestamp: Date.now(),
+    };
+    // Keep last 30 calculations
+    const updated = [newItem, ...existing.filter((e) => e.summaryTitle !== item.summaryTitle)].slice(0, 30);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new Event("convertsheet_calculation_saved"));
+    return newItem;
+  } catch (err) {
+    console.error("Failed to save calculation:", err);
+    return { ...item, id: "temp", timestamp: Date.now() };
+  }
+}
+
+export function removeSavedCalculation(id: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = getSavedCalculations();
+    const updated = existing.filter((item) => item.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new Event("convertsheet_calculation_saved"));
+  } catch (err) {
+    console.error("Failed to remove saved calculation:", err);
+  }
+}
+
+export function clearAllSavedCalculations(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    window.dispatchEvent(new Event("convertsheet_calculation_saved"));
+  } catch (err) {
+    console.error("Failed to clear saved calculations:", err);
+  }
+}

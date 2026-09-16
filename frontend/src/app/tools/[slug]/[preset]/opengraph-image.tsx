@@ -176,11 +176,11 @@ export default async function Image({
             color: "#A1A1AA",
           }}
         >
-          <span>✓ 100% Client-Side Private</span>
+          <span>Private & Client-Side</span>
           <span>•</span>
-          <span>✓ Instant Amortization Schedule</span>
+          <span>Instant Calculation</span>
           <span>•</span>
-          <span>✓ Excel (.xlsx) Export</span>
+          <span>Excel (.xlsx) Export</span>
         </div>
       </div>
     ),
