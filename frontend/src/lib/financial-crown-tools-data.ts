@@ -452,4 +452,67 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
     relatedConverters: ["excel-to-csv", "csv-to-excel"],
     relatedTools: ["mortgage-calculator", "car-loan-calculator", "hourly-to-salary-calculator"],
   },
+  "high-yield-savings-cd-calculator": {
+    slug: "high-yield-savings-cd-calculator",
+    name: "High-Yield Savings & CD Calculator",
+    category: "financial",
+    title: "High-Yield Savings & CD Compound Calculator - APY & Early Penalty",
+    subtitle: "Compare liquid High-Yield Savings Accounts (HYSA) against Certificate of Deposit (CD) fixed rates. Model daily vs monthly compounding and export growth schedules to Excel.",
+    metaDescription: "Free High-Yield Savings (HYSA) and CD calculator. Calculate APY compounding growth, test early withdrawal penalties, and export amortization schedules to Excel (.xlsx).",
+    answerSummary: "Model compounding interest for High-Yield Savings Accounts and CDs with daily or monthly compounding. Simulate monthly deposits, APY vs APR yields, and early withdrawal penalties with Excel export.",
+    badge: "Wealth Growth Engine",
+    featured: true,
+    keywords: [
+      "high yield savings calculator",
+      "cd calculator",
+      "certificate of deposit calculator",
+      "hysa calculator",
+      "apy compound calculator",
+      "cd early withdrawal penalty calculator",
+      "savings interest calculator excel",
+    ],
+    formulaDescription:
+      "Compound Interest: A = P(1 + r/n)^(nt) + PMT * [((1 + r/n)^(nt) - 1) / (r/n)], where n is compounding frequency per year.",
+    about:
+      "In a high-interest rate environment, holding idle cash in a traditional bank account paying 0.01% incurs massive purchasing power erosion. ConvertSheet's High-Yield Savings & CD Calculator models your cash yields across both liquid savings accounts and fixed-term CDs. Compare daily versus monthly compounding, test the financial cost of CD early withdrawal penalties (typically 90 to 180 days simple interest), and export your entire month-by-month compounding schedule directly to Microsoft Excel (.xlsx).",
+    howTo: [
+      {
+        step: 1,
+        title: "Select Account Type",
+        description:
+          "Choose between High-Yield Savings (HYSA, supporting monthly recurring deposits) or CD (lump-sum deposit with fixed maturity lockup).",
+      },
+      {
+        step: 2,
+        title: "Enter Principal & APY",
+        description:
+          "Set your initial deposit amount, expected annual APY / APR percentage, and compounding frequency (daily, monthly, quarterly, or annually).",
+      },
+      {
+        step: 3,
+        title: "Model Horizon & Export",
+        description:
+          "Adjust your term length (from 6 months to 5 years), inspect the early withdrawal penalty impact, and download the full schedule to Excel.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the difference between APR and APY?",
+        answer:
+          "APR (Annual Percentage Rate) reflects the simple annual interest rate without compounding. APY (Annual Percentage Yield) reflects the true annual return taking into account how often interest compounds (daily or monthly), meaning APY is always slightly higher than APR.",
+      },
+      {
+        question: "How do CD early withdrawal penalties work?",
+        answer:
+          "If you withdraw funds from a Certificate of Deposit before its maturity date, financial institutions penalize you by forfeiting a set number of months of interest (commonly 90 days for short-term CDs or 180 days for multi-year CDs), deducted from earned interest or principal.",
+      },
+      {
+        question: "Is daily compounding significantly better than monthly compounding?",
+        answer:
+          "Daily compounding yields slightly more interest because accrued interest begins earning its own interest 24 hours later rather than at the end of each month. On a $10,000 balance at 5.0% APY, the difference is approximately $1 to $2 per year.",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: ["mortgage-calculator", "retirement-calculator", "inflation-calculator"],
+  },
 };

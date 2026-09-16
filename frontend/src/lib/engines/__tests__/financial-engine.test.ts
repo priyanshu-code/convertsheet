@@ -7,6 +7,7 @@ import {
   calculateHourlyToSalary,
   calculateAnnualToHourly,
   calculateDebtPayoff,
+  calculateSavingsGrowth,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -229,6 +230,37 @@ describe("financial-engine", () => {
       expect(res.strategy).toBe("snowball");
       expect(res.totalOriginalBalance).toBe(15000);
       expect(res.payoffMonths).toBeGreaterThan(0);
+    });
+  });
+
+  describe("calculateSavingsGrowth", () => {
+    it("computes compound interest with monthly contributions correctly", () => {
+      const res = calculateSavingsGrowth({
+        initialDeposit: 10000,
+        monthlyContribution: 500,
+        annualInterestRate: 5.0, // 5% APY
+        termMonths: 12,
+        compoundingFrequency: "daily",
+      });
+
+      expect(res.initialDeposit).toBe(10000);
+      expect(res.totalContributions).toBe(6000);
+      expect(res.totalInterestEarned).toBeGreaterThan(500);
+      expect(res.finalBalance).toBeGreaterThan(16500);
+      expect(res.effectiveApy).toBeCloseTo(5.12, 1);
+      expect(res.monthlySchedule).toHaveLength(12);
+    });
+
+    it("calculates CD early withdrawal penalty correctly", () => {
+      const res = calculateSavingsGrowth({
+        initialDeposit: 25000,
+        annualInterestRate: 5.0,
+        termMonths: 12,
+        cdEarlyPenaltyMonths: 3, // 90 days penalty
+      });
+
+      expect(res.earlyWithdrawalPenalty).toBeGreaterThan(0);
+      expect(res.netBalanceAfterEarlyPenalty).toBeLessThan(res.finalBalance);
     });
   });
 });

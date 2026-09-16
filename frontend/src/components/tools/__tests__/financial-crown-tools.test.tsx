@@ -167,4 +167,27 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(screen.getByText(/Debt Elimination Summary/i)).toBeInTheDocument();
     });
   });
+
+  describe("SavingsCdCalculator", () => {
+    it("renders savings & CD calculator with toggle and compound projection", async () => {
+      const { SavingsCdCalculator } = await import("../SavingsCdCalculator");
+      render(<SavingsCdCalculator />);
+
+      expect(screen.getByText(/Account Structure:/i)).toBeInTheDocument();
+      expect(screen.getByText(/High-Yield Savings \(Liquid \+ Ongoing Deposits\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Certificate of Deposit \(Fixed Rate \+ Lockup\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Projected Compound Growth/i)).toBeInTheDocument();
+      expect(screen.getByText(/Export Schedule to Excel/i)).toBeInTheDocument();
+    });
+
+    it("allows switching between HYSA and CD mode", async () => {
+      const { SavingsCdCalculator } = await import("../SavingsCdCalculator");
+      render(<SavingsCdCalculator />);
+
+      const cdBtn = screen.getByText(/Certificate of Deposit \(Fixed Rate \+ Lockup\)/i);
+      fireEvent.click(cdBtn);
+
+      expect(screen.getByText(/CD Early Withdrawal Penalty Rule/i)).toBeInTheDocument();
+    });
+  });
 });

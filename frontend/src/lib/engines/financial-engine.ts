@@ -703,3 +703,115 @@ export function calculateDebtPayoff(input: DebtPayoffInput): DebtPayoffResult {
     monthlySchedule: accelerated.schedule,
   };
 }
+
+// ==========================================
+// 7. HIGH-YIELD SAVINGS & CD COMPOUND ENGINE
+// ==========================================
+
+export type CompoundingFrequency = "daily" | "monthly" | "quarterly" | "annually";
+
+export interface SavingsGrowthInput {
+  initialDeposit: number;
+  monthlyContribution?: number;
+  annualInterestRate: number; // APY or APR %
+  termMonths: number;
+  compoundingFrequency?: CompoundingFrequency;
+  cdEarlyPenaltyMonths?: number; // E.g. 3 or 6 months interest penalty
+}
+
+export interface SavingsGrowthScheduleRow {
+  month: number;
+  startingBalance: number;
+  contribution: number;
+  interestEarned: number;
+  totalInterestEarned: number;
+  endingBalance: number;
+}
+
+export interface SavingsGrowthResult {
+  initialDeposit: number;
+  totalContributions: number;
+  totalInterestEarned: number;
+  finalBalance: number;
+  effectiveApy: number;
+  earlyWithdrawalPenalty: number;
+  netBalanceAfterEarlyPenalty: number;
+  monthlySchedule: SavingsGrowthScheduleRow[];
+}
+
+export function calculateSavingsGrowth(input: SavingsGrowthInput): SavingsGrowthResult {
+  const initialDeposit = Math.max(0, input.initialDeposit || 0);
+  const monthlyContribution = Math.max(0, input.monthlyContribution || 0);
+  const ratePercent = Math.max(0, input.annualInterestRate || 0);
+  const termMonths = Math.max(1, input.termMonths || 12);
+  const frequency = input.compoundingFrequency || "monthly";
+  const penaltyMonths = Math.max(0, input.cdEarlyPenaltyMonths || 0);
+
+  // Periods per year
+  const periodsPerYear =
+    frequency === "daily"
+      ? 365
+      : frequency === "monthly"
+      ? 12
+      : frequency === "quarterly"
+      ? 4
+      : 1;
+
+  // Nominal annual rate r
+  const r = ratePercent / 100;
+  // Effective APY = (1 + r/n)^n - 1
+  const effectiveApy =
+    r > 0 ? roundTo((Math.pow(1 + r / periodsPerYear, periodsPerYear) - 1) * 100, 3) : 0;
+
+  let currentBalance = initialDeposit;
+  let cumulativeInterest = 0;
+  let cumulativeContributions = 0;
+  const schedule: SavingsGrowthScheduleRow[] = [];
+
+  // Monthly breakdown simulation
+  for (let m = 1; m <= termMonths; m++) {
+    const startingBalance = currentBalance;
+    // Add contribution at beginning or end of month
+    const contribution = monthlyContribution;
+    cumulativeContributions = roundTo(cumulativeContributions + contribution, 2);
+
+    // Monthly interest factor based on compounding frequency
+    // Effective monthly rate = (1 + r/periodsPerYear)^(periodsPerYear/12) - 1
+    const effectiveMonthlyRate = Math.pow(1 + r / periodsPerYear, periodsPerYear / 12) - 1;
+    const interest = roundTo((startingBalance + contribution / 2) * effectiveMonthlyRate, 2);
+
+    cumulativeInterest = roundTo(cumulativeInterest + interest, 2);
+    currentBalance = roundTo(startingBalance + contribution + interest, 2);
+
+    schedule.push({
+      month: m,
+      startingBalance,
+      contribution,
+      interestEarned: interest,
+      totalInterestEarned: cumulativeInterest,
+      endingBalance: currentBalance,
+    });
+  }
+
+  // Early withdrawal penalty calculation (e.g. 90 days / 3 months simple interest)
+  const monthlyInterestRate = r / 12;
+  const earlyWithdrawalPenalty = roundTo(
+    currentBalance * monthlyInterestRate * penaltyMonths,
+    2
+  );
+  const netBalanceAfterEarlyPenalty = roundTo(
+    Math.max(initialDeposit, currentBalance - earlyWithdrawalPenalty),
+    2
+  );
+
+  return {
+    initialDeposit,
+    totalContributions: cumulativeContributions,
+    totalInterestEarned: cumulativeInterest,
+    finalBalance: currentBalance,
+    effectiveApy,
+    earlyWithdrawalPenalty,
+    netBalanceAfterEarlyPenalty,
+    monthlySchedule: schedule,
+  };
+}
