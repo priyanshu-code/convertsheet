@@ -40,6 +40,11 @@ import { UuidGeneratorTool } from "@/components/tools/UuidGeneratorTool";
 import { MarginCalculator } from "@/components/tools/MarginCalculator";
 import { RoiCalculator } from "@/components/tools/RoiCalculator";
 import { ImageConverterTool } from "@/components/tools/ImageConverterTool";
+import { PdfMergeTool } from "@/components/tools/PdfMergeTool";
+import { PdfSplitTool } from "@/components/tools/PdfSplitTool";
+import { PdfWatermarkTool } from "@/components/tools/PdfWatermarkTool";
+import { PdfPageNumberTool } from "@/components/tools/PdfPageNumberTool";
+import { PdfTableExtractorTool } from "@/components/tools/PdfTableExtractorTool";
 
 export interface ToolPageProps {
   params: {
@@ -138,6 +143,11 @@ export default function ToolPage({ params }: ToolPageProps) {
     "jpeg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="JPEG to PNG Converter" subtitle="Convert JPEG photos to uncompressed PNG format." />,
     "image-compressor": () => <ImageConverterTool defaultTargetFormat="image/webp" title="Image Resizer & Compressor" subtitle="Compress and resize WebP, PNG, and JPEG images." />,
     "svg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="SVG to PNG Rasterizer" subtitle="Render vector SVGs to crisp transparent PNG images at any resolution." />,
+    "merge-pdf": PdfMergeTool,
+    "split-pdf": PdfSplitTool,
+    "watermark-pdf": PdfWatermarkTool,
+    "page-number-pdf": PdfPageNumberTool,
+    "pdf-table-extractor": PdfTableExtractorTool,
   };
 
   const ToolComponent = componentMap[tool.slug];
