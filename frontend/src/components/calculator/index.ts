@@ -17,3 +17,4 @@ export * from "./CalcSaveButton";
 export * from "./SavedCalculationsDrawer";
 export * from "./EmbedModal";
 export * from "./EmbedTrigger";
+export * from "./CurrencySelector";

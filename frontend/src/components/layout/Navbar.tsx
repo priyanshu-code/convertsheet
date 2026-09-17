@@ -21,6 +21,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { CommandPalette } from "./CommandPalette";
 import { PwaInstallButton } from "@/components/pwa/PwaInstallButton";
 import { SavedCalculationsDrawer } from "@/components/calculator/SavedCalculationsDrawer";
+import { CurrencySelector } from "@/components/calculator/CurrencySelector";
 
 const CONVERTER_LIST = Object.values(CONVERTER_REGISTRY) as ConverterConfig[];
 const SPREADSHEET_CONVERTERS = CONVERTER_LIST.filter(
@@ -393,6 +394,9 @@ export function Navbar() {
 
               {/* Saved Calculations History Drawer */}
               <SavedCalculationsDrawer />
+
+              {/* Currency & Region Selector */}
+              <CurrencySelector />
 
               {/* PWA Install Prompt & Offline Badge */}
               <PwaInstallButton />

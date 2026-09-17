@@ -137,10 +137,10 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
     it("renders US & EU benchmark savings yields and annual interest calculations", () => {
       render(<SavingsRatesCard depositAmount={25000} />);
 
-      expect(screen.getByText(/Current High-Yield Savings & CD Benchmarks/i)).toBeInTheDocument();
-      expect(screen.getByText(/US & EU Benchmark Yields/i)).toBeInTheDocument();
+      expect(screen.getByText(/Current High-Yield & Certificate of Deposit \(CD\) Benchmarks/i)).toBeInTheDocument();
+      expect(screen.getByText(/Benchmark Yields/i)).toBeInTheDocument();
       expect(screen.getByText(/High-Yield Savings \(HYSA\)/i)).toBeInTheDocument();
-      expect(screen.getByText(/Certificate of Deposit \(CD\)/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Certificate of Deposit \(CD\)/i).length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText(/Traditional Brick & Mortar/i)).toBeInTheDocument();
 
       // Interest calculations check
@@ -154,7 +154,7 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
       render(<DebtConsolidationCard totalDebt={15000} />);
 
       expect(screen.getByText(/Debt Consolidation & Rate Refinance Options/i)).toBeInTheDocument();
-      expect(screen.getByText(/US & EU Refinance & Payoff Benchmarks/i)).toBeInTheDocument();
+      expect(screen.getByText(/Refinance & Payoff Benchmarks/i)).toBeInTheDocument();
       expect(screen.getByText(/Balance Transfer Card \(0% Promo\)/i)).toBeInTheDocument();
       expect(screen.getByText(/Fixed Debt Consolidation Loan/i)).toBeInTheDocument();
       expect(screen.getByText(/Unconsolidated Credit Card Average/i)).toBeInTheDocument();

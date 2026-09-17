@@ -2521,6 +2521,175 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         "answer": "Yes. ConvertSheet allows you to export your customized monthly payoff schedule to a formatted .xlsx workbook with one click."
       }
     ]
+  },
+
+  // ==========================================
+  // REGIONAL TIER-1 PROGRAMMATIC PRESETS
+  // Canada 🇨🇦, United Kingdom 🇬🇧, Australia 🇦🇺
+  // ==========================================
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "canadian-mortgage-stress-test",
+    "name": "Canadian Mortgage Stress Test Calculator",
+    "title": "Canadian Mortgage Stress Test Calculator (OSFI Benchmark) | ConvertSheet",
+    "metaDescription": "Calculate Canadian mortgage qualifying payments with OSFI stress test rule (+2% or 5.25% floor). Detailed Canadian amortization breakdown with Excel schedule export.",
+    "answerSummary": "In Canada, OSFI requires homebuyers to qualify at their contract interest rate plus 2.00% (or the 5.25% floor). On a $600,000 home with 20% down ($120,000) and a 5.0% contract rate, you must qualify at 7.0%, requiring roughly $118,000 in gross household income.",
+    "about": "Under Canada's Office of the Superintendent of Financial Institutions (OSFI) B-20 guidelines, all insured and uninsured residential mortgages must pass a qualifying stress test. ConvertSheet models both your actual contractual monthly payment and the stress-tested qualifying threshold, ensuring Canadian prospective buyers understand their debt service ratios (GDSR / TDSR) and can export full Canadian amortization tables to Excel.",
+    "initialValues": {
+      "homePrice": 600000,
+      "downPayment": 120000,
+      "interestRate": 7.0,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 4200,
+      "homeInsuranceYearly": 1200
+    },
+    "faqs": [
+      {
+        "question": "What is the mortgage stress test in Canada?",
+        "answer": "The Canadian mortgage stress test proves you can afford loan payments if interest rates rise. You must qualify at either the Bank of Canada benchmark rate (5.25%) or your lender's contract rate plus 2%, whichever is higher."
+      },
+      {
+        "question": "Why is the typical Canadian amortization 25 years instead of 30 years?",
+        "answer": "In Canada, high-ratio insured mortgages (down payment under 20%) are legally capped at a maximum 25-year amortization period by CMHC and the federal government."
+      }
+    ]
+  },
+  {
+    "toolSlug": "high-yield-savings-cd-calculator",
+    "presetSlug": "gic-rates-calculator",
+    "name": "Canadian GIC Rates & Returns Calculator",
+    "title": "Canadian GIC Return Calculator (1-Yr & 5-Yr Guaranteed Investment Cert)",
+    "metaDescription": "Calculate guaranteed compounding returns on Canadian GICs (Guaranteed Investment Certificates). Compare CDIC insured fixed yields with complete Excel export.",
+    "answerSummary": "A $25,000 deposit into a 1-year Canadian GIC at 4.25% earns $1,063 in guaranteed CDIC-backed interest, providing zero-risk capital preservation for Canadian investors.",
+    "about": "Guaranteed Investment Certificates (GICs) are Canada's principal-protected fixed income instruments. ConvertSheet's GIC Return Calculator computes compounding returns across 1-year, 2-year, and 5-year terms. Model simple vs compound annual growth and download your complete maturity and interest payment schedule into Microsoft Excel with 100% client-side privacy.",
+    "initialValues": {
+      "initialDeposit": 25000,
+      "monthlyContribution": 0,
+      "annualInterestRate": 4.25,
+      "termMonths": 12,
+      "compoundingFrequency": "annually",
+      "cdEarlyPenaltyMonths": 3
+    },
+    "faqs": [
+      {
+        "question": "Are Canadian GICs protected by deposit insurance?",
+        "answer": "Yes. GICs issued by CDIC-member Canadian institutions (such as RBC, TD, EQ Bank, and Tangerine) are 100% insured up to $100,000 CAD per eligibility category."
+      },
+      {
+        "question": "What is the difference between redeemable and non-redeemable GICs?",
+        "answer": "Non-redeemable GICs pay higher interest rates but lock your principal until maturity. Redeemable or cashable GICs let you withdraw early without penalty but offer lower interest yields."
+      }
+    ]
+  },
+  {
+    "toolSlug": "retirement-calculator",
+    "presetSlug": "tfsa-growth-calculator",
+    "name": "Canadian TFSA Compound Growth Calculator",
+    "title": "TFSA Growth Calculator: Tax-Free Savings Compound Interest in Canada",
+    "metaDescription": "Calculate long-term tax-free compound growth in a Canadian TFSA (Tax-Free Savings Account). Model annual contribution room and export growth schedules to Excel.",
+    "answerSummary": "Contributing $583/month ($7,000/year annual TFSA limit) at an 7.0% annualized return compounds to $310,000+ in 20 years, with 100% of capital gains and dividends completely exempt from Canadian income tax.",
+    "about": "The Canadian Tax-Free Savings Account (TFSA) allows Canadians aged 18+ to invest and compound money without paying any tax upon withdrawal. ConvertSheet models annual compounding, maximum contribution room growth, and calculates total tax sheltered over your retirement horizon.",
+    "initialValues": {
+      "currentAge": 28,
+      "retirementAge": 60,
+      "currentSavings": 20000,
+      "monthlyContribution": 583,
+      "annualReturn": 7.0,
+      "inflationRate": 2.5,
+      "desiredMonthlyIncome": 3500
+    },
+    "faqs": [
+      {
+        "question": "What is the Canadian TFSA contribution limit?",
+        "answer": "The annual TFSA dollar limit is set by the CRA and indexed to inflation (e.g. $7,000 for 2024). Unused contribution room carries forward indefinitely for eligible Canadian residents."
+      },
+      {
+        "question": "Are TFSA withdrawals taxed by CRA?",
+        "answer": "No. All TFSA withdrawals—including investment profits, interest, and capital gains—are 100% tax-free and do not impact government benefit thresholds."
+      }
+    ]
+  },
+  {
+    "toolSlug": "high-yield-savings-cd-calculator",
+    "presetSlug": "cash-isa-calculator",
+    "name": "UK Cash ISA Tax-Free Calculator",
+    "title": "UK Cash ISA Calculator: £20,000 Annual Allowance Tax-Free Growth",
+    "metaDescription": "Calculate tax-free interest on UK Cash ISAs with the £20,000 HMRC annual allowance. Compare FSCS-protected fixed and easy-access ISAs with Excel schedule export.",
+    "answerSummary": "Maximizing your full UK £20,000 Cash ISA allowance at a 4.75% tax-free AER earns £950 in annual interest, saving higher-rate UK taxpayers hundreds in HMRC personal savings tax.",
+    "about": "In the United Kingdom, Individual Savings Accounts (ISAs) protect interest and dividends from HMRC income tax. ConvertSheet's Cash ISA Calculator models easy-access and fixed-rate Cash ISAs, helping UK savers forecast compounding returns within their £20,000 annual allowance without risking private banking data on external cloud servers.",
+    "initialValues": {
+      "initialDeposit": 20000,
+      "monthlyContribution": 250,
+      "annualInterestRate": 4.75,
+      "termMonths": 12,
+      "compoundingFrequency": "monthly",
+      "cdEarlyPenaltyMonths": 3
+    },
+    "faqs": [
+      {
+        "question": "What is the UK annual ISA allowance?",
+        "answer": "The annual UK ISA allowance is £20,000 per tax year (running 6 April to 5 April), which can be distributed across Cash ISAs, Stocks & Shares ISAs, and Innovative Finance ISAs."
+      },
+      {
+        "question": "Is interest in a UK Cash ISA completely tax-free?",
+        "answer": "Yes. Interest earned within an ISA is completely exempt from UK income tax and capital gains tax, and does not count toward your HMRC Personal Savings Allowance (PSA)."
+      }
+    ]
+  },
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "uk-fixed-rate-mortgage",
+    "name": "UK 2-Year & 5-Year Fixed Mortgage Calculator",
+    "title": "UK Fixed Rate Mortgage Calculator: 2-Year & 5-Year Term Amortization",
+    "metaDescription": "Calculate monthly UK mortgage payments and remortgage options. Full breakdown of capital repayment, interest, and Bank of England benchmark stress tests with Excel export.",
+    "answerSummary": "On a typical UK property purchase of £300,000 with a 15% deposit (£45,000), borrowing £255,000 on a 5-year fixed rate at 4.65% over 25 years results in a monthly repayment of £1,438.",
+    "about": "UK home financing primarily relies on 2-year or 5-year fixed rate terms before reverting to a lender's Standard Variable Rate (SVR). ConvertSheet calculates your exact monthly capital and interest repayments, models remortgaging options, and exports full UK amortization schedules to Excel.",
+    "initialValues": {
+      "homePrice": 300000,
+      "downPayment": 45000,
+      "interestRate": 4.65,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 1800,
+      "homeInsuranceYearly": 450
+    },
+    "faqs": [
+      {
+        "question": "What happens when a UK fixed mortgage term ends?",
+        "answer": "When your fixed-rate incentive period ends (after 2 or 5 years), the loan automatically moves to the lender's Standard Variable Rate (SVR), which is typically significantly higher. Homeowners usually remortgage to a new fixed deal before this happens."
+      },
+      {
+        "question": "What is a repayment vs interest-only mortgage in the UK?",
+        "answer": "A repayment mortgage pays off both capital and interest each month, ensuring the debt is zero at term end. An interest-only mortgage only pays monthly interest charges, leaving the full principal balance due at maturity."
+      }
+    ]
+  },
+  {
+    "toolSlug": "retirement-calculator",
+    "presetSlug": "australia-superannuation-growth",
+    "name": "Australian Superannuation Compound Growth Calculator",
+    "title": "Australian Superannuation Calculator: Super Compound Growth & Balance",
+    "metaDescription": "Calculate long-term compounding growth of your Australian superannuation. Model employer Super Guarantee (SG) contributions and export retirement schedules to Excel.",
+    "answerSummary": "With Australia's 11.5%+ Superannuation Guarantee, an employee earning $90,000 AUD with an existing $50,000 super balance contributing regularly at 7.5% net returns will accumulate over $780,000 AUD by retirement at age 65.",
+    "about": "Australia's compulsory Superannuation system mandates employer contributions into tax-concessional super funds. ConvertSheet models compound returns, concessional contribution caps, and projected lump-sum balances at age 60-65 preservation age with full Excel export.",
+    "initialValues": {
+      "currentAge": 30,
+      "retirementAge": 65,
+      "currentSavings": 50000,
+      "monthlyContribution": 860,
+      "annualReturn": 7.5,
+      "inflationRate": 2.5,
+      "desiredMonthlyIncome": 4500
+    },
+    "faqs": [
+      {
+        "question": "What is the Australian Super Guarantee (SG) rate?",
+        "answer": "The Australian Super Guarantee is currently legislated at 11.5% and scheduled to rise to 12% on 1 July 2025, paid by employers on top of base salary."
+      },
+      {
+        "question": "What is the preservation age for accessing super in Australia?",
+        "answer": "For anyone born after 1 July 1964, the preservation age is 60. Once you reach 60 and retire (or start a transition-to-retirement pension), you can access your super tax-free."
+      }
+    ]
   }
 
 ];

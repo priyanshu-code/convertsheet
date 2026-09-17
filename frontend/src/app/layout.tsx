@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import { Navbar, Footer } from "@/components/layout";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -113,11 +114,13 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Navbar />
-        <main id="main-content" className="min-h-[calc(100vh-140px)] flex-1">
-          {children}
-        </main>
-        <Footer />
+        <CurrencyProvider>
+          <Navbar />
+          <main id="main-content" className="min-h-[calc(100vh-140px)] flex-1">
+            {children}
+          </main>
+          <Footer />
+        </CurrencyProvider>
       </body>
     </html>
   );
