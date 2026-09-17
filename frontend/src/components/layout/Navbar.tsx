@@ -344,12 +344,12 @@ export function Navbar() {
                   )}
                 </div>
 
-                {/* Direct Link to Tools Hub */}
+                {/* Calculators & Tools Link */}
                 <Link
                   href="/tools"
-                  className="px-3 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="sr-only focus:not-sr-only px-3 py-2 text-sm font-medium rounded-lg text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
-                  Calculators &amp; Tools
+                  Calculators & Tools
                 </Link>
 
                 {/* Direct Link to Blog */}
@@ -377,29 +377,26 @@ export function Navbar() {
             </div>
 
             {/* Right Header Actions */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               {/* Cmd+K Search Trigger Button */}
               <button
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Search Converters and Calculators"
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+                className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
               >
                 <Search className="w-3.5 h-3.5 text-zinc-400" />
-                <span className="hidden sm:inline">Search tools...</span>
-                <kbd className="hidden sm:inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                <span className="hidden xl:inline">Search tools...</span>
+                <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
                   ⌘K
                 </kbd>
               </button>
 
-              {/* Saved Calculations History Drawer */}
-              <SavedCalculationsDrawer />
-
               {/* Currency & Region Selector */}
               <CurrencySelector />
 
-              {/* PWA Install Prompt & Offline Badge */}
-              <PwaInstallButton />
+              {/* Saved Calculations History Drawer */}
+              <SavedCalculationsDrawer />
 
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -407,7 +404,7 @@ export function Navbar() {
               {/* Free Tools Suite Button */}
               <Link
                 href="/tools"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm shadow-emerald-600/20 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs hover:shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
                 aria-label="Free Calculators and Tools"
               >
                 <Sparkles className="w-3.5 h-3.5 text-white" />
@@ -493,6 +490,13 @@ export function Navbar() {
             </div>
 
             <div className="border-t border-zinc-200 dark:border-zinc-800 pt-3 space-y-2">
+              <div className="flex items-center justify-between px-3 py-1">
+                <span className="text-xs font-semibold text-zinc-500">Market &amp; Currency</span>
+                <CurrencySelector />
+              </div>
+              <div className="px-3 py-1">
+                <PwaInstallButton />
+              </div>
               <Link
                 href="/tools"
                 onClick={() => setIsMobileMenuOpen(false)}
