@@ -8,6 +8,7 @@ import {
   CalcResult,
   CalcExportButton,
   CalcPromptButton,
+  CalcShareButton,
   ModernSlider,
 } from "@/components/calculator";
 import { calculateHourlyToSalary } from "@/lib/engines/financial-engine";
@@ -26,24 +27,53 @@ export interface HourlyToSalaryCalculatorProps {
 export function HourlyToSalaryCalculator({
   initialValues,
 }: HourlyToSalaryCalculatorProps = {}) {
-  const [hourlyRate, setHourlyRate] = useState<number>(
-    Number(initialValues?.hourlyRate ?? (initialValues as Record<string, unknown>)?.hourlyWage) || 25
-  );
-  const [hoursPerWeek, setHoursPerWeek] = useState<number>(
-    Number(initialValues?.hoursPerWeek) || 40
-  );
-  const [weeksPerYear, setWeeksPerYear] = useState<number>(
-    Number(initialValues?.weeksPerYear) || 52
-  );
-  const [unpaidLeaveDays, setUnpaidLeaveDays] = useState<number>(
-    Number(initialValues?.unpaidLeaveDays) || 0
-  );
-  const [overtimeHours, setOvertimeHours] = useState<number>(
-    Number(initialValues?.overtimeHoursPerWeek) || 0
-  );
-  const [overtimeMultiplier, setOvertimeMultiplier] = useState<number>(
-    Number(initialValues?.overtimeMultiplier) || 1.5
-  );
+  const [hourlyRate, setHourlyRate] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("hourlyRate");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.hourlyRate ?? (initialValues as Record<string, unknown>)?.hourlyWage) || 25;
+  });
+
+  const [hoursPerWeek, setHoursPerWeek] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("hoursPerWeek");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.hoursPerWeek) || 40;
+  });
+
+  const [weeksPerYear, setWeeksPerYear] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("weeksPerYear");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.weeksPerYear) || 52;
+  });
+
+  const [unpaidLeaveDays, setUnpaidLeaveDays] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("unpaidLeaveDays");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.unpaidLeaveDays) || 0;
+  });
+
+  const [overtimeHours, setOvertimeHours] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("overtimeHours");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.overtimeHoursPerWeek) || 0;
+  });
+
+  const [overtimeMultiplier, setOvertimeMultiplier] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("overtimeMultiplier");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.overtimeMultiplier) || 1.5;
+  });
 
   const result = useMemo(() => {
     return calculateHourlyToSalary({
@@ -303,6 +333,17 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                   data={exportData}
                   filename={`hourly_salary_${hourlyRate}_per_hr.xlsx`}
                   sheetName="Salary Breakdown"
+                />
+                <CalcShareButton
+                  state={{
+                    hourlyRate,
+                    hoursPerWeek,
+                    weeksPerYear,
+                    unpaidLeaveDays,
+                    overtimeHours,
+                    overtimeMultiplier,
+                  }}
+                  label="Share Wage Conversion"
                 />
                 <CalcPromptButton promptText={aiPrompt} />
               </div>

@@ -59,6 +59,7 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
 
       expect(screen.getByText(/Export Loan Schedule/i)).toBeInTheDocument();
       expect(screen.getByText(/Copy Car Loan Advice Prompt/i)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Share Auto Loan/i })).toBeInTheDocument();
     });
 
     it("factors trade-in credit into net financing", () => {
@@ -83,6 +84,7 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
 
       expect(screen.getByText(/Export to Excel/i)).toBeInTheDocument();
       expect(screen.getByText(/Ask AI to Analyze Plan/i)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Share Plan/i })).toBeInTheDocument();
 
       // Donut breakdown & results summary
       expect(screen.getByText(/from Compounding/i)).toBeInTheDocument();

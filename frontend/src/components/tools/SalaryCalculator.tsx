@@ -10,12 +10,33 @@ import {
   CalcChart,
   CalcPromptButton,
   CalcExportButton,
+  CalcShareButton,
 } from "@/components/calculator";
 
 export function SalaryCalculator() {
-  const [annualCtc, setAnnualCtc] = useState<number>(1200000);
-  const [epfPercent, setEpfPercent] = useState<number>(12);
-  const [professionalTaxMonthly, setProfessionalTaxMonthly] = useState<number>(200);
+  const [annualCtc, setAnnualCtc] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("annualCtc");
+      if (q) return Number(q);
+    }
+    return 1200000;
+  });
+
+  const [epfPercent, setEpfPercent] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("epfPercent");
+      if (q) return Number(q);
+    }
+    return 12;
+  });
+
+  const [professionalTaxMonthly, setProfessionalTaxMonthly] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("professionalTaxMonthly");
+      if (q) return Number(q);
+    }
+    return 200;
+  });
 
   const {
     monthlyGross,
@@ -138,6 +159,14 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
           />
 
           <div className="pt-2 flex flex-wrap gap-3">
+            <CalcShareButton
+              state={{
+                annualCtc,
+                epfPercent,
+                professionalTaxMonthly,
+              }}
+              label="Share Take-Home Plan"
+            />
             <CalcPromptButton promptText={llmPrompt} />
             <CalcExportButton
               data={exportSchedule}

@@ -8,11 +8,24 @@ import {
   CalcSelect,
   CalcResult,
   CalcCopyButton,
+  CalcShareButton,
 } from "@/components/calculator";
 
 export function JsonFormatterTool() {
-  const [input, setInput] = useState(`{\n  "name": "ConvertSheet",\n  "status": "online",\n  "features": ["Converters", "Calculators"],\n  "privacy": true\n}`);
-  const [indent, setIndent] = useState("2");
+  const [input, setInput] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("input");
+      if (q) return q;
+    }
+    return `{\n  "name": "ConvertSheet",\n  "status": "online",\n  "features": ["Converters", "Calculators"],\n  "privacy": true\n}`;
+  });
+  const [indent, setIndent] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const ind = new URLSearchParams(window.location.search).get("indent");
+      if (ind) return ind;
+    }
+    return "2";
+  });
 
   const { formatted, minified, error, stats } = useMemo(() => {
     if (!input.trim()) {
@@ -77,6 +90,13 @@ export function JsonFormatterTool() {
         </div>
 
         <div className="flex items-center gap-2 pt-5">
+          <CalcShareButton
+            state={{
+              input,
+              indent,
+            }}
+            label="Share JSON"
+          />
           <button
             type="button"
             onClick={handleBeautify}

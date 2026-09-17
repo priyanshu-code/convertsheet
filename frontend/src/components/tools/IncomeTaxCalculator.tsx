@@ -9,12 +9,33 @@ import {
   CalcChart,
   CalcPromptButton,
   CalcExportButton,
+  CalcShareButton,
 } from "@/components/calculator";
 
 export function IncomeTaxCalculator() {
-  const [annualIncome, setAnnualIncome] = useState<number>(1500000);
-  const [standardDeduction, setStandardDeduction] = useState<number>(75000);
-  const [otherDeductions, setOtherDeductions] = useState<number>(50000);
+  const [annualIncome, setAnnualIncome] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("annualIncome");
+      if (q) return Number(q);
+    }
+    return 1500000;
+  });
+
+  const [standardDeduction, setStandardDeduction] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("standardDeduction");
+      if (q) return Number(q);
+    }
+    return 75000;
+  });
+
+  const [otherDeductions, setOtherDeductions] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("otherDeductions");
+      if (q) return Number(q);
+    }
+    return 50000;
+  });
 
   const { taxableIncome, slabBreakdown, totalBaseTax, cessAmount, totalTaxPayable, effectiveTaxRate } = useMemo(() => {
     const gross = Math.max(0, annualIncome);
@@ -134,6 +155,14 @@ Please evaluate whether the Old Regime or New Regime is better for this income, 
           />
 
           <div className="pt-2 flex flex-wrap gap-3">
+            <CalcShareButton
+              state={{
+                annualIncome,
+                standardDeduction,
+                otherDeductions,
+              }}
+              label="Share Tax Scenario"
+            />
             <CalcPromptButton promptText={llmPrompt} />
             <CalcExportButton
               data={exportSchedule}

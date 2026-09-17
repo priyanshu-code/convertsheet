@@ -9,6 +9,7 @@ import {
   CalcExportButton,
   CalcPromptButton,
   CalcSaveButton,
+  CalcShareButton,
   ModernSlider,
 } from "@/components/calculator";
 import { calculateDebtPayoff, DebtItem } from "@/lib/engines/financial-engine";
@@ -30,6 +31,21 @@ export function DebtPayoffCalculator({
     if (initialValues?.debts && initialValues.debts.length > 0) {
       return initialValues.debts;
     }
+    if (typeof window !== "undefined") {
+      const qDebt = new URLSearchParams(window.location.search).get("totalStartingDebt");
+      if (qDebt) {
+        const val = Number(qDebt);
+        return [
+          {
+            id: "1",
+            name: "Total Debt Balance",
+            balance: val,
+            interestRate: 21.99,
+            minimumPayment: Math.round(val * 0.03),
+          },
+        ];
+      }
+    }
     if (initialValues?.totalStartingDebt) {
       return [
         {
@@ -48,12 +64,21 @@ export function DebtPayoffCalculator({
     ];
   });
 
-  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState<number>(
-    Number(initialValues?.extraMonthlyPayment) || 150
-  );
-  const [strategy, setStrategy] = useState<"snowball" | "avalanche">(
-    initialValues?.strategy || "avalanche"
-  );
+  const [extraMonthlyPayment, setExtraMonthlyPayment] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("extraPayment");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.extraMonthlyPayment) || 150;
+  });
+
+  const [strategy, setStrategy] = useState<"snowball" | "avalanche">(() => {
+    if (typeof window !== "undefined") {
+      const s = new URLSearchParams(window.location.search).get("strategy");
+      if (s === "snowball" || s === "avalanche") return s;
+    }
+    return initialValues?.strategy || "avalanche";
+  });
 
   const addDebt = () => {
     const nextId = String(Date.now());
@@ -338,6 +363,14 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
                     { label: "Total Interest", value: `$${Math.round(payoffResult.totalInterestPaid).toLocaleString()}` },
                     { label: "Accelerator", value: `+$${extraMonthlyPayment}/mo` },
                   ]}
+                />
+                <CalcShareButton
+                  state={{
+                    totalStartingDebt: Math.round(payoffResult.totalOriginalBalance),
+                    extraPayment: extraMonthlyPayment,
+                    strategy,
+                  }}
+                  label="Share Debt Plan"
                 />
                 <CalcPromptButton prompt={aiPrompt} label="Analyze with AI" />
               </div>

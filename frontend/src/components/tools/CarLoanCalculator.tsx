@@ -12,6 +12,7 @@ import {
   CalcExportButton,
   CalcPromptButton,
   CalcPdfReportButton,
+  CalcShareButton,
 } from "@/components/calculator";
 import { calculateCarLoan } from "@/lib/engines/financial-engine";
 import { generateCarLoanDossierPdf } from "@/lib/engines/pdf-dossier-engine";
@@ -30,13 +31,61 @@ export interface CarLoanCalculatorProps {
 }
 
 export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}) {
-  const [vehiclePrice, setVehiclePrice] = useState<number>(Number(initialValues?.vehiclePrice) || 35000);
-  const [downPayment, setDownPayment] = useState<number>(Number(initialValues?.downPayment) || 5000);
-  const [tradeInValue, setTradeInValue] = useState<number>(Number(initialValues?.tradeInValue) ?? 3000);
-  const [interestRate, setInterestRate] = useState<number>(Number(initialValues?.interestRate) || 5.9);
-  const [loanTermMonths, setLoanTermMonths] = useState<number>(Number(initialValues?.loanTermMonths) || 60);
-  const [salesTaxPercent, setSalesTaxPercent] = useState<number>(Number(initialValues?.salesTaxPercent) ?? 7.0);
-  const [dealerFees, setDealerFees] = useState<number>(Number(initialValues?.dealerFees) ?? 500);
+  const [vehiclePrice, setVehiclePrice] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("vehiclePrice");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.vehiclePrice) || 35000;
+  });
+
+  const [downPayment, setDownPayment] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("downPayment");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.downPayment) || 5000;
+  });
+
+  const [tradeInValue, setTradeInValue] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("tradeInValue");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.tradeInValue) ?? 3000;
+  });
+
+  const [interestRate, setInterestRate] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("interestRate");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.interestRate) || 5.9;
+  });
+
+  const [loanTermMonths, setLoanTermMonths] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("loanTermMonths");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.loanTermMonths) || 60;
+  });
+
+  const [salesTaxPercent, setSalesTaxPercent] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("salesTaxPercent");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.salesTaxPercent) ?? 7.0;
+  });
+
+  const [dealerFees, setDealerFees] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("dealerFees");
+      if (q) return Number(q);
+    }
+    return Number(initialValues?.dealerFees) ?? 500;
+  });
 
   const carLoan = useMemo(() => {
     return calculateCarLoan({
@@ -261,6 +310,18 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
               }
             />
             <CalcPromptButton prompt={aiPrompt} toolName="Car Loan Advice" />
+            <CalcShareButton
+              state={{
+                vehiclePrice,
+                downPayment,
+                tradeInValue,
+                interestRate,
+                loanTermMonths,
+                salesTaxPercent,
+                dealerFees,
+              }}
+              label="Share Auto Loan"
+            />
           </div>
         </div>
 

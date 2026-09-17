@@ -8,11 +8,25 @@ import {
   CalcToggle,
   CalcResult,
   CalcCopyButton,
+  CalcShareButton,
 } from "@/components/calculator";
 
 export function Base64Tool() {
-  const [mode, setMode] = useState<"encode" | "decode">("encode");
-  const [input, setInput] = useState("Hello ConvertSheet! 🚀");
+  const [mode, setMode] = useState<"encode" | "decode">(() => {
+    if (typeof window !== "undefined") {
+      const m = new URLSearchParams(window.location.search).get("mode");
+      if (m === "encode" || m === "decode") return m;
+    }
+    return "encode";
+  });
+
+  const [input, setInput] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("input");
+      if (q) return q;
+    }
+    return "Hello ConvertSheet! 🚀";
+  });
 
   const { output, error } = useMemo(() => {
     if (!input) return { output: "", error: null };
@@ -59,16 +73,25 @@ export function Base64Tool() {
           onChange={(val) => setMode(val as "encode" | "decode")}
         />
 
-        {output && !error && (
-          <button
-            type="button"
-            onClick={handleSwap}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 rounded-lg transition-colors"
-          >
-            <ArrowRightLeft className="w-3.5 h-3.5" />
-            <span>Swap Input/Output</span>
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          <CalcShareButton
+            state={{
+              input,
+              mode,
+            }}
+            label="Share Link"
+          />
+          {output && !error && (
+            <button
+              type="button"
+              onClick={handleSwap}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 rounded-lg transition-colors"
+            >
+              <ArrowRightLeft className="w-3.5 h-3.5" />
+              <span>Swap Input/Output</span>
+            </button>
+          )}
+        </div>
       </div>
 
       <CalcTextarea

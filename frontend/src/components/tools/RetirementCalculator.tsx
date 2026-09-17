@@ -8,6 +8,7 @@ import {
   CalcChart,
   CalcExportButton,
   CalcPromptButton,
+  CalcShareButton,
   ModernSlider,
   SliderPreset,
   RetirementDonutBreakdown,
@@ -95,15 +96,69 @@ const INFLATION_PRESETS: SliderPreset[] = [
 
 export function RetirementCalculator({ initialValues }: RetirementCalculatorProps = {}) {
   const [mode, setMode] = useState<"playground" | "wizard">("playground");
-  const [currentAge, setCurrentAge] = useState<number>(initialValues?.currentAge ?? 30);
-  const [retirementAge, setRetirementAge] = useState<number>(initialValues?.retirementAge ?? 65);
-  const [currentSavings, setCurrentSavings] = useState<number>(initialValues?.currentSavings ?? 40000);
-  const [monthlyContribution, setMonthlyContribution] = useState<number>(initialValues?.monthlyContribution ?? 750);
-  const [employerMatchPercent, setEmployerMatchPercent] = useState<number>(initialValues?.employerMatchPercent ?? 50);
-  const [annualReturn, setAnnualReturn] = useState<number>(initialValues?.annualReturn ?? 8.0);
-  const [postRetirementReturn, setPostRetirementReturn] = useState<number>(initialValues?.postRetirementReturn ?? 5.0);
-  const [postRetirementAnnualSpend, setPostRetirementAnnualSpend] = useState<number>(initialValues?.postRetirementAnnualSpend ?? 60000);
-  const [inflationRate, setInflationRate] = useState<number>(initialValues?.inflationRate ?? 2.5);
+  const [currentAge, setCurrentAge] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("currentAge");
+      if (q) return Number(q);
+    }
+    return initialValues?.currentAge ?? 30;
+  });
+  const [retirementAge, setRetirementAge] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("retirementAge");
+      if (q) return Number(q);
+    }
+    return initialValues?.retirementAge ?? 65;
+  });
+  const [currentSavings, setCurrentSavings] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("currentSavings");
+      if (q) return Number(q);
+    }
+    return initialValues?.currentSavings ?? 40000;
+  });
+  const [monthlyContribution, setMonthlyContribution] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("monthlyContribution");
+      if (q) return Number(q);
+    }
+    return initialValues?.monthlyContribution ?? 750;
+  });
+  const [employerMatchPercent, setEmployerMatchPercent] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("employerMatchPercent");
+      if (q) return Number(q);
+    }
+    return initialValues?.employerMatchPercent ?? 50;
+  });
+  const [annualReturn, setAnnualReturn] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("annualReturn");
+      if (q) return Number(q);
+    }
+    return initialValues?.annualReturn ?? 8.0;
+  });
+  const [postRetirementReturn, setPostRetirementReturn] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("postRetirementReturn");
+      if (q) return Number(q);
+    }
+    return initialValues?.postRetirementReturn ?? 5.0;
+  });
+  const [postRetirementAnnualSpend, setPostRetirementAnnualSpend] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("postRetirementAnnualSpend");
+      if (q) return Number(q);
+    }
+    return initialValues?.postRetirementAnnualSpend ?? 60000;
+  });
+  const [inflationRate, setInflationRate] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("inflationRate");
+      if (q) return Number(q);
+    }
+    return initialValues?.inflationRate ?? 2.5;
+  });
 
   const handleWizardChange = (key: keyof RetirementWizardValues, val: number) => {
     switch (key) {
@@ -469,11 +524,28 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
 
             {/* Action Buttons: SheetJS Export & AI Prompt */}
             <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-              <CalcExportButton
-                data={exportData}
-                filename={`retirement-plan-age-${retirementAge}`}
-                sheetName="Retirement Projection"
-              />
+              <div className="flex flex-wrap items-center gap-2">
+                <CalcExportButton
+                  data={exportData}
+                  filename={`retirement-plan-age-${retirementAge}`}
+                  sheetName="Retirement Projection"
+                />
+
+                <CalcShareButton
+                  state={{
+                    currentAge,
+                    retirementAge,
+                    currentSavings,
+                    monthlyContribution,
+                    employerMatchPercent,
+                    annualReturn,
+                    postRetirementReturn,
+                    postRetirementAnnualSpend,
+                    inflationRate,
+                  }}
+                  label="Share Plan"
+                />
+              </div>
 
               <CalcPromptButton
                 prompt={aiPrompt}
