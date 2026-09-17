@@ -3,6 +3,7 @@ import { getAllConverterSlugs } from "@/lib/registry";
 import { getAllToolSlugs } from "@/lib/tool-registry";
 import { getAllPresetStaticParams } from "@/lib/programmatic-presets";
 import { getAllBlogPostSlugs } from "@/lib/blog-registry";
+import { getAllComparisonSlugs } from "@/lib/comparison-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://convertsheet.com";
@@ -53,6 +54,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
+  const comparisonRoutes: MetadataRoute.Sitemap = getAllComparisonSlugs().map(
+    (slug) => ({
+      url: `${baseUrl}/compare/${slug}`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    })
+  );
+
   return [
     {
       url: baseUrl,
@@ -95,6 +105,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...toolRoutes,
     ...presetRoutes,
     ...blogPostRoutes,
+    ...comparisonRoutes,
   ];
 }
 

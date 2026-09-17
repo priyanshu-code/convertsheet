@@ -17,17 +17,35 @@ export interface DebtPayoffCalculatorProps {
   initialValues?: Partial<{
     extraMonthlyPayment: number;
     strategy: "snowball" | "avalanche";
+    debts: DebtItem[];
+    totalStartingDebt?: number;
   }>;
 }
 
 export function DebtPayoffCalculator({
   initialValues,
 }: DebtPayoffCalculatorProps = {}) {
-  const [debts, setDebts] = useState<DebtItem[]>([
-    { id: "1", name: "Credit Card (High APR)", balance: 4500, interestRate: 24.99, minimumPayment: 135 },
-    { id: "2", name: "Store Card", balance: 1800, interestRate: 19.99, minimumPayment: 60 },
-    { id: "3", name: "Personal Loan", balance: 7500, interestRate: 11.50, minimumPayment: 210 },
-  ]);
+  const [debts, setDebts] = useState<DebtItem[]>(() => {
+    if (initialValues?.debts && initialValues.debts.length > 0) {
+      return initialValues.debts;
+    }
+    if (initialValues?.totalStartingDebt) {
+      return [
+        {
+          id: "1",
+          name: "Credit Card Balance",
+          balance: initialValues.totalStartingDebt,
+          interestRate: 24.99,
+          minimumPayment: Math.round(initialValues.totalStartingDebt * 0.03),
+        },
+      ];
+    }
+    return [
+      { id: "1", name: "Credit Card (High APR)", balance: 4500, interestRate: 24.99, minimumPayment: 135 },
+      { id: "2", name: "Store Card", balance: 1800, interestRate: 19.99, minimumPayment: 60 },
+      { id: "3", name: "Personal Loan", balance: 7500, interestRate: 11.50, minimumPayment: 210 },
+    ];
+  });
 
   const [extraMonthlyPayment, setExtraMonthlyPayment] = useState<number>(
     Number(initialValues?.extraMonthlyPayment) || 150

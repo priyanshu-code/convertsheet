@@ -2271,7 +2271,258 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         "answer": "No. Washington does not tax personal earned income or wages from employment."
       }
     ]
+  },
+  {
+    "toolSlug": "high-yield-savings-cd-calculator",
+    "presetSlug": "10k-high-yield-savings",
+    "name": "$10,000 High-Yield Savings Account Interest Calculator",
+    "title": "$10,000 High-Yield Savings Calculator (4.5% APY) | ConvertSheet",
+    "metaDescription": "Calculate how much interest $10,000 earns in a high-yield savings account at 4.5% APY with daily compounding. Download custom growth spreadsheet.",
+    "answerSummary": "Depositing $10,000 into a 4.50% APY high-yield savings account earns approximately $450 in interest after 1 year, bringing your total liquid cash balance to $10,450. Adding $200/month in contributions boosts your 1-year total to $12,900 with $500+ in earned interest.",
+    "about": "See how much cash flow and passive compound growth a $10,000 emergency fund or liquid savings deposit generates in a top-tier online bank offering 4.50% APY. Test monthly deposit accelerators and export the balance schedule directly to Microsoft Excel.",
+    "initialValues": {
+      "initialDeposit": 10000,
+      "monthlyContribution": 0,
+      "annualInterestRate": 4.5,
+      "termMonths": 12,
+      "compoundingFrequency": "daily"
+    },
+    "faqs": [
+      {
+        "question": "How much interest does $10,000 earn in a 4.5% HYSA after 1 year?",
+        "answer": "With daily compounding at 4.50% APY, $10,000 earns roughly $450.00 in passive interest over 12 months, yielding a final balance of $10,450.00."
+      },
+      {
+        "question": "Is interest earned in a high-yield savings account taxable?",
+        "answer": "Yes. Interest earned on bank deposits is taxed as ordinary income at your federal and state tax brackets and reported annually on IRS Form 1099-INT."
+      }
+    ]
+  },
+  {
+    "toolSlug": "high-yield-savings-cd-calculator",
+    "presetSlug": "25k-high-yield-savings",
+    "name": "$25,000 High-Yield Savings Account Interest Calculator",
+    "title": "$25,000 High-Yield Savings Calculator (4.5% APY) | ConvertSheet",
+    "metaDescription": "Calculate interest earned on a $25,000 high-yield savings deposit at 4.5% APY. Compare daily vs monthly compounding and download Excel schedule.",
+    "answerSummary": "A $25,000 deposit at 4.50% APY generates approximately $1,125.00 in interest per year (~$93.75 per month) with a 1-year ending balance of $26,125.00.",
+    "about": "Evaluate the compound returns of a $25,000 cash balance in a high-yield savings account. Compare against fixed CDs and traditional checking accounts with instant Excel export.",
+    "initialValues": {
+      "initialDeposit": 25000,
+      "monthlyContribution": 0,
+      "annualInterestRate": 4.5,
+      "termMonths": 12,
+      "compoundingFrequency": "daily"
+    },
+    "faqs": [
+      {
+        "question": "How much does $25,000 make a month in a 4.5% savings account?",
+        "answer": "At 4.50% APY, $25,000 makes approximately $93.75 every month in passive cash interest."
+      },
+      {
+        "question": "Are high-yield savings accounts FDIC insured up to $25,000?",
+        "answer": "Yes. Standard FDIC member banks insure deposits up to $250,000 per depositor, per insured bank, making a $25,000 balance 100% government insured."
+      }
+    ]
+  },
+  {
+    "toolSlug": "high-yield-savings-cd-calculator",
+    "presetSlug": "50k-high-yield-savings",
+    "name": "$50,000 High-Yield Savings Account Interest Calculator",
+    "title": "$50,000 High-Yield Savings Calculator (4.5% APY) | ConvertSheet",
+    "metaDescription": "Calculate annual and monthly yield on $50,000 in a high-yield savings account at 4.5% APY. Client-side simulator with Excel export.",
+    "answerSummary": "$50,000 invested in a 4.50% APY high-yield savings account generates $2,250 in annual interest ($187.50 monthly) for a final balance of $52,250 after 12 months.",
+    "about": "Simulate the passive interest income and compound growth on a $50,000 cash reserve. Compare returns across 12, 24, and 36-month horizons with daily compounding.",
+    "initialValues": {
+      "initialDeposit": 50000,
+      "monthlyContribution": 0,
+      "annualInterestRate": 4.5,
+      "termMonths": 12,
+      "compoundingFrequency": "daily"
+    },
+    "faqs": [
+      {
+        "question": "How much does $50,000 make in a high-yield savings account in a year?",
+        "answer": "At a 4.50% APY rate, $50,000 earns approximately $2,250.00 in passive interest over one year."
+      },
+      {
+        "question": "Can I withdraw money anytime from an HYSA?",
+        "answer": "Yes. Unlike CDs, high-yield savings accounts offer full liquidity without early withdrawal penalty fees."
+      }
+    ]
+  },
+  {
+    "toolSlug": "high-yield-savings-cd-calculator",
+    "presetSlug": "100k-high-yield-savings",
+    "name": "$100,000 High-Yield Savings Account Interest Calculator",
+    "title": "$100,000 High-Yield Savings Calculator (4.5% APY) | ConvertSheet",
+    "metaDescription": "Calculate monthly and yearly interest on $100,000 in an HYSA at 4.5% APY. Complete compounding schedule with Excel export.",
+    "answerSummary": "A $100,000 cash balance in a 4.50% APY account produces $4,500.00 in interest per year ($375.00/month), reaching a total balance of $104,500 after 12 months.",
+    "about": "Explore cash yields on a six-figure $100,000 cash allocation. Compare liquid high-yield savings vs 12-month fixed CDs with instant Excel amortization export.",
+    "initialValues": {
+      "initialDeposit": 100000,
+      "monthlyContribution": 0,
+      "annualInterestRate": 4.5,
+      "termMonths": 12,
+      "compoundingFrequency": "daily"
+    },
+    "faqs": [
+      {
+        "question": "How much monthly interest does $100,000 earn at 4.5% APY?",
+        "answer": "At 4.50% APY with daily compounding, $100,000 yields approximately $375.00 every month."
+      },
+      {
+        "question": "Is $100,000 safe in an online bank?",
+        "answer": "Yes. Any FDIC-insured bank covers deposits up to $250,000 per depositor, ensuring complete principal security."
+      }
+    ]
+  },
+  {
+    "toolSlug": "high-yield-savings-cd-calculator",
+    "presetSlug": "10k-12-month-cd-yield",
+    "name": "$10,000 1-Year CD (Certificate of Deposit) Yield Calculator",
+    "title": "$10,000 12-Month CD Yield Calculator (5.0% APY) | ConvertSheet",
+    "metaDescription": "Calculate maturity balance on a 1-year $10,000 Certificate of Deposit at 5.0% APY. Early withdrawal penalty simulation with Excel download.",
+    "answerSummary": "Locking $10,000 into a 12-month Certificate of Deposit at 5.00% APY earns $500.00 in guaranteed interest, delivering a maturity balance of $10,500.00 upon term completion.",
+    "about": "Calculate guaranteed interest returns on a 12-month Certificate of Deposit (CD). Simulates early withdrawal penalty costs if broken ahead of term maturity.",
+    "initialValues": {
+      "initialDeposit": 10000,
+      "monthlyContribution": 0,
+      "annualInterestRate": 5.0,
+      "termMonths": 12,
+      "compoundingFrequency": "monthly"
+    },
+    "faqs": [
+      {
+        "question": "How much does a 5% CD make on $10,000?",
+        "answer": "A 12-month 5.00% APY Certificate of Deposit makes exactly $500.00 in guaranteed interest upon maturity."
+      },
+      {
+        "question": "What happens if I withdraw a CD early?",
+        "answer": "Most banks charge an early withdrawal penalty equal to 3 to 6 months of earned interest, which is simulated in this calculator."
+      }
+    ]
+  },
+  {
+    "toolSlug": "debt-payoff-calculator",
+    "presetSlug": "payoff-10k-credit-card-debt",
+    "name": "$10,000 Credit Card Debt Payoff Calculator",
+    "title": "$10,000 Credit Card Debt Payoff Calculator (Avalanche vs Snowball) | ConvertSheet",
+    "metaDescription": "Calculate how fast you can pay off $10,000 in credit card debt. Compare Avalanche vs Snowball strategies and export amortization schedule to Excel.",
+    "answerSummary": "Paying $450/month on a $10,000 credit card balance at 24.99% APR clears the debt in approximately 30 months while paying $3,450 in interest. Adding a $100/month accelerator payment saves over $1,000 in interest and eliminates the debt 7 months faster.",
+    "about": "Create a personalized debt elimination roadmap for a $10,000 credit card balance. Compare mathematical debt avalanche vs psychological debt snowball approaches and export the entire payoff schedule to Excel.",
+    "initialValues": {
+      "totalStartingDebt": 10000,
+      "extraMonthlyPayment": 150,
+      "strategy": "avalanche"
+    },
+    "faqs": [
+      {
+        "question": "How long will it take to pay off $10,000 in credit card debt?",
+        "answer": "At a standard 24.99% APR paying $350 per month, it takes approximately 42 months. Increasing payments to $500/month cuts payoff time down to 26 months."
+      },
+      {
+        "question": "Should I use Debt Avalanche or Debt Snowball for $10,000 in debt?",
+        "answer": "Debt Avalanche saves the most money by targeting high-interest cards first. Debt Snowball knocks out the smallest balances first for psychological momentum."
+      }
+    ]
+  },
+  {
+    "toolSlug": "debt-payoff-calculator",
+    "presetSlug": "payoff-20k-credit-card-debt",
+    "name": "$20,000 Debt Elimination & Payoff Calculator",
+    "title": "$20,000 Credit Card Payoff Calculator & Amortization | ConvertSheet",
+    "metaDescription": "Calculate payoff timeline and interest saved on $20,000 in credit card balances. Accelerated debt rollover engine with Excel schedule export.",
+    "answerSummary": "A $20,000 credit card debt balance at 22.9% APR requires roughly $650/month for 48 months to eliminate, costing ~$10,800 in interest. Adding a $200/month accelerator saves over $3,200 in interest and cuts payoff time by 13 months.",
+    "about": "Eliminate a $20,000 credit card or loan balance faster with automated debt rollover. Simulates accelerated extra contributions and provides an Excel payoff amortization schedule.",
+    "initialValues": {
+      "totalStartingDebt": 20000,
+      "extraMonthlyPayment": 200,
+      "strategy": "avalanche"
+    },
+    "faqs": [
+      {
+        "question": "How can I pay off $20,000 in credit card debt fast?",
+        "answer": "Using the Debt Avalanche method with an extra $200 to $300 monthly accelerator payment eliminates balances significantly faster while saving thousands in compounding finance charges."
+      },
+      {
+        "question": "How much interest will I pay on $20,000 of credit card debt?",
+        "answer": "At 22% APR with minimum-only payments, interest charges often exceed the original $20,000 principal. Accelerated payments cap total interest below $8,000."
+      }
+    ]
+  },
+  {
+    "toolSlug": "debt-payoff-calculator",
+    "presetSlug": "payoff-50k-credit-card-debt",
+    "name": "$50,000 Debt Payoff & Consolidation Strategy Calculator",
+    "title": "$50,000 Debt Payoff Calculator (Save Maximum Interest) | ConvertSheet",
+    "metaDescription": "Calculate how to eliminate $50,000 in credit card and personal loans. Compare minimum payments vs extra accelerator payments with Excel schedule.",
+    "answerSummary": "Eliminating $50,000 in debt at 21% APR paying $1,500/month takes approximately 47 months and costs ~$23,500 in interest. An extra $300/month contribution saves more than $5,600 in interest charges.",
+    "about": "Map out an aggressive debt reduction plan for $50,000 in cumulative debts. Test multiple payment scenarios, see rollover momentum in action, and download your customized Excel amortization schedule.",
+    "initialValues": {
+      "totalStartingDebt": 50000,
+      "extraMonthlyPayment": 300,
+      "strategy": "avalanche"
+    },
+    "faqs": [
+      {
+        "question": "How realistic is paying off $50,000 in credit card debt?",
+        "answer": "With a structured repayment plan of $1,500 to $1,800 per month, a $50,000 balance can be completely eliminated in under 4 years."
+      },
+      {
+        "question": "Does this calculator keep my financial records private?",
+        "answer": "Yes. ConvertSheet performs 100% of calculations in your local browser memory. Zero balances or debt details are ever transmitted to a server."
+      }
+    ]
+  },
+  {
+    "toolSlug": "debt-payoff-calculator",
+    "presetSlug": "500-monthly-debt-payoff",
+    "name": "$500 a Month Debt Payoff Plan Calculator",
+    "title": "$500 a Month Debt Payoff Calculator & Timeline | ConvertSheet",
+    "metaDescription": "Calculate how much debt you can eliminate by paying $500 every month. Detailed payoff timeline with Excel amortization download.",
+    "answerSummary": "A disciplined $500 monthly payment clears a $12,000 debt balance at 20% APR in approximately 31 months, saving thousands compared to minimum-only payments.",
+    "about": "Calculate your debt-free timeline when committing $500 every month towards credit card or personal loan debt. Export your custom 31-month amortization schedule to Excel.",
+    "initialValues": {
+      "totalStartingDebt": 12000,
+      "extraMonthlyPayment": 200,
+      "strategy": "snowball"
+    },
+    "faqs": [
+      {
+        "question": "How much debt can I pay off paying $500 a month?",
+        "answer": "At $500/month, you can eliminate roughly $12,000 in 2.5 years, or over $24,000 in 6 years depending on average APR."
+      },
+      {
+        "question": "Is $500 a month enough to pay off credit cards?",
+        "answer": "Yes, provided the $500 significantly exceeds your total required minimum payments and you avoid adding new charges."
+      }
+    ]
+  },
+  {
+    "toolSlug": "debt-payoff-calculator",
+    "presetSlug": "1000-monthly-debt-payoff",
+    "name": "$1,000 a Month Aggressive Debt Payoff Calculator",
+    "title": "$1,000 a Month Aggressive Debt Payoff Calculator | ConvertSheet",
+    "metaDescription": "Calculate how fast an aggressive $1,000/month budget wipes out credit cards and loans. Excel schedule export with zero server tracking.",
+    "answerSummary": "Committing $1,000 each month toward a $25,000 debt balance at 22% APR achieves total debt freedom in only 32 months while saving over $14,000 in potential interest.",
+    "about": "Simulate an aggressive $1,000 monthly debt blitz. See how quickly high-interest credit card accounts drop to zero with rollover cash flow and download the full Excel amortization schedule.",
+    "initialValues": {
+      "totalStartingDebt": 25000,
+      "extraMonthlyPayment": 400,
+      "strategy": "avalanche"
+    },
+    "faqs": [
+      {
+        "question": "How fast can you pay off debt paying $1,000 a month?",
+        "answer": "A $1,000 monthly contribution eliminates $25,000 of high-interest debt in approximately 32 months."
+      },
+      {
+        "question": "Can I export this payoff schedule to Excel?",
+        "answer": "Yes. ConvertSheet allows you to export your customized monthly payoff schedule to a formatted .xlsx workbook with one click."
+      }
+    ]
   }
+
 ];
 
 // Indexed Maps for O(1) SSG and metadata lookups

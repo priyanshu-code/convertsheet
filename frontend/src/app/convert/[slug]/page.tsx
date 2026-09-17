@@ -12,6 +12,7 @@ import type { ConverterConfig } from "@/types/registry";
 import { ConverterCard } from "@/components/converter";
 import { AdBanner } from "@/components/layout";
 import { HowToGuide, FAQAccordion, JsonLdSchema } from "@/components/seo";
+import { EmbedTrigger } from "@/components/calculator";
 import { getAllTools } from "@/lib/tool-registry";
 import type { ToolConfig } from "@/types/tool";
 
@@ -129,6 +130,14 @@ export default function ConverterPage({ params }: ConverterPageProps) {
                 : "Secure End-to-End Processing • Zero Retention"}
             </span>
           </div>
+
+          <EmbedTrigger
+            tool={{
+              slug: config.slug,
+              name: `${config.sourceFormat} to ${config.targetFormat} Converter`,
+              type: "converter",
+            }}
+          />
 
           {config.badge && (
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">

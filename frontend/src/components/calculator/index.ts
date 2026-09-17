@@ -15,3 +15,5 @@ export * from "./RetirementDonutBreakdown";
 export * from "./RetirementWizard";
 export * from "./CalcSaveButton";
 export * from "./SavedCalculationsDrawer";
+export * from "./EmbedModal";
+export * from "./EmbedTrigger";

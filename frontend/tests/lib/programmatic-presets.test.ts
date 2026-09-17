@@ -20,7 +20,7 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(uniqueSlugs.size).toBe(slugs.length);
   });
 
-  it("verifies all toolSlug values match one of the 6 supported calculators with presets", () => {
+  it("verifies all toolSlug values match one of the 8 supported calculators with presets", () => {
     const allowedToolSlugs = new Set([
       "mortgage-calculator",
       "car-loan-calculator",
@@ -28,6 +28,9 @@ describe("Programmatic SEO Presets Registry", () => {
       "inflation-calculator",
       "hourly-to-salary-calculator",
       "annual-to-hourly-calculator",
+      "high-yield-savings-cd-calculator",
+      "debt-payoff-calculator",
+      "credit-card-payoff-calculator",
     ]);
 
     PROGRAMMATIC_PRESETS.forEach((preset) => {

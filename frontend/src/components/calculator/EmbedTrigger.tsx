@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import { Code } from "lucide-react";
 import { ToolConfig } from "@/types/tool";
-import { EmbedModal } from "@/components/calculator/EmbedModal";
+import { EmbedModal, EmbedTarget } from "@/components/calculator/EmbedModal";
 
 export interface EmbedTriggerProps {
-  tool: ToolConfig;
+  tool: ToolConfig | EmbedTarget;
 }
 
 export function EmbedTrigger({ tool }: EmbedTriggerProps) {

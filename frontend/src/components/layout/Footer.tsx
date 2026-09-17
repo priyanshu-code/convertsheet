@@ -36,6 +36,7 @@ export function Footer() {
   const privacyLinks = [
     { name: "Engineering Blog", href: "/blog" },
     { name: "About Us", href: "/about" },
+    { name: "CloudConvert Alternative", href: "/compare/cloudconvert-alternative" },
     { name: "100% Client-Side Processing", href: "/privacy#client-side" },
     { name: "Zero Server Data Retention", href: "/privacy#zero-retention" },
     { name: "Terms of Service", href: "/terms" },

@@ -4,8 +4,14 @@ import React, { useState, useCallback, useMemo } from "react";
 import { X, Code, Copy, Check, ExternalLink } from "lucide-react";
 import { ToolConfig } from "@/types/tool";
 
+export interface EmbedTarget {
+  slug: string;
+  name: string;
+  type?: "tool" | "converter";
+}
+
 export interface EmbedModalProps {
-  tool: ToolConfig;
+  tool: ToolConfig | EmbedTarget;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -28,10 +34,12 @@ export function EmbedModal({ tool, isOpen, onClose }: EmbedModalProps) {
 
   const embedCode = useMemo(() => {
     const embedUrl = `https://convertsheet.com/embed/${tool.slug}`;
-    const toolUrl = `https://convertsheet.com/tools/${tool.slug}`;
+    const targetUrl = (tool as EmbedTarget).type === "converter"
+      ? `https://convertsheet.com/convert/${tool.slug}`
+      : `https://convertsheet.com/tools/${tool.slug}`;
 
-    return `<iframe src="${embedUrl}" width="${dimensions.wVal}" height="${dimensions.hVal}" frameborder="0" style="border:0;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);width:${dimensions.width};max-width:100%;" title="${tool.name}"></iframe>\n<p style="font-family:system-ui,-apple-system,sans-serif;font-size:11px;color:#6b7280;margin-top:6px;text-align:right;">Powered by <a href="${toolUrl}" target="_blank" rel="noopener" style="color:#10b981;font-weight:600;text-decoration:none;">ConvertSheet Free Tools</a></p>`;
-  }, [tool.slug, tool.name, dimensions]);
+    return `<iframe src="${embedUrl}" width="${dimensions.wVal}" height="${dimensions.hVal}" frameborder="0" style="border:0;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);width:${dimensions.width};max-width:100%;" title="${tool.name}"></iframe>\n<p style="font-family:system-ui,-apple-system,sans-serif;font-size:11px;color:#6b7280;margin-top:6px;text-align:right;">Powered by <a href="${targetUrl}" target="_blank" rel="noopener" style="color:#10b981;font-weight:600;text-decoration:none;">ConvertSheet Free Tools</a></p>`;
+  }, [tool, dimensions]);
 
   const handleCopy = useCallback(async () => {
     try {
