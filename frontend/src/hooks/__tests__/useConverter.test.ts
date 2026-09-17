@@ -39,7 +39,7 @@ describe("useConverter hook", () => {
     expect(result.current.showProModal).toBe(false);
   });
 
-  it("triggers Pro modal gating when file exceeds 10MB limit", async () => {
+  it("triggers Pro modal gating when file exceeds 200MB limit", async () => {
     const { result } = renderHook(() => useConverter(jsonConfig));
 
     const largeFile = new File(["dummy"], "huge_dataset.json", {
@@ -56,7 +56,7 @@ describe("useConverter hook", () => {
     expect(result.current.file).toBe(largeFile);
     expect(result.current.preview).toBeNull();
     expect(result.current.showProModal).toBe(true);
-    expect(result.current.proModalReason).toContain("10MB limit");
+    expect(result.current.proModalReason).toContain("200MB limit");
   });
 
   it("triggers Pro modal gating when conversion is not client-side (e.g. pdf-to-excel)", async () => {

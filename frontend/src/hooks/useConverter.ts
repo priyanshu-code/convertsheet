@@ -8,10 +8,11 @@ import {
 import { getConverterEngine } from "@/lib/engines";
 import { isExtensionSupported, downloadBlob } from "@/lib/utils";
 
-export const MAX_FREE_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+// TODO(memory): Reduce this limit back to a lower threshold (e.g. 10MB or 25MB) once marketing benchmarks and initial growth phase are completed.
+export const MAX_FREE_FILE_SIZE_BYTES = 200 * 1024 * 1024; // 200MB temporary demo / benchmark limit
 
 export const DEFAULT_PRO_REASON_SIZE =
-  "File size exceeds the 10MB limit for free in-browser conversion. Upgrade to ConvertSheet Pro to convert files up to 100GB.";
+  "File size exceeds the 200MB limit for free in-browser conversion. Upgrade to ConvertSheet Pro to convert files up to 100GB.";
 
 export const DEFAULT_PRO_REASON_SERVER =
   "This conversion requires OCR and server-side processing available in ConvertSheet Pro.";
