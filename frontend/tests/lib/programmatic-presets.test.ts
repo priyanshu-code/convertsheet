@@ -101,6 +101,19 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(preset?.faqs.length).toBeGreaterThanOrEqual(2);
   });
 
+  it("retrieves localized Canadian and UK mortgage presets with regional benchmarks", () => {
+    const caPreset = getProgrammaticPreset("mortgage-calculator", "500k-mortgage-canada");
+    expect(caPreset).toBeDefined();
+    expect(caPreset?.name).toContain("Canada");
+    expect(caPreset?.metaDescription).toMatch(/stress test|OSFI|CMHC/i);
+    expect(caPreset?.faqs.some((f) => f.question.includes("stress test"))).toBe(true);
+
+    const ukPreset = getProgrammaticPreset("mortgage-calculator", "400k-mortgage-uk");
+    expect(ukPreset).toBeDefined();
+    expect(ukPreset?.name).toContain("UK");
+    expect(ukPreset?.metaDescription).toMatch(/stamp duty|repayment/i);
+  });
+
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
     expect(params.length).toBeGreaterThanOrEqual(55);
@@ -108,3 +121,4 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(params[0]).toHaveProperty("preset");
   });
 });
+

@@ -2690,8 +2690,173 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         "answer": "For anyone born after 1 July 1964, the preservation age is 60. Once you reach 60 and retire (or start a transition-to-retirement pension), you can access your super tax-free."
       }
     ]
+  },
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "500k-mortgage-canada",
+    "name": "$500,000 Canada Mortgage Calculator (OSFI Stress Test & CMHC)",
+    "title": "$500,000 Mortgage Calculator Canada with OSFI Stress Test | ConvertSheet",
+    "metaDescription": "Calculate monthly payment on a $500,000 Canadian mortgage. Features OSFI stress test qualifying rates (5.25% floor), CMHC default insurance tiers, and amortization schedules.",
+    "answerSummary": "For a CAD $500,000 Canadian home purchase with 10% down ($50,000), the base loan is $450,000. Adding 3.10% CMHC default insurance ($13,950), the total financed loan is $463,950. At a 5-year fixed rate of 4.99% on a 25-year amortization, monthly payment is $2,698. Under the federal OSFI mortgage stress test, you must qualify at 6.99% (contract rate + 2.00%).",
+    "about": "Designed for Canadian homebuyers in Ontario, British Columbia, Alberta, and nationwide. Computes minimum down payments ($25,000 minimum required on $500k), CMHC insurance premiums, provincial property tax allocations, and federal stress test requirements.",
+    "initialValues": {
+      "homePrice": 500000,
+      "downPayment": 50000,
+      "interestRate": 4.99,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 4500,
+      "homeInsuranceYearly": 1200
+    },
+    "faqs": [
+      {
+        "question": "How does the Canadian mortgage stress test work for a $500,000 home?",
+        "answer": "Under OSFI Guideline B-20, Canadian borrowers must qualify at the higher of the Bank of Canada benchmark qualifying rate (5.25%) or their contract mortgage interest rate plus 2.00%. At a 4.99% offer, your qualifying rate is 6.99%."
+      },
+      {
+        "question": "What is the minimum down payment for a $500,000 house in Canada?",
+        "answer": "In Canada, the minimum down payment on a home purchase price up to $500,000 is 5% ($25,000). Any down payment under 20% requires high-ratio mortgage loan insurance (CMHC, Sagen, or Canada Guaranty)."
+      },
+      {
+        "question": "What household income is needed for a $500k mortgage in Canada?",
+        "answer": "With standard Gross Debt Service (GDS) ratio limits of 39% and Total Debt Service (TDS) limits of 44%, a typical household needs roughly $115,000 to $125,000 in gross annual income to qualify under the stress test."
+      }
+    ]
+  },
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "750k-mortgage-canada",
+    "name": "$750,000 Canada Mortgage Calculator (Toronto & Vancouver Benchmark)",
+    "title": "$750,000 Mortgage Payment Canada with CMHC Tiers | ConvertSheet",
+    "metaDescription": "Calculate monthly carrying costs on a $750,000 Canadian property. Analyzes tiered down payments (5% on first $500k, 10% on remainder) and stress test qualifying rates.",
+    "answerSummary": "On a CAD $750,000 home in Canada, minimum down payment is tiered: 5% on the first $500,000 ($25,000) + 10% on the remaining $250,000 ($25,000), equaling $50,000 (6.67%). With a 20% down payment ($150,000), your loan is $600,000 with zero CMHC fees. At 4.89% for 25 years, monthly payment is $3,452.",
+    "about": "Accurately compute Canadian mortgage obligations across Ontario and BC urban markets. Models 5-year fixed and variable mortgage rates, CMHC insurance surcharge, and stress test buffer.",
+    "initialValues": {
+      "homePrice": 750000,
+      "downPayment": 150000,
+      "interestRate": 4.89,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 6500,
+      "homeInsuranceYearly": 1600
+    },
+    "faqs": [
+      {
+        "question": "What is the minimum down payment for a $750,000 home in Canada?",
+        "answer": "Under Canadian federal rules, homes between $500,000 and $999,999 require 5% on the first $500,000 ($25,000) plus 10% on the portion above $500,000 ($25,000), making the minimum total down payment $50,000."
+      },
+      {
+        "question": "What is the Canadian mortgage stress test qualifying payment on $750,000?",
+        "answer": "If your contract rate is 4.89%, your stress test qualifying rate is 6.89% (contract + 2%). On a $600,000 balance, the stress-test qualifying monthly payment is roughly $4,163/month."
+      }
+    ]
+  },
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "1m-mortgage-canada",
+    "name": "$1,000,000 Canada Mortgage Calculator (Uninsured Jumbo)",
+    "title": "$1,000,000 Mortgage Calculator Canada | 20% Down Benchmark | ConvertSheet",
+    "metaDescription": "Calculate monthly payment on a $1,000,000 Canadian property. Canada rules require a strict 20% ($200,000) down payment as CMHC insurance is prohibited on $1M+ homes.",
+    "answerSummary": "In Canada, properties priced at CAD $1,000,000 or greater are ineligible for CMHC mortgage insurance. A mandatory 20% down payment ($200,000 minimum) leaves an uninsured loan amount of $800,000. At 4.79% over 25 years, monthly principal & interest is $4,551.",
+    "about": "Analyze high-value detached homes and luxury condos in Toronto, Vancouver, Montreal, and Calgary. Calculate amortizations with 30-year uninsured options, property transfer tax, and municipal surcharges.",
+    "initialValues": {
+      "homePrice": 1000000,
+      "downPayment": 200000,
+      "interestRate": 4.79,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 9000,
+      "homeInsuranceYearly": 2200
+    },
+    "faqs": [
+      {
+        "question": "Can you buy a $1,000,000 home in Canada with less than 20% down?",
+        "answer": "Under standard CMHC regulations, government-backed mortgage default insurance is strictly capped at properties under $1,000,000 ($1.5M for first-time buyers of newly constructed homes in recent federal updates). Standard purchases require a minimum 20% down ($200,000)."
+      },
+      {
+        "question": "Can I get a 30-year amortization on a $1,000,000 home in Canada?",
+        "answer": "Yes. Because a $1,000,000 home requires a 20%+ down payment, it is classified as an uninsured mortgage, meaning lenders can offer extended 30-year amortization periods to lower monthly carrying costs."
+      }
+    ]
+  },
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "300k-mortgage-uk",
+    "name": "£300,000 UK Mortgage Repayment Calculator",
+    "title": "£300,000 UK Mortgage Calculator with Stamp Duty (SDLT) | ConvertSheet",
+    "metaDescription": "Calculate monthly payments on a £300,000 UK mortgage. Full repayment amortization, Bank of England rate tracker sensitivity, and Stamp Duty Land Tax (SDLT) calculations.",
+    "answerSummary": "For a £300,000 UK home purchase with 15% deposit (£45,000), your mortgage loan is £255,000. At a 4.65% fixed rate over a 25-year term, monthly repayment is £1,438. Total interest over 25 years equals £176,340.",
+    "about": "Accurate UK capital and interest repayment calculator for England, Scotland, and Wales. Evaluate fixed-rate deals, tracker mortgages linked to the Bank of England base rate, and Stamp Duty Land Tax (SDLT) allowances.",
+    "initialValues": {
+      "homePrice": 300000,
+      "downPayment": 45000,
+      "interestRate": 4.65,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 2100,
+      "homeInsuranceYearly": 450
+    },
+    "faqs": [
+      {
+        "question": "How much Stamp Duty (SDLT) is due on a £300,000 house in the UK?",
+        "answer": "For moving home, standard SDLT on £300,000 is 5% on the portion above £250,000 (£2,500). First-time buyers pay £0 Stamp Duty on properties up to £425,000."
+      },
+      {
+        "question": "What monthly salary is required for a £255,000 UK mortgage?",
+        "answer": "UK mortgage lenders typically lend 4.5x gross annual household income. To borrow £255,000, an annual pre-tax salary of approximately £56,667 is required."
+      }
+    ]
+  },
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "400k-mortgage-uk",
+    "name": "£400,000 UK Mortgage Repayment Calculator (London & South East)",
+    "title": "£400,000 UK Mortgage Calculator with Repayment Schedule | ConvertSheet",
+    "metaDescription": "Calculate monthly repayment on a £400,000 UK mortgage at 4.75%. Explore 25 vs 30-year terms, stress test affordability, and Stamp Duty Land Tax.",
+    "answerSummary": "On a £400,000 property in the UK with a 10% deposit (£40,000), borrowing £360,000 at 4.75% over 30 years results in a monthly payment of £1,878. Over 25 years, the monthly payment is £2,053, saving £40,188 in lifetime interest.",
+    "about": "Evaluate mortgage affordability for semi-detached homes and flats across the UK. Compare 2-year and 5-year fixed deals, calculate Council Tax allocations, and export full repayment tables to Excel.",
+    "initialValues": {
+      "homePrice": 400000,
+      "downPayment": 40000,
+      "interestRate": 4.75,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 2500,
+      "homeInsuranceYearly": 550
+    },
+    "faqs": [
+      {
+        "question": "What is the monthly repayment on a £400,000 UK house with 10% deposit?",
+        "answer": "Borrowing £360,000 at 4.75% for 25 years gives a monthly capital & interest repayment of £2,053. Adding £208/month for Council Tax and building insurance brings total monthly outgoings to ~£2,307."
+      },
+      {
+        "question": "How much Stamp Duty do first-time buyers pay on a £400,000 UK home?",
+        "answer": "First-time buyers in England and Northern Ireland pay 0% on the first £425,000 of a residential property, resulting in £0 Stamp Duty Land Tax (SDLT) on a £400,000 home purchase."
+      }
+    ]
+  },
+  {
+    "toolSlug": "mortgage-calculator",
+    "presetSlug": "600k-mortgage-uk",
+    "name": "£600,000 UK Mortgage Repayment Calculator",
+    "title": "£600,000 UK Mortgage Calculator | Capital & Interest Repayment | ConvertSheet",
+    "metaDescription": "Calculate monthly payments on a £600,000 UK mortgage loan. Evaluates high-bracket Stamp Duty (SDLT), 80% LTV interest rates, and overpayment savings.",
+    "answerSummary": "With a 20% deposit (£120,000) on a £600,000 UK home, the mortgage amount is £480,000. At 4.45% over 25 years, monthly repayments are £2,654. Total interest paid over 25 years is £316,200.",
+    "about": "Designed for higher-bracket UK property buyers. Analyzes mortgage options across prime regional markets, computes SDLT liabilities (which exceed first-time buyer relief thresholds), and demonstrates lifetime interest savings through regular monthly overpayments.",
+    "initialValues": {
+      "homePrice": 600000,
+      "downPayment": 120000,
+      "interestRate": 4.45,
+      "loanTermYears": 25,
+      "propertyTaxYearly": 3200,
+      "homeInsuranceYearly": 700
+    },
+    "faqs": [
+      {
+        "question": "How much Stamp Duty is due on a £600,000 UK property?",
+        "answer": "For next-home buyers, SDLT is 0% on the first £250,000, 5% on £250,001 to £600,000 (£17,500), for a total Stamp Duty tax of £17,500. First-time buyer relief is not applicable above £625,000."
+      },
+      {
+        "question": "How much can I save by overpaying £200 a month on a £480,000 loan?",
+        "answer": "Overpaying £200/month from month one saves approximately £38,400 in interest and reduces your mortgage term by 2 years and 9 months."
+      }
+    ]
   }
-
 ];
 
 // Indexed Maps for O(1) SSG and metadata lookups
