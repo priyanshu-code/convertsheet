@@ -36,6 +36,7 @@ export interface UseConverterReturn {
   updateOptions: (newOpts: Partial<ConversionOptions>) => void;
   setShowProModal: (show: boolean) => void;
   setProModalReason: (reason: string) => void;
+  conversionDuration: number | null;
   reset: () => void;
   convert: () => Promise<boolean>;
 }
@@ -67,6 +68,8 @@ export function useConverter(
   const [showProModal, setShowProModal] = useState<boolean>(false);
   const [proModalReason, setProModalReason] = useState<string>("");
 
+  const [conversionDuration, setConversionDuration] = useState<number | null>(null);
+
   // Keep a ref to latest options so convert() uses current values without stale closures
   const optionsRef = useRef(options);
   optionsRef.current = options;
@@ -86,34 +89,30 @@ export function useConverter(
       return getConverterEngine(config.engineId);
     }
     return null;
-  }, [config, hookOptions?.engine]);
+  }, [hookOptions?.engine, config.isClientSide, config.engineId]);
 
   const setFile = useCallback(
     async (newFile: File | null) => {
       const currentId = ++activeParseIdRef.current;
-      setIsParsing(false);
+      setError(null);
+      setConversionDuration(null);
 
       if (!newFile) {
         setFileState(null);
         setPreview(null);
-        setError(null);
         setIsParsing(false);
-        setIsConverting(false);
         return;
       }
 
-      setError(null);
-
-      // 1. Validate file extension against config
-      const supportedExtensions = [
+      // 1. Validate file extension
+      const validExtensions = [
         config.sourceExtension,
         ...(config.additionalExtensions || []),
       ];
-
-      if (!isExtensionSupported(newFile.name, supportedExtensions)) {
+      if (!isExtensionSupported(newFile.name, validExtensions)) {
         setFileState(null);
         setPreview(null);
-        const displayExts = supportedExtensions.join(", ");
+        const displayExts = validExtensions.join(", ");
         setError(
           `Unsupported file format. Please upload a valid ${config.sourceFormat} file (${displayExts}).`
         );
@@ -130,7 +129,7 @@ export function useConverter(
         return;
       }
 
-      // 3. Check Pro gating: File size exceeds 10MB
+      // 3. Check Pro gating: File size exceeds limit
       if (newFile.size > MAX_FREE_FILE_SIZE_BYTES) {
         setPreview(null);
         setProModalReason(DEFAULT_PRO_REASON_SIZE);
@@ -196,9 +195,15 @@ export function useConverter(
 
     setIsConverting(true);
     setError(null);
+    setConversionDuration(null);
+
+    const startTime = typeof performance !== "undefined" ? performance.now() : Date.now();
 
     try {
       const output = await engine.convert(file, optionsRef.current);
+      const endTime = typeof performance !== "undefined" ? performance.now() : Date.now();
+      const elapsedSeconds = Math.max(0.01, (endTime - startTime) / 1000);
+      setConversionDuration(elapsedSeconds);
       downloadBlob(output.blob, output.filename);
       return true;
     } catch (err: unknown) {
@@ -220,6 +225,7 @@ export function useConverter(
     setIsConverting(false);
     setShowProModal(false);
     setProModalReason("");
+    setConversionDuration(null);
     setOptions({
       ...DEFAULT_OPTIONS,
       ...(hookOptions?.initialOptions ?? {}),
@@ -235,6 +241,7 @@ export function useConverter(
     error,
     showProModal,
     proModalReason,
+    conversionDuration,
     setFile,
     setOptions,
     updateOptions,

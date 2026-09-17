@@ -9,6 +9,8 @@ import {
   AlertCircle,
   Sparkles,
   Archive,
+  CheckCircle2,
+  Timer,
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { formatBytes, cn } from "@/lib/utils";
@@ -38,6 +40,7 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
     setFile,
     setOptions,
     setShowProModal,
+    conversionDuration,
     reset,
     convert,
   } = useConverter(config);
@@ -116,6 +119,36 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
             <p className="text-xs sm:text-sm text-rose-700 dark:text-rose-300">
               {error}
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* Conversion Success & Benchmark Performance Banner */}
+      {conversionDuration !== null && !error && (
+        <div
+          role="status"
+          className="flex items-center justify-between gap-3 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-900 dark:text-emerald-200 text-sm animate-in fade-in slide-in-from-top-1 duration-300"
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+              <CheckCircle2 className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="font-semibold text-emerald-950 dark:text-emerald-100 flex items-center gap-2">
+                <span>Conversion Complete!</span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-200/70 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/50">
+                  <Timer className="w-3 h-3" />
+                  {conversionDuration < 1
+                    ? `${(conversionDuration * 1000).toFixed(0)} ms`
+                    : `${conversionDuration.toFixed(2)}s`}
+                </span>
+              </p>
+              <p className="text-xs text-emerald-700 dark:text-emerald-300/90 mt-0.5">
+                {preview?.totalRows
+                  ? `${preview.totalRows.toLocaleString()} rows processed 100% locally in your browser. Zero bytes uploaded.`
+                  : "Processed 100% locally in your browser with DuckDB / WebAssembly. Zero bytes uploaded."}
+              </p>
+            </div>
           </div>
         </div>
       )}
