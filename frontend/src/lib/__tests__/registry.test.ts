@@ -18,9 +18,9 @@ import {
 
 describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
-    it("returns all 16 registered converter slugs", () => {
+    it("returns all 17 registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(16);
+      expect(slugs).toHaveLength(17);
       expect(slugs).toContain("parquet-to-excel");
       expect(slugs).toContain("parquet-to-csv");
       expect(slugs).toContain("parquet-to-json");
@@ -30,6 +30,7 @@ describe("Converter Registry & Utilities", () => {
       expect(slugs).toContain("jsonl-to-csv");
       expect(slugs).toContain("csv-to-jsonl");
       expect(slugs).toContain("markdown-to-excel");
+      expect(slugs).toContain("sqlite-to-excel");
     });
   });
 
@@ -137,6 +138,21 @@ describe("Converter Registry & Utilities", () => {
       expect(config?.targetExtension).toBe(".xlsx");
       expect(config?.isClientSide).toBe(true);
       expect(config?.engineId).toBe("markdown-to-excel");
+    });
+
+    it("returns valid configuration for sqlite-to-excel", () => {
+      const config = getConverterBySlug("sqlite-to-excel");
+      expect(config).toBeDefined();
+      expect(config?.slug).toBe("sqlite-to-excel");
+      expect(config?.sourceFormat).toBe("SQLite");
+      expect(config?.targetFormat).toBe("Excel");
+      expect(config?.engineId).toBe("sqlite-to-excel");
+      expect(config?.sourceExtension).toBe(".sqlite");
+      expect(config?.additionalExtensions).toEqual(
+        expect.arrayContaining([".db", ".sqlite3", ".db3"])
+      );
+      expect(config?.isClientSide).toBe(true);
+      expect(config?.category).toBe("spreadsheets");
     });
 
     it("returns undefined for unknown slug or prototype properties", () => {

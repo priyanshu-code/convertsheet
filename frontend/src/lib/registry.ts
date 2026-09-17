@@ -919,6 +919,77 @@ export const CONVERTER_REGISTRY = {
       },
     ],
   },
+
+  "sqlite-to-excel": {
+    slug: "sqlite-to-excel",
+    sourceFormat: "SQLite",
+    targetFormat: "Excel",
+    sourceExtension: ".sqlite",
+    additionalExtensions: [".db", ".sqlite3", ".db3"],
+    targetExtension: ".xlsx",
+    acceptedMimeTypes: [
+      "application/x-sqlite3",
+      "application/vnd.sqlite3",
+      "application/octet-stream",
+    ],
+    category: "spreadsheets",
+    engineId: "sqlite-to-excel",
+    isClientSide: true,
+    featured: true,
+    badge: "Client-Side WASM",
+    title: "Convert SQLite (.db, .sqlite) to Excel (.xlsx) Online",
+    subtitle:
+      "Export tables from SQLite database files into formatted multi-sheet Excel spreadsheets directly in your browser with zero server uploads.",
+    metaDescription:
+      "Free private SQLite to Excel converter. Load .sqlite and .db database files and export all tables to native multi-sheet XLSX spreadsheets locally via WebAssembly.",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload SQLite File",
+        description:
+          "Select or drag and drop your SQLite database file (.db, .sqlite, .sqlite3, or .db3) into the upload zone.",
+      },
+      {
+        step: 2,
+        title: "Inspect Database Tables",
+        description:
+          "Preview the list of extracted tables, row counts, and column schemas parsed instantly in your browser via WebAssembly.",
+      },
+      {
+        step: 3,
+        title: "Download Multi-Sheet Excel",
+        description:
+          "Click 'Convert & Download' to generate and save a native multi-sheet .xlsx workbook where each database table becomes a distinct worksheet.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is my SQLite database file uploaded to any remote server?",
+        answer:
+          "No. The conversion runs 100% locally in your browser using an in-memory WebAssembly SQLite engine. Your database files, records, and proprietary data never leave your device.",
+      },
+      {
+        question: "How are multiple database tables handled in the Excel export?",
+        answer:
+          "Each table in your SQLite database is automatically exported to its own dedicated worksheet tab within a single formatted Excel (.xlsx) workbook, with sanitized sheet names.",
+      },
+      {
+        question: "What file extensions are supported?",
+        answer:
+          "The converter accepts standard SQLite database files with extensions including .sqlite, .db, .sqlite3, and .db3, as well as binary SQLite file dumps.",
+      },
+      {
+        question: "Can this converter open encrypted or password-protected SQLite databases?",
+        answer:
+          "Standard SQLite databases are fully supported. Encrypted databases using custom extensions like SQLCipher or SEE require decryption prior to conversion.",
+      },
+      {
+        question: "What is the file size limit for converting SQLite databases?",
+        answer:
+          "Because processing occurs in-browser via WebAssembly and browser memory buffers, database files up to 200MB can be processed smoothly depending on your device's available RAM.",
+      },
+    ],
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;

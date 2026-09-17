@@ -14,16 +14,18 @@ describe("ConverterGrid Component", () => {
     expect(screen.getByRole("button", { name: /Spreadsheets & Docs/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Data Engineering/i })).toBeInTheDocument();
 
-    expect(screen.getByText("(16)")).toBeInTheDocument();
-    expect(screen.getAllByText("(8)")).toHaveLength(2);
+    expect(screen.getByText("(17)")).toBeInTheDocument();
+    expect(screen.getByText("(9)")).toBeInTheDocument();
+    expect(screen.getByText("(8)")).toBeInTheDocument();
   });
 
-  it("shows all 16 converters by default", () => {
+  it("shows all 17 converters by default", () => {
     render(<ConverterGrid converters={allConverters} />);
 
     expect(screen.getByText("JSON to Excel")).toBeInTheDocument();
     expect(screen.getByText("Parquet to Excel")).toBeInTheDocument();
     expect(screen.getByText("JSONL to CSV")).toBeInTheDocument();
+    expect(screen.getByText("SQLite to Excel")).toBeInTheDocument();
   });
 
   it("filters to spreadsheets when Spreadsheets tab is clicked", () => {
