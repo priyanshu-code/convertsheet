@@ -10,6 +10,8 @@ import { sanitizeSheetName } from "@/lib/utils";
 /**
  * Casts a cell string to a number or boolean if applicable,
  * while preserving codes with leading zeros (e.g. "01234", "007").
+ * Also parses currency strings (e.g. "$12.50", "€99.99") and formatted
+ * comma-separated numbers (e.g. "1,234.50", "$1,250.00").
  */
 function parseCellPreservingLeadingZeros(val: unknown): unknown {
   if (typeof val !== "string") return val;
@@ -29,6 +31,22 @@ function parseCellPreservingLeadingZeros(val: unknown): unknown {
       return num;
     }
   }
+
+  // Currency and formatted comma numbers (e.g. "$12.50", "€99.99", "1,234.50", "$1,250.00")
+  const currencyMatch = trimmed.match(/^[$€£¥₹]?\s*([+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?)\s*[$€£¥₹]?$/);
+  if (currencyMatch) {
+    const rawDigits = currencyMatch[1];
+    // Check if raw numbers had leading zeros like 0123
+    if (/^0\d+/.test(rawDigits.replace(/,/g, ""))) {
+      return val;
+    }
+    const sanitized = rawDigits.replace(/,/g, "");
+    const num = Number(sanitized);
+    if (!Number.isNaN(num) && Number.isFinite(num)) {
+      return num;
+    }
+  }
+
   return val;
 }
 
@@ -63,9 +81,13 @@ export function parseMarkdownTable(text: string): TabularData {
 
   const splitTableRow = (rowStr: string): string[] => {
     let s = rowStr.trim();
+    // Strip leading unescaped pipe if present
     if (s.startsWith("|")) s = s.slice(1);
-    if (s.endsWith("|")) s = s.slice(0, -1);
-    return s.split("|").map((cell) => cell.trim());
+    // Strip trailing unescaped pipe if present (not preceded by backslash)
+    if (/(?<!\\)\|$/.test(s)) s = s.slice(0, -1);
+    return s
+      .split(/(?<!\\)\|/)
+      .map((cell) => cell.replace(/\\\|/g, "|").trim());
   };
 
   const rawHeaders = splitTableRow(lines[headerIndex]);

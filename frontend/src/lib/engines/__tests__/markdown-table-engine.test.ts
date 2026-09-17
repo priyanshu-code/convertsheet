@@ -22,32 +22,56 @@ describe("markdown-table-engine", () => {
       expect(result.columns).toEqual(["Product", "Price", "In Stock"]);
       expect(result.totalRows).toBe(2);
       expect(result.rows).toEqual([
-        { Product: "Widget A", Price: "$12.50", "In Stock": 150 },
-        { Product: "Widget B", Price: "$99.00", "In Stock": 0 },
+        { Product: "Widget A", Price: 12.5, "In Stock": 150 },
+        { Product: "Widget B", Price: 99, "In Stock": 0 },
       ]);
     });
 
-    it("handles auto numeric casting and preserves leading zeros or non-numeric strings gracefully", () => {
+    it("handles auto numeric casting for currency and comma numbers while preserving leading zeros", () => {
       const markdown = `
-| Code | Quantity | Rate | FloatVal |
-| --- | --- | --- | --- |
-| 00123 | 42 | $12.50 | 3.1415 |
-| 000 | -10 | 1,234.50 | 0 |
+| Code | Quantity | Price | Total | FloatVal |
+| --- | --- | --- | --- | --- |
+| 00123 | 42 | $12.50 | $1,250.00 | 3.1415 |
+| 000 | -10 | €99.99 | 1,234.50 | 0 |
 `;
       const result = parseMarkdownTable(markdown);
 
-      expect(result.columns).toEqual(["Code", "Quantity", "Rate", "FloatVal"]);
+      expect(result.columns).toEqual(["Code", "Quantity", "Price", "Total", "FloatVal"]);
       expect(result.totalRows).toBe(2);
       // "00123" preserves leading zeros as string
       expect(result.rows[0].Code).toBe("00123");
       expect(result.rows[0].Quantity).toBe(42);
-      expect(result.rows[0].Rate).toBe("$12.50");
+      expect(result.rows[0].Price).toBe(12.5);
+      expect(result.rows[0].Total).toBe(1250);
       expect(result.rows[0].FloatVal).toBe(3.1415);
 
       expect(result.rows[1].Code).toBe("000");
       expect(result.rows[1].Quantity).toBe(-10);
-      expect(result.rows[1].Rate).toBe("1,234.50");
+      expect(result.rows[1].Price).toBe(99.99);
+      expect(result.rows[1].Total).toBe(1234.5);
       expect(result.rows[1].FloatVal).toBe(0);
+    });
+
+    it("handles escaped pipes within table cell content", () => {
+      const markdown = `
+| Syntax | Description | Example |
+| --- | --- | --- |
+| \\| | Escaped pipe character | a \\| b |
+| Normal | Regular text | hello |
+`;
+      const result = parseMarkdownTable(markdown);
+      expect(result.columns).toEqual(["Syntax", "Description", "Example"]);
+      expect(result.totalRows).toBe(2);
+      expect(result.rows[0]).toEqual({
+        Syntax: "|",
+        Description: "Escaped pipe character",
+        Example: "a | b",
+      });
+      expect(result.rows[1]).toEqual({
+        Syntax: "Normal",
+        Description: "Regular text",
+        Example: "hello",
+      });
     });
 
     it("handles tables without leading/trailing pipes and extra spaces", () => {
@@ -135,7 +159,7 @@ Banana | 20
       expect(preview.rows).toHaveLength(2);
       expect(preview.rows[0]).toEqual({
         Product: "Widget A",
-        Price: "$12.50",
+        Price: 12.5,
         "In Stock": 150,
       });
     });
