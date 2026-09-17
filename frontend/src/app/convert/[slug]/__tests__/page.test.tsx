@@ -35,10 +35,10 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
 
   describe("generateStaticParams", () => {
-    it("returns all 15 converter slugs for static pre-rendering", () => {
+    it("returns all 16 converter slugs for static pre-rendering", () => {
       const params = generateStaticParams();
 
-      expect(params).toHaveLength(15);
+      expect(params).toHaveLength(16);
       const slugs = params.map((p) => p.slug);
       expect(slugs).toEqual(
         expect.arrayContaining([
@@ -57,6 +57,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
           "jsonl-to-excel",
           "jsonl-to-csv",
           "csv-to-jsonl",
+          "markdown-to-excel",
         ])
       );
     });
@@ -142,11 +143,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         )
       ).toBeInTheDocument();
 
-      // Other Popular Data Converters (should list the other 14)
+      // Other Popular Data Converters (should list the other 15)
       const otherSection = screen.getByTestId("other-converters-section");
       expect(otherSection).toBeInTheDocument();
       const otherLinks = otherSection.querySelectorAll("a");
-      expect(otherLinks).toHaveLength(14);
+      expect(otherLinks).toHaveLength(15);
 
       const linkedHrefs = Array.from(otherLinks).map((a) =>
         a.getAttribute("href")
@@ -304,8 +305,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + About/Privacy/Terms (3) + 3 Category Silos + 15 Converters + 45 Tools + 103 Presets + 6 Blog Posts + 3 Comparisons = 181 entries
-      expect(entries).toHaveLength(181);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + About/Privacy/Terms (3) + 3 Category Silos + 16 Converters + 45 Tools + 103 Presets + 6 Blog Posts + 3 Comparisons = 182 entries
+      expect(entries).toHaveLength(182);
 
       // Home entry
       const homeEntry = entries.find(

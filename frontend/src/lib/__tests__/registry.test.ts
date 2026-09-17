@@ -18,9 +18,9 @@ import {
 
 describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
-    it("returns all 15 registered converter slugs", () => {
+    it("returns all 16 registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(15);
+      expect(slugs).toHaveLength(16);
       expect(slugs).toContain("parquet-to-excel");
       expect(slugs).toContain("parquet-to-csv");
       expect(slugs).toContain("parquet-to-json");
@@ -29,6 +29,7 @@ describe("Converter Registry & Utilities", () => {
       expect(slugs).toContain("jsonl-to-excel");
       expect(slugs).toContain("jsonl-to-csv");
       expect(slugs).toContain("csv-to-jsonl");
+      expect(slugs).toContain("markdown-to-excel");
     });
   });
 
@@ -124,6 +125,18 @@ describe("Converter Registry & Utilities", () => {
       expect(config?.slug).toBe("json-to-excel");
       expect(config?.sourceExtension).toBe(".json");
       expect(config?.targetExtension).toBe(".xlsx");
+    });
+
+    it("returns valid configuration for markdown-to-excel", () => {
+      const config = getConverterBySlug("markdown-to-excel");
+      expect(config).toBeDefined();
+      expect(config?.slug).toBe("markdown-to-excel");
+      expect(config?.sourceFormat).toBe("Markdown");
+      expect(config?.targetFormat).toBe("Excel");
+      expect(config?.sourceExtension).toBe(".md");
+      expect(config?.targetExtension).toBe(".xlsx");
+      expect(config?.isClientSide).toBe(true);
+      expect(config?.engineId).toBe("markdown-to-excel");
     });
 
     it("returns undefined for unknown slug or prototype properties", () => {
