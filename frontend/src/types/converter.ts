@@ -36,4 +36,5 @@ export type ConverterEngineId =
   | "json-to-parquet"
   | "jsonl-to-excel"
   | "jsonl-to-csv"
-  | "csv-to-jsonl";
+  | "csv-to-jsonl"
+  | "markdown-to-excel";
