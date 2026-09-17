@@ -13,6 +13,7 @@ import {
   CalcPromptButton,
   CalcPdfReportButton,
   CalcSaveButton,
+  CalcShareButton,
 } from "@/components/calculator";
 import { calculateMortgage } from "@/lib/engines/financial-engine";
 import { generateMortgageDossierPdf } from "@/lib/engines/pdf-dossier-engine";
@@ -32,13 +33,62 @@ export interface MortgageCalculatorProps {
 }
 
 export function MortgageCalculator({ initialValues }: MortgageCalculatorProps = {}) {
-  const [homePrice, setHomePrice] = useState<number>(Number(initialValues?.homePrice) || 400000);
-  const [downPayment, setDownPayment] = useState<number>(Number(initialValues?.downPayment) || 80000);
-  const [interestRate, setInterestRate] = useState<number>(Number(initialValues?.interestRate) || 6.5);
-  const [loanTermYears, setLoanTermYears] = useState<number>(Number(initialValues?.loanTermYears) || 30);
-  const [propertyTaxYearly, setPropertyTaxYearly] = useState<number>(Number(initialValues?.propertyTaxYearly) || 4800);
-  const [homeInsuranceYearly, setHomeInsuranceYearly] = useState<number>(Number(initialValues?.homeInsuranceYearly) || 1200);
-  const [extraPayment, setExtraPayment] = useState<number>(Number(initialValues?.extraPayment) || 0);
+  const [homePrice, setHomePrice] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const p = new URLSearchParams(window.location.search).get("homePrice");
+      if (p) return Number(p);
+    }
+    return Number(initialValues?.homePrice) || 400000;
+  });
+
+  const [downPayment, setDownPayment] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const d = new URLSearchParams(window.location.search).get("downPayment");
+      if (d) return Number(d);
+    }
+    return Number(initialValues?.downPayment) || 80000;
+  });
+
+  const [interestRate, setInterestRate] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const r = new URLSearchParams(window.location.search).get("interestRate");
+      if (r) return Number(r);
+    }
+    return Number(initialValues?.interestRate) || 6.5;
+  });
+
+  const [loanTermYears, setLoanTermYears] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const t = new URLSearchParams(window.location.search).get("loanTermYears");
+      if (t) return Number(t);
+    }
+    return Number(initialValues?.loanTermYears) || 30;
+  });
+
+  const [propertyTaxYearly, setPropertyTaxYearly] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const tx = new URLSearchParams(window.location.search).get("propertyTaxYearly");
+      if (tx) return Number(tx);
+    }
+    return Number(initialValues?.propertyTaxYearly) || 4800;
+  });
+
+  const [homeInsuranceYearly, setHomeInsuranceYearly] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const ins = new URLSearchParams(window.location.search).get("homeInsuranceYearly");
+      if (ins) return Number(ins);
+    }
+    return Number(initialValues?.homeInsuranceYearly) || 1200;
+  });
+
+  const [extraPayment, setExtraPayment] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const ex = new URLSearchParams(window.location.search).get("extraPayment");
+      if (ex) return Number(ex);
+    }
+    return Number(initialValues?.extraPayment) || 0;
+  });
+
   const [scheduleView, setScheduleView] = useState<"yearly" | "monthly">("yearly");
 
   const downPaymentPercent = homePrice > 0 ? Math.round((downPayment / homePrice) * 100) : 0;
@@ -313,6 +363,18 @@ Provide financial advice on whether refinancing or making extra principal paymen
                 { label: "Loan Amount", value: `$${mortgage.loanAmount.toLocaleString()}` },
                 { label: "Total Interest", value: `$${mortgage.totalInterest.toLocaleString()}` },
               ]}
+            />
+            <CalcShareButton
+              state={{
+                homePrice,
+                downPayment,
+                interestRate,
+                loanTermYears,
+                propertyTaxYearly,
+                homeInsuranceYearly,
+                extraPayment,
+              }}
+              label="Share Scenario"
             />
             <CalcPromptButton prompt={aiPrompt} toolName="Mortgage Analysis" />
           </div>

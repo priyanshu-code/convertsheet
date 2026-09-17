@@ -18,3 +18,4 @@ export * from "./SavedCalculationsDrawer";
 export * from "./EmbedModal";
 export * from "./EmbedTrigger";
 export * from "./CurrencySelector";
+export * from "./CalcShareButton";
