@@ -9,32 +9,30 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("Embed Tool Page", () => {
-  it("generates static params for all registered tools", () => {
+  it("generates static params for both registered tools and converters", () => {
     const params = generateStaticParams();
-    expect(params.length).toBeGreaterThanOrEqual(38);
+    expect(params.length).toBeGreaterThanOrEqual(50);
     expect(params).toContainEqual({ slug: "mortgage-calculator" });
-    expect(params).toContainEqual({ slug: "sip-calculator" });
-    expect(params).toContainEqual({ slug: "json-formatter-validator" });
+    expect(params).toContainEqual({ slug: "csv-to-jsonl" });
+    expect(params).toContainEqual({ slug: "json-to-excel" });
+    expect(params).toContainEqual({ slug: "csv-to-parquet" });
   });
 
-  it("generates SEO metadata with index & follow flags", async () => {
-    const meta = await generateMetadata({ params: { slug: "mortgage-calculator" } });
-    expect(meta.title).toContain("Mortgage Calculator");
-    expect(meta.title).toContain("(Embed Widget)");
+  it("generates SEO metadata for converters with index & follow flags", async () => {
+    const meta = await generateMetadata({ params: { slug: "csv-to-jsonl" } });
+    expect(meta.title).toContain("CSV to JSONL Converter (Embed Widget)");
     expect(meta.robots).toEqual({ index: true, follow: true });
   });
 
-  it("renders the calculator component and attribution backlink bar", () => {
-    render(<EmbedToolPage params={{ slug: "mortgage-calculator" }} />);
+  it("renders the converter card and attribution backlink bar for converter embed", () => {
+    render(<EmbedToolPage params={{ slug: "csv-to-jsonl" }} />);
 
-    expect(screen.getByText(/Monthly Mortgage Payment/i)).toBeInTheDocument();
     expect(screen.getByText(/100% Client-Side • Private & Free/i)).toBeInTheDocument();
-
     const poweredByLink = screen.getByRole("link", { name: /ConvertSheet/i });
     expect(poweredByLink).toBeInTheDocument();
     expect(poweredByLink).toHaveAttribute(
       "href",
-      "https://convertsheet.com/tools/mortgage-calculator"
+      "https://convertsheet.com/convert/csv-to-jsonl"
     );
   });
 });

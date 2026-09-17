@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllToolSlugs, getToolBySlug } from "@/lib/tool-registry";
+import { getAllConverterSlugs, getConverterBySlug } from "@/lib/registry";
+import { ConverterCard } from "@/components/converter";
 import { FileSpreadsheet, ShieldCheck } from "lucide-react";
 
 // Import tool components
@@ -55,7 +57,11 @@ export interface EmbedPageProps {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return getAllToolSlugs().map((slug) => ({
+  const toolSlugs = getAllToolSlugs();
+  const converterSlugs = getAllConverterSlugs();
+  const allSlugs = Array.from(new Set([...toolSlugs, ...converterSlugs]));
+
+  return allSlugs.map((slug) => ({
     slug,
   }));
 }
@@ -64,28 +70,40 @@ export async function generateMetadata({
   params,
 }: EmbedPageProps): Promise<Metadata> {
   const tool = getToolBySlug(params.slug);
-
-  if (!tool) {
+  if (tool) {
     return {
-      title: "Calculator Widget - ConvertSheet",
-      description: "Free interactive calculator widget.",
+      title: `${tool.name} (Embed Widget) | ConvertSheet`,
+      description: tool.metaDescription,
+      robots: {
+        index: true,
+        follow: true,
+      },
+    };
+  }
+
+  const converter = getConverterBySlug(params.slug);
+  if (converter) {
+    return {
+      title: `${converter.sourceFormat} to ${converter.targetFormat} Converter (Embed Widget) | ConvertSheet`,
+      description: converter.metaDescription,
+      robots: {
+        index: true,
+        follow: true,
+      },
     };
   }
 
   return {
-    title: `${tool.name} (Embed Widget) | ConvertSheet`,
-    description: tool.metaDescription,
-    robots: {
-      index: true,
-      follow: true,
-    },
+    title: "Widget - ConvertSheet",
+    description: "Free interactive data widget.",
   };
 }
 
 export default function EmbedToolPage({ params }: EmbedPageProps) {
   const tool = getToolBySlug(params.slug);
+  const converter = getConverterBySlug(params.slug);
 
-  if (!tool) {
+  if (!tool && !converter) {
     notFound();
   }
 
@@ -165,11 +183,18 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
     "data-anonymizer-cleaner": DataCleanerTool,
   };
 
-  const ToolComponent = componentMap[tool.slug];
+  const ToolComponent = tool ? componentMap[tool.slug] : null;
+  const backlinkUrl = converter
+    ? `https://convertsheet.com/convert/${converter.slug}`
+    : `https://convertsheet.com/tools/${tool?.slug}`;
 
   return (
     <div className="space-y-3">
-      {ToolComponent ? <ToolComponent /> : null}
+      {converter ? (
+        <ConverterCard config={converter} />
+      ) : ToolComponent ? (
+        <ToolComponent />
+      ) : null}
 
       {/* Powered by ConvertSheet Attribution Bar (SEO Backlink Engine) */}
       <footer className="pt-2 flex items-center justify-between text-[11px] text-zinc-500 dark:text-zinc-400 px-1">
@@ -181,7 +206,7 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
         <div>
           Powered by{" "}
           <Link
-            href={`https://convertsheet.com/tools/${tool.slug}`}
+            href={backlinkUrl}
             target="_blank"
             rel="noopener"
             className="font-bold text-emerald-600 dark:text-emerald-400 hover:underline inline-flex items-center gap-1"

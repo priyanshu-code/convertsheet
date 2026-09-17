@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   FileSpreadsheet,
   ShieldCheck,
@@ -11,7 +14,12 @@ import { CONVERTER_REGISTRY } from "@/lib/registry";
 import { ConverterConfig } from "@/types/registry";
 
 export function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  if (pathname?.startsWith("/embed")) {
+    return null;
+  }
 
   const converters = (
     Object.values(CONVERTER_REGISTRY) as ConverterConfig[]

@@ -17,6 +17,7 @@ import {
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 import { getAllTools } from "@/lib/tool-registry";
 import { ConverterConfig } from "@/types/registry";
+import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./ThemeToggle";
 import { CommandPalette } from "./CommandPalette";
 import { PwaInstallButton } from "@/components/pwa/PwaInstallButton";
@@ -49,6 +50,7 @@ function getConverterLabel(slug: string): string {
 }
 
 export function Navbar() {
+  const pathname = usePathname();
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [activeMenuTab, setActiveMenuTab] = useState<"converters" | "calculators">("converters");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -101,6 +103,10 @@ export function Navbar() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMobileMenuOpen]);
+
+  if (pathname?.startsWith("/embed")) {
+    return null;
+  }
 
   return (
     <>
