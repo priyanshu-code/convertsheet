@@ -96,6 +96,27 @@ export default function RootLayout({
           id="theme-initializer"
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "ConvertSheet",
+              url: "https://convertsheet.com",
+              description:
+                "Fast, 100% private in-browser file conversions and financial calculators.",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate: "https://convertsheet.com/tools?q={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </head>
       <body
         className={`${inter.className} min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-emerald-500/20 selection:text-emerald-700 dark:selection:text-emerald-300`}
