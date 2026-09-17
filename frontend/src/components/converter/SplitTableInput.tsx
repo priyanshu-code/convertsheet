@@ -219,6 +219,12 @@ export function SplitTableInput({
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => {
+              if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                e.preventDefault();
+                handleParseText();
+              }
+            }}
             disabled={disabled}
             aria-label="Paste table text"
             placeholder={`| Product | Unit Price | Qty | Status |\n| :--- | :--- | :--- | :--- |\n| Widget Alpha | $24.99 | 120 | In Stock |\n| Widget Beta | $89.00 | 45 | Backorder |`}
