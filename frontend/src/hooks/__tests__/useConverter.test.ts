@@ -111,6 +111,52 @@ describe("useConverter hook", () => {
     expect(mockEngine.parsePreview).toHaveBeenCalledWith(jsonFile, 10);
   });
 
+  it("updates preview when previewTable is called", async () => {
+    const table1Preview: TabularData = {
+      columns: ["id", "name"],
+      rows: [{ id: 1, name: "Alice" }],
+      totalRows: 1,
+      tables: ["users", "orders"],
+      activeTable: "users",
+    };
+    const table2Preview: TabularData = {
+      columns: ["id", "amount"],
+      rows: [{ id: 101, amount: 99.5 }],
+      totalRows: 1,
+      tables: ["users", "orders"],
+      activeTable: "orders",
+    };
+
+    const mockEngine: IConverterEngine = {
+      parsePreview: vi.fn().mockImplementation((_file, _limit, tableName) => {
+        if (tableName === "orders") {
+          return Promise.resolve(table2Preview);
+        }
+        return Promise.resolve(table1Preview);
+      }),
+      convert: vi.fn(),
+    };
+
+    const { result } = renderHook(() =>
+      useConverter(jsonConfig, { engine: mockEngine })
+    );
+
+    const jsonFile = new File(["{}"], "users.json", { type: "application/json" });
+
+    await act(async () => {
+      await result.current.setFile(jsonFile);
+    });
+
+    expect(result.current.preview?.activeTable).toBe("users");
+
+    await act(async () => {
+      await result.current.previewTable?.("orders");
+    });
+
+    expect(result.current.preview?.activeTable).toBe("orders");
+    expect(mockEngine.parsePreview).toHaveBeenCalledWith(jsonFile, 10, "orders");
+  });
+
   it("handles preview parsing failure gracefully", async () => {
     const mockEngine: IConverterEngine = {
       parsePreview: vi.fn().mockRejectedValue(new Error("Corrupted JSON structure")),

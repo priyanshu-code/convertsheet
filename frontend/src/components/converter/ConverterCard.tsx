@@ -44,6 +44,7 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
     conversionDuration,
     reset,
     convert,
+    previewTable,
   } = useConverter(config);
 
   const requiresPro = Boolean(
@@ -210,7 +211,12 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
           )}
 
           {/* Data Preview Table */}
-          {!isParsing && preview && <DataPreviewTable preview={preview} />}
+          {!isParsing && preview && (
+            <DataPreviewTable
+              preview={preview}
+              onTableChange={previewTable}
+            />
+          )}
 
           {/* Action Footer */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">

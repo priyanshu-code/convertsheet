@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Table, Eye } from "lucide-react";
+import { Table, Eye, Layers } from "lucide-react";
 import { TabularData } from "@/types/converter";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +9,7 @@ export interface DataPreviewTableProps {
   preview: TabularData;
   maxDisplayRows?: number;
   className?: string;
+  onTableChange?: (tableName: string) => void;
 }
 
 function renderCellValue(value: unknown): React.ReactNode {
@@ -83,18 +84,64 @@ export function DataPreviewTable({
   preview,
   maxDisplayRows = 10,
   className,
+  onTableChange,
 }: DataPreviewTableProps) {
   const rowsToDisplay = preview.rows.slice(0, maxDisplayRows);
   const totalRows = preview.totalRows ?? preview.rows.length;
   const isAllRows = totalRows <= rowsToDisplay.length;
+  const hasMultipleTables = Boolean(preview.tables && preview.tables.length > 1);
 
   return (
     <div className={cn("w-full space-y-3", className)}>
+      {/* Multi-Table Selector & Notice Bar */}
+      {hasMultipleTables && (
+        <div className="space-y-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40 p-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+              <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span>Tables in Database ({preview.tables!.length}):</span>
+            </div>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-100/70 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+              All {preview.tables!.length} tables will be exported as separate sheets in Excel (.xlsx)
+            </span>
+          </div>
+
+          <div
+            role="tablist"
+            aria-label="Database tables"
+            className="flex flex-wrap items-center gap-1.5 pt-1"
+          >
+            {preview.tables!.map((table) => {
+              const isActive = (preview.activeTable || preview.tables![0]) === table;
+              return (
+                <button
+                  key={table}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => onTableChange?.(table)}
+                  className={cn(
+                    "px-3 py-1 rounded-lg text-xs font-medium transition-all",
+                    isActive
+                      ? "bg-emerald-600 text-white shadow-xs font-semibold"
+                      : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 border border-zinc-200 dark:border-zinc-700"
+                  )}
+                >
+                  {table}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Top Info Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-1">
         <div className="flex items-center gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
           <Eye className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-          <span>Data Preview</span>
+          <span>
+            {preview.activeTable ? `Data Preview: ${preview.activeTable}` : "Data Preview"}
+          </span>
           <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">
             ({preview.columns.length} columns)
           </span>

@@ -24,15 +24,22 @@ function getSqlJs(): Promise<SqlJsStatic> {
   return sqlPromise;
 }
 
-function calculateColumnWidths(
+function formatSqliteValue(val: unknown): unknown {
+  if (val instanceof Uint8Array) {
+    return `[BLOB: ${val.byteLength} bytes]`;
+  }
+  return val;
+}
+
+function calculateColumnWidthsFromValues(
   columns: string[],
-  rows: Record<string, unknown>[]
+  rowValuesList: unknown[][]
 ): { wch: number }[] {
-  return columns.map((col) => {
+  const sampleLimit = Math.min(rowValuesList.length, 100);
+  return columns.map((col, colIdx) => {
     let maxLen = col.length;
-    const sample = rows.slice(0, 100);
-    for (const row of sample) {
-      const val = row[col];
+    for (let i = 0; i < sampleLimit; i++) {
+      const val = rowValuesList[i][colIdx];
       const strLen = val !== null && val !== undefined ? String(val).length : 0;
       if (strLen > maxLen) {
         maxLen = strLen;
@@ -62,7 +69,11 @@ export class SqliteToExcelEngine implements IConverterEngine {
     return res[0].values.map((row) => String(row[0]));
   }
 
-  async parsePreview(file: File, maxRows?: number): Promise<TabularData> {
+  async parsePreview(
+    file: File,
+    maxRows?: number,
+    tableName?: string
+  ): Promise<TabularData> {
     const db = await this.loadDatabase(file);
     if (!db) {
       return { columns: [], rows: [], totalRows: 0 };
@@ -74,8 +85,9 @@ export class SqliteToExcelEngine implements IConverterEngine {
         return { columns: [], rows: [], totalRows: 0 };
       }
 
-      const firstTable = tables[0];
-      const escapedTableName = `"${firstTable.replace(/"/g, '""')}"`;
+      const targetTable =
+        tableName && tables.includes(tableName) ? tableName : tables[0];
+      const escapedTableName = `"${targetTable.replace(/"/g, '""')}"`;
 
       const countRes = db.exec(`SELECT COUNT(*) FROM ${escapedTableName}`);
       const totalRows =
@@ -96,14 +108,20 @@ export class SqliteToExcelEngine implements IConverterEngine {
           pragmaRes.length > 0 && pragmaRes[0].values
             ? pragmaRes[0].values.map((col) => String(col[1]))
             : [];
-        return { columns, rows: [], totalRows };
+        return {
+          columns,
+          rows: [],
+          totalRows,
+          tables,
+          activeTable: targetTable,
+        };
       }
 
       const columns = dataRes[0].columns;
       const rows = dataRes[0].values.map((rowValues) => {
         const rowObj: Record<string, unknown> = {};
         columns.forEach((col, idx) => {
-          rowObj[col] = rowValues[idx];
+          rowObj[col] = formatSqliteValue(rowValues[idx]);
         });
         return rowObj;
       });
@@ -112,6 +130,8 @@ export class SqliteToExcelEngine implements IConverterEngine {
         columns,
         rows,
         totalRows,
+        tables,
+        activeTable: targetTable,
       };
     } finally {
       db.close();
@@ -148,20 +168,16 @@ export class SqliteToExcelEngine implements IConverterEngine {
           columns = dataRes[0].columns;
         }
 
-        const rowValuesList = dataRes.length > 0 ? dataRes[0].values : [];
-        const aoa: unknown[][] = [columns, ...rowValuesList];
+        const rawRowValues = dataRes.length > 0 ? dataRes[0].values : [];
+        const formattedRowValues = rawRowValues.map((rowValues) =>
+          rowValues.map(formatSqliteValue)
+        );
+        const aoa: unknown[][] = [columns, ...formattedRowValues];
 
         const worksheet = XLSX.utils.aoa_to_sheet(aoa);
 
-        // Auto column widths
-        const rowsAsObjects = rowValuesList.map((rowValues) => {
-          const rowObj: Record<string, unknown> = {};
-          columns.forEach((col, idx) => {
-            rowObj[col] = rowValues[idx];
-          });
-          return rowObj;
-        });
-        worksheet["!cols"] = calculateColumnWidths(columns, rowsAsObjects);
+        // Auto column widths computed directly from sampled row values without creating intermediate objects
+        worksheet["!cols"] = calculateColumnWidthsFromValues(columns, formattedRowValues);
 
         // Sanitize sheet name and ensure uniqueness
         let baseSheetName = sanitizeSheetName(table);

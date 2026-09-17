@@ -27,7 +27,7 @@ describe("SqliteToExcelEngine", () => {
   });
 
   describe("parsePreview", () => {
-    it("returns columns and rows for the first table (users) with totalRows", async () => {
+    it("returns columns and rows for the first table (users) with totalRows, tables, and activeTable", async () => {
       const preview = await sqliteToExcelEngine.parsePreview(sampleSqliteFile);
 
       expect(preview.columns).toEqual(["id", "name", "email"]);
@@ -43,6 +43,48 @@ describe("SqliteToExcelEngine", () => {
         email: "bob@example.com",
       });
       expect(preview.totalRows).toBe(2);
+      expect(preview.tables).toEqual(["users", "orders"]);
+      expect(preview.activeTable).toBe("users");
+    });
+
+    it("allows requesting a specific table preview by name", async () => {
+      const preview = await sqliteToExcelEngine.parsePreview(
+        sampleSqliteFile,
+        10,
+        "orders"
+      );
+
+      expect(preview.columns).toEqual(["id", "user_id", "amount"]);
+      expect(preview.rows).toHaveLength(2);
+      expect(preview.rows[0]).toMatchObject({ id: 101, user_id: 1, amount: 99.5 });
+      expect(preview.activeTable).toBe("orders");
+      expect(preview.tables).toEqual(["users", "orders"]);
+    });
+
+    it("formats BLOB values as [BLOB: N bytes] in preview and convert", async () => {
+      const SQL = await initSqlJs();
+      const db: Database = new SQL.Database();
+      db.run("CREATE TABLE files (id INT, data BLOB);");
+      const blobBytes = new Uint8Array([1, 2, 3, 4, 5]);
+      db.run("INSERT INTO files VALUES (?, ?)", [1, blobBytes]);
+      const bin = db.export();
+      db.close();
+
+      const blobFile = new File([bin], "blob_test.sqlite");
+      const preview = await sqliteToExcelEngine.parsePreview(blobFile);
+      expect(preview.rows[0]).toEqual({
+        id: 1,
+        data: "[BLOB: 5 bytes]",
+      });
+
+      const output = await sqliteToExcelEngine.convert(blobFile);
+      const ab = await output.blob.arrayBuffer();
+      const wb = XLSX.read(ab, { type: "array" });
+      const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(wb.Sheets["files"]);
+      expect(rows[0]).toEqual({
+        id: 1,
+        data: "[BLOB: 5 bytes]",
+      });
     });
 
     it("respects maxRows parameter", async () => {
@@ -50,6 +92,7 @@ describe("SqliteToExcelEngine", () => {
       expect(preview.columns).toEqual(["id", "name", "email"]);
       expect(preview.rows).toHaveLength(1);
       expect(preview.totalRows).toBe(2);
+      expect(preview.activeTable).toBe("users");
     });
 
     it("returns empty structure for empty file", async () => {
@@ -74,6 +117,8 @@ describe("SqliteToExcelEngine", () => {
       expect(preview.columns).toEqual(["id", "note"]);
       expect(preview.rows).toHaveLength(0);
       expect(preview.totalRows).toBe(0);
+      expect(preview.tables).toEqual(["empty_table"]);
+      expect(preview.activeTable).toBe("empty_table");
     });
   });
 

@@ -39,6 +39,7 @@ export interface UseConverterReturn {
   conversionDuration: number | null;
   reset: () => void;
   convert: () => Promise<boolean>;
+  previewTable?: (tableName: string) => Promise<void>;
 }
 
 const DEFAULT_OPTIONS: ConversionOptions = {
@@ -216,6 +217,35 @@ export function useConverter(
     }
   }, [file, config, resolveEngine]);
 
+  const previewTable = useCallback(
+    async (tableName: string) => {
+      if (!file) return;
+      const engine = resolveEngine();
+      if (!engine) return;
+
+      const currentId = ++activeParseIdRef.current;
+      setIsParsing(true);
+      setError(null);
+      try {
+        const previewData = await engine.parsePreview(file, 10, tableName);
+        if (activeParseIdRef.current !== currentId) return;
+        setPreview(previewData);
+      } catch (err: unknown) {
+        if (activeParseIdRef.current !== currentId) return;
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to switch table preview.";
+        setError(message);
+      } finally {
+        if (activeParseIdRef.current === currentId) {
+          setIsParsing(false);
+        }
+      }
+    },
+    [file, resolveEngine]
+  );
+
   const reset = useCallback(() => {
     activeParseIdRef.current++;
     setFileState(null);
@@ -249,5 +279,6 @@ export function useConverter(
     setProModalReason,
     reset,
     convert,
+    previewTable,
   };
 }

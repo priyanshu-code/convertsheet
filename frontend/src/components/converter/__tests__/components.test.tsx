@@ -179,6 +179,50 @@ describe("Converter Components", () => {
       render(<DataPreviewTable preview={zeroTotalPreview} />);
       expect(screen.getByText(/Showing preview of all 0 rows/i)).toBeInTheDocument();
     });
+
+    it("renders multi-table selector tabs and export notice when multiple tables exist", () => {
+      const onTableChange = vi.fn();
+      const multiTablePreview: TabularData = {
+        columns: ["id", "name"],
+        rows: [{ id: 1, name: "Alice" }],
+        totalRows: 1,
+        tables: ["users", "orders", "products"],
+        activeTable: "users",
+      };
+
+      render(
+        <DataPreviewTable
+          preview={multiTablePreview}
+          onTableChange={onTableChange}
+        />
+      );
+
+      // Notice badge
+      expect(
+        screen.getByText(
+          "All 3 tables will be exported as separate sheets in Excel (.xlsx)"
+        )
+      ).toBeInTheDocument();
+
+      // Table selector tabs
+      const userTab = screen.getByRole("tab", { name: "users" });
+      const ordersTab = screen.getByRole("tab", { name: "orders" });
+      const productsTab = screen.getByRole("tab", { name: "products" });
+
+      expect(userTab).toBeInTheDocument();
+      expect(ordersTab).toBeInTheDocument();
+      expect(productsTab).toBeInTheDocument();
+
+      expect(userTab).toHaveAttribute("aria-selected", "true");
+      expect(ordersTab).toHaveAttribute("aria-selected", "false");
+
+      // Click orders tab
+      fireEvent.click(ordersTab);
+      expect(onTableChange).toHaveBeenCalledWith("orders");
+
+      // Header title reflects active table
+      expect(screen.getByText("Data Preview: users")).toBeInTheDocument();
+    });
   });
 
   describe("FormatSelector", () => {

@@ -2,6 +2,8 @@ export interface TabularData {
   columns: string[];
   rows: Record<string, unknown>[];
   totalRows: number;
+  tables?: string[];
+  activeTable?: string;
 }
 
 export interface ConversionOptions {
@@ -18,7 +20,7 @@ export interface ConversionOutput {
 }
 
 export interface IConverterEngine {
-  parsePreview(file: File, maxRows?: number): Promise<TabularData>;
+  parsePreview(file: File, maxRows?: number, tableName?: string): Promise<TabularData>;
   convert(file: File, options?: ConversionOptions): Promise<ConversionOutput>;
 }
 
