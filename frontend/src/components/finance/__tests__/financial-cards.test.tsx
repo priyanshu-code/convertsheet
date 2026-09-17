@@ -6,6 +6,8 @@ import {
   RetirementAccountsCard,
   AutoLoanRatesCard,
   InflationHedgeCard,
+  SavingsRatesCard,
+  DebtConsolidationCard,
 } from "../index";
 
 describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
@@ -128,6 +130,36 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
       expect(screen.getByText(/Broad Market Equities \(S&P 500 Index\)/i)).toBeInTheDocument();
       expect(screen.getByText(/Holding paper cash in checking accounts/i)).toBeInTheDocument();
       expect(screen.getByText(/Educational Disclaimer/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("SavingsRatesCard", () => {
+    it("renders US & EU benchmark savings yields and annual interest calculations", () => {
+      render(<SavingsRatesCard depositAmount={25000} />);
+
+      expect(screen.getByText(/Current High-Yield Savings & CD Benchmarks/i)).toBeInTheDocument();
+      expect(screen.getByText(/US & EU Benchmark Yields/i)).toBeInTheDocument();
+      expect(screen.getByText(/High-Yield Savings \(HYSA\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Certificate of Deposit \(CD\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Traditional Brick & Mortar/i)).toBeInTheDocument();
+
+      // Interest calculations check
+      expect(screen.getByText(/\$1,150\/yr/i)).toBeInTheDocument();
+      expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("DebtConsolidationCard", () => {
+    it("renders US & EU debt consolidation benchmarks and interest savings", () => {
+      render(<DebtConsolidationCard totalDebt={15000} />);
+
+      expect(screen.getByText(/Debt Consolidation & Rate Refinance Options/i)).toBeInTheDocument();
+      expect(screen.getByText(/US & EU Refinance & Payoff Benchmarks/i)).toBeInTheDocument();
+      expect(screen.getByText(/Balance Transfer Card \(0% Promo\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Fixed Debt Consolidation Loan/i)).toBeInTheDocument();
+      expect(screen.getByText(/Unconsolidated Credit Card Average/i)).toBeInTheDocument();
+      expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Potential Savings:/i).length).toBeGreaterThanOrEqual(1);
     });
   });
 });

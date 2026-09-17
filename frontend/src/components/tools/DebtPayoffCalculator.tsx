@@ -12,6 +12,7 @@ import {
   ModernSlider,
 } from "@/components/calculator";
 import { calculateDebtPayoff, DebtItem } from "@/lib/engines/financial-engine";
+import { DebtConsolidationCard } from "@/components/finance";
 
 export interface DebtPayoffCalculatorProps {
   initialValues?: Partial<{
@@ -344,6 +345,9 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
           </CalcCard>
         </div>
       </div>
+
+      {/* US & EU Benchmark Debt Consolidation & Refinance Benchmark */}
+      <DebtConsolidationCard totalDebt={payoffResult.totalOriginalBalance} />
     </div>
   );
 }

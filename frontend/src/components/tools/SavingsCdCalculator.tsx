@@ -16,6 +16,7 @@ import {
   calculateSavingsGrowth,
   CompoundingFrequency,
 } from "@/lib/engines/financial-engine";
+import { SavingsRatesCard } from "@/components/finance";
 
 export interface SavingsCdCalculatorProps {
   initialValues?: Partial<{
@@ -377,6 +378,11 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
             </div>
           </CalcCard>
         </div>
+      </div>
+
+      {/* Benchmark Rates & High-Yield Yields Card */}
+      <div className="mt-8">
+        <SavingsRatesCard depositAmount={initialDeposit} />
       </div>
     </div>
   );
