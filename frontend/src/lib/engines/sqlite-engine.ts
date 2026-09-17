@@ -12,14 +12,26 @@ let sqlPromise: Promise<SqlJsStatic> | null = null;
 
 function getSqlJs(): Promise<SqlJsStatic> {
   if (!sqlPromise) {
-    // In browser environment, locate wasm from CDN. In Node (vitest/ssr), allow sql.js default resolution.
     const isBrowser =
       typeof window !== "undefined" && typeof window.document !== "undefined";
-    sqlPromise = isBrowser
-      ? initSqlJs({
+    if (isBrowser) {
+      sqlPromise = (async () => {
+        try {
+          const res = await fetch("/sql-wasm.wasm");
+          if (res.ok) {
+            const wasmBinary = await res.arrayBuffer();
+            return await initSqlJs({ wasmBinary });
+          }
+        } catch {
+          // Fall back to CDN if local fetch fails
+        }
+        return await initSqlJs({
           locateFile: (file) => `https://sql.js.org/dist/${file}`,
-        })
-      : initSqlJs();
+        });
+      })();
+    } else {
+      sqlPromise = initSqlJs();
+    }
   }
   return sqlPromise;
 }

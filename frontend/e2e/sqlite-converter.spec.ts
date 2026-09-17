@@ -82,8 +82,8 @@ test.describe("SQLite to Excel Converter & Embed Flow", () => {
     await expect(page.locator('th:has-text("id")')).toBeVisible();
     await expect(page.locator('th:has-text("name")')).toBeVisible();
     await expect(page.locator('th:has-text("email")')).toBeVisible();
-    await expect(page.locator('td:has-text("Alice")')).toBeVisible();
-    await expect(page.locator('td:has-text("Bob")')).toBeVisible();
+    await expect(page.getByRole("cell", { name: "Alice", exact: true })).toBeVisible();
+    await expect(page.getByRole("cell", { name: "Bob", exact: true })).toBeVisible();
 
     // Verify table selector tabs are visible for multi-table database
     const tableTabs = page.locator('[role="tablist"][aria-label="Database tables"]');
