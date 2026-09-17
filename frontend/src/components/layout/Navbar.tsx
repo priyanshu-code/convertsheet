@@ -179,7 +179,7 @@ export function Navbar() {
                           }`}
                         >
                           <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-500" />
-                          <span>File Converters (15)</span>
+                          <span>File Converters ({CONVERTER_LIST.length})</span>
                         </button>
 
                         <button
