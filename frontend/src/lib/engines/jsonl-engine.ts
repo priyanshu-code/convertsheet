@@ -93,6 +93,7 @@ export class JsonlToExcelEngine implements IConverterEngine {
       const excelBuffer = XLSX.write(workbook, {
         bookType: "xlsx",
         type: "array",
+        compression: true,
       });
 
       const baseName = file.name.replace(/\.(jsonl|ndjson)$/i, "");

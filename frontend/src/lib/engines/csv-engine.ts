@@ -76,7 +76,11 @@ export class CsvToExcelEngine implements IConverterEngine {
     const sheetName = sanitizeSheetName(options?.sheetName);
     XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
 
-    const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const buffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+      compression: true,
+    });
     const blob = new Blob([buffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });

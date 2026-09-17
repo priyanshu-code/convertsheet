@@ -95,6 +95,7 @@ export class ParquetToExcelEngine implements IConverterEngine {
       const excelBuffer = XLSX.write(workbook, {
         bookType: "xlsx",
         type: "array",
+        compression: true,
       });
 
       const baseName = file.name.replace(/\.parquet$/i, "");
