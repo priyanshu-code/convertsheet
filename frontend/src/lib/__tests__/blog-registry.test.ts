@@ -84,4 +84,21 @@ describe("Blog Registry & Content Layer", () => {
     expect(Array.isArray(slugs)).toBe(true);
     expect(slugs).toContain("convert-json-to-excel-privately");
   });
+
+  it("retrieves the 3 new technical and financial authority guides", () => {
+    const caGuide = getBlogPostBySlug("canadian-mortgage-stress-test-guide-2026");
+    expect(caGuide).toBeDefined();
+    expect(caGuide?.attachedToolSlug).toBe("mortgage-calculator");
+    expect(caGuide?.content).toContain("OSFI");
+
+    const parquetGuide = getBlogPostBySlug("convert-large-parquet-files-to-excel-in-browser");
+    expect(parquetGuide).toBeDefined();
+    expect(parquetGuide?.attachedToolSlug).toBe("parquet-to-excel");
+    expect(parquetGuide?.content).toContain("DuckDB WASM");
+
+    const ir35Guide = getBlogPostBySlug("uk-contractor-inside-vs-outside-ir35-calculator-guide");
+    expect(ir35Guide).toBeDefined();
+    expect(ir35Guide?.attachedToolSlug).toBe("income-tax-calculator");
+    expect(ir35Guide?.content).toContain("IR35");
+  });
 });

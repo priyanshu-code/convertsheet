@@ -423,6 +423,295 @@ export const BLOG_POSTS: BlogPost[] = [
         </p>
       </section>
     `.trim()
+  },
+  {
+    slug: "canadian-mortgage-stress-test-guide-2026",
+    title: "How the Canadian Mortgage Stress Test Works in 2026: OSFI Qualifying Rates & Rules",
+    description: "A complete analytical breakdown of Canada's mortgage stress test under OSFI Guideline B-20, qualifying benchmark formulas, CMHC insurance tiers, and debt service ratio limits.",
+    category: "Real Estate & Mortgages",
+    readTimeMinutes: 6,
+    publishedAt: "2026-09-17",
+    author: {
+      name: "ConvertSheet Financial Research",
+      role: "Mortgage Economics Desk"
+    },
+    attachedToolSlug: "mortgage-calculator",
+    attachedToolTitle: "Mortgage & Amortization Calculator",
+    tableOfContents: [
+      { id: "what-is-the-osfi-stress-test", title: "1. What is the OSFI Mortgage Stress Test?" },
+      { id: "how-qualifying-rate-is-calculated", title: "2. The Qualifying Rate Formula (5.25% Floor vs Contract + 2%)" },
+      { id: "cmhc-insurance-tiers", title: "3. Tiered Down Payments & CMHC Insurance Tiers" },
+      { id: "gds-and-tds-debt-ratios", title: "4. Understanding GDS (39%) and TDS (44%) Debt Ratios" },
+      { id: "step-by-step-worked-example", title: "5. Real-World Case Study: $750,000 Home Purchase" }
+    ],
+    content: `
+      <section id="what-is-the-osfi-stress-test" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          1. What is the OSFI Mortgage Stress Test?
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Introduced by Canada's Office of the Superintendent of Financial Institutions (OSFI) under <strong>Guideline B-20</strong>, the mortgage stress test is a mandatory underwriting rule for all federally regulated financial institutions (Schedule I and II banks).
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Its purpose is simple: ensure that Canadian borrowers can continue servicing their monthly mortgage debt even if prevailing interest rates climb by 200 basis points upon renewal.
+        </p>
+      </section>
+
+      <section id="how-qualifying-rate-is-calculated" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          2. The Qualifying Rate Formula (5.25% Floor vs Contract + 2%)
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Regardless of the negotiated contract interest rate from your bank or broker, you must legally qualify at:
+        </p>
+        <div class="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60 p-4 font-mono text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+          Qualifying Rate = MAX( 5.25% Floor, Contract Rate + 2.00% )
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          For instance, if your negotiated 5-year fixed mortgage rate is <strong>4.89%</strong>, your stress test qualifying rate is <strong>6.89%</strong>. The lender assesses your debt service ratios using the higher rate, even though your real monthly payments are based on 4.89%.
+        </p>
+      </section>
+
+      <section id="cmhc-insurance-tiers" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          3. Tiered Down Payments &amp; CMHC Insurance Tiers
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          In Canada, purchase prices define mandatory down payment tiers:
+        </p>
+        <ul class="space-y-2 text-zinc-700 dark:text-zinc-300 pl-5 list-disc">
+          <li><strong>Up to $500,000:</strong> Minimum 5% down payment.</li>
+          <li><strong>$500,000 to $999,999:</strong> 5% on the first $500k + 10% on the portion above $500k.</li>
+          <li><strong>$1,000,000+:</strong> 20% down payment mandatory (CMHC insurance is prohibited).</li>
+        </ul>
+      </section>
+
+      <section id="gds-and-tds-debt-ratios" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          4. Understanding GDS (39%) and TDS (44%) Debt Ratios
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Lenders evaluate two critical ratios at the stress-test qualifying rate:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 block mb-1">Gross Debt Service (GDS)</span>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400">Maximum <strong>39%</strong> of gross income allocated to mortgage payment, property taxes, heat, and 50% of condo fees.</p>
+          </div>
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+            <span class="text-xs font-bold uppercase tracking-wider text-teal-600 block mb-1">Total Debt Service (TDS)</span>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400">Maximum <strong>44%</strong> of gross income allocated to housing expenses plus all other consumer debt (credit cards, car loans, student debt).</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="step-by-step-worked-example" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          5. Real-World Case Study: $750,000 Home Purchase
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Let's model a $750,000 Toronto home purchase with 20% down ($150,000), leaving a $600,000 loan balance:
+        </p>
+        <ul class="space-y-1.5 text-zinc-700 dark:text-zinc-300 list-disc pl-5">
+          <li>Contract rate: 4.89% (Actual payment = $3,452/mo)</li>
+          <li>Stress test qualifying rate: 6.89% (Qualifying payment = $4,163/mo)</li>
+          <li>Estimated property tax: $541/mo + heating: $125/mo</li>
+          <li>Total housing expense under stress test: $4,829/mo</li>
+          <li>Minimum gross income required (at 39% GDS): <strong>$148,584/year</strong></li>
+        </ul>
+      </section>
+    `.trim()
+  },
+  {
+    slug: "convert-large-parquet-files-to-excel-in-browser",
+    title: "Converting Multi-Gigabyte Parquet Files to Excel Without Leaking Data or Crashing RAM",
+    description: "How to query and transform columnar Apache Parquet datasets into Excel spreadsheets locally in the browser using WebAssembly and DuckDB WASM.",
+    category: "Data & Spreadsheets",
+    readTimeMinutes: 7,
+    publishedAt: "2026-09-17",
+    author: {
+      name: "ConvertSheet Architecture Team",
+      role: "WASM & Data Systems"
+    },
+    attachedToolSlug: "parquet-to-excel",
+    attachedToolTitle: "Parquet to Excel Converter (In-Browser)",
+    tableOfContents: [
+      { id: "the-parquet-to-excel-dilemma", title: "1. The Parquet-to-Excel Dilemma" },
+      { id: "why-traditional-cloud-tools-fail", title: "2. Why Traditional Cloud Converters Fail" },
+      { id: "inside-duckdb-wasm-architecture", title: "3. Inside DuckDB WASM Vectorized Execution" },
+      { id: "memory-management-and-streaming", title: "4. Memory Management & Row Group Streaming" },
+      { id: "security-and-zero-cloud-guarantees", title: "5. Security & Zero-Cloud Compliance Guarantees" }
+    ],
+    content: `
+      <section id="the-parquet-to-excel-dilemma" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          1. The Parquet-to-Excel Dilemma
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Apache Parquet has become the de facto columnar storage standard for modern data lakes (Databricks, Snowflake, AWS Athena, BigQuery). However, when business executives, financial auditors, or marketing leads ask for data, they inevitably demand an Excel (<code>.xlsx</code>) spreadsheet.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Translating columnar binary dictionary-encoded pages into row-based OpenXML sheets often leads to system crashes or sensitive data exposure.
+        </p>
+      </section>
+
+      <section id="why-traditional-cloud-tools-fail" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          2. Why Traditional Cloud Converters Fail
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Standard file converter websites fail on two fronts:
+        </p>
+        <ul class="space-y-2 text-zinc-700 dark:text-zinc-300 pl-5 list-disc">
+          <li><strong>Upload Latency &amp; Payload Caps:</strong> Parquet files frequently exceed 50MB to 500MB. Cloud upload bottlenecks make round-trips painfully slow or cause gateway timeouts.</li>
+          <li><strong>Data Leakage:</strong> Analytical Parquet dumps often contain raw customer transaction records, email addresses, or proprietary unit economics. Uploading them to random public servers breaches internal compliance policies.</li>
+        </ul>
+      </section>
+
+      <section id="inside-duckdb-wasm-architecture" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          3. Inside DuckDB WASM Vectorized Execution
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          ConvertSheet leverages <strong>DuckDB WebAssembly</strong>. Instead of transmitting files over HTTP, your browser spins up an embedded C++ vectorized SQL query engine directly inside a dedicated Web Worker thread.
+        </p>
+        <div class="rounded-2xl border border-zinc-200 bg-zinc-950 p-4 font-mono text-xs text-zinc-200 dark:border-zinc-800 overflow-x-auto">
+          <pre><code>// In-browser vectorized Parquet projection
+await db.registerFileBuffer('dataset.parquet', fileBuffer);
+const conn = await db.connect();
+const arrowResult = await conn.query(\`
+  SELECT order_id, customer_id, total_amount, created_at 
+  FROM 'dataset.parquet' 
+  LIMIT 100000
+\`);</code></pre>
+        </div>
+      </section>
+
+      <section id="memory-management-and-streaming" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          4. Memory Management &amp; Row Group Streaming
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Because browsers impose strict per-tab memory limits (typically 2GB to 4GB), ConvertSheet utilizes row group projection and columnar chunking. We stream batches through SheetJS directly into zip archives, avoiding giant in-memory object allocation trees.
+        </p>
+      </section>
+
+      <section id="security-and-zero-cloud-guarantees" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          5. Security &amp; Zero-Cloud Compliance Guarantees
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          With ConvertSheet, you can disconnect your Wi-Fi or enable airplane mode and the conversion runs identically. Open your browser dev tools network tab: not a single network request is fired. Your enterprise datasets remain 100% private.
+        </p>
+      </section>
+    `.trim()
+  },
+  {
+    slug: "uk-contractor-inside-vs-outside-ir35-calculator-guide",
+    title: "Inside vs Outside IR35 for UK Contractors: The Complete 2026 Net Take-Home Calculation",
+    description: "A comprehensive financial comparison for UK freelancers and limited company directors calculating net take-home pay, dividend taxation, and umbrella company deductions.",
+    category: "Financial Math",
+    readTimeMinutes: 8,
+    publishedAt: "2026-09-17",
+    author: {
+      name: "ConvertSheet Financial Research",
+      role: "Tax & Remuneration Desk"
+    },
+    attachedToolSlug: "income-tax-calculator",
+    attachedToolTitle: "Income Tax & Take-Home Calculator",
+    tableOfContents: [
+      { id: "what-is-ir35", title: "1. What is IR35 (Off-Payroll Working Rules)?" },
+      { id: "inside-ir35-mechanics", title: "2. Inside IR35: Umbrella Deductions & Deemed Salary" },
+      { id: "outside-ir35-mechanics", title: "3. Outside IR35: Salary + Dividend Optimization" },
+      { id: "side-by-side-comparison", title: "4. Side-by-Side Take-Home Comparison (£500/day)" },
+      { id: "how-to-calculate-your-true-equivalent-rate", title: "5. Calculating Your True Equivalent Day Rate" }
+    ],
+    content: `
+      <section id="what-is-ir35" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          1. What is IR35 (Off-Payroll Working Rules)?
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          IR35 was created by HM Revenue &amp; Customs (HMRC) to combat "disguised employment" — situations where contractors provide services through an intermediary (like a Personal Service Company, or PSC) but work under conditions that resemble permanent employees.
+        </p>
+      </section>
+
+      <section id="inside-ir35-mechanics" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          2. Inside IR35: Umbrella Deductions &amp; Deemed Salary
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          When an engagement is deemed <strong>Inside IR35</strong>, the contractor is taxed as an employee via PAYE. Crucially, unless the client uplifts the rate, the contractor's assignment rate absorbs both employer and employee costs:
+        </p>
+        <ul class="space-y-2 text-zinc-700 dark:text-zinc-300 pl-5 list-disc">
+          <li><strong>Employer's National Insurance:</strong> 13.8% on earnings above the secondary threshold.</li>
+          <li><strong>Apprenticeship Levy:</strong> 0.5% of total gross payroll.</li>
+          <li><strong>Employee's National Insurance &amp; Income Tax:</strong> Standard PAYE rates.</li>
+          <li><strong>Umbrella Fee:</strong> Weekly margin fee (£20 to £35/week).</li>
+        </ul>
+      </section>
+
+      <section id="outside-ir35-mechanics" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          3. Outside IR35: Salary + Dividend Optimization
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          When deemed <strong>Outside IR35</strong>, the PSC contracts directly with the client or agency. The company invoices for services rendered and can optimize profits using the classic low-salary, high-dividend distribution structure:
+        </p>
+        <ul class="space-y-2 text-zinc-700 dark:text-zinc-300 pl-5 list-disc">
+          <li><strong>Tax-Free Director Salary:</strong> Typically aligned with the Primary NI threshold (~£12,570/yr).</li>
+          <li><strong>Corporation Tax:</strong> 19% small profits rate up to £50,000; tapering up to 25% for profits above £250,000.</li>
+          <li><strong>Dividend Tax Rates:</strong> 8.75% (basic rate), 33.75% (higher rate), and 39.35% (additional rate).</li>
+        </ul>
+      </section>
+
+      <section id="side-by-side-comparison" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          4. Side-by-Side Take-Home Comparison (£500/day over 220 Days)
+        </h2>
+        <div class="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-zinc-100 dark:bg-zinc-800 font-semibold text-zinc-900 dark:text-zinc-100">
+              <tr>
+                <th class="p-3">Metric</th>
+                <th class="p-3">Inside IR35 (Umbrella)</th>
+                <th class="p-3">Outside IR35 (PSC)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300">
+              <tr>
+                <td class="p-3 font-medium">Gross Annual Invoicing</td>
+                <td class="p-3 font-semibold">£110,000</td>
+                <td class="p-3 font-semibold">£110,000</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-medium">Employer NI &amp; Levy</td>
+                <td class="p-3 text-rose-500 font-semibold">-£13,420</td>
+                <td class="p-3 text-emerald-600 font-semibold">£0 (No employer NI on dividends)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-medium">Estimated Net Take-Home</td>
+                <td class="p-3 font-bold text-amber-600">~£64,200 (58.4%)</td>
+                <td class="p-3 font-bold text-emerald-600">~£77,800 (70.7%)</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-medium">Net Difference</td>
+                <td class="p-3" colspan="2"><strong>+£13,600/year</strong> retained under Outside IR35</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="how-to-calculate-your-true-equivalent-rate" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          5. Calculating Your True Equivalent Day Rate
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          As a rule of thumb, an Inside IR35 day rate must be <strong>20% to 25% higher</strong> than an Outside IR35 rate to match the same after-tax take-home pay. For example, a £500/day Outside role requires approximately £615/day Inside IR35 to break even.
+        </p>
+      </section>
+    `.trim()
   }
 ];
 
