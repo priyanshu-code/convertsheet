@@ -37,4 +37,5 @@ export type ConverterEngineId =
   | "jsonl-to-excel"
   | "jsonl-to-csv"
   | "csv-to-jsonl"
-  | "markdown-to-excel";
+  | "markdown-to-excel"
+  | "sqlite-to-excel";

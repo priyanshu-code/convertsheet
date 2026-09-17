@@ -39,6 +39,7 @@ import {
   parseMarkdownTable,
   parseHtmlTable,
 } from "./markdown-table-engine";
+import { sqliteToExcelEngine, SqliteToExcelEngine } from "./sqlite-engine";
 import { DuckDbClient, getDuckDbClient } from "./duckdb-client";
 
 export {
@@ -72,6 +73,8 @@ export {
   CsvToJsonlEngine,
   markdownTableEngine,
   MarkdownTableEngine,
+  sqliteToExcelEngine,
+  SqliteToExcelEngine,
   parseMarkdownTable,
   parseHtmlTable,
   DuckDbClient,
@@ -95,6 +98,7 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "jsonl-to-csv": jsonlToCsvEngine,
   "csv-to-jsonl": csvToJsonlEngine,
   "markdown-to-excel": markdownTableEngine,
+  "sqlite-to-excel": sqliteToExcelEngine,
 };
 
 export function getConverterEngine(engineId: ConverterEngineId): IConverterEngine {
