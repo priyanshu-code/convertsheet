@@ -16,6 +16,7 @@ import { ConverterConfig } from "@/types/registry";
 import { formatBytes, cn } from "@/lib/utils";
 import { useConverter, MAX_FREE_FILE_SIZE_BYTES } from "@/hooks/useConverter";
 import { DropZone } from "./DropZone";
+import { SplitTableInput } from "./SplitTableInput";
 import { DataPreviewTable } from "./DataPreviewTable";
 import { FormatSelector } from "./FormatSelector";
 import { ProUpgradeModal } from "./ProUpgradeModal";
@@ -155,8 +156,16 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
 
       {/* Main Content Area */}
       {!file ? (
-        /* State 1: No file loaded - Show DropZone */
-        <DropZone config={config} onFileSelect={setFile} />
+        /* State 1: No file loaded - Show SplitTableInput for markdown-to-excel, otherwise DropZone */
+        config.slug === "markdown-to-excel" ? (
+          <SplitTableInput
+            config={config}
+            onFileSelect={setFile}
+            disabled={isParsing}
+          />
+        ) : (
+          <DropZone config={config} onFileSelect={setFile} />
+        )
       ) : (
         /* State 2: File loaded - Show File Info Bar, Preview / Parsing, and Actions */
         <div className="space-y-6 animate-in fade-in duration-200">
