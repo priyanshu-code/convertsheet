@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   description:
     "In-depth guides, privacy-first data processing tutorials, and conversion benchmarks from the ConvertSheet engineering team.",
   alternates: {
-    canonical: "https://convertsheet.com/blog",
+    canonical: "https://www.convertsheet.com/blog",
   },
   openGraph: {
     title: "ConvertSheet Engineering & Data Privacy Blog",
     description:
       "Guides and tutorials on processing nested JSON, CSVs, and Excel spreadsheets locally with zero server uploads.",
     type: "website",
-    url: "https://convertsheet.com/blog",
+    url: "https://www.convertsheet.com/blog",
   },
 };
 

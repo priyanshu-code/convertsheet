@@ -42,8 +42,8 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalUrl = `https://convertsheet.com/convert/${config.slug}`;
-  const ogImage = `https://convertsheet.com/convert/${config.slug}/opengraph-image`;
+  const canonicalUrl = `https://www.convertsheet.com/convert/${config.slug}`;
+  const ogImage = `https://www.convertsheet.com/convert/${config.slug}/opengraph-image`;
 
   return {
     title: config.title,

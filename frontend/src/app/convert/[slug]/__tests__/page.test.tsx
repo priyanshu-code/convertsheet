@@ -73,7 +73,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       expect(meta.title).toBe(jsonConfig.title);
       expect(meta.description).toBe(jsonConfig.metaDescription);
       expect(meta.alternates?.canonical).toBe(
-        "https://convertsheet.com/convert/json-to-excel"
+        "https://www.convertsheet.com/convert/json-to-excel"
       );
 
       // OpenGraph
@@ -81,7 +81,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         expect.objectContaining({
           title: jsonConfig.title,
           description: jsonConfig.metaDescription,
-          url: "https://convertsheet.com/convert/json-to-excel",
+          url: "https://www.convertsheet.com/convert/json-to-excel",
           type: "website",
         })
       );
@@ -251,7 +251,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       });
       expect(appSchema.description).toBe(jsonConfig.metaDescription);
       expect(appSchema.url).toBe(
-        `https://convertsheet.com/convert/${jsonConfig.slug}`
+        `https://www.convertsheet.com/convert/${jsonConfig.slug}`
       );
     });
 
@@ -267,7 +267,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         position: 1,
         name: jsonConfig.howTo[0].title,
         text: jsonConfig.howTo[0].description,
-        url: `https://convertsheet.com/convert/${jsonConfig.slug}#step-1`,
+        url: `https://www.convertsheet.com/convert/${jsonConfig.slug}#step-1`,
       });
     });
 
@@ -313,7 +313,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
 
       // Home entry
       const homeEntry = entries.find(
-        (e) => e.url === "https://convertsheet.com"
+        (e) => e.url === "https://www.convertsheet.com"
       );
       expect(homeEntry).toBeDefined();
       expect(homeEntry?.priority).toBe(1.0);
@@ -322,14 +322,14 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
 
       // Pricing entry should NOT exist
       const pricingEntry = entries.find(
-        (e) => e.url === "https://convertsheet.com/pricing"
+        (e) => e.url === "https://www.convertsheet.com/pricing"
       );
       expect(pricingEntry).toBeUndefined();
 
       // All 7 converter entries
       for (const slug of allSlugs) {
         const converterEntry = entries.find(
-          (e) => e.url === `https://convertsheet.com/convert/${slug}`
+          (e) => e.url === `https://www.convertsheet.com/convert/${slug}`
         );
         expect(converterEntry).toBeDefined();
         expect(converterEntry?.priority).toBe(0.9);
@@ -345,7 +345,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         userAgent: "*",
         allow: "/",
       });
-      expect(robotsConfig.sitemap).toBe("https://convertsheet.com/sitemap.xml");
+      expect(robotsConfig.sitemap).toBe("https://www.convertsheet.com/sitemap.xml");
     });
   });
 });

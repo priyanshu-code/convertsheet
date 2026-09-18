@@ -6,7 +6,7 @@ import { getAllBlogPostSlugs } from "@/lib/blog-registry";
 import { getAllComparisonSlugs } from "@/lib/comparison-data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://convertsheet.com";
+  const baseUrl = "https://www.convertsheet.com";
   const currentDate = new Date();
 
   const converterRoutes: MetadataRoute.Sitemap = getAllConverterSlugs().map(

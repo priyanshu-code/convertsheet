@@ -32,7 +32,7 @@ describe("Embed Tool Page", () => {
     expect(poweredByLink).toBeInTheDocument();
     expect(poweredByLink).toHaveAttribute(
       "href",
-      "https://convertsheet.com/convert/csv-to-jsonl"
+      "https://www.convertsheet.com/convert/csv-to-jsonl"
     );
   });
 });

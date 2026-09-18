@@ -141,7 +141,7 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalUrl = `https://convertsheet.com/tools/category/${data.category}`;
+  const canonicalUrl = `https://www.convertsheet.com/tools/category/${data.category}`;
 
   return {
     title: data.title,
@@ -183,35 +183,35 @@ export default function ToolCategoryPage({ params }: CategoryPageProps) {
     "@graph": [
       {
         "@type": "CollectionPage",
-        "@id": `https://convertsheet.com/tools/category/${meta.category}#webpage`,
-        url: `https://convertsheet.com/tools/category/${meta.category}`,
+        "@id": `https://www.convertsheet.com/tools/category/${meta.category}#webpage`,
+        url: `https://www.convertsheet.com/tools/category/${meta.category}`,
         name: meta.title,
         description: meta.metaDescription,
         breadcrumb: {
-          "@id": `https://convertsheet.com/tools/category/${meta.category}#breadcrumb`,
+          "@id": `https://www.convertsheet.com/tools/category/${meta.category}#breadcrumb`,
         },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://convertsheet.com/tools/category/${meta.category}#breadcrumb`,
+        "@id": `https://www.convertsheet.com/tools/category/${meta.category}#breadcrumb`,
         itemListElement: [
           {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://convertsheet.com",
+            item: "https://www.convertsheet.com",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Tools Hub",
-            item: "https://convertsheet.com/tools",
+            item: "https://www.convertsheet.com/tools",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: meta.name,
-            item: `https://convertsheet.com/tools/category/${meta.category}`,
+            item: `https://www.convertsheet.com/tools/category/${meta.category}`,
           },
         ],
       },
@@ -223,7 +223,7 @@ export default function ToolCategoryPage({ params }: CategoryPageProps) {
           "@type": "ListItem",
           position: idx + 1,
           name: t.name,
-          url: `https://convertsheet.com/tools/${t.slug}`,
+          url: `https://www.convertsheet.com/tools/${t.slug}`,
           description: t.subtitle,
         })),
       },

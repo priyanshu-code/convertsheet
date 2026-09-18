@@ -17,7 +17,7 @@ export function generateSoftwareApplicationSchema(config: ConverterConfig) {
       priceCurrency: "USD",
     },
     description: config.metaDescription,
-    url: `https://convertsheet.com/convert/${config.slug}`,
+    url: `https://www.convertsheet.com/convert/${config.slug}`,
   };
 }
 
@@ -30,7 +30,7 @@ export function generateHowToSchema(config: ConverterConfig) {
       position: step.step || index + 1,
       name: step.title,
       text: step.description,
-      url: `https://convertsheet.com/convert/${config.slug}#step-${step.step || index + 1}`,
+      url: `https://www.convertsheet.com/convert/${config.slug}#step-${step.step || index + 1}`,
     })),
   };
 }
@@ -57,19 +57,19 @@ export function generateBreadcrumbSchema(config: ConverterConfig) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://convertsheet.com",
+        item: "https://www.convertsheet.com",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Converters",
-        item: "https://convertsheet.com/#converters",
+        item: "https://www.convertsheet.com/#converters",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: `${config.sourceFormat} to ${config.targetFormat}`,
-        item: `https://convertsheet.com/convert/${config.slug}`,
+        item: `https://www.convertsheet.com/convert/${config.slug}`,
       },
     ],
   };

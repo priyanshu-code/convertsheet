@@ -12,7 +12,7 @@ import {
 export function UrlEncoderTool() {
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [scope, setScope] = useState<"component" | "full">("component");
-  const [input, setInput] = useState("https://convertsheet.com/search?query=data format & export=true");
+  const [input, setInput] = useState("https://www.convertsheet.com/search?query=data format & export=true");
 
   const { output, error } = useMemo(() => {
     if (!input) return { output: "", error: null };

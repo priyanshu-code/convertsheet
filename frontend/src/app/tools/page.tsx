@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     "convertsheet tools",
   ],
   alternates: {
-    canonical: "https://convertsheet.com/tools",
+    canonical: "https://www.convertsheet.com/tools",
   },
   openGraph: {
     title: "Free Online Calculators & Developer Tools - 100% In-Browser | ConvertSheet",
     description:
       "Directory of 38+ private client-side calculators, developer encoders, and PDF tools. Export schedules directly to Excel with zero server tracking.",
-    url: "https://convertsheet.com/tools",
+    url: "https://www.convertsheet.com/tools",
     type: "website",
   },
   twitter: {
@@ -59,30 +59,30 @@ export default function ToolsDirectoryPage() {
     "@graph": [
       {
         "@type": "CollectionPage",
-        "@id": "https://convertsheet.com/tools#webpage",
-        url: "https://convertsheet.com/tools",
+        "@id": "https://www.convertsheet.com/tools#webpage",
+        url: "https://www.convertsheet.com/tools",
         name: "ConvertSheet Online Calculators & Developer Tools Directory",
         description:
           "Complete directory of 38+ client-side calculators, data utilities, and document converters.",
         breadcrumb: {
-          "@id": "https://convertsheet.com/tools#breadcrumb",
+          "@id": "https://www.convertsheet.com/tools#breadcrumb",
         },
       },
       {
         "@type": "BreadcrumbList",
-        "@id": "https://convertsheet.com/tools#breadcrumb",
+        "@id": "https://www.convertsheet.com/tools#breadcrumb",
         itemListElement: [
           {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://convertsheet.com",
+            item: "https://www.convertsheet.com",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Tools Directory",
-            item: "https://convertsheet.com/tools",
+            item: "https://www.convertsheet.com/tools",
           },
         ],
       },
@@ -94,7 +94,7 @@ export default function ToolsDirectoryPage() {
           "@type": "ListItem",
           position: index + 1,
           name: tool.name,
-          url: `https://convertsheet.com/tools/${tool.slug}`,
+          url: `https://www.convertsheet.com/tools/${tool.slug}`,
           description: tool.subtitle,
         })),
       },

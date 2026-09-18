@@ -41,7 +41,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
     description: post.description,
     authors: [{ name: post.author.name }],
     alternates: {
-      canonical: `https://convertsheet.com/blog/${post.slug}`,
+      canonical: `https://www.convertsheet.com/blog/${post.slug}`,
     },
     openGraph: {
       title: post.title,
@@ -49,7 +49,7 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
       type: "article",
       publishedTime: post.publishedAt,
       authors: [post.author.name],
-      url: `https://convertsheet.com/blog/${post.slug}`,
+      url: `https://www.convertsheet.com/blog/${post.slug}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -79,11 +79,11 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     publisher: {
       "@type": "Organization",
       name: "ConvertSheet",
-      url: "https://convertsheet.com",
+      url: "https://www.convertsheet.com",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://convertsheet.com/blog/${post.slug}`,
+      "@id": `https://www.convertsheet.com/blog/${post.slug}`,
     },
   };
 

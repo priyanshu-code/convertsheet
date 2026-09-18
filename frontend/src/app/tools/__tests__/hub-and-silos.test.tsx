@@ -92,7 +92,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       const meta = await generateMetadata({ params: { category: "financial" } });
       expect(meta.title).toContain("Financial Calculators");
       expect(meta.alternates?.canonical).toBe(
-        "https://convertsheet.com/tools/category/financial"
+        "https://www.convertsheet.com/tools/category/financial"
       );
     });
 

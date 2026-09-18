@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Learn about ConvertSheet's mission to eliminate cloud data harvesting with in-browser WebAssembly data converters, developer utilities, and modern calculators.",
   alternates: {
-    canonical: "https://convertsheet.com/about",
+    canonical: "https://www.convertsheet.com/about",
   },
 };
 

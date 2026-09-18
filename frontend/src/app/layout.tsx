@@ -31,13 +31,13 @@ export const metadata: Metadata = {
     "DuckDB WebAssembly",
     "client-side data converter",
   ],
-  authors: [{ name: "ConvertSheet Team", url: "https://convertsheet.com" }],
-  metadataBase: new URL("https://convertsheet.com"),
+  authors: [{ name: "ConvertSheet Team", url: "https://www.convertsheet.com" }],
+  metadataBase: new URL("https://www.convertsheet.com"),
   openGraph: {
     title: "ConvertSheet - Fast, Private Structured Data Converter",
     description:
       "Convert JSON, XML, CSV, and Excel spreadsheets directly in your browser with zero server uploads. 100% private, fast, and secure data conversion.",
-    url: "https://convertsheet.com",
+    url: "https://www.convertsheet.com",
     siteName: "ConvertSheet",
     type: "website",
     locale: "en_US",
@@ -103,14 +103,14 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "ConvertSheet",
-              url: "https://convertsheet.com",
+              url: "https://www.convertsheet.com",
               description:
                 "Fast, 100% private in-browser file conversions and financial calculators.",
               potentialAction: {
                 "@type": "SearchAction",
                 target: {
                   "@type": "EntryPoint",
-                  urlTemplate: "https://convertsheet.com/tools?q={search_term_string}",
+                  urlTemplate: "https://www.convertsheet.com/tools?q={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
               },

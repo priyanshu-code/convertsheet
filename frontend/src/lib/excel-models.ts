@@ -50,7 +50,7 @@ export function generateBudgetWorkbook(): XLSX.WorkBook {
   // Summary sheet
   const summaryData = [
     ["ConvertSheet - 50/30/20 Monthly Budget Planner"],
-    ["100% Client-Side Free Excel Model - https://convertsheet.com"],
+    ["100% Client-Side Free Excel Model - https://www.convertsheet.com"],
     [],
     ["Category", "Target %", "Target Amount", "Actual Spent", "Difference"],
     ["Needs (Housing, Groceries, Utilities)", 0.50, 2500, 2400, 100],

@@ -49,8 +49,8 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalUrl = `https://convertsheet.com/tools/${params.slug}/${params.preset}`;
-  const ogImage = `https://convertsheet.com/tools/${params.slug}/${params.preset}/opengraph-image`;
+  const canonicalUrl = `https://www.convertsheet.com/tools/${params.slug}/${params.preset}`;
+  const ogImage = `https://www.convertsheet.com/tools/${params.slug}/${params.preset}/opengraph-image`;
 
   return {
     title: preset.title,

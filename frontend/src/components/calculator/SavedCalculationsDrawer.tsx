@@ -36,7 +36,7 @@ export function SavedCalculationsDrawer() {
         Summary: it.summaryTitle,
         Date: new Date(it.timestamp).toLocaleString(),
         Metrics: it.summaryMetrics.map((m) => `${m.label}: ${m.value}`).join(" | "),
-        URL: `https://convertsheet.com${it.path}`,
+        URL: `https://www.convertsheet.com${it.path}`,
       }));
       const worksheet = XLSX.utils.json_to_sheet(flattened);
       const workbook = XLSX.utils.book_new();

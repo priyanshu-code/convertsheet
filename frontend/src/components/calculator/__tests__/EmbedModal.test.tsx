@@ -34,9 +34,9 @@ describe("EmbedModal & EmbedTrigger Components", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(screen.getByText(/Embed Mortgage Calculator on Your Website/i)).toBeInTheDocument();
 
-    const preSnippet = screen.getByText(/iframe src="https:\/\/convertsheet\.com\/embed\/mortgage-calculator"/i);
-    expect(preSnippet.textContent).toContain('src="https://convertsheet.com/embed/mortgage-calculator"');
-    expect(preSnippet.textContent).toContain('Powered by <a href="https://convertsheet.com/tools/mortgage-calculator"');
+    const preSnippet = screen.getByText(/iframe src="https:\/\/www\.convertsheet\.com\/embed\/mortgage-calculator"/i);
+    expect(preSnippet.textContent).toContain('src="https://www.convertsheet.com/embed/mortgage-calculator"');
+    expect(preSnippet.textContent).toContain('Powered by <a href="https://www.convertsheet.com/tools/mortgage-calculator"');
 
     // Click "Compact (500px)" preset
     const compactBtn = screen.getByRole("button", { name: /Compact/i });

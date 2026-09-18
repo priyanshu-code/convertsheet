@@ -24,10 +24,10 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
       expect(metadata.title).toBe(tool.title);
       expect(metadata.description).toBe(tool.metaDescription);
       expect(metadata.alternates?.canonical).toBe(
-        `https://convertsheet.com/tools/${slug}`
+        `https://www.convertsheet.com/tools/${slug}`
       );
       expect(metadata.openGraph?.url).toBe(
-        `https://convertsheet.com/tools/${slug}`
+        `https://www.convertsheet.com/tools/${slug}`
       );
     }
   });

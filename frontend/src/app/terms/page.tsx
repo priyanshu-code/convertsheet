@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "ConvertSheet terms of service: Understand our usage terms, disclaimers for financial calculations, and commitment to open, privacy-first software.",
   alternates: {
-    canonical: "https://convertsheet.com/terms",
+    canonical: "https://www.convertsheet.com/terms",
   },
 };
 

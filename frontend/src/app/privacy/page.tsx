@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "ConvertSheet's privacy policy: Learn how our client-side architecture processes files 100% in your browser with zero server uploads, storage, or retention.",
   alternates: {
-    canonical: "https://convertsheet.com/privacy",
+    canonical: "https://www.convertsheet.com/privacy",
   },
 };
 

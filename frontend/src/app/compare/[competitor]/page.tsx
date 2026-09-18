@@ -42,7 +42,7 @@ export async function generateMetadata({
     return { title: "Competitor Comparison | ConvertSheet" };
   }
 
-  const canonicalUrl = `https://convertsheet.com/compare/${comp.slug}`;
+  const canonicalUrl = `https://www.convertsheet.com/compare/${comp.slug}`;
 
   return {
     title: comp.title,

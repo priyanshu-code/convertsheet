@@ -17,7 +17,7 @@ export function generateToolSoftwareApplicationSchema(config: ToolConfig) {
       priceCurrency: "USD",
     },
     description: config.metaDescription,
-    url: `https://convertsheet.com/tools/${config.slug}`,
+    url: `https://www.convertsheet.com/tools/${config.slug}`,
   };
 }
 
@@ -30,7 +30,7 @@ export function generateToolHowToSchema(config: ToolConfig) {
       position: step.step || index + 1,
       name: step.title,
       text: step.description,
-      url: `https://convertsheet.com/tools/${config.slug}#step-${step.step || index + 1}`,
+      url: `https://www.convertsheet.com/tools/${config.slug}#step-${step.step || index + 1}`,
     })),
   };
 }
@@ -57,19 +57,19 @@ export function generateToolBreadcrumbSchema(config: ToolConfig) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://convertsheet.com",
+        item: "https://www.convertsheet.com",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Tools",
-        item: "https://convertsheet.com/#tools",
+        item: "https://www.convertsheet.com/#tools",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: config.name,
-        item: `https://convertsheet.com/tools/${config.slug}`,
+        item: `https://www.convertsheet.com/tools/${config.slug}`,
       },
     ],
   };
@@ -80,7 +80,7 @@ export function generateToolWebPageSchema(config: ToolConfig) {
     "@type": "WebPage",
     name: config.title,
     description: config.metaDescription,
-    url: `https://convertsheet.com/tools/${config.slug}`,
+    url: `https://www.convertsheet.com/tools/${config.slug}`,
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: [".tool-answer-summary", ".tool-about-section"],

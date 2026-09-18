@@ -35,7 +35,7 @@ describe("Competitor Comparison Pages", () => {
     expect(meta.title).toContain("CloudConvert Alternative");
     expect(meta.description).toBeDefined();
     expect(meta.alternates?.canonical).toBe(
-      "https://convertsheet.com/compare/cloudconvert-alternative"
+      "https://www.convertsheet.com/compare/cloudconvert-alternative"
     );
   });
 

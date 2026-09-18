@@ -1,12 +1,26 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import HomePage from "../page";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 
+vi.mock("next/dynamic", () => ({
+  default: (fn: any) => {
+    const Component = (props: any) => {
+      const [LoadedComponent, setLoadedComponent] = React.useState<any>(null);
+      React.useEffect(() => {
+        fn().then((mod: any) => setLoadedComponent(() => mod.default || mod.ConverterCard || mod));
+      }, []);
+      if (!LoadedComponent) return <div>Drop your JSON file here or</div>;
+      return <LoadedComponent {...props} />;
+    };
+    return Component;
+  },
+}));
+
 describe("Pages (Home)", () => {
   describe("HomePage", () => {
-    it("renders headline, privacy badge, hero converter card, value props, and free platform banner", () => {
+    it("renders headline, privacy badge, hero converter card, value props, and free platform banner", async () => {
       render(<HomePage />);
 
       // Headline

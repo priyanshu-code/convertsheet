@@ -10,26 +10,35 @@ import {
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 import type { ConverterConfig } from "@/types/registry";
 import { getAllTools } from "@/lib/tool-registry";
-import { ConverterCard } from "@/components/converter";
+import { ConverterCardSkeleton } from "@/components/converter/ConverterCardSkeleton";
 import { AdBanner } from "@/components/layout";
 import { ConverterGrid } from "@/components/home/ConverterGrid";
 import { ToolGrid } from "@/components/home/ToolGrid";
+
+const DynamicConverterCard = dynamic(
+  () => import("@/components/converter/ConverterCard").then((mod) => mod.ConverterCard),
+  {
+    ssr: true,
+    loading: () => <ConverterCardSkeleton />,
+  }
+);
 
 export const metadata: Metadata = {
   title: "ConvertSheet - Fast, Private Structured Data Converter",
   description:
     "Convert JSON, CSV, Excel & XML spreadsheets instantly in your browser. 100% private, zero server uploads for small files, and powerful developer APIs.",
   alternates: {
-    canonical: "https://convertsheet.com",
+    canonical: "https://www.convertsheet.com",
   },
   openGraph: {
     title: "ConvertSheet - Fast, Private Structured Data Converter",
     description:
       "Convert JSON, CSV, Excel & XML spreadsheets instantly in your browser. 100% private, zero server uploads for small files.",
-    url: "https://convertsheet.com",
+    url: "https://www.convertsheet.com",
     type: "website",
   },
 };
@@ -67,15 +76,15 @@ const homeJsonLd = {
     {
       "@type": "WebSite",
       name: "ConvertSheet",
-      url: "https://convertsheet.com",
+      url: "https://www.convertsheet.com",
       description:
         "Fast, private structured data conversion. Convert spreadsheets, JSON arrays, and XML feeds directly in your browser with zero server uploads.",
     },
     {
       "@type": "Organization",
       name: "ConvertSheet",
-      url: "https://convertsheet.com",
-      logo: "https://convertsheet.com/icon.png",
+      url: "https://www.convertsheet.com",
+      logo: "https://www.convertsheet.com/icon.png",
     },
   ],
 };
@@ -116,7 +125,7 @@ export default function HomePage() {
 
       {/* Hero Universal Converter Card - Above the fold */}
       <div className="max-w-4xl mx-auto">
-        <ConverterCard config={defaultConverter} />
+        <DynamicConverterCard config={defaultConverter} />
       </div>
 
       {/* Leaderboard Ad Slot */}

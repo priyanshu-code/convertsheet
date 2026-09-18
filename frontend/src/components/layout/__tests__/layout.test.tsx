@@ -445,7 +445,7 @@ describe("Layout Components", () => {
       expect(metadata.openGraph?.title).toBe(
         "ConvertSheet - Fast, Private Structured Data Converter"
       );
-      expect(metadata.openGraph?.url).toBe("https://convertsheet.com");
+      expect(metadata.openGraph?.url).toBe("https://www.convertsheet.com");
     });
 
     it("renders skip-to-content anchor and main-content id", () => {
