@@ -78,4 +78,11 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
     expect(screen.getByRole("heading", { level: 2, name: expectedHeading })).toBeInTheDocument();
     expect(screen.getByText(/Drag & Drop Images/i)).toBeInTheDocument();
   });
+
+  it("renders PdfCompressorTool for /tools/compress-pdf", () => {
+    render(<ToolPage params={{ slug: "compress-pdf" }} />);
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Bulk PDF Compressor" })).toBeInTheDocument();
+    expect(screen.getByText(/Drag & drop PDF files here/i)).toBeInTheDocument();
+  });
 });

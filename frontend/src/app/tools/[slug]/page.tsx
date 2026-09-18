@@ -58,6 +58,7 @@ import { SqlStudioTool } from "@/components/tools/SqlStudioTool";
 import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
 import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
 import { BulkImageCompressor } from "@/components/tools/BulkImageCompressor";
+import { PdfCompressorTool } from "@/components/tools/PdfCompressorTool";
 
 export interface ToolPageProps {
   params: {
@@ -190,6 +191,12 @@ export default function ToolPage({ params }: ToolPageProps) {
       />
     ),
     "svg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="SVG to PNG Rasterizer" subtitle="Render vector SVGs to crisp transparent PNG images at any resolution." />,
+    "compress-pdf": () => (
+      <PdfCompressorTool
+        title="Bulk PDF Compressor"
+        subtitle="Compress up to 20 PDF documents simultaneously in your browser with 100% privacy."
+      />
+    ),
     "merge-pdf": PdfMergeTool,
     "split-pdf": PdfSplitTool,
     "watermark-pdf": PdfWatermarkTool,

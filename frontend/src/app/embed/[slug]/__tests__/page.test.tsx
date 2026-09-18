@@ -48,4 +48,17 @@ describe("Embed Tool Page", () => {
       "https://www.convertsheet.com/tools/compress-image"
     );
   });
+
+  it("renders the pdf compressor tool and attribution backlink for pdf compressor embed", () => {
+    render(<EmbedToolPage params={{ slug: "compress-pdf" }} />);
+
+    expect(screen.getByRole("heading", { level: 2, name: "Bulk PDF Compressor" })).toBeInTheDocument();
+    expect(screen.getByText(/Drag & drop PDF files here/i)).toBeInTheDocument();
+    const poweredByLink = screen.getByRole("link", { name: /ConvertSheet/i });
+    expect(poweredByLink).toBeInTheDocument();
+    expect(poweredByLink).toHaveAttribute(
+      "href",
+      "https://www.convertsheet.com/tools/compress-pdf"
+    );
+  });
 });
