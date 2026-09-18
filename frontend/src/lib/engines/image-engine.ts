@@ -9,6 +9,7 @@ export interface ImageConversionOptions {
   quality?: number; // 0.1 to 1.0 (for webp and jpeg)
   maxWidth?: number;
   maxHeight?: number;
+  backgroundColor?: string; // default "#ffffff" when format === "image/jpeg"
 }
 
 export interface ImageConversionResult {
@@ -18,6 +19,15 @@ export interface ImageConversionResult {
   height: number;
   sizeBytes: number;
   filename: string;
+}
+
+/**
+ * Calculates percentage file size savings between original and compressed size.
+ * Positive value represents reduction, negative value represents expansion.
+ */
+export function calculateSavings(originalSize: number, compressedSize: number): number {
+  if (originalSize <= 0) return 0;
+  return Math.round(((originalSize - compressedSize) / originalSize) * 100);
 }
 
 /**
@@ -68,9 +78,9 @@ export async function convertImage(
     throw new Error("Unable to obtain 2D rendering canvas context.");
   }
 
-  // If converting to JPEG, fill white background to avoid black transparency
+  // If converting to JPEG, fill background to avoid black transparency
   if (options.format === "image/jpeg") {
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = options.backgroundColor || "#ffffff";
     ctx.fillRect(0, 0, width, height);
   }
 
@@ -106,3 +116,38 @@ export async function convertImage(
     filename,
   };
 }
+
+/**
+ * Converts a batch of image files with a controlled concurrency limit.
+ * Invokes onProgress callback after each image completes.
+ */
+export async function convertBatchImages(
+  files: File[],
+  options: ImageConversionOptions,
+  concurrency: number = 3,
+  onProgress?: (completed: number, total: number) => void
+): Promise<ImageConversionResult[]> {
+  const total = files.length;
+  const results: ImageConversionResult[] = new Array(total);
+  let currentIndex = 0;
+  let completedCount = 0;
+
+  const worker = async () => {
+    while (currentIndex < total) {
+      const idx = currentIndex++;
+      const file = files[idx];
+      results[idx] = await convertImage(file, options);
+      completedCount++;
+      if (onProgress) {
+        onProgress(completedCount, total);
+      }
+    }
+  };
+
+  const poolSize = Math.max(1, Math.min(concurrency, total));
+  const workers = Array.from({ length: poolSize }, () => worker());
+  await Promise.all(workers);
+
+  return results;
+}
+
