@@ -1,5 +1,5 @@
 // ConvertSheet Offline Service Worker (100% Client-Side Private Engine)
-const CACHE_NAME = "convertsheet-v1";
+const CACHE_NAME = "convertsheet-v2";
 const STATIC_ASSETS = [
   "/",
   "/tools",
@@ -43,7 +43,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Cache-first for Next.js static chunks, assets, and icons
+  // 1. Cache-first for immutable static chunks, assets, and icons (0-2ms response)
   if (
     url.pathname.startsWith("/_next/static/") ||
     url.pathname.startsWith("/icons/") ||
@@ -65,25 +65,31 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Network-first with cache fallback for HTML pages
+  // 2. Stale-While-Revalidate for HTML pages & navigations
+  // Delivers instant local cache (<5ms) while revalidating from edge in the background
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        if (response && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return response;
-      })
-      .catch(async () => {
-        const cached = await caches.match(event.request);
-        if (cached) return cached;
-        // Fallback to home page or cached directory if offline
-        const rootCached = await caches.match("/");
-        if (rootCached) return rootCached;
-        return new Response("ConvertSheet Offline Mode: Page is cached when online.", {
-          headers: { "Content-Type": "text/plain" },
+    caches.match(event.request).then((cached) => {
+      // Background network fetch to revalidate and update cache
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(async () => {
+          if (cached) return cached;
+          const rootCached = await caches.match("/");
+          if (rootCached) return rootCached;
+          return new Response("ConvertSheet Offline Mode: Page is cached when online.", {
+            headers: { "Content-Type": "text/plain" },
+          });
         });
-      })
+
+      // If cached response exists, return it immediately (<5ms)!
+      // Otherwise wait for the background network fetch to complete
+      return cached || fetchPromise;
+    })
   );
 });
