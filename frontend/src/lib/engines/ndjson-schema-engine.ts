@@ -132,13 +132,27 @@ export class JsonToNdjsonEngine implements IConverterEngine {
   }
 }
 
+export function extractSchemaTargetItems(data: unknown): Record<string, unknown>[] {
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    !Array.isArray(data) &&
+    !Object.values(data as Record<string, unknown>).some(
+      (v) => Array.isArray(v) && v.length > 0 && typeof v[0] === "object"
+    )
+  ) {
+    return [data as Record<string, unknown>];
+  }
+  return extractJsonItems(data);
+}
+
 /**
  * Converts JSON records or documents into Draft-07 JSON Schema.
  */
 export class JsonToSchemaEngine implements IConverterEngine {
   readonly id: ConverterEngineId = "json-to-schema";
 
-  async parsePreview(file: File, _maxRows?: number): Promise<TabularData> {
+  async parsePreview(file: File, maxRows?: number): Promise<TabularData> {
     const text = await file.text();
     if (!text || !text.trim()) {
       return { columns: [], rows: [], totalRows: 0 };
@@ -153,7 +167,7 @@ export class JsonToSchemaEngine implements IConverterEngine {
       throw new Error(`Invalid JSON format: ${(err as Error).message}`);
     }
 
-    const items = extractJsonItems(data);
+    const items = extractSchemaTargetItems(data);
     if (items.length === 0) {
       return {
         columns: ["Property", "Type", "Required", "Sample Value"],
@@ -162,13 +176,16 @@ export class JsonToSchemaEngine implements IConverterEngine {
       };
     }
 
-    // Inspect items to find all properties, inferred types, and whether they appear in every row
+    // Inspect sampled items (up to 1000) to keep preview responsive on large files
+    const sampleSize = Math.min(items.length, 1000);
+    const sampleItems = items.slice(0, sampleSize);
+
     const propertyMap = new Map<
       string,
       { count: number; types: Set<string>; sampleVal: unknown }
     >();
 
-    for (const item of items) {
+    for (const item of sampleItems) {
       for (const [key, val] of Object.entries(item)) {
         if (!propertyMap.has(key)) {
           propertyMap.set(key, {
@@ -186,13 +203,13 @@ export class JsonToSchemaEngine implements IConverterEngine {
       }
     }
 
-    const totalCount = items.length;
-    const rows: Record<string, unknown>[] = [];
+    const totalCount = sampleItems.length;
+    const allRows: Record<string, unknown>[] = [];
 
     for (const [propName, meta] of propertyMap.entries()) {
       const typeStr = Array.from(meta.types).join(" | ");
       const isRequired = meta.count === totalCount ? "Yes" : "No";
-      rows.push({
+      allRows.push({
         Property: propName,
         Type: typeStr,
         Required: isRequired,
@@ -200,10 +217,13 @@ export class JsonToSchemaEngine implements IConverterEngine {
       });
     }
 
+    const limit = maxRows !== undefined && maxRows > 0 ? maxRows : allRows.length;
+    const rows = allRows.slice(0, limit);
+
     return {
       columns: ["Property", "Type", "Required", "Sample Value"],
       rows,
-      totalRows: rows.length,
+      totalRows: allRows.length,
     };
   }
 
@@ -223,20 +243,7 @@ export class JsonToSchemaEngine implements IConverterEngine {
     }
 
     const baseName = file.name ? file.name.replace(/\.[^/.]+$/, "") : "document";
-
-    let items: Record<string, unknown>[];
-    if (
-      typeof data === "object" &&
-      data !== null &&
-      !Array.isArray(data) &&
-      !Object.values(data as Record<string, unknown>).some(
-        (v) => Array.isArray(v) && v.length > 0 && typeof v[0] === "object"
-      )
-    ) {
-      items = [data as Record<string, unknown>];
-    } else {
-      items = extractJsonItems(data);
-    }
+    const items = extractSchemaTargetItems(data);
 
     if (items.length === 0) {
       throw new Error("No JSON records or object properties found to infer schema from");
