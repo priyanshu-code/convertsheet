@@ -40,4 +40,6 @@ export type ConverterEngineId =
   | "jsonl-to-csv"
   | "csv-to-jsonl"
   | "markdown-to-excel"
-  | "sqlite-to-excel";
+  | "sqlite-to-excel"
+  | "json-to-ndjson"
+  | "json-to-schema";

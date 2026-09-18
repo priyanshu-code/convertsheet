@@ -41,6 +41,12 @@ import {
 } from "./markdown-table-engine";
 import { sqliteToExcelEngine, SqliteToExcelEngine } from "./sqlite-engine";
 import { DuckDbClient, getDuckDbClient } from "./duckdb-client";
+import {
+  jsonToNdjsonEngine,
+  jsonToSchemaEngine,
+  JsonToNdjsonEngine,
+  JsonToSchemaEngine,
+} from "./ndjson-schema-engine";
 
 export {
   csvToExcelEngine,
@@ -80,6 +86,10 @@ export {
   DuckDbClient,
   getDuckDbClient,
   flattenObject,
+  jsonToNdjsonEngine,
+  jsonToSchemaEngine,
+  JsonToNdjsonEngine,
+  JsonToSchemaEngine,
 };
 
 const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
@@ -99,6 +109,8 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "csv-to-jsonl": csvToJsonlEngine,
   "markdown-to-excel": markdownTableEngine,
   "sqlite-to-excel": sqliteToExcelEngine,
+  "json-to-ndjson": jsonToNdjsonEngine,
+  "json-to-schema": jsonToSchemaEngine,
 };
 
 export function getConverterEngine(engineId: ConverterEngineId): IConverterEngine {
