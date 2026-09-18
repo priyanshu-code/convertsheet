@@ -33,6 +33,7 @@ interface ImageItemState {
   result?: ImageConversionResult;
   isProcessing: boolean;
   error?: string;
+  version: number; // sequence number / timestamp for race-condition prevention
 }
 
 export function BulkImageCompressor({
@@ -45,14 +46,18 @@ export function BulkImageCompressor({
   const [globalQuality, setGlobalQuality] = useState<number>(80);
   const [globalMaxWidth, setGlobalMaxWidth] = useState<number>(0); // 0 = Original
   const [isZipping, setIsZipping] = useState<boolean>(false);
+  const [zipError, setZipError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const itemsRef = useRef<ImageItemState[]>([]);
   itemsRef.current = items;
+  const debounceTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
-  // Cleanup all preview object URLs on unmount
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
+      debounceTimersRef.current.forEach((t) => clearTimeout(t));
+      debounceTimersRef.current.clear();
       itemsRef.current.forEach((item) => {
         if (item.previewUrl) {
           URL.revokeObjectURL(item.previewUrl);
@@ -76,8 +81,9 @@ export function BulkImageCompressor({
       item: ImageItemState,
       targetFormat: ImageFormatOption,
       quality: number,
-      maxWidth: number
-    ): Promise<ImageItemState> => {
+      maxWidth: number,
+      targetVersion: number
+    ): Promise<void> => {
       const format = resolveTargetFormat(item.file, targetFormat);
       const effectiveQuality = (item.customQuality ?? quality) / 100;
       const effectiveMaxWidth = maxWidth > 0 ? maxWidth : undefined;
@@ -89,19 +95,34 @@ export function BulkImageCompressor({
           maxWidth: effectiveMaxWidth,
         });
 
-        return {
-          ...item,
-          result,
-          isProcessing: false,
-          error: undefined,
-        };
+        // Race condition prevention: only update if item's latest version matches targetVersion
+        setItems((prev) =>
+          prev.map((it) => {
+            if (it.id === item.id && it.version === targetVersion) {
+              return {
+                ...it,
+                result,
+                isProcessing: false,
+                error: undefined,
+              };
+            }
+            return it;
+          })
+        );
       } catch (err: any) {
-        return {
-          ...item,
-          result: undefined,
-          isProcessing: false,
-          error: err?.message || "Failed to process image.",
-        };
+        setItems((prev) =>
+          prev.map((it) => {
+            if (it.id === item.id && it.version === targetVersion) {
+              return {
+                ...it,
+                result: undefined,
+                isProcessing: false,
+                error: err?.message || "Failed to process image.",
+              };
+            }
+            return it;
+          })
+        );
       }
     },
     []
@@ -114,20 +135,20 @@ export function BulkImageCompressor({
       );
       if (validFiles.length === 0) return;
 
-      const newItems: ImageItemState[] = validFiles.map((file) => ({
+      const now = Date.now();
+      const newItems: ImageItemState[] = validFiles.map((file, idx) => ({
         id: `${file.name}-${file.size}-${Math.random().toString(36).slice(2, 9)}`,
         file,
         previewUrl: URL.createObjectURL(file),
         isProcessing: true,
+        version: now + idx,
       }));
 
       setItems((prev) => [...prev, ...newItems]);
 
       // Process new files
       for (const item of newItems) {
-        processSingleItem(item, globalFormat, globalQuality, globalMaxWidth).then((updated) => {
-          setItems((prev) => prev.map((it) => (it.id === item.id ? updated : it)));
-        });
+        processSingleItem(item, globalFormat, globalQuality, globalMaxWidth, item.version);
       }
     },
     [globalFormat, globalQuality, globalMaxWidth, processSingleItem]
@@ -145,17 +166,17 @@ export function BulkImageCompressor({
   // Re-process items when global controls change
   const reprocessAll = useCallback(
     (newFormat: ImageFormatOption, newQuality: number, newMaxWidth: number) => {
+      const newVersion = Date.now();
       setItems((prev) =>
         prev.map((item) => ({
           ...item,
+          version: newVersion,
           isProcessing: true,
         }))
       );
 
       itemsRef.current.forEach((item) => {
-        processSingleItem(item, newFormat, newQuality, newMaxWidth).then((updated) => {
-          setItems((prev) => prev.map((it) => (it.id === item.id ? updated : it)));
-        });
+        processSingleItem(item, newFormat, newQuality, newMaxWidth, newVersion);
       });
     },
     [processSingleItem]
@@ -169,7 +190,17 @@ export function BulkImageCompressor({
 
   const handleGlobalQualityChange = (val: number) => {
     setGlobalQuality(val);
-    reprocessAll(globalFormat, val, globalMaxWidth);
+
+    // Debounce re-processing during slider dragging
+    const existingTimer = debounceTimersRef.current.get("global");
+    if (existingTimer) clearTimeout(existingTimer);
+
+    const timer = setTimeout(() => {
+      debounceTimersRef.current.delete("global");
+      reprocessAll(globalFormat, val, globalMaxWidth);
+    }, 150);
+
+    debounceTimersRef.current.set("global", timer);
   };
 
   const handleGlobalMaxWidthChange = (val: string) => {
@@ -179,20 +210,38 @@ export function BulkImageCompressor({
   };
 
   const handleItemQualityChange = (id: string, newQuality: number) => {
+    const newVersion = Date.now();
+    // Immediate UI responsiveness for slider and loading indicator
     setItems((prev) =>
-      prev.map((it) => (it.id === id ? { ...it, customQuality: newQuality, isProcessing: true } : it))
+      prev.map((it) =>
+        it.id === id
+          ? { ...it, customQuality: newQuality, version: newVersion, isProcessing: true }
+          : it
+      )
     );
 
-    const targetItem = itemsRef.current.find((it) => it.id === id);
-    if (!targetItem) return;
+    // Debounce compression processing for slider drags
+    const existingTimer = debounceTimersRef.current.get(id);
+    if (existingTimer) clearTimeout(existingTimer);
 
-    const modified = { ...targetItem, customQuality: newQuality };
-    processSingleItem(modified, globalFormat, globalQuality, globalMaxWidth).then((updated) => {
-      setItems((prev) => prev.map((it) => (it.id === id ? updated : it)));
-    });
+    const timer = setTimeout(() => {
+      debounceTimersRef.current.delete(id);
+      const targetItem = itemsRef.current.find((it) => it.id === id);
+      if (!targetItem) return;
+
+      const modified = { ...targetItem, customQuality: newQuality };
+      processSingleItem(modified, globalFormat, globalQuality, globalMaxWidth, newVersion);
+    }, 150);
+
+    debounceTimersRef.current.set(id, timer);
   };
 
   const handleRemoveItem = (id: string) => {
+    const existingTimer = debounceTimersRef.current.get(id);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+      debounceTimersRef.current.delete(id);
+    }
     setItems((prev) => {
       const found = prev.find((it) => it.id === id);
       if (found && found.previewUrl) {
@@ -203,6 +252,9 @@ export function BulkImageCompressor({
   };
 
   const handleClearAll = () => {
+    debounceTimersRef.current.forEach((t) => clearTimeout(t));
+    debounceTimersRef.current.clear();
+    setZipError(null);
     items.forEach((item) => {
       if (item.previewUrl) {
         URL.revokeObjectURL(item.previewUrl);
@@ -220,6 +272,7 @@ export function BulkImageCompressor({
     const readyItems = items.filter((item) => item.result && !item.error);
     if (readyItems.length === 0) return;
 
+    setZipError(null);
     setIsZipping(true);
     try {
       // Ensure unique filenames in ZIP
@@ -243,6 +296,8 @@ export function BulkImageCompressor({
 
       const zipBlob = await createZipArchive(filesForZip);
       downloadBlob(zipBlob, "compressed_images.zip");
+    } catch (err: any) {
+      setZipError(err?.message || "Failed to create ZIP archive. Please try again.");
     } finally {
       setIsZipping(false);
     }
@@ -511,10 +566,11 @@ export function BulkImageCompressor({
                   <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between gap-3">
                     <div className="flex-1 max-w-[200px]">
                       <div className="flex items-center justify-between text-[10px] text-zinc-500 dark:text-zinc-400 mb-1">
-                        <span>Quality</span>
+                        <label htmlFor={`card-quality-${item.id}`}>Quality</label>
                         <span className="font-mono font-semibold">{currentQuality}%</span>
                       </div>
                       <input
+                        id={`card-quality-${item.id}`}
                         type="range"
                         min={1}
                         max={100}
@@ -541,6 +597,30 @@ export function BulkImageCompressor({
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* ZIP Creation Error Banner */}
+        {zipError && (
+          <div
+            role="alert"
+            className="flex items-start justify-between gap-3 p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-800 dark:text-rose-200 text-sm"
+          >
+            <div className="flex items-start gap-2.5">
+              <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+              <div className="space-y-0.5">
+                <p className="font-semibold text-xs sm:text-sm">ZIP Archive Error</p>
+                <p className="text-xs text-rose-700 dark:text-rose-300">{zipError}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setZipError(null)}
+              aria-label="Dismiss ZIP error"
+              className="p-1 rounded-lg text-rose-500 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         )}
 

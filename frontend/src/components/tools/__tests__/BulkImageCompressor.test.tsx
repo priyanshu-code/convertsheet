@@ -220,4 +220,51 @@ describe("BulkImageCompressor", () => {
     // Valid file card should show its dimensions or success state
     expect(screen.getByText("800 × 600")).toBeInTheDocument();
   });
+
+  it("sets explicit id on card range input matching card-quality-{item.id}", async () => {
+    const { container } = render(<BulkImageCompressor />);
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+    const file1 = new File(["dummy 1000 bytes"], "photo1.png", { type: "image/png" });
+    fireEvent.change(input, { target: { files: [file1] } });
+
+    await waitFor(() => {
+      expect(screen.getByText("photo1.png")).toBeInTheDocument();
+    });
+
+    const cardSliders = screen.getAllByRole("slider");
+    const itemSlider = cardSliders[1];
+    expect(itemSlider).toHaveAttribute("id");
+    expect(itemSlider.getAttribute("id")).toMatch(/^card-quality-/);
+  });
+
+  it("handles ZIP archive creation failure with error banner and dismiss button", async () => {
+    vi.spyOn(zipUtils, "createZipArchive").mockRejectedValueOnce(
+      new Error("Failed to allocate ZIP memory.")
+    );
+
+    const { container } = render(<BulkImageCompressor />);
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+    const file1 = new File(["dummy 1"], "photo1.png", { type: "image/png" });
+    fireEvent.change(input, { target: { files: [file1] } });
+
+    await waitFor(() => {
+      expect(screen.getByText("photo1.png")).toBeInTheDocument();
+    });
+
+    const zipButton = screen.getByRole("button", { name: /Download All as ZIP/i });
+    fireEvent.click(zipButton);
+
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+      expect(screen.getByText(/Failed to allocate ZIP memory/i)).toBeInTheDocument();
+    });
+
+    // Dismiss the error banner
+    const dismissBtn = screen.getByRole("button", { name: /Dismiss ZIP error/i });
+    fireEvent.click(dismissBtn);
+
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
 });
