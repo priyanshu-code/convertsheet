@@ -151,12 +151,9 @@ export default function PrivacyPage() {
           </h2>
           <p className="leading-relaxed">
             If you have questions or security inquiries regarding ConvertSheet&apos;s architectural design or privacy practices, please contact us at{" "}
-            <a
-              href="mailto:privacy@convertsheet.com"
-              className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium"
-            >
-              privacy@convertsheet.com
-            </a>
+            <span dangerouslySetInnerHTML={{
+              __html: '<!--email_off--><a href="mailto:privacy@convertsheet.com" class="text-emerald-600 dark:text-emerald-400 hover:underline font-medium">privacy@convertsheet.com</a><!--/email_off-->'
+            }} />
             .
           </p>
         </section>

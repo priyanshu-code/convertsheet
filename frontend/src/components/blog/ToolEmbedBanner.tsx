@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Wrench, ShieldCheck, Zap } from "lucide-react";
+import { getConverterBySlug } from "@/lib/registry";
 
 interface ToolEmbedBannerProps {
   toolSlug: string;
@@ -13,6 +14,9 @@ export function ToolEmbedBanner({
   toolTitle,
   ariaLabel,
 }: ToolEmbedBannerProps) {
+  const isConverter = Boolean(getConverterBySlug(toolSlug));
+  const targetHref = isConverter ? `/convert/${toolSlug}` : `/tools/${toolSlug}`;
+
   return (
     <aside
       aria-label={ariaLabel || `Interactive Tool: ${toolTitle}`}
@@ -40,7 +44,7 @@ export function ToolEmbedBanner({
         </div>
         <div className="flex-shrink-0">
           <Link
-            href={`/convert/${toolSlug}`}
+            href={targetHref}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-500 hover:shadow-emerald-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-400"
           >
             <span>Open Free In-Browser Tool</span>

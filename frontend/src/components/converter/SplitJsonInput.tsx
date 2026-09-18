@@ -383,9 +383,9 @@ export function SplitJsonInput({
             <UploadCloud className="w-6 h-6" />
           </div>
 
-          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+          <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
             Or upload your JSON file
-          </h3>
+          </h2>
 
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4 max-w-xs">
             Drag and drop a JSON file here, or{" "}

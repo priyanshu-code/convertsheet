@@ -21,6 +21,19 @@ describe("Blog UI Components", () => {
     );
   });
 
+  it("renders ToolEmbedBanner with /tools/ link for calculator/tool slugs", () => {
+    render(
+      <ToolEmbedBanner
+        toolSlug="income-tax-calculator"
+        toolTitle="Income Tax Calculator"
+      />
+    );
+    expect(screen.getByRole("link", { name: /Open Free In-Browser Tool/i })).toHaveAttribute(
+      "href",
+      "/tools/income-tax-calculator"
+    );
+  });
+
   it("renders BlogCard with title, category, read time, and link", () => {
     const post = BLOG_POSTS[0];
     render(<BlogCard post={post} />);

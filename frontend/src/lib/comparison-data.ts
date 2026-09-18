@@ -282,7 +282,7 @@ export const COMPARISONS: CompetitorComparison[] = [
         type: "tool",
       },
       {
-        slug: "credit-card-payoff-calculator",
+        slug: "debt-payoff-calculator",
         name: "Debt Payoff Accelerator",
         description: "Compare Avalanche vs Snowball payoff strategies with custom rollover schedule.",
         type: "tool",
