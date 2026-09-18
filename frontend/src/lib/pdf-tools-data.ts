@@ -32,7 +32,7 @@ export const PDF_TOOLS: Record<string, ToolConfig> = {
       { question: "Are my confidential PDF documents uploaded to your server?", answer: "No. Zero bytes leave your computer. Merging is processed entirely within your device's memory using client-side JavaScript." },
       { question: "Can I reorder the PDF files before merging?", answer: "Yes. You can reorder the documents using the Up and Down arrow buttons to ensure the pages appear in the exact order you need." }
     ],
-    relatedConverters: ["excel-to-pdf", "csv-to-excel"],
+    relatedConverters: ["pdf-to-excel", "csv-to-excel"],
     relatedTools: ["split-pdf", "watermark-pdf", "page-number-pdf"]
   },
 
@@ -66,7 +66,7 @@ export const PDF_TOOLS: Record<string, ToolConfig> = {
       { question: "Does splitting reduce the quality of the PDF?", answer: "No. The vector shapes, high-resolution images, and embedded fonts in the extracted pages are preserved with 100% original fidelity." },
       { question: "Is my document stored on ConvertSheet?", answer: "Never. All page extraction is performed locally in browser memory with zero server retention." }
     ],
-    relatedConverters: ["excel-to-pdf", "pdf-to-excel"],
+    relatedConverters: ["pdf-to-excel", "csv-to-excel"],
     relatedTools: ["merge-pdf", "watermark-pdf", "page-number-pdf"]
   },
 
@@ -100,7 +100,7 @@ export const PDF_TOOLS: Record<string, ToolConfig> = {
       { question: "Can I adjust how dark or transparent the watermark is?", answer: "Yes. The opacity slider allows you to choose anywhere from 10% (subtle background) to 80% (prominent stamp)." },
       { question: "Are my confidential files secure?", answer: "100% secure. Processing happens entirely on your machine. No documents are transmitted over the internet." }
     ],
-    relatedConverters: ["excel-to-pdf"],
+    relatedConverters: ["pdf-to-excel"],
     relatedTools: ["merge-pdf", "page-number-pdf", "split-pdf"]
   },
 
@@ -134,7 +134,7 @@ export const PDF_TOOLS: Record<string, ToolConfig> = {
       { question: "Where are the page numbers placed?", answer: "Numbers are neatly stamped in the bottom margin, either centered or aligned to the bottom-right corner." },
       { question: "Does this overwrite existing text on the page?", answer: "Numbers are stamped cleanly in the lower page margin (24pt from bottom) to avoid overlapping body text." }
     ],
-    relatedConverters: ["excel-to-pdf", "csv-to-excel"],
+    relatedConverters: ["pdf-to-excel", "csv-to-excel"],
     relatedTools: ["merge-pdf", "watermark-pdf", "split-pdf"]
   },
 

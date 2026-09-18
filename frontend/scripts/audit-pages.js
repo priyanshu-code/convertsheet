@@ -136,7 +136,43 @@ async function auditHtmlFile(filePath) {
     }
   }
 
-  // 5. axe-core Accessibility Engine
+  // 5. Internal Link Crawler & 404 Detection
+  const links = Array.from(document.querySelectorAll("a[href]"));
+  for (const link of links) {
+    const href = link.getAttribute("href")?.trim();
+    if (!href) continue;
+
+    // Ignore anchors, external protocols, mailto, tel, javascript
+    if (
+      href.startsWith("#") ||
+      href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:") ||
+      href.startsWith("javascript:")
+    ) {
+      continue;
+    }
+
+    // Strip hash and query parameters
+    const cleanPath = href.split("#")[0].split("?")[0];
+    if (!cleanPath || cleanPath === "/") continue;
+
+    // Normalize path to check in OUT_DIR
+    const targetFile1 = path.join(OUT_DIR, `${cleanPath}.html`);
+    const targetFile2 = path.join(OUT_DIR, cleanPath, "index.html");
+    const targetFile3 = path.join(OUT_DIR, cleanPath); // direct static asset (e.g. .txt, .svg, .png)
+
+    if (
+      !fs.existsSync(targetFile1) &&
+      !fs.existsSync(targetFile2) &&
+      !fs.existsSync(targetFile3)
+    ) {
+      errors.push(`Broken internal link (404): "${href}" on ${relativePath}`);
+    }
+  }
+
+  // 6. axe-core Accessibility Engine
   if (axeSource) {
     try {
       window.eval(axeSource);
