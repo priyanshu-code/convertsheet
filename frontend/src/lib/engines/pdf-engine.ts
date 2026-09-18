@@ -248,3 +248,112 @@ export async function extractPdfTextRows(file: File): Promise<TabularData> {
     totalRows: rows.length,
   };
 }
+
+export type PdfCompressionLevel = "recommended" | "extreme" | "low";
+
+export interface PdfCompressionOptions {
+  level: PdfCompressionLevel;
+  stripMetadata?: boolean;
+}
+
+export interface PdfCompressionResult {
+  blob: Blob;
+  filename: string;
+  originalSizeBytes: number;
+  compressedSizeBytes: number;
+  savingsPercentage: number;
+  pageCount: number;
+}
+
+/**
+ * Compresses a PDF document client-side by rewriting object streams and stripping metadata.
+ */
+export async function compressPdf(
+  file: File,
+  options: PdfCompressionOptions
+): Promise<PdfCompressionResult> {
+  if (!file || file.size === 0) {
+    throw new Error("Invalid or empty PDF file provided.");
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  let pdfDoc: PDFDocument;
+  try {
+    pdfDoc = await PDFDocument.load(arrayBuffer);
+  } catch (err: any) {
+    throw new Error(
+      `Failed to parse PDF document: ${err?.message || "Invalid PDF file."}`
+    );
+  }
+
+  const shouldStripMetadata =
+    options.stripMetadata !== undefined
+      ? options.stripMetadata
+      : options.level === "extreme" || options.level === "recommended";
+
+  if (shouldStripMetadata) {
+    pdfDoc.setTitle("");
+    pdfDoc.setAuthor("");
+    pdfDoc.setSubject("");
+    pdfDoc.setKeywords([]);
+    pdfDoc.setCreator("");
+    pdfDoc.setProducer("");
+  }
+
+  const compressedBytes = await pdfDoc.save({ useObjectStreams: true });
+  const blob = new Blob([compressedBytes as unknown as BlobPart], {
+    type: "application/pdf",
+  });
+
+  const originalSizeBytes = file.size;
+  const compressedSizeBytes = blob.size;
+  const savingsPercentage = Math.max(
+    0,
+    Math.round(((originalSizeBytes - compressedSizeBytes) / originalSizeBytes) * 100)
+  );
+
+  const baseName = file.name.replace(/\.pdf$/i, "");
+  const filename = `compressed_${baseName}.pdf`;
+
+  return {
+    blob,
+    filename,
+    originalSizeBytes,
+    compressedSizeBytes,
+    savingsPercentage,
+    pageCount: pdfDoc.getPageCount(),
+  };
+}
+
+/**
+ * Compresses multiple PDF files in batch using a concurrency-controlled worker pool.
+ */
+export async function compressBatchPdfs(
+  files: File[],
+  options: PdfCompressionOptions,
+  concurrency: number = 2,
+  onProgress?: (completed: number, total: number) => void
+): Promise<PdfCompressionResult[]> {
+  const total = files.length;
+  const results: PdfCompressionResult[] = new Array(total);
+  let currentIndex = 0;
+  let completedCount = 0;
+
+  const worker = async () => {
+    while (currentIndex < total) {
+      const idx = currentIndex++;
+      const file = files[idx];
+      results[idx] = await compressPdf(file, options);
+      completedCount++;
+      if (onProgress) {
+        onProgress(completedCount, total);
+      }
+    }
+  };
+
+  const poolSize = Math.max(1, Math.min(concurrency, total));
+  const workers = Array.from({ length: poolSize }, () => worker());
+  await Promise.all(workers);
+
+  return results;
+}

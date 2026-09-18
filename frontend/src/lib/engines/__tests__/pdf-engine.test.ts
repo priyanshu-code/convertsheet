@@ -7,6 +7,8 @@ import {
   watermarkPdfFile,
   addPageNumbersToPdf,
   extractPdfTextRows,
+  compressPdf,
+  compressBatchPdfs,
 } from "../pdf-engine";
 
 // Helper to create a dummy in-memory PDF File object
@@ -139,4 +141,82 @@ describe("pdf-engine", () => {
       expect(tabular.totalRows).toBeGreaterThan(0);
     });
   });
+
+  describe("compressPdf", () => {
+    it("compresses PDF with recommended level and returns valid PdfCompressionResult", async () => {
+      const file = await createTestPdfFile("document.pdf", 3);
+      const result = await compressPdf(file, { level: "recommended" });
+
+      expect(result.blob).toBeInstanceOf(Blob);
+      expect(result.blob.type).toBe("application/pdf");
+      expect(result.filename).toBe("compressed_document.pdf");
+      expect(result.originalSizeBytes).toBe(file.size);
+      expect(result.compressedSizeBytes).toBe(result.blob.size);
+      expect(typeof result.savingsPercentage).toBe("number");
+      expect(result.savingsPercentage).toBeGreaterThanOrEqual(0);
+      expect(result.pageCount).toBe(3);
+    });
+
+    it("supports level: extreme and level: low", async () => {
+      const file = await createTestPdfFile("sample.pdf", 2);
+
+      const extremeResult = await compressPdf(file, { level: "extreme" });
+      expect(extremeResult.filename).toBe("compressed_sample.pdf");
+      expect(extremeResult.pageCount).toBe(2);
+      expect(extremeResult.compressedSizeBytes).toBeGreaterThan(0);
+
+      const lowResult = await compressPdf(file, { level: "low" });
+      expect(lowResult.filename).toBe("compressed_sample.pdf");
+      expect(lowResult.pageCount).toBe(2);
+      expect(lowResult.compressedSizeBytes).toBeGreaterThan(0);
+    });
+
+    it("gracefully rejects for invalid non-PDF file", async () => {
+      const invalidFile = new File(["This is plain text not a valid PDF"], "test.txt", {
+        type: "text/plain",
+      });
+      await expect(compressPdf(invalidFile, { level: "recommended" })).rejects.toThrow(
+        /Failed to parse PDF document|Invalid PDF file/
+      );
+    });
+
+    it("gracefully rejects for empty file", async () => {
+      const emptyFile = new File([], "empty.pdf", { type: "application/pdf" });
+      await expect(compressPdf(emptyFile, { level: "recommended" })).rejects.toThrow(
+        /empty|Failed to parse PDF document/i
+      );
+    });
+  });
+
+  describe("compressBatchPdfs", () => {
+    it("processes multiple files with concurrency and reports progress", async () => {
+      const file1 = await createTestPdfFile("doc1.pdf", 1);
+      const file2 = await createTestPdfFile("doc2.pdf", 2);
+      const file3 = await createTestPdfFile("doc3.pdf", 1);
+
+      const progressCalls: [number, number][] = [];
+      const onProgress = (completed: number, total: number) => {
+        progressCalls.push([completed, total]);
+      };
+
+      const results = await compressBatchPdfs(
+        [file1, file2, file3],
+        { level: "recommended" },
+        2,
+        onProgress
+      );
+
+      expect(results).toHaveLength(3);
+      expect(results[0].filename).toBe("compressed_doc1.pdf");
+      expect(results[1].filename).toBe("compressed_doc2.pdf");
+      expect(results[2].filename).toBe("compressed_doc3.pdf");
+      expect(results[0].pageCount).toBe(1);
+      expect(results[1].pageCount).toBe(2);
+      expect(results[2].pageCount).toBe(1);
+
+      expect(progressCalls).toHaveLength(3);
+      expect(progressCalls[progressCalls.length - 1]).toEqual([3, 3]);
+    });
+  });
 });
+
