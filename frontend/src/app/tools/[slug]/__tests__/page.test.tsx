@@ -65,4 +65,16 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
     expect(types).toContain("BreadcrumbList");
     expect(types).toContain("WebPage");
   });
+
+  it.each([
+    ["compress-image", "Bulk Image Compressor"],
+    ["compress-jpeg", "JPEG & JPG Compressor"],
+    ["compress-png", "PNG Compressor"],
+    ["compress-webp", "WebP Compressor"],
+  ])("renders BulkImageCompressor for /tools/%s", (slug, expectedHeading) => {
+    render(<ToolPage params={{ slug }} />);
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: expectedHeading })).toBeInTheDocument();
+    expect(screen.getByText(/Drag & Drop Images/i)).toBeInTheDocument();
+  });
 });

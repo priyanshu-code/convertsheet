@@ -57,6 +57,7 @@ import { SavingsCdCalculator } from "@/components/tools/SavingsCdCalculator";
 import { SqlStudioTool } from "@/components/tools/SqlStudioTool";
 import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
 import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
+import { BulkImageCompressor } from "@/components/tools/BulkImageCompressor";
 
 export interface ToolPageProps {
   params: {
@@ -153,7 +154,41 @@ export default function ToolPage({ params }: ToolPageProps) {
     "webp-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="WebP to PNG Converter" subtitle="Convert WebP images to lossless transparent PNG format." />,
     "png-to-webp": () => <ImageConverterTool defaultTargetFormat="image/webp" title="PNG to WebP Converter" subtitle="Compress PNG images to next-gen WebP format to speed up web pages." />,
     "jpeg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="JPEG to PNG Converter" subtitle="Convert JPEG photos to uncompressed PNG format." />,
-    "image-compressor": () => <ImageConverterTool defaultTargetFormat="image/webp" title="Image Resizer & Compressor" subtitle="Compress and resize WebP, PNG, and JPEG images." />,
+    "compress-image": () => (
+      <BulkImageCompressor
+        defaultFormat="original"
+        title="Bulk Image Compressor"
+        subtitle="Compress up to 50 photos simultaneously in your browser with 100% privacy."
+      />
+    ),
+    "compress-jpeg": () => (
+      <BulkImageCompressor
+        defaultFormat="image/jpeg"
+        title="JPEG & JPG Compressor"
+        subtitle="Compress and optimize JPG/JPEG images with smart quantization."
+      />
+    ),
+    "compress-png": () => (
+      <BulkImageCompressor
+        defaultFormat="image/png"
+        title="PNG Compressor"
+        subtitle="Compress transparent PNG images without quality loss."
+      />
+    ),
+    "compress-webp": () => (
+      <BulkImageCompressor
+        defaultFormat="image/webp"
+        title="WebP Compressor"
+        subtitle="Compress next-generation WebP images for peak Core Web Vitals."
+      />
+    ),
+    "image-compressor": () => (
+      <BulkImageCompressor
+        defaultFormat="original"
+        title="Bulk Image Compressor"
+        subtitle="Compress up to 50 photos simultaneously in your browser with 100% privacy."
+      />
+    ),
     "svg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="SVG to PNG Rasterizer" subtitle="Render vector SVGs to crisp transparent PNG images at any resolution." />,
     "merge-pdf": PdfMergeTool,
     "split-pdf": PdfSplitTool,

@@ -18,7 +18,7 @@ import { ToolsHubDirectory } from "@/components/tools/ToolsHubDirectory";
 export const metadata: Metadata = {
   title: "Free Online Calculators & Developer Tools - 100% In-Browser | ConvertSheet",
   description:
-    "Explore 38+ free, private, client-side tools and financial calculators. From mortgage amortization and retirement planners to JSON validators, Base64 tools, and PDF utilities.",
+    "Explore 49+ free, private, client-side tools and financial calculators. From mortgage amortization and retirement planners to JSON validators, Base64 tools, and PDF utilities.",
   keywords: [
     "online calculators",
     "free financial calculators",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Free Online Calculators & Developer Tools - 100% In-Browser | ConvertSheet",
     description:
-      "Directory of 38+ private client-side calculators, developer encoders, and PDF tools. Export schedules directly to Excel with zero server tracking.",
+      "Directory of 49+ private client-side calculators, developer encoders, and PDF tools. Export schedules directly to Excel with zero server tracking.",
     url: "https://www.convertsheet.com/tools",
     type: "website",
   },
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Free Online Calculators & Developer Tools | ConvertSheet",
     description:
-      "Explore 38+ free, private, client-side tools and calculators with instant Excel exports.",
+      "Explore 49+ free, private, client-side tools and calculators with instant Excel exports.",
   },
 };
 
@@ -63,7 +63,7 @@ export default function ToolsDirectoryPage() {
         url: "https://www.convertsheet.com/tools",
         name: "ConvertSheet Online Calculators & Developer Tools Directory",
         description:
-          "Complete directory of 38+ client-side calculators, data utilities, and document converters.",
+          "Complete directory of 49+ client-side calculators, data utilities, and document converters.",
         breadcrumb: {
           "@id": "https://www.convertsheet.com/tools#breadcrumb",
         },
@@ -136,7 +136,7 @@ export default function ToolsDirectoryPage() {
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
             <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>38+ Client-Side Tools • 100% Private &amp; Free Forever</span>
+            <span>49+ Client-Side Tools • 100% Private &amp; Free Forever</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
