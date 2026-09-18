@@ -8,6 +8,7 @@ import {
   CalcChart,
   CalcExportButton,
   CalcPromptButton,
+  CalcSaveButton,
   CalcShareButton,
   ModernSlider,
   SliderPreset,
@@ -531,6 +532,18 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
                   data={exportData}
                   filename={`retirement-plan-age-${retirementAge}`}
                   sheetName="Retirement Projection"
+                />
+
+                <CalcSaveButton
+                  toolSlug="retirement-calculator"
+                  toolName="Retirement Calculator"
+                  summaryTitle={`Retire at age ${retirementAge} (${retirement.yearsNestEggLasts >= 35 ? "Fully Funded" : `${retirement.yearsNestEggLasts} yrs`})`}
+                  summaryMetrics={[
+                    { label: "Nest Egg", value: formatCurrency(retirement.nestEggAtRetirement) },
+                    { label: "Safe Income", value: `${formatCurrency(retirement.monthlyRetirementIncome)}/mo` },
+                    { label: "Retire Age", value: `Age ${retirementAge}` },
+                    { label: "Monthly Save", value: formatCurrency(monthlyContribution) },
+                  ]}
                 />
 
                 <CalcShareButton

@@ -12,6 +12,7 @@ import {
   CalcExportButton,
   CalcPromptButton,
   CalcPdfReportButton,
+  CalcSaveButton,
   CalcShareButton,
 } from "@/components/calculator";
 import { calculateCarLoan } from "@/lib/engines/financial-engine";
@@ -310,6 +311,17 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
               }
             />
             <CalcPromptButton prompt={aiPrompt} toolName="Car Loan Advice" />
+            <CalcSaveButton
+              toolSlug="car-loan-calculator"
+              toolName="Car Loan Calculator"
+              summaryTitle={`$${vehiclePrice.toLocaleString()} Car Loan (${loanTermMonths} mo @ ${interestRate}%)`}
+              summaryMetrics={[
+                { label: "Monthly Payment", value: `$${carLoan.monthlyPayment.toLocaleString()}/mo` },
+                { label: "Vehicle Price", value: `$${vehiclePrice.toLocaleString()}` },
+                { label: "Total Interest", value: `$${carLoan.totalInterest.toLocaleString()}` },
+                { label: "Term", value: `${loanTermMonths} Months` },
+              ]}
+            />
             <CalcShareButton
               state={{
                 vehiclePrice,

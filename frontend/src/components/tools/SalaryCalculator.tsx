@@ -11,6 +11,7 @@ import {
   CalcPromptButton,
   CalcExportButton,
   CalcShareButton,
+  CalcSaveButton,
 } from "@/components/calculator";
 
 export function SalaryCalculator() {
@@ -46,6 +47,7 @@ export function SalaryCalculator() {
     monthlyTakeHome,
     annualTakeHome,
     annualDeductions,
+    annualTax,
   } = useMemo(() => {
     const ctc = Math.max(0, annualCtc);
     const mGross = ctc / 12;
@@ -83,6 +85,7 @@ export function SalaryCalculator() {
       monthlyTakeHome: Math.round(mTakeHome),
       annualTakeHome: Math.round(aTakeHome),
       annualDeductions: Math.round(aDeductions),
+      annualTax: Math.round(annualTax),
     };
   }, [annualCtc, epfPercent, professionalTaxMonthly]);
 
@@ -159,6 +162,17 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
           />
 
           <div className="pt-2 flex flex-wrap gap-3">
+            <CalcSaveButton
+              toolSlug="salary-calculator"
+              toolName="Salary & Take-Home Calculator"
+              summaryTitle={`Salary: ₹${annualCtc.toLocaleString()} CTC (In-Hand: ₹${monthlyTakeHome.toLocaleString()}/mo)`}
+              summaryMetrics={[
+                { label: "Monthly In-Hand", value: `₹${monthlyTakeHome.toLocaleString()}` },
+                { label: "Annual In-Hand", value: `₹${annualTakeHome.toLocaleString()}` },
+                { label: "Monthly EPF", value: `₹${monthlyEpf.toLocaleString()}` },
+                { label: "Annual Tax", value: `₹${annualTax.toLocaleString()}` },
+              ]}
+            />
             <CalcShareButton
               state={{
                 annualCtc,

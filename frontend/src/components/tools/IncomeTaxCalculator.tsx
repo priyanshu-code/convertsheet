@@ -10,6 +10,7 @@ import {
   CalcPromptButton,
   CalcExportButton,
   CalcShareButton,
+  CalcSaveButton,
 } from "@/components/calculator";
 
 export function IncomeTaxCalculator() {
@@ -155,6 +156,17 @@ Please evaluate whether the Old Regime or New Regime is better for this income, 
           />
 
           <div className="pt-2 flex flex-wrap gap-3">
+            <CalcSaveButton
+              toolSlug="income-tax-calculator"
+              toolName="Income Tax Calculator"
+              summaryTitle={`India Tax: ₹${annualIncome.toLocaleString()} Income (Payable: ₹${totalTaxPayable.toLocaleString()})`}
+              summaryMetrics={[
+                { label: "Tax Payable", value: `₹${totalTaxPayable.toLocaleString()}` },
+                { label: "Effective Rate", value: `${effectiveTaxRate}%` },
+                { label: "Taxable Income", value: `₹${taxableIncome.toLocaleString()}` },
+                { label: "Cess (4%)", value: `₹${cessAmount.toLocaleString()}` },
+              ]}
+            />
             <CalcShareButton
               state={{
                 annualIncome,

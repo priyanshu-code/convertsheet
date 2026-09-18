@@ -8,6 +8,8 @@ import {
   CalcToggle,
   CalcSelect,
   CalcResult,
+  CalcSaveButton,
+  CalcShareButton,
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 
@@ -111,6 +113,29 @@ export function GstCalculator() {
           },
         ]}
       />
+
+      {/* Action Buttons */}
+      <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap gap-2">
+        <CalcSaveButton
+          toolSlug="gst-calculator"
+          toolName="GST Calculator"
+          summaryTitle={`${mode === "exclusive" ? "Add" : "Remove"} ${rate}% GST: ${formatCurrency(amount)}`}
+          summaryMetrics={[
+            { label: mode === "exclusive" ? "Total Payable" : "Base Amount", value: formatCurrency(mode === "exclusive" ? totalAmount : netAmount) },
+            { label: "GST Tax", value: formatCurrency(gstAmount) },
+            { label: "Rate", value: `${rate}%` },
+            { label: "CGST / SGST", value: `${formatCurrency(cgst)} each` },
+          ]}
+        />
+        <CalcShareButton
+          state={{
+            amount,
+            rate,
+            mode,
+          }}
+          label="Share Computation"
+        />
+      </div>
     </CalcCard>
   );
 }

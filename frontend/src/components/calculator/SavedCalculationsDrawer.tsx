@@ -114,54 +114,56 @@ export function SavedCalculationsDrawer() {
                 items.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/40 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all space-y-2.5"
+                    className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-800/80 shadow-xs hover:shadow-sm hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-all space-y-3"
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block">
-                          {item.toolName}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <span className="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 mb-1.5">
+                          {item.toolName || "Calculator Scenario"}
                         </span>
-                        <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
-                          {item.summaryTitle}
+                        <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-50 leading-snug break-words">
+                          {item.summaryTitle || "Saved Calculation"}
                         </h4>
                       </div>
                       <button
                         type="button"
                         onClick={() => removeSavedCalculation(item.id)}
-                        className="p-1 text-zinc-400 hover:text-red-500 transition-colors"
+                        className="p-1.5 text-zinc-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg transition-colors shrink-0"
                         title="Delete calculation"
-                        aria-label={`Delete ${item.summaryTitle}`}
+                        aria-label={`Delete ${item.summaryTitle || "calculation"}`}
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
 
                     {/* Metrics grid */}
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      {item.summaryMetrics.map((m, idx) => (
-                        <div key={idx} className="text-xs">
-                          <span className="text-zinc-500 dark:text-zinc-400 block text-[10px]">
-                            {m.label}
-                          </span>
-                          <span className="font-bold text-zinc-900 dark:text-zinc-100 font-mono">
-                            {m.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    {item.summaryMetrics && item.summaryMetrics.length > 0 && (
+                      <div className="grid grid-cols-2 gap-2 p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-100 dark:border-zinc-800/80">
+                        {item.summaryMetrics.map((m, idx) => (
+                          <div key={idx} className="text-xs min-w-0">
+                            <span className="text-zinc-500 dark:text-zinc-400 block text-[10px] font-medium truncate">
+                              {m.label}
+                            </span>
+                            <span className="font-bold text-zinc-900 dark:text-zinc-100 font-mono text-xs block truncate">
+                              {m.value}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Footer link & date */}
-                    <div className="pt-2 border-t border-zinc-200/60 dark:border-zinc-700/60 flex items-center justify-between">
-                      <span className="text-[10px] text-zinc-400">
-                        {new Date(item.timestamp).toLocaleDateString()}
+                    <div className="pt-2 border-t border-zinc-100 dark:border-zinc-700/60 flex items-center justify-between">
+                      <span className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500">
+                        {item.timestamp ? new Date(item.timestamp).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" }) : "Recently saved"}
                       </span>
                       <Link
-                        href={item.path}
+                        href={item.path || "#"}
                         onClick={() => setIsOpen(false)}
-                        className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline inline-flex items-center gap-1"
+                        className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline inline-flex items-center gap-1.5"
                       >
                         <span>Open Tool</span>
-                        <ArrowRight className="w-3 h-3" />
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
                   </div>
