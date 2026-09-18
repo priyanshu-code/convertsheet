@@ -12,9 +12,9 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
   const allSlugs = getAllToolSlugs();
   const allTools = getAllTools();
 
-  it("registers exactly 49 tools across 3 categories", () => {
-    expect(allSlugs).toHaveLength(49);
-    expect(allTools).toHaveLength(49);
+  it("registers exactly 50 tools across 3 categories", () => {
+    expect(allSlugs).toHaveLength(50);
+    expect(allTools).toHaveLength(50);
 
     const devTools = getToolsByCategory("data-developer");
     const financialTools = getToolsByCategory("financial");
@@ -22,7 +22,7 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
 
     expect(devTools).toHaveLength(12);
     expect(financialTools).toHaveLength(18);
-    expect(utilityTools).toHaveLength(19);
+    expect(utilityTools).toHaveLength(20);
   });
 
   it("each tool has complete SEO metadata, AEO answer summary, and E-E-A-T about section", () => {
@@ -59,12 +59,28 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
     }
   });
 
+  it("registers compress-pdf with complete SEO, howTo, and FAQ metadata", () => {
+    expect(allSlugs).toContain("compress-pdf");
+    const tool = getToolBySlug("compress-pdf");
+    expect(tool).toBeDefined();
+    expect(tool?.slug).toBe("compress-pdf");
+    expect(tool?.category).toBe("utility");
+    expect(tool?.title).toBeTruthy();
+    expect(tool?.subtitle).toBeTruthy();
+    expect(tool?.metaDescription).toBeTruthy();
+    expect(tool?.answerSummary).toBeTruthy();
+    expect(tool?.keywords.length).toBeGreaterThanOrEqual(4);
+    expect(tool?.howTo).toHaveLength(3);
+    expect(tool?.faqs.length).toBeGreaterThanOrEqual(3);
+  });
+
   it("retrieves valid configurations for all compression tool slugs", () => {
     const slugs = [
       "compress-image",
       "compress-jpeg",
       "compress-png",
       "compress-webp",
+      "compress-pdf",
     ];
 
     const currentSlugs = getAllToolSlugs();

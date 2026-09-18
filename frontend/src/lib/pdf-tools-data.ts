@@ -170,5 +170,41 @@ export const PDF_TOOLS: Record<string, ToolConfig> = {
     ],
     relatedConverters: ["excel-to-csv", "csv-to-excel", "json-to-excel"],
     relatedTools: ["merge-pdf", "byte-converter", "json-formatter-validator"]
+  },
+
+  "compress-pdf": {
+    slug: "compress-pdf",
+    name: "Compress PDF Online",
+    category: "utility",
+    title: "Compress PDF Online - Reduce PDF File Size Free & Privately",
+    subtitle: "Shrink PDF documents by up to 80% directly in your browser. 100% private, zero server uploads, and instant ZIP download for bulk files.",
+    metaDescription: "Free online PDF compressor. Reduce PDF file size with Recommended, Extreme, and Low compression presets. 100% in-browser, no upload limits, and batch ZIP export.",
+    answerSummary: "Compress PDF documents locally in your browser to dramatically reduce file sizes for email and portal uploads with zero server retention.",
+    badge: "100% Private",
+    featured: true,
+    keywords: [
+      "compress pdf",
+      "compress pdf online",
+      "reduce pdf size",
+      "shrink pdf online",
+      "pdf compressor free",
+      "compress pdf mb to kb",
+      "bulk pdf compressor"
+    ],
+    formulaDescription: "Optimizes internal PDF object streams using Flate decode filters and strips redundant metadata streams directly in browser memory.",
+    about: "Large PDF files with high-resolution imagery and complex document trees frequently exceed email attachment limits and job or government portal restrictions. ConvertSheet's PDF Compressor reduces document payloads directly in your web browser memory using client-side WebAssembly and stream serialization. Your confidential contracts, financial statements, and personal records never leave your machine.",
+    howTo: [
+      { step: 1, title: "Upload PDF Files", description: "Drag and drop one or multiple PDF documents into the compressor dropzone." },
+      { step: 2, title: "Select Compression Level", description: "Choose Recommended, Extreme, or Low compression depending on your size and clarity requirements." },
+      { step: 3, title: "Download Files or ZIP", description: "Download each compressed PDF individually or export all optimized files at once as a single ZIP archive." }
+    ],
+    faqs: [
+      { question: "Are my confidential PDF documents uploaded to an external server?", answer: "No. All PDF compression executes 100% client-side directly within your device's browser memory. Zero files or data are ever transmitted to any remote server." },
+      { question: "Is it safe to compress bank statements, medical records, or legal contracts?", answer: "Yes, completely. Because ConvertSheet operates entirely offline in your browser session, sensitive personal, financial, and legal records remain strictly on your machine." },
+      { question: "Is there a limit on how many PDF files I can compress at once?", answer: "There are no arbitrary cloud caps or paywalls. You can queue multiple PDFs in bulk and download them individually or bundled together as a single ZIP file." },
+      { question: "Can this tool compress scanned PDF documents?", answer: "Yes. The compressor re-encodes internal stream structures and strips redundant document metadata, optimizing both digital and scanned document payloads." }
+    ],
+    relatedConverters: ["pdf-to-excel", "csv-to-excel"],
+    relatedTools: ["merge-pdf", "split-pdf", "compress-image", "pdf-table-extractor"]
   }
 };
