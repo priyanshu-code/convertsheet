@@ -249,6 +249,18 @@ export async function extractPdfTextRows(file: File): Promise<TabularData> {
   };
 }
 
+/**
+ * Compression presets:
+ * - "recommended": Strips metadata (title, author, subject, keywords, creator, producer)
+ *   and rewrites the PDF using PDF object streams (Flate / deflate cross-reference streams)
+ *   for optimal compression without altering visual fidelity. (Future hook: high-DPI canvas
+ *   raster downsampling for embedded images).
+ * - "extreme": Aggressively strips all metadata and applies object stream compression
+ *   for maximum size reduction. (Future hook: aggressive image resolution reduction / lossy
+ *   JPEG recompression via offscreen canvas).
+ * - "low": Minimal compression preserving document metadata, applying only object stream
+ *   re-encoding to ensure compatibility and fast processing.
+ */
 export type PdfCompressionLevel = "recommended" | "extreme" | "low";
 
 export interface PdfCompressionOptions {
@@ -263,6 +275,7 @@ export interface PdfCompressionResult {
   compressedSizeBytes: number;
   savingsPercentage: number;
   pageCount: number;
+  error?: string;
 }
 
 /**
@@ -327,6 +340,8 @@ export async function compressPdf(
 
 /**
  * Compresses multiple PDF files in batch using a concurrency-controlled worker pool.
+ * Processes each file independently with try/catch resilience so that individual corrupted,
+ * invalid, or password-protected files report an error without failing the overall batch.
  */
 export async function compressBatchPdfs(
   files: File[],
@@ -343,7 +358,19 @@ export async function compressBatchPdfs(
     while (currentIndex < total) {
       const idx = currentIndex++;
       const file = files[idx];
-      results[idx] = await compressPdf(file, options);
+      try {
+        results[idx] = await compressPdf(file, options);
+      } catch (err: any) {
+        results[idx] = {
+          blob: new Blob([]),
+          filename: file.name,
+          originalSizeBytes: file.size,
+          compressedSizeBytes: file.size,
+          savingsPercentage: 0,
+          pageCount: 0,
+          error: err?.message || "Failed to compress PDF",
+        };
+      }
       completedCount++;
       if (onProgress) {
         onProgress(completedCount, total);
@@ -357,3 +384,4 @@ export async function compressBatchPdfs(
 
   return results;
 }
+

@@ -217,6 +217,44 @@ describe("pdf-engine", () => {
       expect(progressCalls).toHaveLength(3);
       expect(progressCalls[progressCalls.length - 1]).toEqual([3, 3]);
     });
+
+    it("handles mixed batches where corrupted/invalid files fail gracefully without failing valid PDFs", async () => {
+      const validDoc1 = await createTestPdfFile("valid1.pdf", 2);
+      const corruptedDoc = new File(["not a pdf at all corrupt content"], "corrupted.pdf", {
+        type: "application/pdf",
+      });
+      const validDoc2 = await createTestPdfFile("valid2.pdf", 1);
+
+      const results = await compressBatchPdfs(
+        [validDoc1, corruptedDoc, validDoc2],
+        { level: "recommended" },
+        2
+      );
+
+      expect(results).toHaveLength(3);
+
+      // First valid file succeeds
+      expect(results[0].error).toBeUndefined();
+      expect(results[0].filename).toBe("compressed_valid1.pdf");
+      expect(results[0].pageCount).toBe(2);
+      expect(results[0].blob.size).toBeGreaterThan(0);
+
+      // Corrupted file fails gracefully with error recorded
+      expect(results[1].error).toBeDefined();
+      expect(typeof results[1].error).toBe("string");
+      expect(results[1].filename).toBe("corrupted.pdf");
+      expect(results[1].originalSizeBytes).toBe(corruptedDoc.size);
+      expect(results[1].compressedSizeBytes).toBe(corruptedDoc.size);
+      expect(results[1].savingsPercentage).toBe(0);
+      expect(results[1].pageCount).toBe(0);
+      expect(results[1].blob.size).toBe(0);
+
+      // Subsequent valid file succeeds
+      expect(results[2].error).toBeUndefined();
+      expect(results[2].filename).toBe("compressed_valid2.pdf");
+      expect(results[2].pageCount).toBe(1);
+      expect(results[2].blob.size).toBeGreaterThan(0);
+    });
   });
 });
 
