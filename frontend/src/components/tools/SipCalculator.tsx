@@ -11,8 +11,10 @@ import {
   CalcPromptButton,
   CalcExportButton,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function SipCalculator() {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [monthlyInvestment, setMonthlyInvestment] = useState<number>(5000);
   const [annualReturnRate, setAnnualReturnRate] = useState<number>(12);
   const [timeYears, setTimeYears] = useState<number>(10);
@@ -79,19 +81,19 @@ export function SipCalculator() {
             id="sip-amount"
             label="Monthly Investment"
             value={monthlyInvestment}
-            min={500}
-            step={500}
-            prefix="₹"
+            min={100}
+            step={100}
+            prefix={currencySymbol}
             onChange={(val) => setMonthlyInvestment(Number(val) || 0)}
           />
           <CalcSlider
             id="sip-amount-slider"
             label="Adjust Monthly Contribution"
             value={monthlyInvestment}
-            min={500}
+            min={100}
             max={100000}
-            step={500}
-            prefix="₹"
+            step={100}
+            prefix={currencySymbol}
             onChange={setMonthlyInvestment}
           />
         </div>
@@ -145,15 +147,15 @@ export function SipCalculator() {
       <CalcResult
         title="Maturity Breakdown"
         primaryLabel="Total Expected Maturity Value"
-        primaryValue={`₹${totalMaturity.toLocaleString("en-IN")}`}
+        primaryValue={formatCurrency(totalMaturity)}
         items={[
           {
             label: "Total Invested Capital",
-            value: `₹${totalInvested.toLocaleString("en-IN")}`,
+            value: formatCurrency(totalInvested),
           },
           {
             label: "Estimated Wealth Gained",
-            value: `₹${wealthGained.toLocaleString("en-IN")}`,
+            value: formatCurrency(wealthGained),
             highlight: true,
           },
           {

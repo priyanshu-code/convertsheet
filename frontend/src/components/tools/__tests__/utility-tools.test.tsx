@@ -7,6 +7,7 @@ import { BmiCalculator } from "../BmiCalculator";
 import { UnitConverterTool } from "../UnitConverterTool";
 import { TipCalculator } from "../TipCalculator";
 import { ByteConverterTool } from "../ByteConverterTool";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 describe("General Utility Calculators Suite", () => {
   it("AgeCalculator calculates chronological age", () => {
@@ -38,7 +39,12 @@ describe("General Utility Calculators Suite", () => {
   });
 
   it("TipCalculator computes tips and splits bill per person", () => {
-    render(<TipCalculator />);
+    localStorage.setItem("convertsheet-target-market", "IN");
+    render(
+      <CurrencyProvider>
+        <TipCalculator />
+      </CurrencyProvider>
+    );
     expect(screen.getByText(/Tip & Bill Splitter Calculator/i)).toBeInTheDocument();
 
     // Bill 1200, 15% tip = 180 tip, total 1380, per person (2 people) = 690

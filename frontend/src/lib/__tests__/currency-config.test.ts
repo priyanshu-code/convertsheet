@@ -8,13 +8,14 @@ import {
 } from "../currency-config";
 
 describe("Multi-Region & Currency Config", () => {
-  it("defines all 5 Tier-1 target markets: US, CA, UK, EU, AU", () => {
-    expect(MARKET_LIST.length).toBe(5);
+  it("defines all target markets: US, CA, UK, EU, AU, IN", () => {
+    expect(MARKET_LIST.length).toBe(6);
     expect(MARKETS.US).toBeDefined();
     expect(MARKETS.CA).toBeDefined();
     expect(MARKETS.UK).toBeDefined();
     expect(MARKETS.EU).toBeDefined();
     expect(MARKETS.AU).toBeDefined();
+    expect(MARKETS.IN).toBeDefined();
   });
 
   it("assigns appropriate deposit insurance and regulatory bodies", () => {

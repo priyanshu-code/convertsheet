@@ -45,6 +45,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     setMarketState(newMarket);
     try {
       localStorage.setItem(MARKET_STORAGE_KEY, newMarket);
+      window.dispatchEvent(new Event("storage"));
     } catch {}
   }, []);
 

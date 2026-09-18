@@ -9,8 +9,10 @@ import {
   CalcResult,
   CalcChart,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function EmiCalculator() {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [loanAmount, setLoanAmount] = useState<number>(1000000);
   const [interestRate, setInterestRate] = useState<number>(8.5);
   const [loanTenureYears, setLoanTenureYears] = useState<number>(15);
@@ -82,7 +84,7 @@ export function EmiCalculator() {
             value={loanAmount}
             min={10000}
             step={50000}
-            prefix="₹"
+            prefix={currencySymbol}
             onChange={(val) => setLoanAmount(Number(val) || 0)}
           />
           <CalcSlider
@@ -92,7 +94,7 @@ export function EmiCalculator() {
             min={50000}
             max={10000000}
             step={50000}
-            prefix="₹"
+            prefix={currencySymbol}
             onChange={setLoanAmount}
           />
         </div>
@@ -146,20 +148,20 @@ export function EmiCalculator() {
       <CalcResult
         title="Loan Repayment Schedule"
         primaryLabel="Monthly Loan EMI Payable"
-        primaryValue={`₹${monthlyEmi.toLocaleString("en-IN")}`}
+        primaryValue={formatCurrency(monthlyEmi)}
         items={[
           {
             label: "Total Principal Amount",
-            value: `₹${loanAmount.toLocaleString("en-IN")}`,
+            value: formatCurrency(loanAmount),
           },
           {
             label: "Total Interest Accrued",
-            value: `₹${totalInterest.toLocaleString("en-IN")}`,
+            value: formatCurrency(totalInterest),
             highlight: true,
           },
           {
             label: "Total Repayment (P + I)",
-            value: `₹${totalPayment.toLocaleString("en-IN")}`,
+            value: formatCurrency(totalPayment),
           },
         ]}
       />

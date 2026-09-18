@@ -15,6 +15,7 @@ import {
   RetirementWizard,
   RetirementWizardValues,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 import { calculateRetirement } from "@/lib/engines/financial-engine";
 import { RetirementAccountsCard } from "@/components/finance";
 
@@ -95,6 +96,7 @@ const INFLATION_PRESETS: SliderPreset[] = [
 ];
 
 export function RetirementCalculator({ initialValues }: RetirementCalculatorProps = {}) {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [mode, setMode] = useState<"playground" | "wizard">("playground");
   const [currentAge, setCurrentAge] = useState<number>(() => {
     if (typeof window !== "undefined") {
@@ -373,12 +375,12 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
 
               <ModernSlider
                 id="current-savings"
-                label="Current Savings / 401(k)"
+                label="Current Retirement Savings"
                 value={currentSavings}
                 min={0}
-                max={2000000}
+                max={500000}
                 step={5000}
-                prefix="$"
+                prefix={currencySymbol}
                 presets={SAVINGS_PRESETS}
                 onChange={setCurrentSavings}
               />
@@ -390,7 +392,7 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
                 min={0}
                 max={10000}
                 step={50}
-                prefix="$"
+                prefix={currencySymbol}
                 suffix="/mo"
                 presets={MONTHLY_PRESETS}
                 onChange={setMonthlyContribution}
@@ -405,7 +407,7 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
                 step={5}
                 suffix="%"
                 presets={MATCH_PRESETS}
-                helpText="Matches 50% = +$0.50 per $1 contributed"
+                helpText={`Matches 50% = +${currencySymbol}0.50 per ${currencySymbol}1 contributed`}
                 onChange={setEmployerMatchPercent}
               />
 
@@ -442,7 +444,7 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
                   min={10000}
                   max={250000}
                   step={5000}
-                  prefix="$"
+                  prefix={currencySymbol}
                   presets={SPEND_PRESETS}
                   helpText="Target spending per year in retirement"
                   onChange={setPostRetirementAnnualSpend}
@@ -489,25 +491,25 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
             <CalcResult
               title="Projected Nest Egg & Income"
               primaryLabel="Portfolio at Retirement"
-              primaryValue={`$${retirement.nestEggAtRetirement.toLocaleString()}`}
-              primarySubtext={`Equal to $${retirement.inflationAdjustedNestEgg.toLocaleString()} in today's purchasing power (adjusted for ${inflationRate}% inflation over ${retirementAge - currentAge} years)`}
+              primaryValue={formatCurrency(retirement.nestEggAtRetirement)}
+              primarySubtext={`Equal to ${formatCurrency(retirement.inflationAdjustedNestEgg)} in today's purchasing power (adjusted for ${inflationRate}% inflation over ${retirementAge - currentAge} years)`}
               items={[
                 {
                   label: "Safe Monthly Income (4% Rule)",
-                  value: `$${retirement.monthlyRetirementIncome.toLocaleString()}/mo`,
+                  value: `${formatCurrency(retirement.monthlyRetirementIncome)}/mo`,
                   highlight: true,
                 },
                 {
                   label: "Personal Principal",
-                  value: `$${personalPrincipal.toLocaleString()}`,
+                  value: formatCurrency(personalPrincipal),
                 },
                 {
                   label: "Employer Match Contributed",
-                  value: `$${employerMatchAmount.toLocaleString()}`,
+                  value: formatCurrency(employerMatchAmount),
                 },
                 {
                   label: "Compound Interest Growth",
-                  value: `$${retirement.totalInterestEarned.toLocaleString()}`,
+                  value: formatCurrency(retirement.totalInterestEarned),
                   highlight: true,
                 },
                 {

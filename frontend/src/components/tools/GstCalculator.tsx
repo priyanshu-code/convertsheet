@@ -9,8 +9,10 @@ import {
   CalcSelect,
   CalcResult,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function GstCalculator() {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [amount, setAmount] = useState<number>(10000);
   const [rate, setRate] = useState<string>("18");
   const [mode, setMode] = useState<"exclusive" | "inclusive">("exclusive");
@@ -85,27 +87,27 @@ export function GstCalculator() {
         value={amount}
         min={0}
         step={100}
-        prefix="₹"
+        prefix={currencySymbol}
         onChange={(val) => setAmount(Number(val) || 0)}
       />
 
       <CalcResult
         title="GST Tax Computation"
         primaryLabel={mode === "exclusive" ? "Total Payable Amount" : "Net Base Amount"}
-        primaryValue={`₹${(mode === "exclusive" ? totalAmount : netAmount).toLocaleString("en-IN")}`}
+        primaryValue={formatCurrency(mode === "exclusive" ? totalAmount : netAmount, { maxDecimals: 2 })}
         items={[
           {
             label: "Total GST Amount",
-            value: `₹${gstAmount.toLocaleString("en-IN")}`,
+            value: formatCurrency(gstAmount, { maxDecimals: 2 }),
             highlight: true,
           },
           {
             label: "Central GST (CGST - 50%)",
-            value: `₹${cgst.toLocaleString("en-IN")}`,
+            value: formatCurrency(cgst, { maxDecimals: 2 }),
           },
           {
             label: "State GST (SGST - 50%)",
-            value: `₹${sgst.toLocaleString("en-IN")}`,
+            value: formatCurrency(sgst, { maxDecimals: 2 }),
           },
         ]}
       />

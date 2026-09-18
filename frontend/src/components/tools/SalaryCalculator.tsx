@@ -118,10 +118,10 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
 
   return (
     <CalcCard
-      title="Salary & Take-Home Pay Calculator"
-      subtitle="Calculate your exact monthly take-home salary from gross annual CTC after EPF, professional tax, and income taxes."
+      title="Salary & In-Hand Pay Calculator (India FY 2024-25)"
+      subtitle="Calculate your exact monthly take-home salary from gross annual CTC after EPF, professional tax, and Indian Income Tax (New Regime)."
       icon={Briefcase}
-      badge="Career Essential"
+      badge="India • FY 2024-25"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">

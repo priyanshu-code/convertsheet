@@ -3,7 +3,7 @@
  * Targets Tier-1 Markets: US 🇺🇸, Canada 🇨🇦, UK 🇬🇧, EU 🇪🇺, Australia 🇦🇺
  */
 
-export type TargetMarket = "US" | "CA" | "UK" | "EU" | "AU";
+export type TargetMarket = "US" | "CA" | "UK" | "EU" | "AU" | "IN";
 
 export interface MarketConfig {
   code: TargetMarket;
@@ -17,8 +17,8 @@ export interface MarketConfig {
   regulatoryBody: string;
   defaultSavingsApy: number;
   benchmarkLoanApr: number;
-  cdTermName: string; // e.g. "Certificate of Deposit (CD)" vs "GIC" vs "Term Deposit"
-  retirementAccountName: string; // e.g. "401(k) / Roth IRA" vs "TFSA / RRSP" vs "ISA" vs "Superannuation"
+  cdTermName: string; // e.g. "Certificate of Deposit (CD)" vs "GIC" vs "Term Deposit" vs "Fixed Deposit (FD)"
+  retirementAccountName: string; // e.g. "401(k) / Roth IRA" vs "TFSA / RRSP" vs "ISA" vs "Superannuation" vs "EPF / PPF / NPS"
 }
 
 export const MARKETS: Record<TargetMarket, MarketConfig> = {
@@ -36,6 +36,21 @@ export const MARKETS: Record<TargetMarket, MarketConfig> = {
     benchmarkLoanApr: 8.49,
     cdTermName: "Certificate of Deposit (CD)",
     retirementAccountName: "401(k) & Roth IRA",
+  },
+  IN: {
+    code: "IN",
+    name: "India",
+    flag: "🇮🇳",
+    currencyCode: "INR",
+    currencySymbol: "₹",
+    locale: "en-IN",
+    depositInsuranceName: "DICGC Protected",
+    depositInsuranceLimit: "₹5,00,000",
+    regulatoryBody: "RBI & SEBI",
+    defaultSavingsApy: 7.10,
+    benchmarkLoanApr: 8.50,
+    cdTermName: "Fixed Deposit (FD)",
+    retirementAccountName: "EPF, PPF & NPS",
   },
   CA: {
     code: "CA",
@@ -115,6 +130,7 @@ export function detectBrowserMarket(): TargetMarket {
 
   const lang = (window.navigator.language || "").toUpperCase();
 
+  if (lang.includes("IN") || lang.endsWith("-IN")) return "IN";
   if (lang.includes("CA") || lang.endsWith("-CA")) return "CA";
   if (lang.includes("GB") || lang.endsWith("-GB") || lang.includes("UK")) return "UK";
   if (lang.includes("AU") || lang.endsWith("-AU")) return "AU";

@@ -161,6 +161,37 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
       features: "Lags RBA cash rate significantly",
     },
   ],
+  IN: [
+    {
+      institutionType: "Top-Tier Private Bank (India)",
+      accountType: "1-Year Fixed Deposit (FD)",
+      apy: 7.25,
+      highlight: true,
+      termNote: "1-Year Guaranteed Term",
+      features: "DICGC Insured (₹5 Lakh) • Senior Citizen +0.5% • Quarterly Compounding",
+    },
+    {
+      institutionType: "Public Sector Bank (SBI / PNB)",
+      accountType: "Fixed Deposit / Recurring Deposit",
+      apy: 6.80,
+      termNote: "1-Year Fixed",
+      features: "Govt Backed • Sovereign Security • Loan Facility Available",
+    },
+    {
+      institutionType: "High-Yield Savings Account",
+      accountType: "Digital Savings Account",
+      apy: 7.00,
+      termNote: "Liquid / Daily Interest",
+      features: "Zero Balance • Instant UPI • Daily Compounding on Balance",
+    },
+    {
+      institutionType: "Traditional Savings Account",
+      accountType: "Regular Bank Savings",
+      apy: 2.70,
+      termNote: "Standard Base Rate",
+      features: "Lags inflation rate significantly vs Fixed Deposits",
+    },
+  ],
 };
 
 export function SavingsRatesCard({ depositAmount = 25000 }: SavingsRatesCardProps) {

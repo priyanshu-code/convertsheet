@@ -8,8 +8,10 @@ import {
   CalcToggle,
   CalcResult,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function TipCalculator() {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [billAmount, setBillAmount] = useState<number>(1200);
   const [tipPercent, setTipPercent] = useState<string>("15");
   const [splitCount, setSplitCount] = useState<number>(2);
@@ -46,7 +48,7 @@ export function TipCalculator() {
           value={billAmount}
           min={0}
           step={50}
-          prefix="₹"
+          prefix={currencySymbol}
           onChange={(v) => setBillAmount(Number(v) || 0)}
         />
 
@@ -77,20 +79,20 @@ export function TipCalculator() {
       <CalcResult
         title="Check & Tip Summary"
         primaryLabel="Total Payable Per Person"
-        primaryValue={`₹${perPersonBill.toLocaleString("en-IN")}`}
+        primaryValue={formatCurrency(perPersonBill, { maxDecimals: 2 })}
         items={[
           {
             label: "Total Tip Added",
-            value: `₹${tipAmount.toLocaleString("en-IN")}`,
+            value: formatCurrency(tipAmount, { maxDecimals: 2 }),
             highlight: true,
           },
           {
             label: "Total Bill (Food + Tip)",
-            value: `₹${totalBill.toLocaleString("en-IN")}`,
+            value: formatCurrency(totalBill, { maxDecimals: 2 }),
           },
           {
             label: "Tip Per Person",
-            value: `₹${perPersonTip.toLocaleString("en-IN")}`,
+            value: formatCurrency(perPersonTip, { maxDecimals: 2 }),
           },
         ]}
       />

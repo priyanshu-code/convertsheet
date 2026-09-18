@@ -10,8 +10,10 @@ import {
   CalcResult,
   CalcChart,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function CompoundInterestCalculator() {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [principal, setPrincipal] = useState<number>(100000);
   const [annualRate, setAnnualRate] = useState<number>(8);
   const [years, setYears] = useState<number>(5);
@@ -69,7 +71,7 @@ export function CompoundInterestCalculator() {
             value={principal}
             min={1000}
             step={1000}
-            prefix="₹"
+            prefix={currencySymbol}
             onChange={(val) => setPrincipal(Number(val) || 0)}
           />
           <CalcSlider
@@ -79,7 +81,7 @@ export function CompoundInterestCalculator() {
             min={5000}
             max={2000000}
             step={5000}
-            prefix="₹"
+            prefix={currencySymbol}
             onChange={setPrincipal}
           />
         </div>
@@ -149,15 +151,15 @@ export function CompoundInterestCalculator() {
       <CalcResult
         title="Compounding Projections"
         primaryLabel="Total Future Value (Principal + Interest)"
-        primaryValue={`₹${maturityAmount.toLocaleString("en-IN")}`}
+        primaryValue={formatCurrency(maturityAmount)}
         items={[
           {
             label: "Initial Principal",
-            value: `₹${principal.toLocaleString("en-IN")}`,
+            value: formatCurrency(principal),
           },
           {
             label: "Compound Interest Earned",
-            value: `₹${totalInterest.toLocaleString("en-IN")}`,
+            value: formatCurrency(totalInterest),
             highlight: true,
           },
           {

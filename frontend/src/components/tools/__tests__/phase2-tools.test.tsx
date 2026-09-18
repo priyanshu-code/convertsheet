@@ -11,7 +11,7 @@ describe("Phase 2 Calculators and Tools", () => {
   describe("SalaryCalculator", () => {
     it("renders salary calculator and calculates take-home pay", () => {
       render(<SalaryCalculator />);
-      expect(screen.getByText("Salary & Take-Home Pay Calculator")).toBeInTheDocument();
+      expect(screen.getByText(/Salary & In-Hand Pay Calculator/i)).toBeInTheDocument();
       expect(screen.getByText("Net In-Hand Paycheck")).toBeInTheDocument();
       expect(screen.getByText("Copy Prompt for ChatGPT")).toBeInTheDocument();
       expect(screen.getByText("Export to Excel (.xlsx)")).toBeInTheDocument();
@@ -21,7 +21,7 @@ describe("Phase 2 Calculators and Tools", () => {
   describe("IncomeTaxCalculator", () => {
     it("renders income tax calculator with progressive brackets", () => {
       render(<IncomeTaxCalculator />);
-      expect(screen.getByText("Income Tax Slab Calculator")).toBeInTheDocument();
+      expect(screen.getByText(/Income Tax Slab Calculator/i)).toBeInTheDocument();
       expect(screen.getByText("Total Tax Payable")).toBeInTheDocument();
       expect(screen.getByText("Export to Excel (.xlsx)")).toBeInTheDocument();
     });

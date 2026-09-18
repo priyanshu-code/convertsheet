@@ -117,10 +117,10 @@ Please evaluate whether the Old Regime or New Regime is better for this income, 
 
   return (
     <CalcCard
-      title="Income Tax Slab Calculator"
-      subtitle="Estimate your progressive income tax liability across progressive brackets with standard deduction and cess breakdown."
+      title="Income Tax Slab Calculator (India FY 2024-25)"
+      subtitle="Calculate income tax liability under India's New Tax Regime (Section 115BAC) with ₹75,000 standard deduction, progressive slabs, and 4% health & education cess."
       icon={Receipt}
-      badge="Tax Ready"
+      badge="India • FY 2024-25"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">

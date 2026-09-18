@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SipCalculator } from "../SipCalculator";
@@ -7,21 +7,37 @@ import { CompoundInterestCalculator } from "../CompoundInterestCalculator";
 import { GstCalculator } from "../GstCalculator";
 import { PercentageCalculator } from "../PercentageCalculator";
 import { DiscountCalculator } from "../DiscountCalculator";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 describe("Financial Calculators Suite", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it("SipCalculator computes maturity value, invested amount, and wealth gained", () => {
-    render(<SipCalculator />);
+    // Render within CurrencyProvider with India market selected via localStorage
+    localStorage.setItem("convertsheet-target-market", "IN");
+    render(
+      <CurrencyProvider>
+        <SipCalculator />
+      </CurrencyProvider>
+    );
     expect(screen.getByText(/SIP Calculator/i)).toBeInTheDocument();
 
     const monthlyInput = screen.getByLabelText(/Monthly Investment/i);
     fireEvent.change(monthlyInput, { target: { value: "10000" } });
 
-    // With 10,000 for 10 years at 12%, invested capital = 12,00,000
+    // With 10,000 for 10 years at 12%, invested capital = ₹12,00,000 in IN locale
     expect(screen.getByText("₹12,00,000")).toBeInTheDocument();
   });
 
   it("EmiCalculator computes loan installment and total interest", () => {
-    render(<EmiCalculator />);
+    localStorage.setItem("convertsheet-target-market", "IN");
+    render(
+      <CurrencyProvider>
+        <EmiCalculator />
+      </CurrencyProvider>
+    );
     expect(screen.getByText(/Loan EMI Calculator/i)).toBeInTheDocument();
 
     const loanInput = screen.getByLabelText(/Total Loan Principal/i);
@@ -36,7 +52,12 @@ describe("Financial Calculators Suite", () => {
   });
 
   it("GstCalculator computes tax amounts in exclusive and inclusive modes", () => {
-    render(<GstCalculator />);
+    localStorage.setItem("convertsheet-target-market", "IN");
+    render(
+      <CurrencyProvider>
+        <GstCalculator />
+      </CurrencyProvider>
+    );
     expect(screen.getByText("GST Calculator")).toBeInTheDocument();
 
     // In 18% mode on 10,000 base, total is 11,800 and GST is 1,800
@@ -53,11 +74,29 @@ describe("Financial Calculators Suite", () => {
   });
 
   it("DiscountCalculator computes single and stacked discounts", () => {
-    render(<DiscountCalculator />);
+    localStorage.setItem("convertsheet-target-market", "IN");
+    render(
+      <CurrencyProvider>
+        <DiscountCalculator />
+      </CurrencyProvider>
+    );
     expect(screen.getByText(/Discount & Sale Price Calculator/i)).toBeInTheDocument();
 
     // 20% off on 2,000 = final 1,600 and savings 400
     expect(screen.getByText("₹1,600")).toBeInTheDocument();
     expect(screen.getByText("₹400")).toBeInTheDocument();
+  });
+
+  it("Dynamic currency switching updates symbols when market changes", () => {
+    localStorage.setItem("convertsheet-target-market", "US");
+    render(
+      <CurrencyProvider>
+        <DiscountCalculator />
+      </CurrencyProvider>
+    );
+
+    // In US mode, 20% off on $2,000 = final $1,600
+    expect(screen.getByText("$1,600")).toBeInTheDocument();
+    expect(screen.getByText("$400")).toBeInTheDocument();
   });
 });

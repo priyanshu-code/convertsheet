@@ -53,11 +53,11 @@ export const RetirementDonutBreakdown = memo(function RetirementDonutBreakdown({
         </span>
       </div>
 
-      <div className="relative h-56 flex items-center justify-center">
+      <div className="relative h-64 flex items-center justify-center">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Tooltip
-              formatter={(val: any) => [`$${Number(val || 0).toLocaleString()}`, "Amount"]}
+              formatter={(val: any) => [`$${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, "Amount"]}
               contentStyle={{
                 backgroundColor: "#18181b",
                 borderColor: "#27272a",
@@ -68,8 +68,8 @@ export const RetirementDonutBreakdown = memo(function RetirementDonutBreakdown({
             />
             <Pie
               data={data}
-              innerRadius={65}
-              outerRadius={88}
+              innerRadius={78}
+              outerRadius={104}
               paddingAngle={3}
               dataKey="value"
             >
@@ -80,13 +80,13 @@ export const RetirementDonutBreakdown = memo(function RetirementDonutBreakdown({
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Center Text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-          <span className="text-[11px] font-semibold text-zinc-400">
+        {/* Center Text - guaranteed to fit inside 156px inner diameter */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center px-2">
+          <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
             Total at {retirementAge}
           </span>
-          <span className="text-lg sm:text-xl font-extrabold font-mono text-zinc-900 dark:text-zinc-50">
-            ${Math.max(0, totalNestEgg).toLocaleString()}
+          <span className="text-base sm:text-lg font-extrabold font-mono text-zinc-900 dark:text-zinc-50 leading-tight mt-0.5">
+            ${Math.round(Math.max(0, totalNestEgg)).toLocaleString()}
           </span>
         </div>
       </div>

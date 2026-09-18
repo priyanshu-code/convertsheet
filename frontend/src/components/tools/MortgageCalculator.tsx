@@ -15,6 +15,7 @@ import {
   CalcSaveButton,
   CalcShareButton,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 import { calculateMortgage } from "@/lib/engines/financial-engine";
 import { generateMortgageDossierPdf } from "@/lib/engines/pdf-dossier-engine";
 import { formatDecimals } from "@/lib/math-utils";
@@ -33,6 +34,7 @@ export interface MortgageCalculatorProps {
 }
 
 export function MortgageCalculator({ initialValues }: MortgageCalculatorProps = {}) {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [homePrice, setHomePrice] = useState<number>(() => {
     if (typeof window !== "undefined") {
       const p = new URLSearchParams(window.location.search).get("homePrice");
@@ -194,7 +196,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
             type="number"
             min={10000}
             step={5000}
-            prefix="$"
+            prefix={currencySymbol}
           />
 
           <div className="space-y-1">
@@ -212,7 +214,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
               min={0}
               max={homePrice}
               step={1000}
-              prefix="$"
+              prefix={currencySymbol}
             />
           </div>
 
@@ -256,7 +258,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
               type="number"
               min={0}
               step={100}
-              prefix="$"
+              prefix={currencySymbol}
             />
 
             <CalcInput
@@ -267,7 +269,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
               type="number"
               min={0}
               step={50}
-              prefix="$"
+              prefix={currencySymbol}
             />
 
             <CalcInput
@@ -278,7 +280,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
               type="number"
               min={0}
               step={50}
-              prefix="$"
+              prefix={currencySymbol}
               helpText="Shortens loan term & saves interest"
             />
           </div>
@@ -288,21 +290,21 @@ Provide financial advice on whether refinancing or making extra principal paymen
         <CalcResult
           title="Monthly Payment Breakdown"
           primaryLabel="Total Monthly Payment"
-          primaryValue={`$${mortgage.totalMonthlyPayment.toLocaleString()}`}
-          primarySubtext={`Principal & Interest: $${mortgage.monthlyPrincipalAndInterest.toLocaleString()} • Taxes: $${mortgage.monthlyPropertyTax.toLocaleString()} • Insurance: $${mortgage.monthlyInsurance.toLocaleString()}${mortgage.monthlyPmi > 0 ? ` • PMI: $${mortgage.monthlyPmi.toLocaleString()}` : ""}`}
+          primaryValue={formatCurrency(mortgage.totalMonthlyPayment)}
+          primarySubtext={`Principal & Interest: ${formatCurrency(mortgage.monthlyPrincipalAndInterest)} • Taxes: ${formatCurrency(mortgage.monthlyPropertyTax)} • Insurance: ${formatCurrency(mortgage.monthlyInsurance)}${mortgage.monthlyPmi > 0 ? ` • PMI: ${formatCurrency(mortgage.monthlyPmi)}` : ""}`}
           items={[
             {
               label: "Loan Amount Financed",
-              value: `$${mortgage.loanAmount.toLocaleString()}`,
+              value: formatCurrency(mortgage.loanAmount),
             },
             {
               label: "Total Interest Paid",
-              value: `$${mortgage.totalInterest.toLocaleString()}`,
+              value: formatCurrency(mortgage.totalInterest),
               highlight: true,
             },
             {
               label: "Total Loan Cost (P+I)",
-              value: `$${mortgage.totalPayment.toLocaleString()}`,
+              value: formatCurrency(mortgage.totalPayment),
             },
             {
               label: "Payoff Time",
@@ -312,7 +314,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
               ? [
                   {
                     label: "Interest Saved by Extra Payment",
-                    value: `$${mortgage.interestSavedWithExtra.toLocaleString()}`,
+                    value: formatCurrency(mortgage.interestSavedWithExtra),
                     highlight: true,
                     badge: `${Math.round(mortgage.monthsSavedWithExtra / 12)} yrs early`,
                   },

@@ -288,7 +288,7 @@ export default function ToolPage({ params }: ToolPageProps) {
         </div>
 
         {/* Primary Calculator UI */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto w-full">
           {ToolComponent ? <ToolComponent /> : <div>Loading tool...</div>}
         </div>
 
@@ -309,9 +309,38 @@ export default function ToolPage({ params }: ToolPageProps) {
           <div className="prose prose-zinc dark:prose-invert max-w-none text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 space-y-3">
             <p>{tool.about}</p>
             {tool.formulaDescription && (
-              <div className="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 font-mono text-xs sm:text-sm text-zinc-800 dark:text-zinc-200">
-                <strong className="block text-zinc-900 dark:text-zinc-100 font-sans mb-1">Mathematical Formula &amp; Algorithm:</strong>
-                {tool.formulaDescription}
+              <div className="p-5 rounded-2xl bg-zinc-900 text-zinc-100 dark:bg-zinc-950 border border-zinc-800 shadow-sm space-y-2.5">
+                <div className="flex items-center justify-between gap-2 border-b border-zinc-800 pb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-sans">
+                    Mathematical Formula &amp; Algorithm
+                  </span>
+                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800/60">
+                    Exact Computation
+                  </span>
+                </div>
+                <div className="font-mono text-sm sm:text-base text-emerald-300 py-1 overflow-x-auto tracking-wide selection:bg-emerald-500/30">
+                  {tool.formulaDescription.split(", where ")[0] || tool.formulaDescription}
+                </div>
+                {tool.formulaDescription.includes(", where ") && (
+                  <div className="pt-2 border-t border-zinc-800/80 text-xs text-zinc-400 space-y-1">
+                    <span className="text-zinc-500 uppercase tracking-wider font-semibold text-[10px] block">
+                      Variable Definitions:
+                    </span>
+                    <div className="flex flex-wrap gap-2 pt-1 font-sans">
+                      {tool.formulaDescription
+                        .split(", where ")[1]
+                        ?.split(",")
+                        .map((part, pIdx) => (
+                          <span
+                            key={pIdx}
+                            className="inline-flex items-center px-2 py-1 rounded-lg bg-zinc-800 text-zinc-300 text-xs border border-zinc-700/60"
+                          >
+                            {part.trim()}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

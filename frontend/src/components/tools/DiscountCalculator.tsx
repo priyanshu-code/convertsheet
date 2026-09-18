@@ -8,8 +8,10 @@ import {
   CalcSlider,
   CalcResult,
 } from "@/components/calculator";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function DiscountCalculator() {
+  const { currencySymbol, formatCurrency } = useCurrency();
   const [originalPrice, setOriginalPrice] = useState<number>(2000);
   const [discountPercent, setDiscountPercent] = useState<number>(20);
   const [extraDiscount, setExtraDiscount] = useState<number>(0);
@@ -47,7 +49,7 @@ export function DiscountCalculator() {
             value={originalPrice}
             min={0}
             step={50}
-            prefix="₹"
+            prefix={currencySymbol}
             onChange={(v) => setOriginalPrice(Number(v) || 0)}
           />
         </div>
@@ -93,11 +95,11 @@ export function DiscountCalculator() {
       <CalcResult
         title="Final Payable Price"
         primaryLabel="Final Price After Discounts"
-        primaryValue={`₹${finalPrice.toLocaleString("en-IN")}`}
+        primaryValue={formatCurrency(finalPrice, { maxDecimals: 2 })}
         items={[
           {
             label: "Total Money Saved",
-            value: `₹${totalSavings.toLocaleString("en-IN")}`,
+            value: formatCurrency(totalSavings, { maxDecimals: 2 }),
             highlight: true,
           },
           {
@@ -107,7 +109,7 @@ export function DiscountCalculator() {
           },
           {
             label: "Original Price",
-            value: `₹${originalPrice.toLocaleString("en-IN")}`,
+            value: formatCurrency(originalPrice, { maxDecimals: 2 }),
           },
         ]}
       />

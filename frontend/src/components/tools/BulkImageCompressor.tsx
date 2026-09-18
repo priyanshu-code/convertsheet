@@ -55,10 +55,12 @@ export function BulkImageCompressor({
 
   // Cleanup on unmount
   useEffect(() => {
+    const timers = debounceTimersRef.current;
+    const currentItems = itemsRef.current;
     return () => {
-      debounceTimersRef.current.forEach((t) => clearTimeout(t));
-      debounceTimersRef.current.clear();
-      itemsRef.current.forEach((item) => {
+      timers.forEach((t) => clearTimeout(t));
+      timers.clear();
+      currentItems.forEach((item) => {
         if (item.previewUrl) {
           URL.revokeObjectURL(item.previewUrl);
         }
@@ -95,13 +97,23 @@ export function BulkImageCompressor({
           maxWidth: effectiveMaxWidth,
         });
 
+        let finalResult = result;
+        // If re-compressing in same format resulted in larger file, keep original file bytes
+        if (result.sizeBytes >= item.file.size && targetFormat === "original") {
+          finalResult = {
+            ...result,
+            blob: item.file,
+            sizeBytes: item.file.size,
+          };
+        }
+
         // Race condition prevention: only update if item's latest version matches targetVersion
         setItems((prev) =>
           prev.map((it) => {
             if (it.id === item.id && it.version === targetVersion) {
               return {
                 ...it,
-                result,
+                result: finalResult,
                 isProcessing: false,
                 error: undefined,
               };
@@ -576,7 +588,7 @@ export function BulkImageCompressor({
                         max={100}
                         step={1}
                         value={currentQuality}
-                        disabled={item.isProcessing || !!item.error}
+                        disabled={!!item.error}
                         onChange={(e) => handleItemQualityChange(item.id, Number(e.target.value))}
                         aria-label={`Quality for ${item.file.name}`}
                         className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-emerald-500 disabled:opacity-50"
