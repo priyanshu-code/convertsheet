@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ShieldCheck, BookOpen, ArrowRight, Sparkles, HelpCircle } from "lucide-react";
+import { ShieldCheck, BookOpen, ArrowRight, Sparkles, HelpCircle, Calculator } from "lucide-react";
 import { getToolBySlug } from "@/lib/tool-registry";
 import {
   getAllPresetStaticParams,
@@ -215,6 +215,64 @@ export default function ProgrammaticPresetPage({
 
           <div className="prose prose-zinc dark:prose-invert max-w-none text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 space-y-3">
             <p>{preset.about}</p>
+            {tool.formulaDescription && (() => {
+              const text = tool.formulaDescription;
+              const hasWhere = text.toLowerCase().includes(", where ");
+              const parts = hasWhere ? text.split(/, where /i) : [text];
+              const formulaPart = parts[0];
+              const variablesPart = parts[1];
+              const hasEquation = formulaPart.includes("=") || formulaPart.includes(":");
+              const formulas = formulaPart.includes(";") ? formulaPart.split(";").map((s) => s.trim()) : [formulaPart];
+
+              return (
+                <div className="p-5 sm:p-6 rounded-2xl bg-zinc-900 text-zinc-100 dark:bg-zinc-950 border border-zinc-800 shadow-md space-y-4 not-prose my-4">
+                  <div className="flex items-center justify-between gap-2 border-b border-zinc-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <Calculator className="w-4 h-4 text-emerald-400" />
+                      <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-sans">
+                        {hasEquation ? "Formula & Computation Model" : "Algorithm & Technical Model"}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800/60">
+                      Exact Computation
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {formulas.map((f, fIdx) => (
+                      <div
+                        key={fIdx}
+                        className="font-mono text-sm sm:text-base text-emerald-300 bg-zinc-950/80 dark:bg-black/40 px-3.5 py-2.5 rounded-xl border border-zinc-800/80 overflow-x-auto tracking-wide selection:bg-emerald-500/30"
+                      >
+                        {f}
+                      </div>
+                    ))}
+                  </div>
+
+                  {variablesPart && (
+                    <div className="pt-2 border-t border-zinc-800/80 text-xs text-zinc-400 space-y-2">
+                      <span className="text-zinc-400 uppercase tracking-wider font-semibold text-[10px] block">
+                        Variable Definitions:
+                      </span>
+                      <div className="flex flex-wrap gap-2 font-sans">
+                        {variablesPart.split(/,(?![^(]*\))/).map((vPart, vIdx) => {
+                          const cleaned = vPart.replace(/^and\s+/i, "").trim();
+                          if (!cleaned) return null;
+                          return (
+                            <span
+                              key={vIdx}
+                              className="inline-flex items-center px-2.5 py-1 rounded-lg bg-zinc-800/90 text-zinc-200 text-xs border border-zinc-700/60 font-mono"
+                            >
+                              {cleaned}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
         </section>
 

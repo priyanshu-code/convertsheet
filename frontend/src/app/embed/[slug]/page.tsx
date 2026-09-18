@@ -49,6 +49,8 @@ import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
 import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
 import { BulkImageCompressor } from "@/components/tools/BulkImageCompressor";
 import { PdfCompressorTool } from "@/components/tools/PdfCompressorTool";
+import { SavingsCdCalculator } from "@/components/tools/SavingsCdCalculator";
+import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
 
 export interface EmbedPageProps {
   params: {
@@ -214,6 +216,8 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
     "inflation-calculator": InflationCalculator,
     "hourly-to-salary-calculator": HourlyToSalaryCalculator,
     "annual-to-hourly-calculator": AnnualToHourlyCalculator,
+    "debt-payoff-calculator": DebtPayoffCalculator,
+    "high-yield-savings-cd-calculator": SavingsCdCalculator,
     "sql-query-studio": SqlStudioTool,
     "sheet-diff-checker": SheetDiffTool,
     "data-anonymizer-cleaner": DataCleanerTool,
