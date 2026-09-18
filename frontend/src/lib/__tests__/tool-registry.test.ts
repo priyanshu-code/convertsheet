@@ -12,9 +12,9 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
   const allSlugs = getAllToolSlugs();
   const allTools = getAllTools();
 
-  it("registers exactly 45 tools across 3 categories", () => {
-    expect(allSlugs).toHaveLength(45);
-    expect(allTools).toHaveLength(45);
+  it("registers exactly 49 tools across 3 categories", () => {
+    expect(allSlugs).toHaveLength(49);
+    expect(allTools).toHaveLength(49);
 
     const devTools = getToolsByCategory("data-developer");
     const financialTools = getToolsByCategory("financial");
@@ -22,7 +22,7 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
 
     expect(devTools).toHaveLength(12);
     expect(financialTools).toHaveLength(18);
-    expect(utilityTools).toHaveLength(15);
+    expect(utilityTools).toHaveLength(19);
   });
 
   it("each tool has complete SEO metadata, AEO answer summary, and E-E-A-T about section", () => {
@@ -56,6 +56,33 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
           expect(allSlugs).toContain(relatedSlug);
         }
       }
+    }
+  });
+
+  it("retrieves valid configurations for all compression tool slugs", () => {
+    const slugs = [
+      "compress-image",
+      "compress-jpeg",
+      "compress-png",
+      "compress-webp",
+    ];
+
+    const currentSlugs = getAllToolSlugs();
+    for (const slug of slugs) {
+      expect(currentSlugs).toContain(slug);
+      const tool = getToolBySlug(slug);
+      expect(tool).toBeDefined();
+      expect(tool?.slug).toBe(slug);
+      expect(tool?.category).toBe("utility");
+      expect(tool?.name).toBeTruthy();
+      expect(tool?.title).toBeTruthy();
+      expect(tool?.subtitle).toBeTruthy();
+      expect(tool?.metaDescription).toBeTruthy();
+      expect(tool?.answerSummary).toBeTruthy();
+      expect(tool?.about).toBeTruthy();
+      expect(tool?.keywords.length).toBeGreaterThanOrEqual(4);
+      expect(tool?.howTo.length).toBeGreaterThanOrEqual(3);
+      expect(tool?.faqs.length).toBeGreaterThanOrEqual(2);
     }
   });
 });
