@@ -28,6 +28,10 @@ describe("Image Engine (Client-Side Canvas/Wasm)", () => {
       drawImage: vi.fn(),
       fillRect: vi.fn(),
       fillStyle: "",
+      getImageData: vi.fn().mockReturnValue({
+        data: new Uint8ClampedArray([255, 255, 255, 255, 128, 128, 128, 255]),
+      }),
+      putImageData: vi.fn(),
     };
 
     const mockCanvas = {
@@ -125,6 +129,17 @@ describe("Image Engine (Client-Side Canvas/Wasm)", () => {
     expect(calculateSavings(0, 50)).toBe(0);
     // Same size -> 0% savings
     expect(calculateSavings(200, 200)).toBe(0);
+  });
+
+  it("applies color channel quantization when compressing PNG with quality < 0.98", async () => {
+    const file = new File(["dummy"], "photo.png", { type: "image/png" });
+    const result = await convertImage(file, { format: "image/png", quality: 0.75 });
+
+    const canvas = (document.createElement as any).mock.results[0].value;
+    const ctx = canvas.getContext();
+    expect(ctx.getImageData).toHaveBeenCalledWith(0, 0, 800, 600);
+    expect(ctx.putImageData).toHaveBeenCalled();
+    expect(result.filename).toBe("photo.png");
   });
 });
 

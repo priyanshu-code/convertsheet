@@ -10,6 +10,7 @@ export interface CalcSliderProps {
   max: number;
   step?: number;
   onChange: (val: number) => void;
+  onCommit?: (val: number) => void;
   unit?: string;
   prefix?: string;
   helpText?: string;
@@ -23,10 +24,17 @@ export const CalcSlider = memo(function CalcSlider({
   max,
   step = 1,
   onChange,
+  onCommit,
   unit = "",
   prefix = "",
   helpText,
 }: CalcSliderProps) {
+  const handleCommit = (val: number) => {
+    if (onCommit) {
+      onCommit(val);
+    }
+  };
+
   return (
     <div className="space-y-2 w-full">
       <div className="flex items-center justify-between text-xs sm:text-sm">
@@ -50,6 +58,13 @@ export const CalcSlider = memo(function CalcSlider({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
+        onPointerUp={(e) => handleCommit(Number((e.target as HTMLInputElement).value))}
+        onTouchEnd={(e) => handleCommit(Number((e.target as HTMLInputElement).value))}
+        onKeyUp={(e) => {
+          if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"].includes(e.key)) {
+            handleCommit(Number((e.target as HTMLInputElement).value));
+          }
+        }}
         className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
       />
 

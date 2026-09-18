@@ -98,8 +98,9 @@ export function BulkImageCompressor({
         });
 
         let finalResult = result;
-        // If re-compressing in same format resulted in larger file, keep original file bytes
-        if (result.sizeBytes >= item.file.size && targetFormat === "original") {
+        // If re-compressing at highest quality (>= 95%) in same format resulted in slightly larger file, keep original file bytes.
+        // But if the user explicitly reduced quality (< 95%), respect the user's compression intent.
+        if (result.sizeBytes >= item.file.size && targetFormat === "original" && effectiveQuality >= 0.95) {
           finalResult = {
             ...result,
             blob: item.file,
@@ -179,16 +180,19 @@ export function BulkImageCompressor({
   const reprocessAll = useCallback(
     (newFormat: ImageFormatOption, newQuality: number, newMaxWidth: number) => {
       const newVersion = Date.now();
+      // Clear customQuality so global quality/format adjustments apply to all items
       setItems((prev) =>
         prev.map((item) => ({
           ...item,
+          customQuality: undefined,
           version: newVersion,
           isProcessing: true,
         }))
       );
 
       itemsRef.current.forEach((item) => {
-        processSingleItem(item, newFormat, newQuality, newMaxWidth, newVersion);
+        const itemWithoutCustom = { ...item, customQuality: undefined };
+        processSingleItem(itemWithoutCustom, newFormat, newQuality, newMaxWidth, newVersion);
       });
     },
     [processSingleItem]
@@ -200,6 +204,16 @@ export function BulkImageCompressor({
     reprocessAll(fmt, globalQuality, globalMaxWidth);
   };
 
+  const handleGlobalQualityCommit = (val?: number) => {
+    const qualityToApply = val ?? globalQuality;
+    const existingTimer = debounceTimersRef.current.get("global");
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+      debounceTimersRef.current.delete("global");
+    }
+    reprocessAll(globalFormat, qualityToApply, globalMaxWidth);
+  };
+
   const handleGlobalQualityChange = (val: number) => {
     setGlobalQuality(val);
 
@@ -209,8 +223,8 @@ export function BulkImageCompressor({
 
     const timer = setTimeout(() => {
       debounceTimersRef.current.delete("global");
-      reprocessAll(globalFormat, val, globalMaxWidth);
-    }, 150);
+      handleGlobalQualityCommit(val);
+    }, 200);
 
     debounceTimersRef.current.set("global", timer);
   };
@@ -221,29 +235,42 @@ export function BulkImageCompressor({
     reprocessAll(globalFormat, globalQuality, width);
   };
 
-  const handleItemQualityChange = (id: string, newQuality: number) => {
+  const handleItemQualityDrag = (id: string, newQuality: number) => {
+    // Immediate UI responsiveness for slider thumb and label without triggering isProcessing re-render
+    setItems((prev) =>
+      prev.map((it) => (it.id === id ? { ...it, customQuality: newQuality } : it))
+    );
+  };
+
+  const handleItemQualityCommit = (id: string, commitQuality?: number) => {
+    const targetItem = itemsRef.current.find((it) => it.id === id);
+    if (!targetItem) return;
+    const finalQuality = commitQuality ?? targetItem.customQuality ?? globalQuality;
     const newVersion = Date.now();
-    // Immediate UI responsiveness for slider and loading indicator
+
     setItems((prev) =>
       prev.map((it) =>
         it.id === id
-          ? { ...it, customQuality: newQuality, version: newVersion, isProcessing: true }
+          ? { ...it, customQuality: finalQuality, version: newVersion, isProcessing: true }
           : it
       )
     );
 
-    // Debounce compression processing for slider drags
+    const modified = { ...targetItem, customQuality: finalQuality };
+    processSingleItem(modified, globalFormat, globalQuality, globalMaxWidth, newVersion);
+  };
+
+  const handleItemQualityChange = (id: string, newQuality: number) => {
+    handleItemQualityDrag(id, newQuality);
+
+    // Debounce compression processing for slider drags or automated tests
     const existingTimer = debounceTimersRef.current.get(id);
     if (existingTimer) clearTimeout(existingTimer);
 
     const timer = setTimeout(() => {
       debounceTimersRef.current.delete(id);
-      const targetItem = itemsRef.current.find((it) => it.id === id);
-      if (!targetItem) return;
-
-      const modified = { ...targetItem, customQuality: newQuality };
-      processSingleItem(modified, globalFormat, globalQuality, globalMaxWidth, newVersion);
-    }, 150);
+      handleItemQualityCommit(id, newQuality);
+    }, 200);
 
     debounceTimersRef.current.set(id, timer);
   };
@@ -377,6 +404,7 @@ export function BulkImageCompressor({
               unit="%"
               helpText="Global compression level"
               onChange={handleGlobalQualityChange}
+              onCommit={handleGlobalQualityCommit}
             />
 
             <CalcSelect
@@ -590,6 +618,13 @@ export function BulkImageCompressor({
                         value={currentQuality}
                         disabled={!!item.error}
                         onChange={(e) => handleItemQualityChange(item.id, Number(e.target.value))}
+                        onPointerUp={(e) => handleItemQualityCommit(item.id, Number((e.target as HTMLInputElement).value))}
+                        onTouchEnd={(e) => handleItemQualityCommit(item.id, Number((e.target as HTMLInputElement).value))}
+                        onKeyUp={(e) => {
+                          if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"].includes(e.key)) {
+                            handleItemQualityCommit(item.id, Number((e.target as HTMLInputElement).value));
+                          }
+                        }}
                         aria-label={`Quality for ${item.file.name}`}
                         className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-emerald-500 disabled:opacity-50"
                       />

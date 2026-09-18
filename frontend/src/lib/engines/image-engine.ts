@@ -88,6 +88,30 @@ export async function convertImage(
 
   const quality = options.quality !== undefined ? options.quality : 0.92;
 
+  // HTML5 canvas spec does not compress image/png via quality argument (it's lossless).
+  // When quality < 1.0 on PNG, quantize color channels to create repetitive byte sequences
+  // that deflate/zlib can compress efficiently, dramatically reducing PNG size.
+  if (options.format === "image/png" && quality < 0.98) {
+    try {
+      const imgData = ctx.getImageData(0, 0, width, height);
+      const data = imgData.data;
+      // Step size based on quality (quality 0.1 -> step 32, quality 0.8 -> step 8, quality 0.9 -> step 4)
+      const step = Math.max(2, Math.round((1 - quality) * 32));
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.round(data[i] / step) * step;         // R
+        data[i + 1] = Math.round(data[i + 1] / step) * step; // G
+        data[i + 2] = Math.round(data[i + 2] / step) * step; // B
+        // Retain alpha channel or softly quantize
+        if (data[i + 3] > 0 && data[i + 3] < 255) {
+          data[i + 3] = Math.round(data[i + 3] / step) * step;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+    } catch {
+      // If getImageData fails due to cross-origin or canvas restrictions, continue gracefully
+    }
+  }
+
   const blob: Blob = await new Promise((resolve, reject) => {
     canvas.toBlob(
       (b) => {
