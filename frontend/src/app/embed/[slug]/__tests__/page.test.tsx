@@ -35,4 +35,17 @@ describe("Embed Tool Page", () => {
       "https://www.convertsheet.com/convert/csv-to-jsonl"
     );
   });
+
+  it("renders the compressor tool and attribution backlink for tool embed", () => {
+    render(<EmbedToolPage params={{ slug: "compress-image" }} />);
+
+    expect(screen.getByRole("heading", { level: 2, name: "Bulk Image Compressor" })).toBeInTheDocument();
+    expect(screen.getByText(/Drag & Drop Images/i)).toBeInTheDocument();
+    const poweredByLink = screen.getByRole("link", { name: /ConvertSheet/i });
+    expect(poweredByLink).toBeInTheDocument();
+    expect(poweredByLink).toHaveAttribute(
+      "href",
+      "https://www.convertsheet.com/tools/compress-image"
+    );
+  });
 });

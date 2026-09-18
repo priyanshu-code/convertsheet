@@ -71,6 +71,7 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
     ["compress-jpeg", "JPEG & JPG Compressor"],
     ["compress-png", "PNG Compressor"],
     ["compress-webp", "WebP Compressor"],
+    ["image-compressor", "Bulk Image Compressor"],
   ])("renders BulkImageCompressor for /tools/%s", (slug, expectedHeading) => {
     render(<ToolPage params={{ slug }} />);
     expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
