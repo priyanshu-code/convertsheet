@@ -18,9 +18,9 @@ import {
 
 describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
-    it("returns all 17 registered converter slugs", () => {
+    it("returns all 19 registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(17);
+      expect(slugs).toHaveLength(19);
       expect(slugs).toContain("parquet-to-excel");
       expect(slugs).toContain("parquet-to-csv");
       expect(slugs).toContain("parquet-to-json");
@@ -31,6 +31,8 @@ describe("Converter Registry & Utilities", () => {
       expect(slugs).toContain("csv-to-jsonl");
       expect(slugs).toContain("markdown-to-excel");
       expect(slugs).toContain("sqlite-to-excel");
+      expect(slugs).toContain("json-to-ndjson");
+      expect(slugs).toContain("json-to-schema");
     });
   });
 
@@ -50,7 +52,7 @@ describe("Converter Registry & Utilities", () => {
 
       // Extensions must start with dot and be non-empty
       expect(config.sourceExtension).toMatch(/^\.[a-z0-9]+$/);
-      expect(config.targetExtension).toMatch(/^\.[a-z0-9]+$/);
+      expect(config.targetExtension).toMatch(/^\.[a-z0-9]+(\.[a-z0-9]+)*$/);
 
       // If additionalExtensions are provided, each must start with dot and be non-empty
       if ("additionalExtensions" in config && config.additionalExtensions) {
@@ -153,6 +155,32 @@ describe("Converter Registry & Utilities", () => {
       );
       expect(config?.isClientSide).toBe(true);
       expect(config?.category).toBe("spreadsheets");
+    });
+
+    it("returns valid configuration for json-to-ndjson", () => {
+      const config = getConverterBySlug("json-to-ndjson");
+      expect(config).toBeDefined();
+      expect(config?.slug).toBe("json-to-ndjson");
+      expect(config?.sourceFormat).toBe("JSON");
+      expect(config?.targetFormat).toBe("NDJSON");
+      expect(config?.category).toBe("data-engineering");
+      expect(config?.engineId).toBe("json-to-ndjson");
+      expect(config?.sourceExtension).toBe(".json");
+      expect(config?.targetExtension).toBe(".ndjson");
+      expect(config?.isClientSide).toBe(true);
+    });
+
+    it("returns valid configuration for json-to-schema", () => {
+      const config = getConverterBySlug("json-to-schema");
+      expect(config).toBeDefined();
+      expect(config?.slug).toBe("json-to-schema");
+      expect(config?.sourceFormat).toBe("JSON");
+      expect(config?.targetFormat).toBe("JSON Schema");
+      expect(config?.category).toBe("data-engineering");
+      expect(config?.engineId).toBe("json-to-schema");
+      expect(config?.sourceExtension).toBe(".json");
+      expect(config?.targetExtension).toBe(".schema.json");
+      expect(config?.isClientSide).toBe(true);
     });
 
     it("returns undefined for unknown slug or prototype properties", () => {

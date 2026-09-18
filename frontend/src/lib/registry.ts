@@ -990,6 +990,140 @@ export const CONVERTER_REGISTRY = {
       },
     ],
   },
+
+  "json-to-ndjson": {
+    slug: "json-to-ndjson",
+    sourceFormat: "JSON",
+    targetFormat: "NDJSON",
+    sourceExtension: ".json",
+    additionalExtensions: [".txt"],
+    targetExtension: ".ndjson",
+    acceptedMimeTypes: ["application/json", "text/json", "text/plain"],
+    category: "data-engineering",
+    engineId: "json-to-ndjson",
+    isClientSide: true,
+    featured: true,
+    badge: "AI & Vector DB",
+    title: "Convert JSON to NDJSON / JSONL Online - Fast, Free & Private",
+    subtitle:
+      "Transform JSON objects and arrays into Newline-Delimited JSON (NDJSON/JSONL) for vector database embeddings, Elasticsearch, and LLM finetuning locally in your browser.",
+    metaDescription:
+      "Free online JSON to NDJSON / JSONL converter. Format JSON arrays into streaming line-delimited objects for Pinecone, Weaviate, Qdrant, and OpenAI finetuning with zero server uploads.",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload JSON File",
+        description:
+          "Drag and drop or select your standard .json file containing an array of objects or key-value structures.",
+      },
+      {
+        step: 2,
+        title: "Preview Line-Delimited Records",
+        description:
+          "Inspect parsed records and verify newline-delimited output formatting with automatic data sanitization.",
+      },
+      {
+        step: 3,
+        title: "Download NDJSON File",
+        description:
+          "Click 'Convert & Download' to export clean, single-line JSON records formatted for instant streaming ingestion.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is my JSON data uploaded to any remote server during conversion?",
+        answer:
+          "No. All parsing and conversion is handled 100% client-side in your web browser using JavaScript streams. Your sensitive documents, API exports, and proprietary data never touch an external server.",
+      },
+      {
+        question: "What is the difference between NDJSON and JSONL?",
+        answer:
+          "NDJSON (Newline-Delimited JSON) and JSONL (JSON Lines) refer to the exact same format specification: valid individual JSON values separated by standard newline characters (\\n), enabling streaming and chunked parsing.",
+      },
+      {
+        question: "How does the converter handle deeply nested objects and arrays?",
+        answer:
+          "Each top-level array element or object entry is preserved as a complete, valid JSON record on its own line. Nested structures, sub-arrays, and Unicode characters are strictly serialized without truncation.",
+      },
+      {
+        question: "Can I use the converted NDJSON files directly with Vector Databases and LLMs?",
+        answer:
+          "Yes. The output strictly conforms to the streaming input requirements for vector databases like Pinecone, Weaviate, Milvus, and Qdrant, as well as OpenAI batch fine-tuning datasets and Elasticsearch bulk imports.",
+      },
+      {
+        question: "What is the maximum JSON file size that can be converted in the browser?",
+        answer:
+          "Because ConvertSheet uses fast client-side streaming and efficient memory buffers, JSON files up to 50MB (often containing over 100,000 records) can be converted smoothly in modern browsers.",
+      },
+    ],
+  },
+
+  "json-to-schema": {
+    slug: "json-to-schema",
+    sourceFormat: "JSON",
+    targetFormat: "JSON Schema",
+    sourceExtension: ".json",
+    additionalExtensions: [".txt"],
+    targetExtension: ".schema.json",
+    acceptedMimeTypes: ["application/json", "text/json", "text/plain"],
+    category: "data-engineering",
+    engineId: "json-to-schema",
+    isClientSide: true,
+    featured: true,
+    badge: "Schema Generator",
+    title: "Generate JSON Schema from JSON Online - In-Browser Generator",
+    subtitle:
+      "Automatically infer and generate standard Draft-07 JSON Schema specifications from sample JSON objects and API payloads instantly with zero cloud storage.",
+    metaDescription:
+      "Free online JSON Schema generator. Infer data types, required properties, and nested structures to produce standard Draft-07 JSON Schema documents in your browser.",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload JSON Payload",
+        description:
+          "Select or drop any sample JSON file, API response, or configuration payload into the secure browser dropzone.",
+      },
+      {
+        step: 2,
+        title: "Inspect Inferred Types",
+        description:
+          "Review detected field types, nested object hierarchies, array element schemas, and required property constraints.",
+      },
+      {
+        step: 3,
+        title: "Download Draft-07 Schema",
+        description:
+          "Click 'Convert & Download' to obtain your validated .schema.json specification ready for automated contract testing or OpenAPI integration.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is my JSON payload or schema shared with third parties or cloud servers?",
+        answer:
+          "Never. Schema generation runs completely in-memory in your local browser sandbox. Sensitive schema definitions, secret keys, or confidential API structures remain strictly on your machine.",
+      },
+      {
+        question: "Which JSON Schema specification draft does this generator output?",
+        answer:
+          "The generator produces standard JSON Schema Draft-07 schemas (http://json-schema.org/draft-07/schema#), ensuring maximum compatibility across modern validators, TypeScript generators, and OpenAPI 3.0 tooling.",
+      },
+      {
+        question: "How are field types and null values inferred?",
+        answer:
+          "Primitives (string, integer, number, boolean) are inferred accurately based on JavaScript type semantics, while arrays with heterogeneous elements produce combined union types.",
+      },
+      {
+        question: "Are object properties marked as required by default?",
+        answer:
+          "All keys discovered in object payloads are analyzed and enumerated in the 'required' array property, establishing a rigorous contract baseline that you can easily customize.",
+      },
+      {
+        question: "Can I use generated schemas with OpenAPI, Swagger, or Ajv validation?",
+        answer:
+          "Yes. The output Draft-07 JSON Schema format is directly compatible with Ajv, standard JSON Schema validators, Quicktype code generators, and OpenAPI / Swagger request/response model definitions.",
+      },
+    ],
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;
