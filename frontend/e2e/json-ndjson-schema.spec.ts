@@ -15,10 +15,10 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     await expect(h1).toContainText("Convert JSON to NDJSON / JSONL");
 
     // Valid canonical URL
-    const canonical = await page.$eval('link[rel="canonical"]', (el) =>
-      el.getAttribute("href")
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://convertsheet.com/convert/json-to-ndjson"
     );
-    expect(canonical).toBe("https://convertsheet.com/convert/json-to-ndjson");
 
     // Split input is visible with textarea and "Load Sample JSON" button
     const splitInput = page.locator('[data-testid="split-json-input"]');
@@ -44,10 +44,10 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     // Tabular preview table appears with column headers (id, name, email, role)
     const previewTable = page.locator("table");
     await expect(previewTable).toBeVisible();
-    await expect(page.locator('th:has-text("id")')).toBeVisible();
-    await expect(page.locator('th:has-text("name")')).toBeVisible();
-    await expect(page.locator('th:has-text("email")')).toBeVisible();
-    await expect(page.locator('th:has-text("role")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("id")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("name")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("email")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("role")')).toBeVisible();
 
     // "Convert & Download NDJSON" button is enabled and visible
     const downloadButton = page.locator('button:has-text("Convert & Download NDJSON")');
@@ -69,10 +69,10 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     await expect(h1).toContainText("Generate JSON Schema from JSON");
 
     // Valid canonical URL
-    const canonical = await page.$eval('link[rel="canonical"]', (el) =>
-      el.getAttribute("href")
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      "https://convertsheet.com/convert/json-to-schema"
     );
-    expect(canonical).toBe("https://convertsheet.com/convert/json-to-schema");
 
     // Split input is visible
     const splitInput = page.locator('[data-testid="split-json-input"]');
@@ -94,14 +94,14 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     // Tabular schema preview appears with columns Property, Type, Required, Sample Value
     const previewTable = page.locator("table");
     await expect(previewTable).toBeVisible();
-    await expect(page.locator('th:has-text("Property")')).toBeVisible();
-    await expect(page.locator('th:has-text("Type")')).toBeVisible();
-    await expect(page.locator('th:has-text("Required")')).toBeVisible();
-    await expect(page.locator('th:has-text("Sample Value")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("Property")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("Type")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("Required")')).toBeVisible();
+    await expect(previewTable.locator('th:has-text("Sample Value")')).toBeVisible();
 
     // Confirm inferred properties appear in table rows
-    await expect(page.locator('td:has-text("name")')).toBeVisible();
-    await expect(page.locator('td:has-text("email")')).toBeVisible();
+    await expect(previewTable.locator('td:has-text("name")')).toBeVisible();
+    await expect(previewTable.locator('td:has-text("email")')).toBeVisible();
 
     // "Convert & Download JSON Schema" button is enabled and visible
     const downloadButton = page.locator('button:has-text("Convert & Download JSON Schema")');
