@@ -17,6 +17,7 @@ import { formatBytes, cn } from "@/lib/utils";
 import { useConverter, MAX_FREE_FILE_SIZE_BYTES } from "@/hooks/useConverter";
 import { DropZone } from "./DropZone";
 import { SplitTableInput } from "./SplitTableInput";
+import { SplitJsonInput } from "./SplitJsonInput";
 import { DataPreviewTable } from "./DataPreviewTable";
 import { FormatSelector } from "./FormatSelector";
 import { ProUpgradeModal } from "./ProUpgradeModal";
@@ -157,9 +158,15 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
 
       {/* Main Content Area */}
       {!file ? (
-        /* State 1: No file loaded - Show SplitTableInput for markdown-to-excel, otherwise DropZone */
+        /* State 1: No file loaded - Show SplitTableInput for markdown-to-excel, SplitJsonInput for json-to-ndjson and json-to-schema, otherwise DropZone */
         config.slug === "markdown-to-excel" ? (
           <SplitTableInput
+            config={config}
+            onFileSelect={setFile}
+            disabled={isParsing}
+          />
+        ) : config.slug === "json-to-ndjson" || config.slug === "json-to-schema" ? (
+          <SplitJsonInput
             config={config}
             onFileSelect={setFile}
             disabled={isParsing}
