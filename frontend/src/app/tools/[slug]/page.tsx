@@ -59,6 +59,9 @@ import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
 import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
 import { BulkImageCompressor } from "@/components/tools/BulkImageCompressor";
 import { PdfCompressorTool } from "@/components/tools/PdfCompressorTool";
+import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
+import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
+import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
 
 export interface ToolPageProps {
   params: {
@@ -210,6 +213,9 @@ export default function ToolPage({ params }: ToolPageProps) {
     "annual-to-hourly-calculator": AnnualToHourlyCalculator,
     "debt-payoff-calculator": DebtPayoffCalculator,
     "high-yield-savings-cd-calculator": SavingsCdCalculator,
+    "uk-salary-calculator": UkSalaryCalculator,
+    "canada-paycheck-calculator": CanadaPaycheckCalculator,
+    "australia-pay-calculator": AustraliaPayCalculator,
     "sql-query-studio": SqlStudioTool,
     "sheet-diff-checker": SheetDiffTool,
     "data-anonymizer-cleaner": DataCleanerTool,

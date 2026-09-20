@@ -515,4 +515,211 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
     relatedConverters: ["excel-to-csv", "csv-to-excel"],
     relatedTools: ["mortgage-calculator", "retirement-calculator", "inflation-calculator"],
   },
+  "uk-salary-calculator": {
+    slug: "uk-salary-calculator",
+    name: "UK Salary & Take-Home Pay Calculator",
+    category: "financial",
+    title: "UK Salary & Take-Home Pay Calculator (2024/25 HMRC PAYE & NI)",
+    subtitle: "Calculate your exact UK net take-home pay under 2024/25 HMRC tax bands, 8% National Insurance rates, workplace pensions, and Student Loan repayment plans.",
+    metaDescription: "Free UK salary & take-home pay calculator (2024/25). Compute HMRC PAYE income tax, 8% Class 1 National Insurance, Student Loan repayments (Plans 1, 2, 4, 5, PG), workplace pensions, and export your monthly payslip schedule to Excel.",
+    answerSummary: "Accurately calculate your 2024/25 UK net take-home salary after HMRC PAYE Income Tax, Class 1 National Insurance (8%), student loans, and salary sacrifice workplace pensions.",
+    badge: "HMRC 2024/25",
+    featured: true,
+    keywords: [
+      "uk salary calculator",
+      "take home pay calculator uk",
+      "paye calculator",
+      "hmrc tax calculator",
+      "uk wage calculator",
+      "national insurance calculator 2024",
+      "student loan repayment calculator uk",
+      "uk salary after tax excel",
+    ],
+    formulaDescription:
+      "Taxable Income = Gross Salary - Pension Contribution - Personal Allowance (£12,570, tapering by £1 for every £2 earned above £100,000). PAYE Tax: 20% on basic rate (£0 - £37,700), 40% on higher rate, 45% on additional rate (> £125,140). Class 1 NI: 8% on £12,570 to £50,270, 2% above £50,270.",
+    about:
+      "Navigating United Kingdom personal taxation requires accounting for recent statutory changes, including the reduction of employee National Insurance to 8%, the Personal Allowance freeze at £12,570, the aggressive 60% effective marginal tax trap between £100,000 and £125,140 due to Personal Allowance tapering, and various Student Loan repayment plans. ConvertSheet's UK Salary Calculator accurately models your HMRC PAYE liabilities, workplace pension contributions, and net monthly take-home pay with zero data retention and instant Excel spreadsheet export.",
+    howTo: [
+      {
+        step: 1,
+        title: "Enter Annual Salary",
+        description:
+          "Type your gross annual base salary before tax in GBP (£) or pick one of the quick presets.",
+      },
+      {
+        step: 2,
+        title: "Configure Pension & Student Loans",
+        description:
+          "Set your pre-tax auto-enrolment workplace pension contribution percentage (0–15%) and choose your Student Loan plan (Plan 1, Plan 2, Plan 4 Scotland, Plan 5, or Postgraduate).",
+      },
+      {
+        step: 3,
+        title: "Inspect Payslip & Export",
+        description:
+          "Review your net annual, monthly, and weekly take-home pay, examine the tax breakdown chart, and export the complete payslip breakdown to Microsoft Excel (.xlsx).",
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the 2024/25 employee National Insurance rate in the UK?",
+        answer:
+          "Following the Spring Budget, the main employee Class 1 National Insurance rate was reduced to 8% on earnings between the Primary Threshold (£12,570/yr or £1,048/mo) and the Upper Earnings Limit (£50,270/yr or £4,189/mo). Earnings above £50,270 are taxed at 2%.",
+      },
+      {
+        question: "How does the £100k Personal Allowance taper work?",
+        answer:
+          "Your £12,570 tax-free Personal Allowance reduces by £1 for every £2 of adjusted net income over £100,000. It reaches zero at £125,140. This creates an effective marginal tax rate of 60% (40% higher rate tax + 20% loss of allowance) on income in this bracket.",
+      },
+      {
+        question: "How are UK Student Loan deductions calculated?",
+        answer:
+          "Repayments are calculated on income above plan-specific statutory thresholds: Plan 1 (9% above £24,990), Plan 2 (9% above £27,295), Plan 4 Scotland (9% above £31,395), Plan 5 (9% above £25,000), and Postgraduate Loans (6% above £21,000).",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: [
+      "salary-calculator",
+      "canada-paycheck-calculator",
+      "australia-pay-calculator",
+      "hourly-to-salary-calculator",
+    ],
+  },
+  "canada-paycheck-calculator": {
+    slug: "canada-paycheck-calculator",
+    name: "Canada Paycheck & Salary Take-Home Calculator",
+    category: "financial",
+    title: "Canada Paycheck & Salary Calculator (2024 CRA Federal & Provincial)",
+    subtitle: "Calculate your Canadian net paycheck across Ontario, British Columbia, Alberta, and Quebec with 2024 CRA tax brackets, CPP/CPP2, EI premiums, and RRSP deductions.",
+    metaDescription: "Free Canada paycheck & salary take-home calculator (2024). Calculate CRA Federal and Provincial income taxes, CPP/CPP2 caps, EI statutory deductions, RRSP tax savings, and export bi-weekly pay stubs to Excel.",
+    answerSummary: "Accurately compute your net Canadian paycheck across Ontario, BC, Alberta, and Quebec. Includes 2024 CRA progressive brackets, Canada Pension Plan (CPP & CPP2 tier), Employment Insurance (EI), and RRSP deductions.",
+    badge: "CRA 2024",
+    featured: true,
+    keywords: [
+      "canada paycheck calculator",
+      "canadian salary calculator",
+      "cra tax calculator",
+      "take home pay ontario",
+      "take home pay bc",
+      "cpp ei deduction calculator",
+      "canadian biweekly paycheck calculator",
+      "canada salary after tax excel",
+    ],
+    formulaDescription:
+      "Net Pay = Gross Pay - Federal Tax - Provincial Tax - CPP/CPP2 - EI - RRSP. CRA Federal Tax: 15% on first $55,867, 20.5% up to $111,733, 26% up to $173,205, 29% up to $246,752, 33% above. Basic Personal Amount non-refundable tax credit applied federally ($15,705) and provincially.",
+    about:
+      "Canadian payroll deductions involve multiple government jurisdictions: the Canada Revenue Agency (CRA) for Federal progressive income tax, provincial ministries of finance (such as Ontario, BC, Alberta, or Revenu Québec), the Canada Pension Plan (with the newly introduced CPP2 second earnings ceiling in 2024), and Employment Insurance (EI) statutory premiums. ConvertSheet's Canada Paycheck Calculator accurately computes each deduction and determines your net bi-weekly, semi-monthly, and annual take-home pay with 1-click Excel export.",
+    howTo: [
+      {
+        step: 1,
+        title: "Input Gross Annual Salary",
+        description:
+          "Type your gross Canadian base salary in CAD ($) or select one of the quick preset buttons.",
+      },
+      {
+        step: 2,
+        title: "Select Province & RRSP Contribution",
+        description:
+          "Choose your province of residence (Ontario, British Columbia, Alberta, or Quebec) and adjust your pre-tax RRSP savings slider.",
+      },
+      {
+        step: 3,
+        title: "Review Pay Schedule & Export",
+        description:
+          "View your bi-weekly (26 pay periods) and semi-monthly (24 pay periods) net paycheck, see the visual tax distribution chart, and download your pay stub summary to Excel (.xlsx).",
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the new CPP2 second earnings ceiling introduced in 2024?",
+        answer:
+          "Starting January 1, 2024, the CRA introduced a second earnings ceiling (CPP2). Employees earning between the maximum pensionable earnings ($68,500) and the additional ceiling ($73,200) contribute an additional 4% (capped at $188.00 in 2024) to enhance future retirement benefits.",
+      },
+      {
+        question: "How do RRSP contributions reduce Canadian income tax?",
+        answer:
+          "Registered Retirement Savings Plan (RRSP) contributions are deducted directly from your gross income prior to calculating both Federal and Provincial income taxes. This lowers your taxable income into lower marginal tax brackets and increases your take-home tax savings.",
+      },
+      {
+        question: "Why do bi-weekly paychecks differ from semi-monthly paychecks in Canada?",
+        answer:
+          "Bi-weekly pay occurs every two weeks, resulting in 26 pay periods per year (including two months with three paychecks). Semi-monthly pay occurs twice per month (e.g. the 15th and last day of the month), resulting in exactly 24 pay periods per year.",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: [
+      "salary-calculator",
+      "uk-salary-calculator",
+      "australia-pay-calculator",
+      "hourly-to-salary-calculator",
+    ],
+  },
+  "australia-pay-calculator": {
+    slug: "australia-pay-calculator",
+    name: "Australia Pay & Salary Take-Home Calculator",
+    category: "financial",
+    title: "Australia Pay & Salary Calculator (2024-25 ATO Stage 3 Tax Cuts)",
+    subtitle: "Calculate your Australian net take-home pay under 2024-25 ATO Stage 3 tax cuts, 2% Medicare levy, 11.5% Superannuation Guarantee, and HELP/HECS debt repayments.",
+    metaDescription: "Free Australia pay & salary take-home calculator (2024-25). Calculate ATO Stage 3 income tax cuts, 2% Medicare levy, 11.5% superannuation guarantee, HELP/HECS student debt repayments, and export fortnightly pay summaries to Excel.",
+    answerSummary: "Accurately calculate your 2024-25 Australian net take-home salary. Features the newly enacted ATO Stage 3 tax cuts, 2% Medicare levy, 11.5% compulsory superannuation guarantee, and statutory HELP/HECS debt repayment tiers.",
+    badge: "ATO 2024-25",
+    featured: true,
+    keywords: [
+      "australia pay calculator",
+      "australian salary calculator",
+      "ato tax calculator 2024-25",
+      "stage 3 tax cuts calculator",
+      "take home pay australia",
+      "hecs repayment calculator",
+      "medicare levy calculator",
+      "australia fortnightly pay calculator",
+    ],
+    formulaDescription:
+      "Stage 3 Tax Cuts (2024-25): $0-$18,200: Nil; $18,201-$45,000: 16%; $45,001-$135,000: 30%; $135,001-$190,000: 37%; >$190,000: 45%. Medicare Levy: 2% of taxable income. Employer Superannuation Guarantee: 11.5% of ordinary time earnings.",
+    about:
+      "From 1 July 2024, the Australian Taxation Office (ATO) enacted the revised Stage 3 tax cuts, significantly restructuring individual income tax brackets: lowering the 19% rate to 16%, expanding the 30% threshold up to $135,000, and adjusting the top thresholds. In addition, employers are legally required to contribute 11.5% into your superannuation fund. ConvertSheet's Australia Pay Calculator models all ATO statutory obligations, HELP/HECS repayment tiers, and Medicare levy charges to provide your exact fortnightly, monthly, and annual take-home pay.",
+    howTo: [
+      {
+        step: 1,
+        title: "Enter Gross Annual Salary",
+        description:
+          "Type your annual base salary in AUD ($) or click one of the quick preset benchmarks ($60k, $90k, $130k, $180k).",
+      },
+      {
+        step: 2,
+        title: "Set Super & Student Debt",
+        description:
+          "Verify the statutory 11.5% Superannuation rate and toggle the HELP / HECS student debt repayment or Medicare levy exemption checkboxes.",
+      },
+      {
+        step: 3,
+        title: "Inspect Fortnightly Pay & Export",
+        description:
+          "Check your net fortnightly pay (26 pay periods standard in Australia), review employer super contributions, and download your full pay summary to Excel (.xlsx).",
+      },
+    ],
+    faqs: [
+      {
+        question: "What are the new ATO Stage 3 tax cuts for 2024-25?",
+        answer:
+          "Effective 1 July 2024, the ATO Stage 3 tax cuts reduced the lowest rate from 19% to 16% (for earnings between $18,200 and $45,000), set the next bracket to 30% (from $45,000 to $135,000), 37% (from $135,000 to $190,000), and 45% for earnings above $190,000.",
+      },
+      {
+        question: "What is the Australian Superannuation Guarantee rate for 2024-25?",
+        answer:
+          "The statutory Superannuation Guarantee (SG) increased to 11.5% on 1 July 2024. Employers must pay this percentage of your ordinary time earnings directly into your chosen super fund on top of your standard base salary.",
+      },
+      {
+        question: "How do HELP / HECS student debt repayments work?",
+        answer:
+          "HELP/HECS repayments are automatically withheld by employers based on your worldwide taxable income. For 2024-25, repayments begin at 1.0% once income exceeds $54,435 and progressively scale up to a maximum rate of 10.0% for incomes of $159,664 and above.",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: [
+      "salary-calculator",
+      "uk-salary-calculator",
+      "canada-paycheck-calculator",
+      "hourly-to-salary-calculator",
+    ],
+  },
 };

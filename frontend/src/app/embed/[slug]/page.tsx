@@ -51,6 +51,9 @@ import { BulkImageCompressor } from "@/components/tools/BulkImageCompressor";
 import { PdfCompressorTool } from "@/components/tools/PdfCompressorTool";
 import { SavingsCdCalculator } from "@/components/tools/SavingsCdCalculator";
 import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
+import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
+import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
+import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
 
 export interface EmbedPageProps {
   params: {
@@ -218,6 +221,9 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
     "annual-to-hourly-calculator": AnnualToHourlyCalculator,
     "debt-payoff-calculator": DebtPayoffCalculator,
     "high-yield-savings-cd-calculator": SavingsCdCalculator,
+    "uk-salary-calculator": UkSalaryCalculator,
+    "canada-paycheck-calculator": CanadaPaycheckCalculator,
+    "australia-pay-calculator": AustraliaPayCalculator,
     "sql-query-studio": SqlStudioTool,
     "sheet-diff-checker": SheetDiffTool,
     "data-anonymizer-cleaner": DataCleanerTool,
