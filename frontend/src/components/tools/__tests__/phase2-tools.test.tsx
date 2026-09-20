@@ -46,11 +46,53 @@ describe("Phase 2 Calculators and Tools", () => {
   });
 
   describe("IncomeTaxCalculator", () => {
-    it("renders income tax calculator with progressive brackets", () => {
-      render(<IncomeTaxCalculator />);
-      expect(screen.getByText(/Income Tax Slab Calculator/i)).toBeInTheDocument();
-      expect(screen.getByText("Total Tax Payable")).toBeInTheDocument();
+    it("renders income tax calculator in US mode by default and computes brackets for Single $100k", () => {
+      render(<IncomeTaxCalculator initialValues={{ grossIncomeUs: 100000, filingStatus: "single" }} />);
+      expect(screen.getByText(/US Federal Income Tax Bracket Calculator/i)).toBeInTheDocument();
+      expect(screen.getByText("Total Federal Tax Payable")).toBeInTheDocument();
+      expect(screen.getByText("$13,841")).toBeInTheDocument();
+      expect(screen.getByText("Net After-Tax Income")).toBeInTheDocument();
+      expect(screen.getByText("$86,159")).toBeInTheDocument();
+      expect(screen.getByText("United States (Federal)")).toBeInTheDocument();
+      expect(screen.getByText("India (FY 2024-25)")).toBeInTheDocument();
       expect(screen.getByText("Export to Excel (.xlsx)")).toBeInTheDocument();
+      expect(screen.getByText("Copy Prompt for ChatGPT")).toBeInTheDocument();
+    });
+
+    it("switches to India mode and computes slab taxes under New Tax Regime", () => {
+      render(
+        <IncomeTaxCalculator
+          initialValues={{
+            regime: "IN",
+            annualIncomeIn: 1500000,
+            standardDeductionIn: 75000,
+            otherDeductionsIn: 50000,
+          }}
+        />
+      );
+      expect(screen.getByText(/Income Tax Slab Calculator \(India FY 2024-25\)/i)).toBeInTheDocument();
+      expect(screen.getByText("Total Tax Payable")).toBeInTheDocument();
+      expect(screen.getByText(/119,600/)).toBeInTheDocument();
+      expect(screen.getByText("Health & Edu Cess (4%)")).toBeInTheDocument();
+      expect(screen.getByText(/4,600/)).toBeInTheDocument();
+    });
+
+    it("allows toggling between US Federal and India slab modes interactively", () => {
+      render(<IncomeTaxCalculator />);
+      // Default is US mode
+      expect(screen.getByText(/US Federal Income Tax Bracket Calculator/i)).toBeInTheDocument();
+      expect(screen.getByText("Total Federal Tax Payable")).toBeInTheDocument();
+
+      // Click India pill
+      fireEvent.click(screen.getByText("India (FY 2024-25)"));
+      expect(screen.getByText(/Income Tax Slab Calculator \(India FY 2024-25\)/i)).toBeInTheDocument();
+      expect(screen.getByText("Total Tax Payable")).toBeInTheDocument();
+      expect(screen.getByText("Health & Edu Cess (4%)")).toBeInTheDocument();
+
+      // Click US pill
+      fireEvent.click(screen.getByText("United States (Federal)"));
+      expect(screen.getByText(/US Federal Income Tax Bracket Calculator/i)).toBeInTheDocument();
+      expect(screen.getByText("Total Federal Tax Payable")).toBeInTheDocument();
     });
   });
 
