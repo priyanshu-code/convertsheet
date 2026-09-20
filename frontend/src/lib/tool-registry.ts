@@ -119,13 +119,13 @@ export const TOOL_REGISTRY = {
     slug: "unix-timestamp-converter",
     name: "Unix Timestamp Converter",
     category: "data-developer",
-    title: "Unix Timestamp Converter - Epoch to Human Date & Time",
-    subtitle: "Convert Unix epoch timestamps (seconds and milliseconds) to UTC and local human-readable calendar dates, or vice versa.",
-    metaDescription: "Free online Unix timestamp converter. Convert epoch seconds and milliseconds to human-readable dates, relative time, and ISO 8601 strings in real-time.",
-    answerSummary: "A Unix timestamp is the total number of seconds that have elapsed since the Unix Epoch on January 1, 1970 00:00:00 UTC, excluding leap seconds.",
+    title: "Unix & Linux Timestamp Converter (Epoch to Human Date) - 100% Private",
+    subtitle: "Instant bidirectional conversion between Unix epoch timestamps (seconds & milliseconds) and human dates. Includes Linux bash commands & ISO 8601 formatting.",
+    metaDescription: "Free online Unix & Linux timestamp converter. Convert epoch seconds and milliseconds to human-readable dates, relative time, and ISO 8601 strings in real-time.",
+    answerSummary: "A Unix epoch timestamp measures seconds elapsed since January 1, 1970 00:00:00 UTC. In Linux terminal bash, convert epoch to date with 'date -d @1700000000' or macOS with 'date -r 1700000000'.",
     badge: "Real-Time",
     featured: false,
-    keywords: ["unix timestamp converter", "epoch to date", "date to epoch", "current unix timestamp", "epoch converter online"],
+    keywords: ["linux timestamp converter", "unix timestamp converter", "epoch to date", "convert epoch linux command", "bash timestamp to date", "iso 8601 epoch", "current unix timestamp"],
     formulaDescription: "Epoch Seconds = (Local Date Time - Jan 1 1970 00:00:00 UTC) / 1000; ISO 8601 strings are formatted with full timezone offset support.",
     about: "Unix epoch time is the standard method for recording dates and events across operating systems, distributed databases, cloud APIs, and log aggregators. ConvertSheet's Unix Timestamp Converter provides a live ticking clock of the current epoch, bidirectional date-to-epoch parsing, and multi-timezone formatting.",
     howTo: [
@@ -134,7 +134,8 @@ export const TOOL_REGISTRY = {
       { step: 3, title: "Copy Timestamps", description: "Copy ISO 8601, RFC 2822, or numeric timestamps with a single click." }
     ],
     faqs: [
-      { question: "What is the Year 2038 problem?", answer: "Systems storing Unix time as signed 32-bit integers will overflow on January 19, 2038. Modern 64-bit systems and JavaScript numbers will not overflow for billions of years." },
+      { question: "How do I convert an epoch timestamp in Linux terminal / bash?", answer: "On GNU/Linux run 'date -d @1700000000' to format epoch seconds. On macOS / BSD terminal run 'date -r 1700000000'. In Python use 'datetime.fromtimestamp(ts)'." },
+      { question: "What is the Year 2038 problem?", answer: "Systems storing Unix time as signed 32-bit integers will overflow on January 19, 2038 at 03:14:07 UTC. Modern 64-bit systems and JavaScript numbers will not overflow for billions of years." },
       { question: "How can I tell if a timestamp is in seconds or milliseconds?", answer: "10-digit timestamps (e.g. 1700000000) are in seconds; 13-digit timestamps (e.g. 1700000000000) are in milliseconds." }
     ],
     relatedConverters: ["csv-to-excel", "excel-to-csv"],

@@ -101,4 +101,29 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
       expect(tool?.faqs.length).toBeGreaterThanOrEqual(2);
     }
   });
+
+  it("verifies high CTR SEO titles and metadata for priority tools", () => {
+    const unixTool = getToolBySlug("unix-timestamp-converter");
+    expect(unixTool).toBeDefined();
+    expect(unixTool?.title).toContain("Unix & Linux Timestamp Converter");
+    expect(unixTool?.keywords).toContain("linux timestamp converter");
+    expect(unixTool?.answerSummary).toMatch(/Linux|terminal|date -d/i);
+    expect(unixTool?.answerSummary).toMatch(/epoch/i);
+    expect(unixTool?.faqs.some((f) => f.question.includes("Linux") || f.answer.includes("date -d"))).toBe(true);
+    expect(unixTool?.faqs.some((f) => f.question.includes("Year 2038"))).toBe(true);
+
+    const salaryTool = getToolBySlug("salary-calculator");
+    expect(salaryTool).toBeDefined();
+    expect(salaryTool?.title).toBe("Salary & Take-Home Pay Calculator (US & India) - Net In-Hand Salary");
+    expect(salaryTool?.keywords).toContain("take home pay calculator");
+    expect(salaryTool?.keywords).toContain("us salary calculator");
+    expect(salaryTool?.keywords).toContain("india salary calculator");
+    expect(salaryTool?.keywords).toContain("in hand salary");
+
+    const taxTool = getToolBySlug("income-tax-calculator");
+    expect(taxTool).toBeDefined();
+    expect(taxTool?.title).toBe("Income Tax Calculator (US Federal & India Slabs) - Instant Tax Bracket Breakdown");
+    expect(taxTool?.keywords).toContain("federal tax calculator");
+    expect(taxTool?.keywords).toContain("india tax calculator");
+  });
 });
