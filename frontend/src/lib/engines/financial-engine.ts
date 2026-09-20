@@ -815,3 +815,141 @@ export function calculateSavingsGrowth(input: SavingsGrowthInput): SavingsGrowth
     monthlySchedule: schedule,
   };
 }
+
+// ==========================================
+// 10. US SALARY & TAKE-HOME ENGINE
+// ==========================================
+
+export interface UsSalaryInput {
+  grossSalary: number;
+  filingStatus?: "single" | "married";
+  k401ContributionPercent?: number; // 0-100%
+  stateTaxPercent?: number; // Estimated state tax rate e.g. 5%
+  pretaxDeductionsMonthly?: number; // Health/Dental/FSA
+}
+
+export interface UsSalaryResult {
+  grossSalary: number;
+  monthlyGross: number;
+  biWeeklyGross: number;
+  socialSecurityTax: number; // 6.2% up to $168,600 wage base cap (2024)
+  medicareTax: number; // 1.45% (+ 0.9% additional for wages > $200,000 single / $250,000 married)
+  k401Deduction: number;
+  federalTaxableIncome: number;
+  federalIncomeTax: number;
+  stateIncomeTax: number;
+  totalAnnualTaxes: number;
+  totalAnnualDeductions: number;
+  netAnnualTakeHome: number;
+  netMonthlyTakeHome: number;
+  netBiWeeklyTakeHome: number;
+  effectiveTaxRate: number;
+}
+
+export function calculateUsSalary(input: UsSalaryInput): UsSalaryResult {
+  const grossSalary = Math.max(0, input.grossSalary || 0);
+  const filingStatus = input.filingStatus || "single";
+  const k401Percent = Math.max(0, Math.min(100, input.k401ContributionPercent || 0));
+  const stateTaxPercent = Math.max(0, Math.min(100, input.stateTaxPercent || 0));
+  const pretaxDeductionsMonthly = Math.max(0, input.pretaxDeductionsMonthly || 0);
+
+  const monthlyGross = roundTo(grossSalary / 12, 2);
+  const biWeeklyGross = roundTo(grossSalary / 26, 2);
+
+  // FICA Taxes
+  // Social Security: 6.2% up to $168,600 wage base cap (2024)
+  const ssWageCap = 168600;
+  const socialSecurityTax = roundTo(Math.min(grossSalary, ssWageCap) * 0.062, 2);
+
+  // Medicare: 1.45% + 0.9% additional for wages > $200k single / $250k married
+  const baseMedicare = grossSalary * 0.0145;
+  const surtaxThreshold = filingStatus === "married" ? 250000 : 200000;
+  const excessIncome = Math.max(0, grossSalary - surtaxThreshold);
+  const surtaxMedicare = excessIncome * 0.009;
+  const medicareTax = roundTo(baseMedicare + surtaxMedicare, 2);
+
+  // 401(k) and Pre-tax deductions
+  const k401Deduction = roundTo(grossSalary * (k401Percent / 100), 2);
+  const annualPretaxDeductions = roundTo(pretaxDeductionsMonthly * 12, 2);
+
+  // Standard deduction 2024
+  const standardDeduction = filingStatus === "married" ? 29200 : 14600;
+
+  // Federal taxable income: gross minus 401k, pretax deductions, and standard deduction
+  const federalTaxableIncome = Math.max(
+    0,
+    roundTo(grossSalary - k401Deduction - annualPretaxDeductions - standardDeduction, 2)
+  );
+
+  // 2024 Federal Tax Brackets
+  const singleBrackets = [
+    { min: 0, max: 11600, rate: 0.10 },
+    { min: 11600, max: 47150, rate: 0.12 },
+    { min: 47150, max: 100525, rate: 0.22 },
+    { min: 100525, max: 191950, rate: 0.24 },
+    { min: 191950, max: 243725, rate: 0.32 },
+    { min: 243725, max: 609350, rate: 0.35 },
+    { min: 609350, max: Infinity, rate: 0.37 },
+  ];
+
+  const marriedBrackets = [
+    { min: 0, max: 23200, rate: 0.10 },
+    { min: 23200, max: 94300, rate: 0.12 },
+    { min: 94300, max: 201050, rate: 0.22 },
+    { min: 201050, max: 383900, rate: 0.24 },
+    { min: 383900, max: 487450, rate: 0.32 },
+    { min: 487450, max: 731200, rate: 0.35 },
+    { min: 731200, max: Infinity, rate: 0.37 },
+  ];
+
+  const brackets = filingStatus === "married" ? marriedBrackets : singleBrackets;
+
+  let federalIncomeTaxCalc = 0;
+  for (const bracket of brackets) {
+    if (federalTaxableIncome > bracket.min) {
+      const taxableInBracket = Math.min(federalTaxableIncome, bracket.max) - bracket.min;
+      federalIncomeTaxCalc += taxableInBracket * bracket.rate;
+    }
+  }
+  const federalIncomeTax = roundTo(federalIncomeTaxCalc, 2);
+
+  // State Tax
+  const stateTaxableIncome = Math.max(0, grossSalary - k401Deduction - annualPretaxDeductions);
+  const stateIncomeTax = roundTo(stateTaxableIncome * (stateTaxPercent / 100), 2);
+
+  const totalAnnualTaxes = roundTo(
+    socialSecurityTax + medicareTax + federalIncomeTax + stateIncomeTax,
+    2
+  );
+  const totalAnnualDeductions = roundTo(
+    totalAnnualTaxes + k401Deduction + annualPretaxDeductions,
+    2
+  );
+  const netAnnualTakeHome = roundTo(
+    Math.max(0, grossSalary - totalAnnualDeductions),
+    2
+  );
+  const netMonthlyTakeHome = roundTo(netAnnualTakeHome / 12, 2);
+  const netBiWeeklyTakeHome = roundTo(netAnnualTakeHome / 26, 2);
+  const effectiveTaxRate =
+    grossSalary > 0 ? roundTo((totalAnnualTaxes / grossSalary) * 100, 2) : 0;
+
+  return {
+    grossSalary,
+    monthlyGross,
+    biWeeklyGross,
+    socialSecurityTax,
+    medicareTax,
+    k401Deduction,
+    federalTaxableIncome,
+    federalIncomeTax,
+    stateIncomeTax,
+    totalAnnualTaxes,
+    totalAnnualDeductions,
+    netAnnualTakeHome,
+    netMonthlyTakeHome,
+    netBiWeeklyTakeHome,
+    effectiveTaxRate,
+  };
+}
+

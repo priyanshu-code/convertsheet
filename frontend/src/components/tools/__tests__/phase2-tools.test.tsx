@@ -9,12 +9,39 @@ import { RoiCalculator } from "../RoiCalculator";
 
 describe("Phase 2 Calculators and Tools", () => {
   describe("SalaryCalculator", () => {
-    it("renders salary calculator and calculates take-home pay", () => {
+    it("renders salary calculator in US mode by default and calculates paycheck", () => {
       render(<SalaryCalculator />);
-      expect(screen.getByText(/Salary & In-Hand Pay Calculator/i)).toBeInTheDocument();
-      expect(screen.getByText("Net In-Hand Paycheck")).toBeInTheDocument();
+      expect(screen.getByText(/Salary & Take-Home Paycheck Calculator/i)).toBeInTheDocument();
+      expect(screen.getByText("Net Monthly Take-Home")).toBeInTheDocument();
+      expect(screen.getByText("Bi-Weekly Take-Home")).toBeInTheDocument();
       expect(screen.getByText("Copy Prompt for ChatGPT")).toBeInTheDocument();
       expect(screen.getByText("Export to Excel (.xlsx)")).toBeInTheDocument();
+      expect(screen.getByText("United States (W-2)")).toBeInTheDocument();
+      expect(screen.getByText("India (CTC / In-Hand)")).toBeInTheDocument();
+    });
+
+    it("switches to India CTC mode and calculates in-hand pay", () => {
+      render(<SalaryCalculator initialValues={{ regime: "IN" }} />);
+      expect(screen.getByText(/Salary & In-Hand Pay Calculator/i)).toBeInTheDocument();
+      expect(screen.getByText("Net In-Hand Paycheck")).toBeInTheDocument();
+      expect(screen.getByText("Monthly EPF")).toBeInTheDocument();
+      expect(screen.getByText("Gross Annual CTC")).toBeInTheDocument();
+    });
+
+    it("allows toggling between US and India modes interactively", () => {
+      render(<SalaryCalculator />);
+      // Defaults to US
+      expect(screen.getByText("Gross Annual Salary")).toBeInTheDocument();
+
+      // Click India pill
+      fireEvent.click(screen.getByText("India (CTC / In-Hand)"));
+      expect(screen.getByText("Gross Annual CTC")).toBeInTheDocument();
+      expect(screen.getByText("Net In-Hand Paycheck")).toBeInTheDocument();
+
+      // Click US pill
+      fireEvent.click(screen.getByText("United States (W-2)"));
+      expect(screen.getByText("Gross Annual Salary")).toBeInTheDocument();
+      expect(screen.getByText("Net Monthly Take-Home")).toBeInTheDocument();
     });
   });
 

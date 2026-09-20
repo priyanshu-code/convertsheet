@@ -8,6 +8,7 @@ import {
   calculateAnnualToHourly,
   calculateDebtPayoff,
   calculateSavingsGrowth,
+  calculateUsSalary,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -263,5 +264,77 @@ describe("financial-engine", () => {
       expect(res.netBalanceAfterEarlyPenalty).toBeLessThan(res.finalBalance);
     });
   });
-});
 
+  describe("calculateUsSalary", () => {
+    it("calculates take-home pay and tax deductions for a standard $100,000 Single salary", () => {
+      const res = calculateUsSalary({
+        grossSalary: 100000,
+        filingStatus: "single",
+        stateTaxPercent: 5,
+        k401ContributionPercent: 0,
+        pretaxDeductionsMonthly: 0,
+      });
+
+      expect(res.grossSalary).toBe(100000);
+      expect(res.monthlyGross).toBeCloseTo(8333.33, 2);
+      expect(res.biWeeklyGross).toBeCloseTo(3846.15, 2);
+      // Social Security: 6.2% of $100k = $6,200
+      expect(res.socialSecurityTax).toBe(6200);
+      // Medicare: 1.45% of $100k = $1,450 (under $200k surtax)
+      expect(res.medicareTax).toBe(1450);
+      // Standard deduction: $14,600 -> Taxable federal: $85,400
+      expect(res.federalTaxableIncome).toBe(85400);
+      // Federal brackets for Single 2024:
+      // 10% on 11,600 = 1,160
+      // 12% on (47,150 - 11,600 = 35,550) = 4,266
+      // 22% on (85,400 - 47,150 = 38,250) = 8,415
+      // Total federal = 1,160 + 4,266 + 8,415 = 13,841
+      expect(res.federalIncomeTax).toBe(13841);
+      // State tax: 5% of $100k = $5,000
+      expect(res.stateIncomeTax).toBe(5000);
+      // Total annual taxes = 6,200 + 1,450 + 13,841 + 5,000 = 26,491
+      expect(res.totalAnnualTaxes).toBe(26491);
+      expect(res.netAnnualTakeHome).toBe(100000 - 26491);
+      expect(res.netMonthlyTakeHome).toBeCloseTo((100000 - 26491) / 12, 2);
+      expect(res.netBiWeeklyTakeHome).toBeCloseTo((100000 - 26491) / 26, 2);
+      expect(res.effectiveTaxRate).toBeCloseTo(26.49, 1);
+    });
+
+    it("applies Additional Medicare Tax surtax and Social Security wage cap for high earners", () => {
+      const res = calculateUsSalary({
+        grossSalary: 300000,
+        filingStatus: "single",
+        stateTaxPercent: 0,
+        k401ContributionPercent: 0,
+      });
+
+      // SS wage cap $168,600: 168600 * 0.062 = 10,453.20
+      expect(res.socialSecurityTax).toBe(10453.2);
+      // Medicare: 1.45% of 300k = 4,350 + 0.9% on (300k - 200k = 100k) = 900 -> 5,250
+      expect(res.medicareTax).toBe(5250);
+      expect(res.federalTaxableIncome).toBe(300000 - 14600);
+    });
+
+    it("reduces taxable income when 401(k) and pre-tax deductions are present", () => {
+      const withoutPretax = calculateUsSalary({
+        grossSalary: 120000,
+        filingStatus: "single",
+        k401ContributionPercent: 0,
+        pretaxDeductionsMonthly: 0,
+      });
+
+      const withPretax = calculateUsSalary({
+        grossSalary: 120000,
+        filingStatus: "single",
+        k401ContributionPercent: 10, // $12,000
+        pretaxDeductionsMonthly: 500, // $6,000/yr
+      });
+
+      expect(withPretax.k401Deduction).toBe(12000);
+      expect(withPretax.federalTaxableIncome).toBe(withoutPretax.federalTaxableIncome - 18000);
+      expect(withPretax.federalIncomeTax).toBeLessThan(withoutPretax.federalIncomeTax);
+      expect(withPretax.totalAnnualDeductions).toBeGreaterThan(withPretax.totalAnnualTaxes);
+    });
+  });
+
+});
