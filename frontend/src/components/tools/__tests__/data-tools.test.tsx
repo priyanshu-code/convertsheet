@@ -57,6 +57,46 @@ describe("Data & Developer Tools Suite", () => {
     expect(screen.getByText("Converted Calendar Date")).toBeInTheDocument();
   });
 
+  it("UnixTimestampTool renders Linux bash commands and developer CLI helpers with interactive copy buttons", () => {
+    render(<UnixTimestampTool />);
+    
+    // Check for developer/terminal helper section
+    expect(screen.getByText(/Developer & Linux Terminal Helper/i)).toBeInTheDocument();
+    
+    // Check for Linux bash convert epoch command with default active epoch
+    expect(screen.getByText(/Linux Bash \(Convert Epoch → Date\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/date \+%s/i)).toBeInTheDocument();
+    expect(screen.getByText(/macOS \/ BSD Terminal/i)).toBeInTheDocument();
+    expect(screen.getByText(/Python 3/i)).toBeInTheDocument();
+    expect(screen.getByText(/JavaScript \/ Node\.js/i)).toBeInTheDocument();
+
+    // Change timestamp to 1700000000
+    const input = screen.getByLabelText(/Unix Epoch Timestamp/i);
+    fireEvent.change(input, { target: { value: "1700000000" } });
+
+    // Verify commands updated to use 1700000000
+    expect(screen.getByText("date -d @1700000000")).toBeInTheDocument();
+    expect(screen.getByText("date -r 1700000000")).toBeInTheDocument();
+    expect(screen.getByText("from datetime import datetime; datetime.fromtimestamp(1700000000)")).toBeInTheDocument();
+    expect(screen.getByText("new Date(1700000000 * 1000).toISOString()")).toBeInTheDocument();
+
+    // Verify copy buttons are present
+    const copyButtons = screen.getAllByRole("button", { name: /copy/i });
+    expect(copyButtons.length).toBeGreaterThanOrEqual(5);
+
+    // Test millisecond input handling (13 digits: 1700000000000 -> 1700000000)
+    fireEvent.change(input, { target: { value: "1700000000000" } });
+    expect(screen.getByText("date -d @1700000000")).toBeInTheDocument();
+
+    // Test dateToEpoch mode updates CLI snippets
+    const dateToggle = screen.getByRole("button", { name: "Human Date → Timestamp" });
+    fireEvent.click(dateToggle);
+    const dateInput = screen.getByLabelText(/Pick Date & Time/i);
+    fireEvent.change(dateInput, { target: { value: "2023-11-14T22:13" } });
+    const expectedSec = Math.floor(new Date("2023-11-14T22:13").getTime() / 1000);
+    expect(screen.getByText(`date -d @${expectedSec}`)).toBeInTheDocument();
+  });
+
   it("ColorCodeTool converts HEX to RGB and HSL", () => {
     render(<ColorCodeTool />);
     expect(screen.getByText(/Color Code Converter/i)).toBeInTheDocument();

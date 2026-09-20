@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Clock, RefreshCw } from "lucide-react";
 import {
   CalcCard,
+  CalcCopyButton,
   CalcInput,
   CalcResult,
   CalcToggle,
@@ -164,6 +165,88 @@ export function UnixTimestampTool() {
           )}
         </div>
       )}
+
+      {/* Developer & Linux Terminal Helper Cheatsheet */}
+      {(() => {
+        const activeEpochSec =
+          mode === "epochToDate"
+            ? Number(inputEpoch) > 9999999999
+              ? Math.floor(Number(inputEpoch) / 1000)
+              : Number(inputEpoch) || currentEpoch
+            : Number(dateConversion.seconds) || currentEpoch;
+
+        const cliSnippets = [
+          {
+            title: "Linux Bash (Convert Epoch → Date)",
+            command: `date -d @${activeEpochSec}`,
+            description: "GNU date utility standard in Ubuntu, Debian, CentOS, Fedora, and WSL.",
+          },
+          {
+            title: "Linux / macOS (Current Date → Epoch)",
+            command: "date +%s",
+            description: "Prints the current Unix timestamp in seconds.",
+          },
+          {
+            title: "macOS / BSD Terminal (Epoch → Date)",
+            command: `date -r ${activeEpochSec}`,
+            description: "BSD date command default on macOS Terminal and FreeBSD.",
+          },
+          {
+            title: "Python 3",
+            command: `from datetime import datetime; datetime.fromtimestamp(${activeEpochSec})`,
+            description: "Converts Unix epoch timestamp into a local datetime object.",
+          },
+          {
+            title: "JavaScript / Node.js",
+            command: `new Date(${activeEpochSec} * 1000).toISOString()`,
+            description: "Instantiates Date from milliseconds and formats to ISO-8601 UTC string.",
+          },
+        ];
+
+        return (
+          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40 p-5 sm:p-6 space-y-4">
+            <div className="flex items-center justify-between gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
+                  Developer & Linux Terminal Helper
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  Ready-to-use CLI and programming snippets for epoch{" "}
+                  <code className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 font-mono text-[11px]">
+                    {activeEpochSec}
+                  </code>
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {cliSnippets.map((snippet, idx) => (
+                <div
+                  key={idx}
+                  className="p-3 sm:p-4 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors shadow-xs"
+                >
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+                        {snippet.title}
+                      </span>
+                    </div>
+                    <div className="font-mono text-xs sm:text-sm text-emerald-600 dark:text-emerald-400 bg-zinc-50 dark:bg-zinc-900/90 px-2.5 py-1.5 rounded-lg border border-zinc-200/60 dark:border-zinc-700/60 break-all select-all">
+                      {snippet.command}
+                    </div>
+                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                      {snippet.description}
+                    </p>
+                  </div>
+                  <div className="shrink-0 self-end sm:self-center">
+                    <CalcCopyButton textToCopy={snippet.command} label="Copy" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
     </CalcCard>
   );
 }
