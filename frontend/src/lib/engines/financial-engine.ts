@@ -995,11 +995,11 @@ export function calculateUkSalary(input: UkSalaryInput): UkSalaryResult {
   const pensionContribution = roundTo(grossSalary * (pensionPercent / 100), 2);
   const netSalaryAfterPension = Math.max(0, grossSalary - pensionContribution);
 
-  // Personal Allowance (£12,570, tapered by £1 for every £2 of income above £100,000)
+  // Personal Allowance (£12,570, tapered by £1 for every £2 of adjusted net income above £100,000)
   const baseAllowance = 12570;
   let personalAllowance = baseAllowance;
-  if (grossSalary > 100000) {
-    const reduction = (grossSalary - 100000) / 2;
+  if (netSalaryAfterPension > 100000) {
+    const reduction = (netSalaryAfterPension - 100000) / 2;
     personalAllowance = Math.max(0, baseAllowance - reduction);
   }
   personalAllowance = roundTo(personalAllowance, 2);
@@ -1008,23 +1008,24 @@ export function calculateUkSalary(input: UkSalaryInput): UkSalaryResult {
   const taxableIncome = Math.max(0, roundTo(netSalaryAfterPension - personalAllowance, 2));
 
   // UK Income Tax Brackets (2024/25 England/Wales/NI rates)
-  // Basic: 20% on income between personal allowance and £50,270
-  // Higher: 40% on income between £50,270 and £125,140
+  // Basic: 20% on the first £37,700 of taxable income above personal allowance
+  // Higher: 40% on taxable income between £37,700 and £125,140
   // Additional: 45% on income above £125,140
   let incomeTax = 0;
   if (netSalaryAfterPension > personalAllowance) {
-    const basicBandLimit = 50270;
-    const higherBandLimit = 125140;
+    const basicBandWidth = 37700;
+    const basicBandLimit = personalAllowance + basicBandWidth;
+    const additionalThreshold = 125140;
 
     const incomeInBasic = Math.min(
       Math.max(0, netSalaryAfterPension - personalAllowance),
-      Math.max(0, basicBandLimit - personalAllowance)
+      basicBandWidth
     );
     const incomeInHigher = Math.min(
       Math.max(0, netSalaryAfterPension - basicBandLimit),
-      Math.max(0, higherBandLimit - basicBandLimit)
+      Math.max(0, additionalThreshold - basicBandLimit)
     );
-    const incomeInAdditional = Math.max(0, netSalaryAfterPension - higherBandLimit);
+    const incomeInAdditional = Math.max(0, netSalaryAfterPension - additionalThreshold);
 
     incomeTax =
       incomeInBasic * 0.2 +
@@ -1183,7 +1184,10 @@ export function calculateCanadaSalary(input: CanadaSalaryInput): CanadaSalaryRes
   if (province === "QC") {
     federalTax = federalTax * (1 - 0.165);
   }
-  federalTax = roundTo(federalTax, 2);
+
+  // Federal Basic Personal Amount (BPA) non-refundable tax credit (15% on $15,705 = $2,355.75)
+  const federalBpaCredit = 15705 * 0.15;
+  federalTax = Math.max(0, roundTo(federalTax - federalBpaCredit, 2));
 
   // Provincial Tax Brackets 2024
   const provincialBracketsMap: Record<
@@ -1229,7 +1233,17 @@ export function calculateCanadaSalary(input: CanadaSalaryInput): CanadaSalaryRes
       provincialTax += chunk * b.rate;
     }
   }
-  provincialTax = roundTo(provincialTax, 2);
+
+  // Provincial Basic Personal Amount (BPA) credits
+  const provincialBpaMap: Record<"ON" | "BC" | "AB" | "QC", { amount: number; rate: number }> = {
+    ON: { amount: 12399, rate: 0.0505 },
+    BC: { amount: 12580, rate: 0.0506 },
+    AB: { amount: 21885, rate: 0.10 },
+    QC: { amount: 18056, rate: 0.14 },
+  };
+  const provBpa = provincialBpaMap[province] || provincialBpaMap.ON;
+  const provBpaCredit = provBpa.amount * provBpa.rate;
+  provincialTax = Math.max(0, roundTo(provincialTax - provBpaCredit, 2));
 
   const totalDeductions = roundTo(
     federalTax + provincialTax + cppContribution + eiContribution + rrspDeduction,

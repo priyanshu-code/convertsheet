@@ -386,11 +386,10 @@ describe("financial-engine", () => {
       expect(res.personalAllowance).toBe(2570);
       expect(res.taxableIncome).toBe(120000 - 2570); // 117430
 
-      // Income Tax:
-      // Basic band: (50270 - 2570) = 47700 @ 20% = 9540
-      // Higher band: (120000 - 50270) = 69730 @ 40% = 27892
-      // Total income tax: 9540 + 27892 = 37432
-      expect(res.incomeTax).toBe(37432);
+      // Basic band is £37,700 above Personal Allowance (£2,570 to £40,270) @ 20% = £7,540
+      // Higher band is (£120,000 - £40,270) = £79,730 @ 40% = £31,892
+      // Total income tax: 7540 + 31892 = 39432 (correctly reflecting 60% marginal trap)
+      expect(res.incomeTax).toBe(39432);
 
       // NI: 8% on (50270 - 12570 = 37700) = 3016; 2% on (120000 - 50270 = 69730) = 1394.60 -> 4410.60
       expect(res.nationalInsurance).toBe(4410.6);
@@ -418,15 +417,15 @@ describe("financial-engine", () => {
       // EI: 80000 capped at 63200 * 0.0166 = 1049.12 (max)
       expect(res.eiContribution).toBe(1049.12);
 
-      // Federal tax:
-      // 15% on 55867 = 8380.05
-      // 20.5% on (80000 - 55867 = 24133) = 4947.265 -> 13327.315 -> 13327.32
-      expect(res.federalTax).toBeCloseTo(13327.32, 2);
+      // Federal tax after Basic Personal Amount (BPA $15,705 @ 15% = $2,355.75):
+      // Gross federal tax: 8380.05 + 4947.265 = 13327.315
+      // Net federal tax: 13327.315 - 2355.75 = 10971.565 -> 10971.57
+      expect(res.federalTax).toBeCloseTo(10971.57, 2);
 
-      // Ontario provincial tax:
-      // 5.05% on 51446 = 2598.023
-      // 9.15% on (80000 - 51446 = 28554) = 2612.691 -> 5210.714 -> 5210.71
-      expect(res.provincialTax).toBeCloseTo(5210.71, 2);
+      // Ontario provincial tax after BPA ($12,399 @ 5.05% = $626.15):
+      // Gross provincial tax: 2598.023 + 2612.691 = 5210.714
+      // Net provincial tax: 5210.714 - 626.15 = 4584.564 -> 4584.56
+      expect(res.provincialTax).toBeCloseTo(4584.56, 2);
 
       expect(res.totalDeductions).toBeCloseTo(
         res.federalTax + res.provincialTax + res.cppContribution + res.eiContribution,
