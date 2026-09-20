@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { UkSalaryCalculator } from "../UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "../CanadaPaycheckCalculator";
+import { AustraliaPayCalculator } from "../AustraliaPayCalculator";
 
 describe("UkSalaryCalculator UI Component", () => {
   it("renders UK Salary Calculator with £ symbol and 2024/25 HMRC metadata", () => {
@@ -176,6 +177,126 @@ describe("CanadaPaycheckCalculator UI Component", () => {
     expect(screen.getByRole("link", { name: /Australia Pay/i })).toHaveAttribute(
       "href",
       "/tools/australia-pay-calculator"
+    );
+  });
+});
+
+
+describe("AustraliaPayCalculator UI Component", () => {
+  it("renders Australia Pay Calculator with $ AUD symbol, ATO 2024-25 Stage 3 badge, and $90,000 default", () => {
+    render(<AustraliaPayCalculator />);
+
+    expect(
+      screen.getByText(/Australia Pay & Salary Take-Home Calculator/i)
+    ).toBeInTheDocument();
+    expect(screen.getAllByText(/ATO 2024-25 Stage 3/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("$")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Gross Annual Salary/i)).toHaveValue(90000);
+    expect(screen.getByText(/Net Fortnightly Take-Home/i)).toBeInTheDocument();
+  });
+
+  it("calculates take-home pay for $95,000 salary under Stage 3 tax cuts (no HELP debt, standard 11.5% super)", () => {
+    render(
+      <AustraliaPayCalculator
+        initialValues={{
+          grossSalary: 95000,
+          superannuationPercent: 11.5,
+          hasHelpDebt: false,
+          medicareExempt: false,
+        }}
+      />
+    );
+
+    // Gross: $95,000
+    // Income Tax: 18200-45000 @ 16% = $4,288; 45000-95000 = 50000 @ 30% = $15,000 -> Total Tax = $19,288.00
+    // Medicare Levy: 2% on 95,000 = $1,900.00
+    // Total deductions = $21,188.00
+    // Net Annual Take Home = $73,812.00
+    // Net Monthly Take Home = $6,151.00
+    // Net Fortnightly Take Home = $2,838.92
+    // Net Weekly Take Home = $1,419.46
+    // Employer Superannuation (11.5%) = $10,925.00
+    expect(screen.getByText("$2,838.92")).toBeInTheDocument();
+    expect(screen.getByText("$73,812.00")).toBeInTheDocument();
+    expect(screen.getByText("$6,151.00")).toBeInTheDocument();
+    expect(screen.getByText("$1,419.46")).toBeInTheDocument();
+    expect(screen.getByText("$19,288.00")).toBeInTheDocument();
+    expect(screen.getByText("$1,900.00")).toBeInTheDocument();
+    expect(screen.getByText("$10,925.00")).toBeInTheDocument();
+  });
+
+  it("updates output when HELP/HECS debt is toggled ON", () => {
+    render(
+      <AustraliaPayCalculator
+        initialValues={{
+          grossSalary: 95000,
+          superannuationPercent: 11.5,
+          hasHelpDebt: false,
+          medicareExempt: false,
+        }}
+      />
+    );
+
+    expect(screen.getByText("$2,838.92")).toBeInTheDocument();
+
+    // Toggle HELP/HECS debt ON
+    const helpToggle = screen.getByLabelText(/HELP \/ HECS Student Debt/i);
+    fireEvent.click(helpToggle);
+
+    // For $95,000, tier >= 94504 is 5.5% = $5,225.00 repayment
+    // Total deductions = 21,188 + 5,225 = $26,413.00
+    // Net Annual = $68,587.00
+    // Net Fortnightly = 68587 / 26 = $2,637.96
+    expect(screen.getByText("$5,225.00")).toBeInTheDocument();
+    expect(screen.getByText("$2,637.96")).toBeInTheDocument();
+    expect(screen.getByText("$68,587.00")).toBeInTheDocument();
+  });
+
+  it("updates output when Superannuation rate or Medicare exempt is changed", () => {
+    render(
+      <AustraliaPayCalculator
+        initialValues={{
+          grossSalary: 95000,
+          superannuationPercent: 11.5,
+          hasHelpDebt: false,
+          medicareExempt: false,
+        }}
+      />
+    );
+
+    expect(screen.getByText("$10,925.00")).toBeInTheDocument();
+
+    // Change superannuation slider to 12% ($11,400.00)
+    const superSlider = screen.getByLabelText(/Employer Superannuation Guarantee/i);
+    fireEvent.change(superSlider, { target: { value: "12" } });
+    expect(screen.getByText("$11,400.00")).toBeInTheDocument();
+
+    // Toggle Medicare exempt ON
+    const exemptCheckbox = screen.getByLabelText(/Exempt from 2% Medicare Levy/i);
+    fireEvent.click(exemptCheckbox);
+
+    // When Medicare exempt is ON:
+    // Total deductions = Income Tax ($19,288.00)
+    // Net Annual = 95,000 - 19,288 = $75,712.00
+    // Net Fortnightly = 75,712 / 26 = $2,912.00
+    expect(screen.getByText("$75,712.00")).toBeInTheDocument();
+    expect(screen.getByText("$2,912.00")).toBeInTheDocument();
+  });
+
+  it("renders country cross-link navigation hub", () => {
+    render(<AustraliaPayCalculator />);
+
+    expect(screen.getByRole("link", { name: /US Paycheck/i })).toHaveAttribute(
+      "href",
+      "/tools/salary-calculator"
+    );
+    expect(screen.getByRole("link", { name: /UK Salary/i })).toHaveAttribute(
+      "href",
+      "/tools/uk-salary-calculator"
+    );
+    expect(screen.getByRole("link", { name: /Canada Paycheck/i })).toHaveAttribute(
+      "href",
+      "/tools/canada-paycheck-calculator"
     );
   });
 });
