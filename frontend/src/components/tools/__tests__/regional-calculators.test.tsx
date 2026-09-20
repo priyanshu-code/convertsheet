@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { UkSalaryCalculator } from "../UkSalaryCalculator";
+import { CanadaPaycheckCalculator } from "../CanadaPaycheckCalculator";
 
 describe("UkSalaryCalculator UI Component", () => {
   it("renders UK Salary Calculator with £ symbol and 2024/25 HMRC metadata", () => {
@@ -73,6 +74,104 @@ describe("UkSalaryCalculator UI Component", () => {
     expect(screen.getByRole("link", { name: /Canada Paycheck/i })).toHaveAttribute(
       "href",
       "/tools/canada-paycheck-calculator"
+    );
+    expect(screen.getByRole("link", { name: /Australia Pay/i })).toHaveAttribute(
+      "href",
+      "/tools/australia-pay-calculator"
+    );
+  });
+});
+
+describe("CanadaPaycheckCalculator UI Component", () => {
+  it("renders Canada Paycheck Calculator with $ CAD symbol, CRA 2024 badge, and Ontario default", () => {
+    render(<CanadaPaycheckCalculator />);
+
+    expect(
+      screen.getByText(/Canada Paycheck & Salary Take-Home Calculator/i)
+    ).toBeInTheDocument();
+    expect(screen.getAllByText(/CRA 2024/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("$")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Gross Annual Salary/i)).toHaveValue(85000);
+    expect(screen.getByLabelText(/Province \/ Territory/i)).toHaveValue("ON");
+    expect(screen.getByText(/Net Bi-Weekly Take-Home/i)).toBeInTheDocument();
+  });
+
+  it("calculates take-home pay for $85,000 salary in Ontario", () => {
+    render(
+      <CanadaPaycheckCalculator
+        initialValues={{
+          grossSalary: 85000,
+          province: "ON",
+          rrspContributionPercent: 0,
+        }}
+      />
+    );
+
+    // 85k in Ontario (2024):
+    // Federal tax: $11,996.57
+    // Provincial tax: $5,042.06
+    // CPP/CPP2: $4,055.50
+    // EI: $1,049.12
+    // Total deductions: $22,143.25
+    // Net Annual: $62,856.75
+    // Net Bi-Weekly (26): $2,417.57
+    // Net Semi-Monthly (24): $2,619.03
+    expect(screen.getByText("$2,417.57")).toBeInTheDocument();
+    expect(screen.getByText("$62,856.75")).toBeInTheDocument();
+    expect(screen.getByText("$11,996.57")).toBeInTheDocument();
+    expect(screen.getByText("$5,042.06")).toBeInTheDocument();
+    expect(screen.getByText("$4,055.50")).toBeInTheDocument();
+    expect(screen.getByText("$1,049.12")).toBeInTheDocument();
+  });
+
+  it("updates output when province changes (e.g. to BC or AB) and when RRSP contribution is added", () => {
+    render(
+      <CanadaPaycheckCalculator
+        initialValues={{
+          grossSalary: 85000,
+          province: "ON",
+          rrspContributionPercent: 0,
+        }}
+      />
+    );
+
+    expect(screen.getByText("$2,417.57")).toBeInTheDocument();
+
+    // Change province to British Columbia (BC)
+    const provinceSelect = screen.getByLabelText(/Province \/ Territory/i);
+    fireEvent.change(provinceSelect, { target: { value: "BC" } });
+
+    // BC provincial tax is lower ($4,642.92 vs $5,042.06 in ON), net bi-weekly is $2,432.92
+    expect(screen.getByText("$2,432.92")).toBeInTheDocument();
+    expect(screen.getByText("$4,642.92")).toBeInTheDocument();
+
+    // Change province to Alberta (AB)
+    fireEvent.change(provinceSelect, { target: { value: "AB" } });
+
+    // AB provincial tax is $6,311.50, net bi-weekly is $2,368.74
+    expect(screen.getByText("$2,368.74")).toBeInTheDocument();
+    expect(screen.getByText("$6,311.50")).toBeInTheDocument();
+
+    // Switch back to ON and add 10% RRSP contribution ($8,500 pre-tax deduction)
+    fireEvent.change(provinceSelect, { target: { value: "ON" } });
+    const rrspSlider = screen.getByLabelText(/RRSP Contribution/i);
+    fireEvent.change(rrspSlider, { target: { value: "10" } });
+
+    // With 10% RRSP ($8,500), Net Bi-Weekly is $2,187.58, RRSP deduction is $8,500.00
+    expect(screen.getByText("$2,187.58")).toBeInTheDocument();
+    expect(screen.getByText("$8,500.00")).toBeInTheDocument();
+  });
+
+  it("renders country cross-link navigation hub", () => {
+    render(<CanadaPaycheckCalculator />);
+
+    expect(screen.getByRole("link", { name: /US Paycheck/i })).toHaveAttribute(
+      "href",
+      "/tools/salary-calculator"
+    );
+    expect(screen.getByRole("link", { name: /UK Salary/i })).toHaveAttribute(
+      "href",
+      "/tools/uk-salary-calculator"
     );
     expect(screen.getByRole("link", { name: /Australia Pay/i })).toHaveAttribute(
       "href",
