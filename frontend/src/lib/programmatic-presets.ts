@@ -2856,6 +2856,150 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         "answer": "Overpaying £200/month from month one saves approximately £38,400 in interest and reduces your mortgage term by 2 years and 9 months."
       }
     ]
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "us-take-home-100k",
+    name: "$100k Salary Take-Home Pay Calculator (US)",
+    title: "$100k Salary Take-Home Pay Calculator - Net Monthly & Bi-Weekly Paycheck",
+    metaDescription: "Calculate take-home pay on a $100,000 annual salary. Exact breakdown of federal tax, FICA (Social Security & Medicare), state tax, and net paycheck.",
+    answerSummary: "On a $100,000 gross salary in the US for a single filer, your estimated net take-home pay is approximately $74,800 per year ($6,233 monthly or $2,877 bi-weekly). Total deductions include roughly $13,610 in federal income tax, $7,650 in FICA (Social Security and Medicare), and state tax depending on your location.",
+    about: "Calculate your net take-home pay on a six-figure $100,000 base salary. This preset models 2024 IRS tax brackets for single filers, mandatory FICA payroll deductions (6.2% Social Security and 1.45% Medicare), and estimated state income tax withholding so you can budget your monthly cash flow with precision.",
+    initialValues: {
+      regime: "US",
+      grossSalary: 100000,
+      filingStatus: "single",
+      stateTaxPercent: 5,
+    },
+    faqs: [
+      {
+        question: "What is the take-home pay on a $100k salary in the US?",
+        answer: "For a single filer with standard deductions and an average 5% state income tax, take-home pay on $100,000 is approximately $74,800 annually, or about $6,233 per month ($2,877 bi-weekly).",
+      },
+      {
+        question: "How much tax is deducted from a $100,000 paycheck?",
+        answer: "A $100,000 salary typically incurs about $13,610 in federal income tax, $6,200 in Social Security tax (6.2%), $1,450 in Medicare tax (1.45%), and approximately $5,000 in state income tax, totaling roughly $26,260 in total deductions.",
+      },
+      {
+        question: "What is the bi-weekly paycheck for $100,000 a year?",
+        answer: "Assuming 26 pay periods per year, a $100,000 salary yields a gross bi-weekly paycheck of $3,846 and an estimated net take-home paycheck of approximately $2,877.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "us-take-home-75k",
+    name: "$75k Salary Take-Home Pay Calculator (US)",
+    title: "$75k Salary Take-Home Pay Calculator - Net Monthly & Bi-Weekly Paycheck",
+    metaDescription: "Calculate take-home pay on a $75,000 annual salary after US federal tax, FICA, state deductions, and 401(k).",
+    answerSummary: "On a $75,000 annual salary in the US for a single filer, your estimated net take-home pay is roughly $58,350 per year ($4,863 per month or $2,244 bi-weekly). Deductions include approximately $8,110 in federal income tax, $5,738 in FICA taxes, and state income tax.",
+    about: "Evaluate your net earnings on a $75,000 salary across bi-weekly and monthly pay schedules. Factor in federal income tax with the 2024 standard deduction ($14,600 for single filers), FICA payroll contributions, state taxes, and optional pre-tax retirement deductions.",
+    initialValues: {
+      regime: "US",
+      grossSalary: 75000,
+      filingStatus: "single",
+      stateTaxPercent: 5,
+    },
+    faqs: [
+      {
+        question: "How much do you take home on a $75k salary?",
+        answer: "After federal income taxes, FICA (Social Security & Medicare), and an estimated 5% state tax, a single filer takes home approximately $58,350 annually, which is about $4,863 per month or $2,244 bi-weekly.",
+      },
+      {
+        question: "What is the hourly rate equivalent of a $75,000 salary?",
+        answer: "Based on a standard 40-hour work week (2,080 working hours per year), a $75,000 annual salary is equivalent to $36.06 per hour before taxes.",
+      },
+      {
+        question: "How much federal tax do I owe on $75,000?",
+        answer: "With the $14,600 standard deduction (2024 tax year), your taxable income is $60,400, resulting in an effective federal income tax liability of approximately $8,110.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "india-in-hand-12-lakh",
+    name: "₹12 Lakh CTC In-Hand Salary Calculator (India)",
+    title: "₹12 Lakh CTC In-Hand Salary Calculator - Monthly Net Pay (FY 2024-25)",
+    metaDescription: "Calculate monthly in-hand salary for ₹12 LPA CTC in India. Detailed deductions for EPF, professional tax, and New Regime income tax.",
+    answerSummary: "For a ₹12,00,000 (12 LPA) CTC in India under the New Tax Regime (FY 2024-25), estimated monthly in-hand salary is approximately ₹84,200 to ₹86,000. Key monthly deductions include ₹6,000 for EPF (12% of basic), ₹200 professional tax, and approximately ₹5,800 to ₹7,800 in monthly income tax TDS.",
+    about: "Understand the exact difference between gross CTC and net in-hand monthly credit for a ₹12 Lakh per annum salary package in India. This preset accounts for the revised Budget 2024 New Tax Regime slabs, ₹75,000 standard deduction, employee PF contributions, and statutory professional tax.",
+    initialValues: {
+      regime: "IN",
+      annualCtc: 1200000,
+      epfPercent: 12,
+      professionalTaxMonthly: 200,
+    },
+    faqs: [
+      {
+        question: "What is the in-hand salary for a 12 LPA CTC in India?",
+        answer: "Under the FY 2024-25 New Tax Regime, net monthly in-hand salary for a 12 LPA CTC is typically between ₹84,000 and ₹86,500 after deductions for EPF (₹72,000/yr), professional tax (₹2,400/yr), and income tax TDS.",
+      },
+      {
+        question: "How much tax is deducted on a 12 Lakh salary under the New Regime?",
+        answer: "After applying the ₹75,000 standard deduction and ₹2,400 professional tax deduction, taxable income is ₹11,22,600. The calculated annual income tax including 4% cess is approximately ₹77,500 (approx. ₹6,458/month).",
+      },
+      {
+        question: "How is EPF calculated on a 12 LPA CTC?",
+        answer: "Assuming basic pay is 50% of CTC (₹6,00,000 annually), the employee EPF contribution at 12% is ₹72,000 per year or ₹6,000 per month.",
+      },
+    ],
+  },
+  {
+    toolSlug: "income-tax-calculator",
+    presetSlug: "us-federal-tax-single",
+    name: "US Federal Income Tax Calculator (Single Filer)",
+    title: "US Federal Income Tax Calculator - Single Filer Tax Brackets & Rate",
+    metaDescription: "Calculate federal income tax liability for single filers with 2024 IRS standard deduction and progressive tax brackets.",
+    answerSummary: "On a $100,000 gross income for a single filer in 2024, the statutory standard deduction is $14,600, leaving taxable income of $85,400. Total federal income tax liability is approximately $13,885, resulting in an effective tax rate of 13.89% and a top marginal bracket of 22%.",
+    about: "Calculate your progressive federal income tax liability as an individual single filer. Evaluates all 7 IRS tax brackets (10%, 12%, 22%, 24%, 32%, 35%, 37%), applies the standard deduction ($14,600 for 2024), and computes your effective vs marginal tax rates.",
+    initialValues: {
+      regime: "US",
+      grossIncomeUs: 100000,
+      filingStatus: "single",
+    },
+    faqs: [
+      {
+        question: "What is the standard deduction for a single filer in 2024?",
+        answer: "The IRS standard deduction for single filers in tax year 2024 is $14,600, up from $13,850 in 2023.",
+      },
+      {
+        question: "What tax bracket does a $100k single filer fall into?",
+        answer: "A single filer making $100,000 with the standard deduction has $85,400 in taxable income, placing them in the 22% marginal tax bracket ($47,151 to $100,525).",
+      },
+      {
+        question: "What is the difference between marginal and effective tax rate?",
+        answer: "The marginal tax rate is the percentage paid on the last dollar of income (22% for $100k), whereas the effective tax rate is total tax divided by total gross income (approx 13.89%).",
+      },
+    ],
+  },
+  {
+    toolSlug: "income-tax-calculator",
+    presetSlug: "india-tax-new-regime",
+    name: "India Income Tax Calculator (Budget 2024 New Regime)",
+    title: "India Income Tax Calculator - New Regime Slabs & 87A Rebate",
+    metaDescription: "Calculate Indian income tax under Budget 2024 New Tax Regime with ₹75,000 standard deduction and Section 87A rebate.",
+    answerSummary: "Under the Budget 2024 revised New Tax Regime (Section 115BAC), income up to ₹3,00,000 is tax-free, and taxable income up to ₹7,00,000 receives full rebate under Section 87A. On ₹15,00,000 annual income with ₹75,000 standard deduction, net tax liability with 4% cess is approximately ₹1,40,400 (effective rate ~9.36%).",
+    about: "Model your tax liability under India's updated New Tax Regime introduced in Budget 2024. Includes the enhanced ₹75,000 standard deduction for salaried individuals, updated progressive tax slabs, Section 87A rebate, and 4% Health & Education Cess.",
+    initialValues: {
+      regime: "IN",
+      annualIncomeIn: 1500000,
+      standardDeductionIn: 75000,
+      otherDeductionsIn: 0,
+    },
+    faqs: [
+      {
+        question: "What are the new tax slabs under Budget 2024?",
+        answer: "The revised slabs are: Nil up to ₹3 Lakh, 5% from ₹3L to ₹7L, 10% from ₹7L to ₹10L, 15% from ₹10L to ₹12L, 20% from ₹12L to ₹15L, and 30% above ₹15 Lakh.",
+      },
+      {
+        question: "What is the standard deduction for salaried taxpayers under the New Regime?",
+        answer: "Budget 2024 increased the standard deduction for salaried employees and pensioners under the New Tax Regime from ₹50,000 to ₹75,000.",
+      },
+      {
+        question: "Is income up to ₹7.75 Lakh completely tax-free under the New Regime?",
+        answer: "Yes, for salaried individuals, gross income up to ₹7,75,000 incurs zero tax liability after applying the ₹75,000 standard deduction and the Section 87A tax rebate on taxable income up to ₹7,00,000.",
+      },
+    ],
   }
 ];
 

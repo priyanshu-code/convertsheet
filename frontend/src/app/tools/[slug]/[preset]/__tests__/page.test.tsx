@@ -46,4 +46,60 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
     expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
     expect(screen.getByText(/Related.*Calculations/i)).toBeInTheDocument();
   });
+
+  it("renders the SalaryCalculator preset cleanly for US and India presets", () => {
+    const { unmount } = render(
+      <ProgrammaticPresetPage
+        params={{ slug: "salary-calculator", preset: "us-take-home-100k" }}
+      />
+    );
+
+    expect(
+      screen.getAllByText(/\$100k Salary Take-Home Pay Calculator \(US\)/i).length
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Gross Annual Salary/i)).toBeInTheDocument();
+
+    unmount();
+
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "salary-calculator", preset: "india-in-hand-12-lakh" }}
+      />
+    );
+
+    expect(
+      screen.getAllByText(/₹12 Lakh CTC In-Hand Salary Calculator \(India\)/i).length
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Gross Annual CTC/i).length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("renders the IncomeTaxCalculator preset cleanly for US and India presets", () => {
+    const { unmount } = render(
+      <ProgrammaticPresetPage
+        params={{ slug: "income-tax-calculator", preset: "us-federal-tax-single" }}
+      />
+    );
+
+    expect(
+      screen.getAllByText(/US Federal Income Tax Calculator \(Single Filer\)/i).length
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Federal Tax Payable/i)).toBeInTheDocument();
+
+    unmount();
+
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "income-tax-calculator", preset: "india-tax-new-regime" }}
+      />
+    );
+
+    expect(
+      screen.getAllByText(/India Income Tax Calculator \(Budget 2024 New Regime\)/i).length
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Standard Deduction/i).length).toBeGreaterThanOrEqual(1);
+  });
 });

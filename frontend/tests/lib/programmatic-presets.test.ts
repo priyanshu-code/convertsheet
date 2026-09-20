@@ -8,10 +8,10 @@ import {
 } from "@/lib/programmatic-presets";
 
 describe("Programmatic SEO Presets Registry", () => {
-  it("contains at least 55 high-intent targeted financial calculation presets", () => {
+  it("contains at least 60 high-intent targeted financial calculation presets", () => {
     const presets = getAllProgrammaticPresets();
-    expect(presets.length).toBeGreaterThanOrEqual(55);
-    expect(PROGRAMMATIC_PRESETS.length).toBeGreaterThanOrEqual(55);
+    expect(presets.length).toBeGreaterThanOrEqual(60);
+    expect(PROGRAMMATIC_PRESETS.length).toBeGreaterThanOrEqual(60);
   });
 
   it("verifies all preset slugs are unique across the entire registry", () => {
@@ -20,7 +20,7 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(uniqueSlugs.size).toBe(slugs.length);
   });
 
-  it("verifies all toolSlug values match one of the 8 supported calculators with presets", () => {
+  it("verifies all toolSlug values match one of the supported calculators with presets", () => {
     const allowedToolSlugs = new Set([
       "mortgage-calculator",
       "car-loan-calculator",
@@ -31,6 +31,8 @@ describe("Programmatic SEO Presets Registry", () => {
       "high-yield-savings-cd-calculator",
       "debt-payoff-calculator",
       "credit-card-payoff-calculator",
+      "salary-calculator",
+      "income-tax-calculator",
     ]);
 
     PROGRAMMATIC_PRESETS.forEach((preset) => {
@@ -114,9 +116,70 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(ukPreset?.metaDescription).toMatch(/stamp duty|repayment/i);
   });
 
+  it("retrieves new regional salary and income tax programmatic presets", () => {
+    // 1. us-take-home-100k
+    const us100k = getProgrammaticPreset("salary-calculator", "us-take-home-100k");
+    expect(us100k).toBeDefined();
+    expect(us100k?.name).toBe("$100k Salary Take-Home Pay Calculator (US)");
+    expect(us100k?.initialValues).toEqual({
+      regime: "US",
+      grossSalary: 100000,
+      filingStatus: "single",
+      stateTaxPercent: 5,
+    });
+    expect(us100k?.faqs.length).toBeGreaterThanOrEqual(2);
+
+    // 2. us-take-home-75k
+    const us75k = getProgrammaticPreset("salary-calculator", "us-take-home-75k");
+    expect(us75k).toBeDefined();
+    expect(us75k?.name).toBe("$75k Salary Take-Home Pay Calculator (US)");
+    expect(us75k?.initialValues).toEqual({
+      regime: "US",
+      grossSalary: 75000,
+      filingStatus: "single",
+      stateTaxPercent: 5,
+    });
+    expect(us75k?.faqs.length).toBeGreaterThanOrEqual(2);
+
+    // 3. india-in-hand-12-lakh
+    const in12L = getProgrammaticPreset("salary-calculator", "india-in-hand-12-lakh");
+    expect(in12L).toBeDefined();
+    expect(in12L?.name).toBe("₹12 Lakh CTC In-Hand Salary Calculator (India)");
+    expect(in12L?.initialValues).toEqual({
+      regime: "IN",
+      annualCtc: 1200000,
+      epfPercent: 12,
+      professionalTaxMonthly: 200,
+    });
+    expect(in12L?.faqs.length).toBeGreaterThanOrEqual(2);
+
+    // 4. us-federal-tax-single
+    const usTax = getProgrammaticPreset("income-tax-calculator", "us-federal-tax-single");
+    expect(usTax).toBeDefined();
+    expect(usTax?.name).toBe("US Federal Income Tax Calculator (Single Filer)");
+    expect(usTax?.initialValues).toEqual({
+      regime: "US",
+      grossIncomeUs: 100000,
+      filingStatus: "single",
+    });
+    expect(usTax?.faqs.length).toBeGreaterThanOrEqual(2);
+
+    // 5. india-tax-new-regime
+    const inTax = getProgrammaticPreset("income-tax-calculator", "india-tax-new-regime");
+    expect(inTax).toBeDefined();
+    expect(inTax?.name).toBe("India Income Tax Calculator (Budget 2024 New Regime)");
+    expect(inTax?.initialValues).toEqual({
+      regime: "IN",
+      annualIncomeIn: 1500000,
+      standardDeductionIn: 75000,
+      otherDeductionsIn: 0,
+    });
+    expect(inTax?.faqs.length).toBeGreaterThanOrEqual(2);
+  });
+
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
-    expect(params.length).toBeGreaterThanOrEqual(55);
+    expect(params.length).toBeGreaterThanOrEqual(60);
     expect(params[0]).toHaveProperty("slug");
     expect(params[0]).toHaveProperty("preset");
   });

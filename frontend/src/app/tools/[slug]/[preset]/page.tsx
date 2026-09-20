@@ -23,6 +23,8 @@ import { HourlyToSalaryCalculator } from "@/components/tools/HourlyToSalaryCalcu
 import { AnnualToHourlyCalculator } from "@/components/tools/AnnualToHourlyCalculator";
 import { SavingsCdCalculator } from "@/components/tools/SavingsCdCalculator";
 import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
+import { SalaryCalculator } from "@/components/tools/SalaryCalculator";
+import { IncomeTaxCalculator } from "@/components/tools/IncomeTaxCalculator";
 
 export interface ProgrammaticPresetPageProps {
   params: {
@@ -115,6 +117,10 @@ export default function ProgrammaticPresetPage({
       case "debt-payoff-calculator":
       case "credit-card-payoff-calculator":
         return <DebtPayoffCalculator initialValues={preset.initialValues} />;
+      case "salary-calculator":
+        return <SalaryCalculator initialValues={preset.initialValues} />;
+      case "income-tax-calculator":
+        return <IncomeTaxCalculator initialValues={preset.initialValues} />;
       default:
         return null;
     }
