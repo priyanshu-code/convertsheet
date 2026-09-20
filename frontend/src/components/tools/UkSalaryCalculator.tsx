@@ -212,7 +212,7 @@ Please advise on salary sacrifice pension contributions, ISA allowances, tax bra
               id="gross-salary"
               label="Gross Annual Salary"
               value={grossSalary}
-              onChange={setGrossSalary}
+              onChange={(val) => setGrossSalary(Number(val) || 0)}
               prefix="£"
               min={0}
               step={1000}
