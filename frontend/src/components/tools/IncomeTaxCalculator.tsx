@@ -205,11 +205,14 @@ export function IncomeTaxCalculator({ initialValues }: IncomeTaxCalculatorProps 
       };
     });
 
-    // Section 87A rebate under New Tax Regime:
-    // Full tax rebate if taxable income does not exceed ₹7,00,000 (up to ₹25,000)
+    // Section 87A rebate and marginal relief under New Tax Regime (Section 115BAC):
+    // Full rebate up to ₹25,000 for taxable income <= ₹7,00,000.
+    // Marginal relief: tax payable cannot exceed taxable income in excess of ₹7,00,000.
     let rebate87A = 0;
     if (taxable <= 700000) {
       rebate87A = Math.min(baseTax, 25000);
+    } else if (baseTax > (taxable - 700000)) {
+      rebate87A = Math.max(0, baseTax - (taxable - 700000));
     }
     const taxAfterRebate = Math.max(0, baseTax - rebate87A);
     const cess = taxAfterRebate * 0.04;
@@ -370,7 +373,7 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                 id="gross-income-us"
                 label="Gross Annual Income"
                 value={grossIncomeUs}
-                onChange={setGrossIncomeUs}
+                onChange={(val) => setGrossIncomeUs(Number(val) || 0)}
                 prefix="$"
                 min={0}
                 step={5000}
@@ -391,7 +394,7 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                 id="custom-deductions-us"
                 label="Custom Itemized / Additional Deductions"
                 value={customDeductionsUs}
-                onChange={setCustomDeductionsUs}
+                onChange={(val) => setCustomDeductionsUs(Number(val) || 0)}
                 prefix="$"
                 min={0}
                 step={1000}
@@ -404,7 +407,7 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                 id="annual-income-in"
                 label="Gross Annual Income"
                 value={annualIncomeIn}
-                onChange={setAnnualIncomeIn}
+                onChange={(val) => setAnnualIncomeIn(Number(val) || 0)}
                 prefix="₹"
                 min={100000}
                 step={50000}
@@ -414,7 +417,7 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                 id="standard-deduction-in"
                 label="Standard Deduction"
                 value={standardDeductionIn}
-                onChange={setStandardDeductionIn}
+                onChange={(val) => setStandardDeductionIn(Number(val) || 0)}
                 prefix="₹"
                 min={0}
                 step={5000}
@@ -424,7 +427,7 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                 id="other-deductions-in"
                 label="Other Exemptions / Deductions"
                 value={otherDeductionsIn}
-                onChange={setOtherDeductionsIn}
+                onChange={(val) => setOtherDeductionsIn(Number(val) || 0)}
                 prefix="₹"
                 min={0}
                 step={5000}
