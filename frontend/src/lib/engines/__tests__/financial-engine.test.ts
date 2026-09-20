@@ -9,6 +9,9 @@ import {
   calculateDebtPayoff,
   calculateSavingsGrowth,
   calculateUsSalary,
+  calculateUkSalary,
+  calculateCanadaSalary,
+  calculateAustraliaSalary,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -144,7 +147,6 @@ describe("financial-engine", () => {
 
   describe("calculateHourlyToSalary", () => {
     it("converts standard $25/hr to exact daily, weekly, bi-weekly, monthly, and annual salaries", () => {
-      // @ts-expect-error test before implementation
       const res = calculateHourlyToSalary({
         hourlyRate: 25,
         hoursPerWeek: 40,
@@ -162,7 +164,6 @@ describe("financial-engine", () => {
     });
 
     it("factors in unpaid holidays and overtime hours", () => {
-      // @ts-expect-error test before implementation
       const res = calculateHourlyToSalary({
         hourlyRate: 30,
         hoursPerWeek: 40,
@@ -181,7 +182,6 @@ describe("financial-engine", () => {
 
   describe("calculateAnnualToHourly", () => {
     it("converts standard $100,000 annual salary to equivalent intervals", () => {
-      // @ts-expect-error test before implementation
       const res = calculateAnnualToHourly({
         annualSalary: 100000,
         hoursPerWeek: 40,
@@ -337,4 +337,143 @@ describe("financial-engine", () => {
     });
   });
 
+
+  describe("calculateUkSalary", () => {
+    it("calculates take-home pay and tax for £40,000 basic earner", () => {
+      const res = calculateUkSalary({
+        grossSalary: 40000,
+        pensionPercent: 5,
+        studentLoanPlan: "none",
+      });
+
+      // Gross
+      expect(res.grossSalary).toBe(40000);
+      expect(res.monthlyGross).toBeCloseTo(3333.33, 2);
+      expect(res.weeklyGross).toBeCloseTo(769.23, 2);
+
+      // Pension: 5% of 40,000 = 2,000
+      expect(res.pensionContribution).toBe(2000);
+
+      // Personal allowance: 12,570 (no taper under 100k)
+      expect(res.personalAllowance).toBe(12570);
+
+      // Taxable income: 40000 - 2000 pension = 38000; 38000 - 12570 = 25430
+      expect(res.taxableIncome).toBe(25430);
+
+      // Income tax: 20% on 25430 = 5086
+      expect(res.incomeTax).toBe(5086);
+
+      // National insurance: 8% on (40000 - 12570) = 2194.40
+      expect(res.nationalInsurance).toBe(2194.4);
+
+      // Total deductions: 5086 + 2194.40 + 2000 = 9280.40
+      expect(res.totalDeductions).toBe(9280.4);
+      expect(res.netAnnualTakeHome).toBe(40000 - 9280.4);
+      expect(res.netMonthlyTakeHome).toBeCloseTo((40000 - 9280.4) / 12, 2);
+      expect(res.netWeeklyTakeHome).toBeCloseTo((40000 - 9280.4) / 52, 2);
+      expect(res.effectiveTaxRate).toBeCloseTo(((5086 + 2194.4) / 40000) * 100, 2);
+    });
+
+    it("applies personal allowance taper for £120,000 earner", () => {
+      const res = calculateUkSalary({
+        grossSalary: 120000,
+        pensionPercent: 0,
+        studentLoanPlan: "none",
+      });
+
+      // Allowance reduced by £1 for every £2 above £100,000 -> reduction of £10,000
+      // 12,570 - 10,000 = 2,570
+      expect(res.personalAllowance).toBe(2570);
+      expect(res.taxableIncome).toBe(120000 - 2570); // 117430
+
+      // Income Tax:
+      // Basic band: (50270 - 2570) = 47700 @ 20% = 9540
+      // Higher band: (120000 - 50270) = 69730 @ 40% = 27892
+      // Total income tax: 9540 + 27892 = 37432
+      expect(res.incomeTax).toBe(37432);
+
+      // NI: 8% on (50270 - 12570 = 37700) = 3016; 2% on (120000 - 50270 = 69730) = 1394.60 -> 4410.60
+      expect(res.nationalInsurance).toBe(4410.6);
+    });
+  });
+
+  describe("calculateCanadaSalary", () => {
+    it("calculates federal, provincial tax, CPP, and EI for $80,000 Ontario earner", () => {
+      const res = calculateCanadaSalary({
+        grossSalary: 80000,
+        province: "ON",
+        rrspContributionPercent: 0,
+      });
+
+      expect(res.grossSalary).toBe(80000);
+      expect(res.monthlyGross).toBeCloseTo(80000 / 12, 2);
+      expect(res.biWeeklyGross).toBeCloseTo(80000 / 26, 2);
+      expect(res.semiMonthlyGross).toBeCloseTo(80000 / 24, 2);
+
+      // CPP: Tier 1: (68500 - 3500) * 0.0595 = 3867.50 (max)
+      // Tier 2: (73200 - 68500) * 0.04 = 188.00 (max)
+      // Total CPP = 3867.50 + 188 = 4055.50
+      expect(res.cppContribution).toBe(4055.5);
+
+      // EI: 80000 capped at 63200 * 0.0166 = 1049.12 (max)
+      expect(res.eiContribution).toBe(1049.12);
+
+      // Federal tax:
+      // 15% on 55867 = 8380.05
+      // 20.5% on (80000 - 55867 = 24133) = 4947.265 -> 13327.315 -> 13327.32
+      expect(res.federalTax).toBeCloseTo(13327.32, 2);
+
+      // Ontario provincial tax:
+      // 5.05% on 51446 = 2598.023
+      // 9.15% on (80000 - 51446 = 28554) = 2612.691 -> 5210.714 -> 5210.71
+      expect(res.provincialTax).toBeCloseTo(5210.71, 2);
+
+      expect(res.totalDeductions).toBeCloseTo(
+        res.federalTax + res.provincialTax + res.cppContribution + res.eiContribution,
+        2
+      );
+      expect(res.netAnnualTakeHome).toBe(80000 - res.totalDeductions);
+      expect(res.netMonthlyTakeHome).toBeCloseTo(res.netAnnualTakeHome / 12, 2);
+      expect(res.netBiWeeklyTakeHome).toBeCloseTo(res.netAnnualTakeHome / 26, 2);
+      expect(res.netSemiMonthlyTakeHome).toBeCloseTo(res.netAnnualTakeHome / 24, 2);
+    });
+  });
+
+  describe("calculateAustraliaSalary", () => {
+    it("calculates income tax under Stage 3 cuts and 11.5% super for $90,000 earner", () => {
+      const res = calculateAustraliaSalary({
+        grossSalary: 90000,
+        superannuationPercent: 11.5,
+        hasHelpDebt: false,
+        medicareExempt: false,
+      });
+
+      expect(res.grossSalary).toBe(90000);
+      expect(res.monthlyGross).toBeCloseTo(90000 / 12, 2);
+      expect(res.fortnightlyGross).toBeCloseTo(90000 / 26, 2);
+      expect(res.weeklyGross).toBeCloseTo(90000 / 52, 2);
+
+      // Superannuation: 11.5% of 90,000 = 10,350
+      expect(res.superannuationAmount).toBe(10350);
+
+      // Stage 3 Tax Cuts:
+      // $0 - $18,200: 0
+      // $18,201 - $45,000: (45000 - 18200) * 0.16 = 26800 * 0.16 = 4288
+      // $45,001 - $90,000: (90000 - 45000) * 0.30 = 45000 * 0.30 = 13500
+      // Total tax: 4288 + 13500 = 17788
+      expect(res.incomeTax).toBe(17788);
+
+      // Medicare levy: 2% of 90,000 = 1,800
+      expect(res.medicareLevy).toBe(1800);
+      expect(res.helpRepayment).toBe(0);
+
+      // Total deductions: 17788 + 1800 = 19588
+      expect(res.totalDeductions).toBe(19588);
+      expect(res.netAnnualTakeHome).toBe(70412);
+      expect(res.netMonthlyTakeHome).toBeCloseTo(70412 / 12, 2);
+      expect(res.netFortnightlyTakeHome).toBeCloseTo(70412 / 26, 2);
+      expect(res.netWeeklyTakeHome).toBeCloseTo(70412 / 52, 2);
+      expect(res.effectiveTaxRate).toBeCloseTo((19588 / 90000) * 100, 2);
+    });
+  });
 });

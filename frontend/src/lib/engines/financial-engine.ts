@@ -953,3 +953,447 @@ export function calculateUsSalary(input: UsSalaryInput): UsSalaryResult {
   };
 }
 
+// ==========================================
+// 11. UK SALARY & TAKE-HOME ENGINE
+// ==========================================
+
+export interface UkSalaryInput {
+  grossSalary: number;
+  pensionPercent?: number; // default 5%
+  studentLoanPlan?: "none" | "plan1" | "plan2" | "plan4" | "plan5" | "postgrad";
+}
+
+export interface UkSalaryResult {
+  grossSalary: number;
+  monthlyGross: number;
+  weeklyGross: number;
+  personalAllowance: number; // £12,570 tapered over £100,000 by £1 per £2 (reaches 0 at £125,140)
+  taxableIncome: number;
+  incomeTax: number; // Basic (20% £12,571-£50,270), Higher (40% £50,271-£125,140), Additional (45% >£125,140)
+  nationalInsurance: number; // 8% on £12,570-£50,270; 2% above £50,270
+  pensionContribution: number;
+  studentLoanRepayment: number;
+  totalDeductions: number;
+  netAnnualTakeHome: number;
+  netMonthlyTakeHome: number;
+  netWeeklyTakeHome: number;
+  effectiveTaxRate: number;
+}
+
+export function calculateUkSalary(input: UkSalaryInput): UkSalaryResult {
+  const grossSalary = Math.max(0, input.grossSalary || 0);
+  const pensionPercent =
+    input.pensionPercent !== undefined
+      ? Math.max(0, Math.min(100, input.pensionPercent))
+      : 5;
+  const studentLoanPlan = input.studentLoanPlan || "none";
+
+  const monthlyGross = roundTo(grossSalary / 12, 2);
+  const weeklyGross = roundTo(grossSalary / 52, 2);
+
+  // Pension contribution (auto-enrolment employee deduction, typically pre-tax)
+  const pensionContribution = roundTo(grossSalary * (pensionPercent / 100), 2);
+  const netSalaryAfterPension = Math.max(0, grossSalary - pensionContribution);
+
+  // Personal Allowance (£12,570, tapered by £1 for every £2 of income above £100,000)
+  const baseAllowance = 12570;
+  let personalAllowance = baseAllowance;
+  if (grossSalary > 100000) {
+    const reduction = (grossSalary - 100000) / 2;
+    personalAllowance = Math.max(0, baseAllowance - reduction);
+  }
+  personalAllowance = roundTo(personalAllowance, 2);
+
+  // Taxable income
+  const taxableIncome = Math.max(0, roundTo(netSalaryAfterPension - personalAllowance, 2));
+
+  // UK Income Tax Brackets (2024/25 England/Wales/NI rates)
+  // Basic: 20% on income between personal allowance and £50,270
+  // Higher: 40% on income between £50,270 and £125,140
+  // Additional: 45% on income above £125,140
+  let incomeTax = 0;
+  if (netSalaryAfterPension > personalAllowance) {
+    const basicBandLimit = 50270;
+    const higherBandLimit = 125140;
+
+    const incomeInBasic = Math.min(
+      Math.max(0, netSalaryAfterPension - personalAllowance),
+      Math.max(0, basicBandLimit - personalAllowance)
+    );
+    const incomeInHigher = Math.min(
+      Math.max(0, netSalaryAfterPension - basicBandLimit),
+      Math.max(0, higherBandLimit - basicBandLimit)
+    );
+    const incomeInAdditional = Math.max(0, netSalaryAfterPension - higherBandLimit);
+
+    incomeTax =
+      incomeInBasic * 0.2 +
+      incomeInHigher * 0.4 +
+      incomeInAdditional * 0.45;
+  }
+  incomeTax = roundTo(incomeTax, 2);
+
+  // National Insurance Class 1 (Employee) 2024/25:
+  // 8% on £12,570 to £50,270; 2% above £50,270
+  let nationalInsurance = 0;
+  if (grossSalary > 12570) {
+    const mainNiIncome = Math.min(grossSalary, 50270) - 12570;
+    const higherNiIncome = Math.max(0, grossSalary - 50270);
+    nationalInsurance = mainNiIncome * 0.08 + higherNiIncome * 0.02;
+  }
+  nationalInsurance = roundTo(nationalInsurance, 2);
+
+  // Student Loan Repayments
+  let studentLoanRepayment = 0;
+  const loanConfigs: Record<string, { threshold: number; rate: number }> = {
+    plan1: { threshold: 24990, rate: 0.09 },
+    plan2: { threshold: 27295, rate: 0.09 },
+    plan4: { threshold: 31395, rate: 0.09 },
+    plan5: { threshold: 25000, rate: 0.09 },
+    postgrad: { threshold: 21000, rate: 0.06 },
+  };
+
+  if (studentLoanPlan in loanConfigs) {
+    const { threshold, rate } = loanConfigs[studentLoanPlan];
+    if (grossSalary > threshold) {
+      studentLoanRepayment = roundTo((grossSalary - threshold) * rate, 2);
+    }
+  }
+
+  const totalDeductions = roundTo(
+    incomeTax + nationalInsurance + pensionContribution + studentLoanRepayment,
+    2
+  );
+  const netAnnualTakeHome = roundTo(Math.max(0, grossSalary - totalDeductions), 2);
+  const netMonthlyTakeHome = roundTo(netAnnualTakeHome / 12, 2);
+  const netWeeklyTakeHome = roundTo(netAnnualTakeHome / 52, 2);
+  const effectiveTaxRate =
+    grossSalary > 0
+      ? roundTo(((incomeTax + nationalInsurance) / grossSalary) * 100, 2)
+      : 0;
+
+  return {
+    grossSalary,
+    monthlyGross,
+    weeklyGross,
+    personalAllowance,
+    taxableIncome,
+    incomeTax,
+    nationalInsurance,
+    pensionContribution,
+    studentLoanRepayment,
+    totalDeductions,
+    netAnnualTakeHome,
+    netMonthlyTakeHome,
+    netWeeklyTakeHome,
+    effectiveTaxRate,
+  };
+}
+
+// ==========================================
+// 12. CANADA SALARY & TAKE-HOME ENGINE
+// ==========================================
+
+export interface CanadaSalaryInput {
+  grossSalary: number;
+  province?: "ON" | "BC" | "AB" | "QC";
+  rrspContributionPercent?: number; // 0-100%
+}
+
+export interface CanadaSalaryResult {
+  grossSalary: number;
+  monthlyGross: number;
+  biWeeklyGross: number;
+  semiMonthlyGross: number;
+  federalTax: number;
+  provincialTax: number;
+  cppContribution: number; // CPP (5.95% on $3,500-$68,500 max $3,867.50) + CPP2 (4% on $68,500-$73,200 max $188)
+  eiContribution: number; // EI (1.66% up to $63,200 max $1,049.12)
+  rrspDeduction: number;
+  totalDeductions: number;
+  netAnnualTakeHome: number;
+  netMonthlyTakeHome: number;
+  netBiWeeklyTakeHome: number;
+  netSemiMonthlyTakeHome: number;
+  effectiveTaxRate: number;
+}
+
+export function calculateCanadaSalary(input: CanadaSalaryInput): CanadaSalaryResult {
+  const grossSalary = Math.max(0, input.grossSalary || 0);
+  const province = input.province || "ON";
+  const rrspPercent = Math.max(0, Math.min(100, input.rrspContributionPercent || 0));
+
+  const monthlyGross = roundTo(grossSalary / 12, 2);
+  const biWeeklyGross = roundTo(grossSalary / 26, 2);
+  const semiMonthlyGross = roundTo(grossSalary / 24, 2);
+
+  // RRSP deduction
+  const rrspDeduction = roundTo(grossSalary * (rrspPercent / 100), 2);
+  const taxableIncome = Math.max(0, roundTo(grossSalary - rrspDeduction, 2));
+
+  // CPP / QPP 2024
+  // Tier 1: 5.95% between $3,500 and $68,500 (max $3,867.50)
+  // Tier 2 (CPP2): 4.0% between $68,500 and $73,200 (max $188)
+  let cppContribution = 0;
+  if (grossSalary > 3500) {
+    const tier1Income = Math.min(grossSalary, 68500) - 3500;
+    const tier1Cpp = Math.min(3867.5, tier1Income * 0.0595);
+
+    let tier2Cpp = 0;
+    if (grossSalary > 68500) {
+      const tier2Income = Math.min(grossSalary, 73200) - 68500;
+      tier2Cpp = Math.min(188, tier2Income * 0.04);
+    }
+    cppContribution = roundTo(tier1Cpp + tier2Cpp, 2);
+  }
+
+  // EI (Employment Insurance) 2024
+  // Rate: 1.66% up to $63,200 (max $1,049.12)
+  let eiRate = 0.0166;
+  let maxEi = 1049.12;
+  if (province === "QC") {
+    eiRate = 0.0132;
+    maxEi = 834.24;
+  }
+  const eiContribution = roundTo(Math.min(maxEi, Math.min(grossSalary, 63200) * eiRate), 2);
+
+  // Federal Tax Brackets 2024:
+  // $0 - $55,867: 15%
+  // $55,867 - $111,733: 20.5%
+  // $111,733 - $173,205: 26%
+  // $173,205 - $246,752: 29%
+  // > $246,752: 33%
+  const federalBrackets = [
+    { min: 0, max: 55867, rate: 0.15 },
+    { min: 55867, max: 111733, rate: 0.205 },
+    { min: 111733, max: 173205, rate: 0.26 },
+    { min: 173205, max: 246752, rate: 0.29 },
+    { min: 246752, max: Infinity, rate: 0.33 },
+  ];
+
+  let federalTax = 0;
+  for (const b of federalBrackets) {
+    if (taxableIncome > b.min) {
+      const chunk = Math.min(taxableIncome, b.max) - b.min;
+      federalTax += chunk * b.rate;
+    }
+  }
+
+  // Quebec federal abatement: 16.5% reduction in basic federal tax
+  if (province === "QC") {
+    federalTax = federalTax * (1 - 0.165);
+  }
+  federalTax = roundTo(federalTax, 2);
+
+  // Provincial Tax Brackets 2024
+  const provincialBracketsMap: Record<
+    "ON" | "BC" | "AB" | "QC",
+    { min: number; max: number; rate: number }[]
+  > = {
+    ON: [
+      { min: 0, max: 51446, rate: 0.0505 },
+      { min: 51446, max: 102894, rate: 0.0915 },
+      { min: 102894, max: 150000, rate: 0.1116 },
+      { min: 150000, max: 220000, rate: 0.1216 },
+      { min: 220000, max: Infinity, rate: 0.1316 },
+    ],
+    BC: [
+      { min: 0, max: 47937, rate: 0.0506 },
+      { min: 47937, max: 95875, rate: 0.077 },
+      { min: 95875, max: 110076, rate: 0.105 },
+      { min: 110076, max: 133664, rate: 0.1229 },
+      { min: 133664, max: 181232, rate: 0.147 },
+      { min: 181232, max: 252752, rate: 0.168 },
+      { min: 252752, max: Infinity, rate: 0.205 },
+    ],
+    AB: [
+      { min: 0, max: 148269, rate: 0.1 },
+      { min: 148269, max: 177922, rate: 0.12 },
+      { min: 177922, max: 237230, rate: 0.13 },
+      { min: 237230, max: 355845, rate: 0.14 },
+      { min: 355845, max: Infinity, rate: 0.15 },
+    ],
+    QC: [
+      { min: 0, max: 53255, rate: 0.14 },
+      { min: 53255, max: 106555, rate: 0.19 },
+      { min: 106555, max: 130000, rate: 0.24 },
+      { min: 130000, max: Infinity, rate: 0.2575 },
+    ],
+  };
+
+  const provBrackets = provincialBracketsMap[province] || provincialBracketsMap.ON;
+  let provincialTax = 0;
+  for (const b of provBrackets) {
+    if (taxableIncome > b.min) {
+      const chunk = Math.min(taxableIncome, b.max) - b.min;
+      provincialTax += chunk * b.rate;
+    }
+  }
+  provincialTax = roundTo(provincialTax, 2);
+
+  const totalDeductions = roundTo(
+    federalTax + provincialTax + cppContribution + eiContribution + rrspDeduction,
+    2
+  );
+  const netAnnualTakeHome = roundTo(Math.max(0, grossSalary - totalDeductions), 2);
+  const netMonthlyTakeHome = roundTo(netAnnualTakeHome / 12, 2);
+  const netBiWeeklyTakeHome = roundTo(netAnnualTakeHome / 26, 2);
+  const netSemiMonthlyTakeHome = roundTo(netAnnualTakeHome / 24, 2);
+  const effectiveTaxRate =
+    grossSalary > 0
+      ? roundTo(((federalTax + provincialTax + cppContribution + eiContribution) / grossSalary) * 100, 2)
+      : 0;
+
+  return {
+    grossSalary,
+    monthlyGross,
+    biWeeklyGross,
+    semiMonthlyGross,
+    federalTax,
+    provincialTax,
+    cppContribution,
+    eiContribution,
+    rrspDeduction,
+    totalDeductions,
+    netAnnualTakeHome,
+    netMonthlyTakeHome,
+    netBiWeeklyTakeHome,
+    netSemiMonthlyTakeHome,
+    effectiveTaxRate,
+  };
+}
+
+// ==========================================
+// 13. AUSTRALIA SALARY & TAKE-HOME ENGINE
+// ==========================================
+
+export interface AustraliaSalaryInput {
+  grossSalary: number;
+  superannuationPercent?: number; // default 11.5%
+  hasHelpDebt?: boolean;
+  medicareExempt?: boolean;
+}
+
+export interface AustraliaSalaryResult {
+  grossSalary: number;
+  monthlyGross: number;
+  fortnightlyGross: number;
+  weeklyGross: number;
+  taxableIncome: number;
+  incomeTax: number; // Stage 3 tax cuts (0-$18.2k: 0, $18.2k-$45k: 16%, $45k-$135k: 30%, $135k-$190k: 37%, >$190k: 45%)
+  medicareLevy: number; // 2% (nil if medicareExempt)
+  helpRepayment: number; // ATO thresholds (e.g. ~1% above $54,435 to 10% above $159k)
+  superannuationAmount: number; // 11.5% employer super paid to fund
+  totalDeductions: number;
+  netAnnualTakeHome: number;
+  netMonthlyTakeHome: number;
+  netFortnightlyTakeHome: number;
+  netWeeklyTakeHome: number;
+  effectiveTaxRate: number;
+}
+
+export function calculateAustraliaSalary(input: AustraliaSalaryInput): AustraliaSalaryResult {
+  const grossSalary = Math.max(0, input.grossSalary || 0);
+  const superPercent =
+    input.superannuationPercent !== undefined
+      ? Math.max(0, input.superannuationPercent)
+      : 11.5;
+  const hasHelpDebt = Boolean(input.hasHelpDebt);
+  const medicareExempt = Boolean(input.medicareExempt);
+
+  const monthlyGross = roundTo(grossSalary / 12, 2);
+  const fortnightlyGross = roundTo(grossSalary / 26, 2);
+  const weeklyGross = roundTo(grossSalary / 52, 2);
+
+  const taxableIncome = grossSalary;
+
+  // Stage 3 Tax Cuts (effective 1 July 2024):
+  // $0 - $18,200: Nil
+  // $18,201 - $45,000: 16%
+  // $45,001 - $135,000: 30%
+  // $135,001 - $190,000: 37%
+  // > $190,000: 45%
+  const auBrackets = [
+    { min: 18200, max: 45000, rate: 0.16 },
+    { min: 45000, max: 135000, rate: 0.3 },
+    { min: 135000, max: 190000, rate: 0.37 },
+    { min: 190000, max: Infinity, rate: 0.45 },
+  ];
+
+  let incomeTax = 0;
+  for (const b of auBrackets) {
+    if (taxableIncome > b.min) {
+      const chunk = Math.min(taxableIncome, b.max) - b.min;
+      incomeTax += chunk * b.rate;
+    }
+  }
+  incomeTax = roundTo(incomeTax, 2);
+
+  // Medicare Levy (2% standard)
+  let medicareLevy = 0;
+  if (!medicareExempt && taxableIncome > 26000) {
+    medicareLevy = roundTo(taxableIncome * 0.02, 2);
+  }
+
+  // HELP / HECS Repayment thresholds 2024-25
+  let helpRepayment = 0;
+  if (hasHelpDebt) {
+    const helpTiers = [
+      { min: 159664, rate: 0.1 },
+      { min: 150627, rate: 0.095 },
+      { min: 142101, rate: 0.09 },
+      { min: 134057, rate: 0.085 },
+      { min: 126468, rate: 0.08 },
+      { min: 119310, rate: 0.075 },
+      { min: 112557, rate: 0.07 },
+      { min: 106186, rate: 0.065 },
+      { min: 100175, rate: 0.06 },
+      { min: 94504, rate: 0.055 },
+      { min: 89155, rate: 0.05 },
+      { min: 84108, rate: 0.045 },
+      { min: 79347, rate: 0.04 },
+      { min: 74856, rate: 0.035 },
+      { min: 70619, rate: 0.03 },
+      { min: 66621, rate: 0.025 },
+      { min: 62851, rate: 0.02 },
+      { min: 54435, rate: 0.01 },
+    ];
+
+    for (const tier of helpTiers) {
+      if (taxableIncome >= tier.min) {
+        helpRepayment = roundTo(taxableIncome * tier.rate, 2);
+        break;
+      }
+    }
+  }
+
+  // Superannuation (paid by employer into fund on top of base or calculated from gross)
+  const superannuationAmount = roundTo(grossSalary * (superPercent / 100), 2);
+
+  const totalDeductions = roundTo(incomeTax + medicareLevy + helpRepayment, 2);
+  const netAnnualTakeHome = roundTo(Math.max(0, grossSalary - totalDeductions), 2);
+  const netMonthlyTakeHome = roundTo(netAnnualTakeHome / 12, 2);
+  const netFortnightlyTakeHome = roundTo(netAnnualTakeHome / 26, 2);
+  const netWeeklyTakeHome = roundTo(netAnnualTakeHome / 52, 2);
+  const effectiveTaxRate =
+    grossSalary > 0 ? roundTo((totalDeductions / grossSalary) * 100, 2) : 0;
+
+  return {
+    grossSalary,
+    monthlyGross,
+    fortnightlyGross,
+    weeklyGross,
+    taxableIncome,
+    incomeTax,
+    medicareLevy,
+    helpRepayment,
+    superannuationAmount,
+    totalDeductions,
+    netAnnualTakeHome,
+    netMonthlyTakeHome,
+    netFortnightlyTakeHome,
+    netWeeklyTakeHome,
+    effectiveTaxRate,
+  };
+}
+
