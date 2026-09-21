@@ -30,7 +30,7 @@ export const COMPARISONS: CompetitorComparison[] = [
   {
     slug: "cloudconvert-alternative",
     competitorName: "CloudConvert",
-    title: "The 100% Private CloudConvert Alternative (Zero Server Uploads) | ConvertSheet",
+    title: "Best Free CloudConvert Alternative (Zero Server Uploads)",
     metaDescription: "Looking for a secure CloudConvert alternative? ConvertSheet converts JSON, XML, CSV, and Parquet directly in your browser using WebAssembly. No file uploads, no daily limits.",
     heroHeadline: "The Zero-Upload, In-Browser CloudConvert Alternative",
     heroSubheadline: "Stop uploading sensitive company data, API responses, and financial records to cloud servers. ConvertSheet processes files locally on your device with WebAssembly.",
@@ -132,7 +132,7 @@ export const COMPARISONS: CompetitorComparison[] = [
   {
     slug: "smallpdf-alternative",
     competitorName: "Smallpdf",
-    title: "Free Smallpdf Alternative: Unlimited Private PDF & Data Tools | ConvertSheet",
+    title: "Free Smallpdf Alternative — Unlimited PDF & Data Tools",
     metaDescription: "Tired of Smallpdf's 2-task daily limits and paywalls? ConvertSheet is a fast, unlimited, in-browser alternative that never uploads your files.",
     heroHeadline: "The Free, Unlimited Smallpdf Alternative",
     heroSubheadline: "No 2-task daily limits. No credit card traps. ConvertSheet gives you client-side data and document utilities with zero cloud uploads.",

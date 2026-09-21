@@ -27,6 +27,7 @@ export interface BaseConverterConfig {
   category?: "spreadsheets" | "data-engineering";
   faqs: FAQItem[];
   howTo: HowToStep[];
+  about?: string;
 }
 
 export type ConverterConfig = BaseConverterConfig & (

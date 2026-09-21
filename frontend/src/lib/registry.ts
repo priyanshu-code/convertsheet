@@ -126,15 +126,17 @@ export const CONVERTER_REGISTRY = {
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
     category: "spreadsheets",
-    title: "Convert CSV to Excel Online (.xlsx) - Auto-Delimiter Detection",
+    title: "CSV to Excel Converter Online — Free, Instant (.xlsx), No Upload",
     subtitle:
-      "Convert CSV comma, semicolon, tab, and pipe-delimited text files into authentic Microsoft Excel spreadsheets.",
+      "Convert CSV, TSV, semicolon, and pipe-delimited text files into authentic Microsoft Excel spreadsheets directly in your browser with zero server uploads.",
     metaDescription:
-      "Free online CSV to Excel converter. Auto-detects delimiters (comma, semicolon, tab), preserves leading zeros and dates, and outputs clean .xlsx workbooks.",
+      "Convert CSV to Excel online in one click. 100% private, free, and instant in your browser — zero file uploads. Auto-detects delimiters, preserves leading zeros, and downloads clean .xlsx.",
     engineId: "csv-to-excel",
     isClientSide: true,
     featured: true,
     badge: "Instant",
+    about:
+      "Converting CSV (Comma-Separated Values) files into Microsoft Excel (.xlsx) is one of the most common data tasks across engineering, finance, accounting, and business intelligence. However, simply double-clicking a CSV to open it in standard Excel often silently corrupts critical data: leading zeros are stripped from ZIP codes and ID numbers, long credit card or tracking numbers are converted into scientific notation (like 1.23E+12), and international date formats are frequently misparsed.\n\nConvertSheet's CSV to Excel Converter solves these issues at the root. Built with high-performance client-side WebAssembly, our engine inspects your text stream, automatically detects your delimiter (whether comma, semicolon, tab, or pipe), and formats each column into native Excel cell data types while explicitly preserving leading zeros and raw strings intact.\n\nBest of all, conversion executes 100% locally in your web browser. Your private customer records, financial ledgers, and database exports never leave your device and are never transmitted over the internet or retained on remote servers. This guarantees full compliance with GDPR, HIPAA, and internal security policies.",
     howTo: [
       {
         step: 1,
@@ -157,19 +159,39 @@ export const CONVERTER_REGISTRY = {
     ],
     faqs: [
       {
-        question: "Does the CSV to Excel converter preserve leading zeros?",
+        question: "Does the CSV to Excel converter preserve leading zeros and formatting?",
         answer:
-          "Yes! Unlike standard Excel imports that convert postal codes like '01234' to 1234, ConvertSheet explicitly preserves leading zeros as text cells.",
+          "Yes! Unlike opening a CSV directly in Excel (which strips leading zeros from postal codes like '01234' and turns them into '1234'), ConvertSheet preserves leading zeros and long numeric IDs as text strings so your data remains intact.",
       },
       {
-        question: "What delimiters are supported?",
+        question: "What delimiters are supported (comma, semicolon, tab, pipe)?",
         answer:
-          "Comma (,), Semicolon (;), Tab (\\t), Pipe (|), and custom single-character delimiters are supported with automatic detection.",
+          "Comma (,), Semicolon (;), Tab (\\t), and Pipe (|) are all automatically recognized by our heuristic delimiter detector. You can also specify custom single-character delimiters if needed.",
       },
       {
-        question: "Can I convert large CSV exports from databases?",
+        question: "Why does Microsoft Excel mess up dates and numbers when opening a CSV?",
         answer:
-          "Yes. Files up to 10MB convert in under 200ms in your browser. For multi-gigabyte exports, our ConvertSheet Pro tier provides chunked streaming.",
+          "Excel attempts to auto-guess column types upon opening raw text files. This leads to dates being swapped between MM/DD and DD/MM formats and large numbers being converted to scientific notation. ConvertSheet explicitly structures the XML sheet definition in the downloaded .xlsx workbook to prevent auto-truncation.",
+      },
+      {
+        question: "Can I convert large CSV exports from databases and APIs?",
+        answer:
+          "Yes. Files up to 10MB convert in under 200ms directly in your browser. For multi-gigabyte files, our ConvertSheet Pro tier provides high-speed chunked streaming via Web Workers.",
+      },
+      {
+        question: "Is my CSV data kept private and secure?",
+        answer:
+          "100% private. Processing happens entirely in your local browser memory using client-side JavaScript and WebAssembly. No files are uploaded to any server, making it safe for confidential corporate and healthcare datasets.",
+      },
+      {
+        question: "How do I convert European CSV files that use semicolon delimiters?",
+        answer:
+          "In many European countries, commas represent decimals and semicolons separate columns. ConvertSheet automatically identifies this structure and generates a clean, localized Excel sheet without requiring manual delimiter configuration.",
+      },
+      {
+        question: "Can I convert CSV to Excel offline without an internet connection?",
+        answer:
+          "Yes. Because ConvertSheet is a Progressive Web App (PWA) with fully client-side engines, once the page is cached you can convert CSV files completely offline without an active internet connection.",
       },
     ],
   },
@@ -420,15 +442,17 @@ export const CONVERTER_REGISTRY = {
       "application/octet-stream",
     ],
     category: "data-engineering",
-    title: "Convert Parquet to Excel Online (.parquet to .xlsx) - DuckDB-Wasm",
+    title: "Parquet to Excel Converter Online — Free, In-Browser DuckDB (.xlsx)",
     subtitle:
       "Convert Apache Parquet columnar datasets into Microsoft Excel spreadsheets directly in your browser with zero server uploads.",
     metaDescription:
-      "Free in-browser Parquet to Excel converter powered by DuckDB-Wasm. Convert analytics datasets, Snappy compressed Parquet, and Databricks/AWS Athena exports to XLSX instantly.",
+      "Convert Apache Parquet datasets into clean Excel (.xlsx) spreadsheets directly in your browser. Powered by DuckDB-Wasm — supports Snappy, GZIP, and ZSTD with 100% privacy.",
     engineId: "parquet-to-excel",
     isClientSide: true,
     featured: true,
     badge: "DuckDB-Wasm",
+    about:
+      "Apache Parquet has become the standard columnar file format for modern big data architectures, cloud data warehouses, and data lakehouses (including Snowflake, Databricks, AWS Athena, and BigQuery). While Parquet provides extraordinary query speed and compression efficiency, non-technical stakeholders, business analysts, and financial controllers cannot double-click or open Parquet files in Microsoft Excel.\n\nConvertSheet bridges this divide effortlessly without requiring Python, PyArrow, Pandas, or server infrastructure. Powered by DuckDB-Wasm running directly inside your web browser, ConvertSheet scans your columnar schemas, decompresses pages (including Snappy, GZIP, and ZSTD compression), and outputs an authentic, styled Excel spreadsheet (.xlsx).\n\nBecause computation is strictly client-side, your multi-gigabyte analytical datasets and proprietary data models never touch any external server, guaranteeing strict enterprise security and data residency compliance.",
     howTo: [
       {
         step: 1,
@@ -694,15 +718,17 @@ export const CONVERTER_REGISTRY = {
       "text/plain",
     ],
     category: "data-engineering",
-    title: "Convert JSONL to Excel Online (.jsonl to .xlsx) - AI Datasets",
+    title: "JSONL to Excel Converter Online — Free (.jsonl to .xlsx), AI Datasets",
     subtitle:
-      "Convert Newline-Delimited JSON (JSONL / NDJSON) datasets and LLM fine-tuning files into clean Excel spreadsheets.",
+      "Convert Newline-Delimited JSON (JSONL / NDJSON) datasets and LLM fine-tuning files into clean Excel spreadsheets directly in your browser.",
     metaDescription:
-      "Free online JSONL to Excel converter. Convert newline-delimited JSON (NDJSON) files into formatted XLSX worksheets with instant in-browser DuckDB processing.",
+      "Convert JSONL and NDJSON files into Excel (.xlsx) workbooks online. Instant client-side processing with DuckDB-Wasm — ideal for OpenAI, Anthropic, and Hugging Face datasets. 100% private.",
     engineId: "jsonl-to-excel",
     isClientSide: true,
     featured: true,
     badge: "AI Datasets",
+    about:
+      "JSONL (JSON Lines or Newline-Delimited JSON, .ndjson) is the industry-standard data format for artificial intelligence training corpora, Large Language Model (LLM) fine-tuning pipelines (OpenAI GPT, Anthropic Claude, Llama), and distributed application logging. While JSONL scales effortlessly for streaming APIs, inspecting hundreds of thousands of prompt/completion pairs or evaluation records inside raw text editors is impractical.\n\nConvertSheet provides an instant, zero-install bridge from JSONL to Microsoft Excel (.xlsx). Powered by DuckDB-Wasm executing inside your web browser, ConvertSheet dynamically infers schema structures, unrolls JSON fields into formatted Excel columns, and gives you a structured spreadsheet for immediate human review, dataset curation, and team evaluation.\n\nBecause all processing takes place locally inside your browser's memory, proprietary AI prompts, customer support transcripts, and sensitive training data never pass through third-party servers.",
     howTo: [
       {
         step: 1,

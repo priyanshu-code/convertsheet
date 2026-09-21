@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   description:
     "Convert JSON, CSV, Excel & XML spreadsheets instantly in your browser. 100% private, zero server uploads for small files, and powerful developer APIs.",
   alternates: {
-    canonical: "https://www.convertsheet.com",
+    canonical: "https://www.convertsheet.com/",
   },
   openGraph: {
     title: "ConvertSheet - Fast, Private Structured Data Converter",

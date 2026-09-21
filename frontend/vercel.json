@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "convertsheet.com"
+        }
+      ],
+      "destination": "https://www.convertsheet.com/:path*",
+      "permanent": true
+    }
+  ]
+}

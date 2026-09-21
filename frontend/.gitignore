@@ -35,5 +35,6 @@ next-env.d.ts
 *.json
 !package*.json
 !tsconfig*.json
+!vercel.json
 /test-results/
 /playwright-report/

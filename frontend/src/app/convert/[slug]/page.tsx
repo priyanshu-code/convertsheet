@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
+import { ShieldCheck, ArrowRight, Sparkles, BookOpen } from "lucide-react";
 import {
   getAllConverterSlugs,
   getConverterBySlug,
@@ -173,6 +173,30 @@ export default function ConverterPage({ params }: ConverterPageProps) {
         <HowToGuide config={config} />
       </div>
 
+      {/* Editorial In-Depth About Section */}
+      {config.about && (
+        <section
+          aria-labelledby="converter-about-heading"
+          data-testid="converter-about-section"
+          className="max-w-4xl mx-auto space-y-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 p-6 sm:p-8"
+        >
+          <div className="flex items-center gap-2.5">
+            <BookOpen className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <h2
+              id="converter-about-heading"
+              className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
+            >
+              About {config.sourceFormat} to {config.targetFormat} Conversion
+            </h2>
+          </div>
+          <div className="prose prose-zinc dark:prose-invert max-w-none text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 space-y-3">
+            {config.about.split("\n\n").map((paragraph, idx) => (
+              <p key={idx}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Interactive FAQ Accordion */}
       <div className="max-w-4xl mx-auto">
         <FAQAccordion config={config} />
@@ -253,7 +277,7 @@ export default function ConverterPage({ params }: ConverterPageProps) {
             href="/#tools"
             className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline inline-flex items-center gap-1"
           >
-            <span>View All 18 Tools</span>
+            <span>View All Tools</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
