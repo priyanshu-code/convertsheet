@@ -35,7 +35,7 @@ export const CalcCard = memo(function CalcCard({
             </div>
           )}
           <div className="min-w-0">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 truncate">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 break-words">
               {title}
             </h2>
             {subtitle && (

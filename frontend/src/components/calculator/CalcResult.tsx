@@ -17,10 +17,18 @@ export interface CalcResultProps {
   primaryLabel?: string;
   primarySubtext?: string;
   items?: CalcResultItem[];
+  columns?: 1 | 2 | 3 | "auto";
   copyValue?: string;
   copyLabel?: string;
   className?: string;
 }
+
+const columnClasses: Record<1 | 2 | 3 | "auto", string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 sm:grid-cols-2",
+  3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+  auto: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+};
 
 export const CalcResult = memo(function CalcResult({
   title = "Calculation Result",
@@ -28,10 +36,13 @@ export const CalcResult = memo(function CalcResult({
   primaryLabel,
   primarySubtext,
   items,
+  columns = "auto",
   copyValue,
   copyLabel,
   className = "",
 }: CalcResultProps) {
+  const gridColsClass = columnClasses[columns] || columnClasses.auto;
+
   return (
     <div
       className={`rounded-2xl border border-emerald-200 dark:border-emerald-800/80 bg-gradient-to-br from-emerald-50/60 via-emerald-50/20 to-transparent dark:from-emerald-950/40 dark:via-zinc-900/40 dark:to-zinc-900/20 p-5 sm:p-6 space-y-4 ${className}`}
@@ -64,7 +75,7 @@ export const CalcResult = memo(function CalcResult({
       )}
 
       {items && items.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+        <div className={`grid ${gridColsClass} gap-3 pt-2`}>
           {items.map((item, idx) => (
             <div
               key={idx}
@@ -83,7 +94,7 @@ export const CalcResult = memo(function CalcResult({
                 )}
               </div>
               <div
-                className={`text-sm sm:text-base lg:text-lg font-bold font-mono tracking-tight break-words ${
+                className={`text-sm sm:text-base lg:text-lg font-bold font-mono tracking-tight whitespace-nowrap break-words ${
                   item.highlight
                     ? "text-emerald-600 dark:text-emerald-400"
                     : "text-zinc-900 dark:text-zinc-100"
@@ -92,7 +103,7 @@ export const CalcResult = memo(function CalcResult({
                 {item.value}
               </div>
               {item.subtext && (
-                <p className="text-[10px] text-zinc-400 mt-0.5 truncate">
+                <p className="text-[10px] text-zinc-400 mt-0.5 line-clamp-2 leading-tight">
                   {item.subtext}
                 </p>
               )}

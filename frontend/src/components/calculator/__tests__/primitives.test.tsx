@@ -150,4 +150,57 @@ describe("Calculator Primitives Design System", () => {
     expect(screen.getByText("Gains")).toBeInTheDocument();
     expect(screen.getByText("₹75,000")).toBeInTheDocument();
   });
+
+  it("CalcCard title wraps and does not have truncate class", () => {
+    render(
+      <CalcCard title="Debt Elimination Summary">
+        <div>Content</div>
+      </CalcCard>
+    );
+    const titleHeading = screen.getByRole("heading", { level: 2, name: "Debt Elimination Summary" });
+    expect(titleHeading).toBeInTheDocument();
+    expect(titleHeading.className).not.toContain("truncate");
+    expect(titleHeading.className).toContain("break-words");
+  });
+
+  it("CalcResult supports configurable columns prop defaulting to auto", () => {
+    const items = [
+      { label: "Item 1", value: "100" },
+      { label: "Item 2", value: "200" },
+    ];
+    const { rerender, container } = render(<CalcResult items={items} />);
+    const gridEl = container.querySelector(".grid");
+    expect(gridEl?.className).toContain("grid-cols-1 sm:grid-cols-2 lg:grid-cols-3");
+
+    rerender(<CalcResult items={items} columns={2} />);
+    expect(gridEl?.className).toContain("grid-cols-1 sm:grid-cols-2");
+    expect(gridEl?.className).not.toContain("lg:grid-cols-3");
+
+    rerender(<CalcResult items={items} columns={1} />);
+    expect(gridEl?.className).toContain("grid-cols-1");
+    expect(gridEl?.className).not.toContain("sm:grid-cols-2");
+
+    rerender(<CalcResult items={items} columns={3} />);
+    expect(gridEl?.className).toContain("grid-cols-1 sm:grid-cols-2 lg:grid-cols-3");
+
+    rerender(<CalcResult items={items} columns="auto" />);
+    expect(gridEl?.className).toContain("grid-cols-1 sm:grid-cols-2 lg:grid-cols-3");
+  });
+
+  it("CalcResult renders item values with whitespace-nowrap font-mono tracking-tight", () => {
+    render(
+      <CalcResult
+        items={[{ label: "Total Amount", value: "$1,234,567.89", subtext: "Detailed explanation text that could span multiple lines without being clipped" }]}
+      />
+    );
+    const valueEl = screen.getByText("$1,234,567.89");
+    expect(valueEl.className).toContain("whitespace-nowrap");
+    expect(valueEl.className).toContain("font-mono");
+    expect(valueEl.className).toContain("tracking-tight");
+
+    const subtextEl = screen.getByText("Detailed explanation text that could span multiple lines without being clipped");
+    expect(subtextEl.className).not.toContain("truncate");
+    expect(subtextEl.className).toContain("line-clamp-2");
+  });
 });
+
