@@ -316,6 +316,7 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
               {/* Detailed Breakdown */}
               <div className="pt-2">
                 <CalcResult
+                  columns={2}
                   items={[
                     {
                       label: "Initial Deposit",

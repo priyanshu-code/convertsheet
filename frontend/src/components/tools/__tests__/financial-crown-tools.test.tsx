@@ -168,6 +168,21 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
 
       expect(screen.getByText(/Debt Elimination Summary/i)).toBeInTheDocument();
     });
+
+    it("renders single extra monthly accelerator slider and breakdown metrics without duplicate inputs", async () => {
+      const { DebtPayoffCalculator } = await import("../DebtPayoffCalculator");
+      render(<DebtPayoffCalculator />);
+
+      // Exactly one accelerator slider input
+      expect(screen.getByLabelText(/Extra Monthly Accelerator numeric input/i)).toBeInTheDocument();
+      expect(screen.queryByLabelText(/Extra Monthly Accelerator Payment/i)).not.toBeInTheDocument();
+
+      // Breakdown metrics display clearly
+      expect(screen.getByText("Total Starting Debt")).toBeInTheDocument();
+      expect(screen.getByText("Monthly Commitment")).toBeInTheDocument();
+      expect(screen.getByText("Total Interest Paid")).toBeInTheDocument();
+      expect(screen.getByText("Total Cumulative Payments")).toBeInTheDocument();
+    });
   });
 
   describe("SavingsCdCalculator", () => {
@@ -182,14 +197,21 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(screen.getByText(/Export Schedule to Excel/i)).toBeInTheDocument();
     });
 
-    it("allows switching between HYSA and CD mode", async () => {
+    it("allows switching between HYSA and CD mode and shows detailed breakdown metrics", async () => {
       const { SavingsCdCalculator } = await import("../SavingsCdCalculator");
       render(<SavingsCdCalculator />);
+
+      // HYSA metrics
+      expect(screen.getAllByText("Initial Deposit").length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText("Total Additional Contributions")).toBeInTheDocument();
+      expect(screen.getByText("Total Principal Invested")).toBeInTheDocument();
 
       const cdBtn = screen.getByText(/Certificate of Deposit \(Fixed Rate \+ Lockup\)/i);
       fireEvent.click(cdBtn);
 
       expect(screen.getByText(/CD Early Withdrawal Penalty Rule/i)).toBeInTheDocument();
+      expect(screen.getByText("Early Withdrawal Penalty")).toBeInTheDocument();
+      expect(screen.getByText("Net Balance If Broken Early")).toBeInTheDocument();
     });
   });
 });

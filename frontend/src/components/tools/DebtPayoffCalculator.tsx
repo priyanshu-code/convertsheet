@@ -257,26 +257,16 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
 
               {/* Extra Payment Accelerator */}
               <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-3">
-                <CalcInput
-                  id="extraMonthlyPayment"
-                  label="Extra Monthly Accelerator Payment"
-                  value={extraMonthlyPayment}
-                  onChange={(v) => setExtraMonthlyPayment(Number(v) || 0)}
-                  prefix="$"
-                  min={0}
-                  max={5000}
-                  step={25}
-                  helpText="Additional money applied toward debt elimination each month"
-                />
                 <ModernSlider
                   id="extraMonthlyPaymentSlider"
                   label="Extra Monthly Accelerator"
                   value={extraMonthlyPayment}
                   min={0}
-                  max={1000}
+                  max={5000}
                   step={25}
                   prefix="$"
                   onChange={setExtraMonthlyPayment}
+                  helpText="Additional money applied toward debt elimination each month"
                 />
               </div>
             </div>
@@ -320,6 +310,7 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
               {/* Secondary Breakdown */}
               <div className="pt-2">
                 <CalcResult
+                  columns={2}
                   items={[
                     {
                       label: "Total Starting Debt",
