@@ -311,6 +311,7 @@ Please advise on tax optimization strategies (RRSP deduction limit, TFSA contrib
             primaryLabel="Net Bi-Weekly Take-Home"
             primaryValue={formatCurrency(result.netBiWeeklyTakeHome)}
             primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+            columns={2}
             items={[
               {
                 label: "Net Annual Take-Home",

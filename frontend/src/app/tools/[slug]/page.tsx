@@ -294,7 +294,7 @@ export default function ToolPage({ params }: ToolPageProps) {
         </div>
 
         {/* Primary Calculator UI */}
-        <div className="max-w-5xl mx-auto w-full">
+        <div className="max-w-6xl mx-auto w-full">
           {ToolComponent ? <ToolComponent /> : <div>Loading tool...</div>}
         </div>
 

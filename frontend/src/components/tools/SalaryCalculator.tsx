@@ -450,6 +450,7 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
               primaryLabel="Net Monthly Take-Home"
               primaryValue={`$${usResult.netMonthlyTakeHome.toLocaleString()}`}
               primarySubtext={`Bi-Weekly: $${usResult.netBiWeeklyTakeHome.toLocaleString()} (26 paychecks) • Annual: $${usResult.netAnnualTakeHome.toLocaleString()}`}
+              columns={2}
               items={[
                 {
                   label: "Bi-Weekly Take-Home",
@@ -495,6 +496,7 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
               primaryLabel="Net In-Hand Paycheck"
               primaryValue={`₹${inResult.monthlyTakeHome.toLocaleString()}`}
               primarySubtext={`Annual In-Hand: ₹${inResult.annualTakeHome.toLocaleString()}`}
+              columns={2}
               items={[
                 {
                   label: "Monthly EPF",

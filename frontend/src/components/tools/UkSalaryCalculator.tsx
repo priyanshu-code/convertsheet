@@ -297,6 +297,7 @@ Please advise on salary sacrifice pension contributions, ISA allowances, tax bra
             primaryLabel="Net Monthly Take-Home"
             primaryValue={formatCurrency(result.netMonthlyTakeHome)}
             primarySubtext={`Weekly: ${formatCurrency(result.netWeeklyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+            columns={2}
             items={[
               {
                 label: "Annual Take-Home",

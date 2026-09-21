@@ -362,6 +362,7 @@ Please advise on Australian tax strategies (concessional super contributions, sa
             primaryLabel="Net Fortnightly Take-Home"
             primaryValue={formatCurrency(result.netFortnightlyTakeHome)}
             primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+            columns={2}
             items={[
               {
                 label: "Net Annual Take-Home",
