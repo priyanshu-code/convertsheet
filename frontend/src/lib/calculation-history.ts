@@ -12,12 +12,38 @@ export interface SavedCalculationItem {
 
 const STORAGE_KEY = "convertsheet_saved_calculations";
 
+function normalizeCalculationItem(item: SavedCalculationItem): SavedCalculationItem {
+  if (
+    item.toolSlug === "credit-card-payoff-calculator" ||
+    item.path?.includes("credit-card-payoff-calculator")
+  ) {
+    return {
+      ...item,
+      toolSlug: "debt-payoff-calculator",
+      path: item.path?.replace("credit-card-payoff-calculator", "debt-payoff-calculator") || "/tools/debt-payoff-calculator",
+    };
+  }
+  return item;
+}
+
 export function getSavedCalculations(): SavedCalculationItem[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
-    return JSON.parse(raw);
+    const items: SavedCalculationItem[] = JSON.parse(raw);
+    let migrated = false;
+    const normalized = items.map((item) => {
+      const updated = normalizeCalculationItem(item);
+      if (updated.toolSlug !== item.toolSlug || updated.path !== item.path) {
+        migrated = true;
+      }
+      return updated;
+    });
+    if (migrated) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+    }
+    return normalized;
   } catch (err) {
     console.error("Failed to load saved calculations:", err);
     return [];
@@ -29,10 +55,22 @@ export function saveCalculation(item: Omit<SavedCalculationItem, "id" | "timesta
     return { ...item, id: "temp", timestamp: Date.now() };
   }
   try {
+    const normalizedSlug =
+      item.toolSlug === "credit-card-payoff-calculator" ? "debt-payoff-calculator" : item.toolSlug;
+    const normalizedPath =
+      item.path?.replace("credit-card-payoff-calculator", "debt-payoff-calculator") ||
+      `/tools/${normalizedSlug}`;
+
+    const normalizedInput = {
+      ...item,
+      toolSlug: normalizedSlug,
+      path: normalizedPath,
+    };
+
     const existing = getSavedCalculations();
     const newItem: SavedCalculationItem = {
-      ...item,
-      id: `${item.toolSlug}-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+      ...normalizedInput,
+      id: `${normalizedSlug}-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
       timestamp: Date.now(),
     };
     // Keep last 30 calculations

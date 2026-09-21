@@ -10,6 +10,16 @@
       ],
       "destination": "https://www.convertsheet.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/tools/credit-card-payoff-calculator",
+      "destination": "https://www.convertsheet.com/tools/debt-payoff-calculator",
+      "permanent": true
+    },
+    {
+      "source": "/tools/credit-card-payoff-calculator/:path*",
+      "destination": "https://www.convertsheet.com/tools/debt-payoff-calculator/:path*",
+      "permanent": true
     }
   ]
 }

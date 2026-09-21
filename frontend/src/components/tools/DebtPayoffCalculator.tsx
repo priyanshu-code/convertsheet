@@ -345,7 +345,8 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
                   label="Export Payoff Amortization (.xlsx)"
                 />
                 <CalcSaveButton
-                  toolSlug="credit-card-payoff-calculator"
+                  toolSlug="debt-payoff-calculator"
+                  path="/tools/debt-payoff-calculator"
                   toolName="Debt Payoff & Accelerator Calculator"
                   summaryTitle={`${strategy === "avalanche" ? "Avalanche" : "Snowball"}: $${Math.round(payoffResult.totalOriginalBalance).toLocaleString()} Debt (${payoffResult.payoffMonths} mos)`}
                   summaryMetrics={[
