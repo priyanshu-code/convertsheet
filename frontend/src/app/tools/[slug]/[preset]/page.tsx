@@ -201,7 +201,7 @@ export default function ProgrammaticPresetPage({
         </div>
 
         {/* Primary Interactive Calculator UI pre-populated with preset parameters */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto w-full">
           {renderCalculator()}
         </div>
 
