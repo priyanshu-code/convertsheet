@@ -33,6 +33,7 @@ describe("Programmatic SEO Presets Registry", () => {
       "credit-card-payoff-calculator",
       "salary-calculator",
       "income-tax-calculator",
+      "uk-salary-calculator",
     ]);
 
     PROGRAMMATIC_PRESETS.forEach((preset) => {

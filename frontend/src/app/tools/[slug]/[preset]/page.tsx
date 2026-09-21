@@ -25,6 +25,9 @@ import { SavingsCdCalculator } from "@/components/tools/SavingsCdCalculator";
 import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
 import { SalaryCalculator } from "@/components/tools/SalaryCalculator";
 import { IncomeTaxCalculator } from "@/components/tools/IncomeTaxCalculator";
+import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
+import { MortgageTermComparisonTable } from "@/components/calculator/MortgageTermComparisonTable";
+import { WageConversionMatrix } from "@/components/calculator/WageConversionMatrix";
 
 export interface ProgrammaticPresetPageProps {
   params: {
@@ -121,6 +124,8 @@ export default function ProgrammaticPresetPage({
         return <SalaryCalculator initialValues={preset.initialValues} />;
       case "income-tax-calculator":
         return <IncomeTaxCalculator initialValues={preset.initialValues} />;
+      case "uk-salary-calculator":
+        return <UkSalaryCalculator initialValues={preset.initialValues} />;
       default:
         return null;
     }
@@ -204,6 +209,27 @@ export default function ProgrammaticPresetPage({
         <div className="max-w-6xl mx-auto w-full">
           {renderCalculator()}
         </div>
+
+        {/* Specialized High-Intent Preset Add-ons */}
+        {preset.presetSlug === "15-year-vs-30-year" && (
+          <div className="max-w-5xl mx-auto w-full">
+            <MortgageTermComparisonTable
+              initialLoanAmount={
+                typeof preset.initialValues?.homePrice === "number" && typeof preset.initialValues?.downPayment === "number"
+                  ? preset.initialValues.homePrice - preset.initialValues.downPayment
+                  : 320000
+              }
+            />
+          </div>
+        )}
+
+        {(tool.slug === "hourly-to-salary-calculator" || preset.presetSlug.includes("-an-hour-salary")) && (
+          <div className="max-w-5xl mx-auto w-full">
+            <WageConversionMatrix
+              initialHourlyRate={Number(preset.initialValues?.hourlyRate) || 25}
+            />
+          </div>
+        )}
 
         {/* Top Ad Slot */}
         <div className="flex justify-center w-full my-6">

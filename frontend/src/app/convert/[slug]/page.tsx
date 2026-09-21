@@ -255,6 +255,28 @@ export default function ConverterPage({ params }: ConverterPageProps) {
         </div>
       </section>
 
+      {/* Contextual Data & Financial Productivity Bridge */}
+      <div className="max-w-5xl mx-auto p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-emerald-50/80 dark:from-emerald-950/30 dark:via-zinc-900/60 dark:to-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded">
+            Integrated Data Workflow
+          </span>
+          <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50">
+            Converting payroll, invoices, or mortgage data?
+          </h3>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 max-w-xl">
+            Clean and analyze your spreadsheet outputs with our free in-browser calculators: test <Link href="/tools/salary-calculator" className="text-emerald-600 dark:text-emerald-400 underline font-medium">Take-Home Pay</Link>, model <Link href="/tools/mortgage-calculator" className="text-emerald-600 dark:text-emerald-400 underline font-medium">Mortgage Amortization</Link>, or scrub sensitive PII with <Link href="/tools/data-anonymizer-cleaner" className="text-emerald-600 dark:text-emerald-400 underline font-medium">Data Anonymizer</Link>.
+          </p>
+        </div>
+        <Link
+          href="/tools"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0"
+        >
+          <span>Explore Free Tools Hub</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+
       {/* Related Free Calculators & Tools (Bidirectional GEO / AEO Cluster) */}
       <section
         aria-labelledby="related-tools-heading"

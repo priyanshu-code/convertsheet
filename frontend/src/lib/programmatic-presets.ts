@@ -3000,7 +3000,91 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         answer: "Yes, for salaried individuals, gross income up to ₹7,75,000 incurs zero tax liability after applying the ₹75,000 standard deduction and the Section 87A tax rebate on taxable income up to ₹7,00,000.",
       },
     ],
-  }
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-30k",
+    name: "£30,000 UK Salary Take-Home Pay Calculator (2024/25)",
+    title: "£30,000 Salary Take-Home Pay UK — 2024/25 Net Monthly Paycheck",
+    metaDescription: "Calculate take-home pay on a £30,000 UK salary. Full breakdown of PAYE Income Tax, Class 1 National Insurance, workplace pension, and monthly net pay (£2,036/mo).",
+    answerSummary: "On a £30,000 annual salary in the UK (2024/25 tax year), your estimated take-home pay is £24,432 per year or £2,036 per month with a 5% auto-enrolment pension. Deductions include £3,486 PAYE Income Tax, £1,392 National Insurance (8%), and £690 workplace pension relief.",
+    about: "A £30,000 gross salary represents approximately the median individual earnings for full-time workers in many UK regions outside London. Understand exactly how much reaches your bank account each month under HMRC PAYE tax bands and the latest 8% employee National Insurance rate.",
+    initialValues: {
+      grossSalary: 30000,
+      pensionPercent: 5,
+      studentLoanPlan: "none",
+    },
+    faqs: [
+      {
+        question: "How much is £30k after tax in the UK per month?",
+        answer: "On a standard 1257L tax code with a 5% workplace pension, a £30,000 salary yields approximately £2,036 net per month after £290 in income tax and £116 in National Insurance.",
+      },
+      {
+        question: "What is the National Insurance rate on £30,000 in 2024/25?",
+        answer: "Under the Spring Budget rate cuts, employee Class 1 National Insurance is 8% on earnings between £12,570 and £50,270, reducing NI liability on £30k to £1,394/year.",
+      },
+      {
+        question: "How much would student loan repayments be on a £30,000 salary?",
+        answer: "Under Plan 2 (threshold £27,295), you pay 9% on income above the threshold, which amounts to approximately £20.28 per month (£243 per year).",
+      },
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-50k",
+    name: "£50,000 UK Salary Take-Home Pay Calculator (2024/25)",
+    title: "£50,000 Salary Take-Home Pay UK — 2024/25 Net Monthly Paycheck",
+    metaDescription: "Calculate take-home pay on a £50,000 salary in the UK. Detailed breakdown of 20% basic rate tax, 8% National Insurance, pension deductions, and monthly net earnings (£3,184/mo).",
+    answerSummary: "On a £50,000 UK gross salary in 2024/25, your net in-hand take-home pay is approximately £38,206 per year or £3,184 per month (with 5% pension contribution). Total annual deductions: £7,486 in PAYE Income Tax, £2,618 in National Insurance, and £1,690 in workplace pension.",
+    about: "Earning £50,000 puts you near the top of the 20% basic rate tax band in the UK, just below the 40% higher rate threshold (£50,270). This calculator helps professionals evaluate career moves, pension contributions, and salary sacrifice arrangements to avoid crossing into higher marginal tax brackets.",
+    initialValues: {
+      grossSalary: 50000,
+      pensionPercent: 5,
+      studentLoanPlan: "none",
+    },
+    faqs: [
+      {
+        question: "What is the monthly take-home pay on £50k in the UK?",
+        answer: "A £50,000 annual salary yields approximately £3,184 per month in take-home pay (after 5% auto-enrolment pension, £624 monthly PAYE tax, and £218 monthly National Insurance).",
+      },
+      {
+        question: "Does a £50,000 salary trigger the 40% higher rate tax in the UK?",
+        answer: "No. The 40% higher rate tax threshold starts at £50,270 taxable income. A £50,000 salary remains fully within the 20% basic rate band.",
+      },
+      {
+        question: "How can salary sacrifice protect earnings near £50k?",
+        answer: "Contributing salary into a workplace pension via salary sacrifice reduces taxable earnings below £50,000, avoiding higher rate tax and retaining Child Benefit without High Income Child Benefit Charge (HICBC) penalties.",
+      },
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-100k-tax-trap",
+    name: "£100k UK Salary & 60% Marginal Tax Trap Calculator",
+    title: "£100,000 UK Salary Take-Home & 60% Tax Trap Calculator (2024/25)",
+    metaDescription: "Calculate net take-home pay on a £100,000 UK salary and navigate the 60% marginal tax trap between £100k–£125k. See pension salary sacrifice savings to protect tax allowances.",
+    answerSummary: "On a £100,000 UK salary, earnings between £100,000 and £125,140 face an effective 60% marginal tax rate as the £12,570 Personal Allowance is reduced by £1 for every £2 earned. On £100k gross with 5% pension, take-home pay is £67,820/year (£5,652/month), with £27,432 in PAYE tax and £3,368 in NI.",
+    about: "The UK's £100,000 tax trap is one of the most punitive marginal tax rate anomalies in the developed world. Once adjusted net income exceeds £100,000, HMRC tapers the tax-free Personal Allowance by £1 for every £2 earned until it is completely wiped out at £125,140. Combined with 40% income tax and 2% National Insurance, every extra pound is taxed at an effective 60% (plus loss of tax-free childcare benefits).",
+    initialValues: {
+      grossSalary: 100000,
+      pensionPercent: 5,
+      studentLoanPlan: "none",
+    },
+    faqs: [
+      {
+        question: "What is the 60% tax trap on UK salaries over £100,000?",
+        answer: "Between £100,000 and £125,140, you lose £1 of tax-free Personal Allowance for every £2 of income. This creates an additional 20% tax charge on top of the 40% higher rate tax, resulting in an effective 60% income tax rate (62% including National Insurance).",
+      },
+      {
+        question: "How much take-home pay do you get on a £100,000 salary in the UK?",
+        answer: "With standard 5% pension contributions, take-home pay on £100,000 is approximately £67,820 annually or £5,652 per month.",
+      },
+      {
+        question: "How do you avoid the 60% tax trap using pension contributions?",
+        answer: "By contributing earnings above £100,000 into a SIPP or workplace pension (via salary sacrifice or relief at source), your adjusted net income is reduced back to £100,000, fully restoring your £12,570 Personal Allowance and reclaiming 40% tax relief.",
+      },
+    ],
+  },
 ];
 
 // Indexed Maps for O(1) SSG and metadata lookups

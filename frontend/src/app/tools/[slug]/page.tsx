@@ -397,6 +397,25 @@ export default function ToolPage({ params }: ToolPageProps) {
           />
         </div>
 
+        {/* Contextual Converter Bridge */}
+        <div className="max-w-4xl mx-auto p-4 sm:p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-850/80 border border-zinc-200/80 dark:border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+          <div className="text-zinc-600 dark:text-zinc-400">
+            <strong className="text-zinc-900 dark:text-zinc-100 font-semibold block sm:inline mr-1">
+              Need to convert or export calculation datasets?
+            </strong>
+            <span>
+              Transform amortization schedules and reports between CSV, Excel (.xlsx), and JSON with 100% in-browser privacy.
+            </span>
+          </div>
+          <Link
+            href="/convert/csv-to-excel"
+            className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400 hover:underline shrink-0"
+          >
+            <span>Launch CSV to Excel</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
         {/* Cross-Linking Topic Clusters (GEO & Internal SEO) */}
         {(relatedConverters.length > 0 || relatedTools.length > 0) && (
           <section className="space-y-6 max-w-4xl mx-auto pt-8 border-t border-zinc-200 dark:border-zinc-800">

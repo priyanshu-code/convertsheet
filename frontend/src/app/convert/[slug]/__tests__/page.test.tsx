@@ -308,8 +308,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + About/Privacy/Terms (3) + 3 Category Silos + 19 Converters + 53 Tools + 108 Presets + 6 Blog Posts + 3 Comparisons = 198 entries
-      expect(entries).toHaveLength(198);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + About/Privacy/Terms (3) + 3 Category Silos + 19 Converters + 53 Tools + 111 Presets + 6 Blog Posts + 3 Comparisons = 201 entries
+      expect(entries).toHaveLength(201);
 
       // Home entry
       const homeEntry = entries.find(
