@@ -176,4 +176,70 @@ export const WORKBENCH_TOOLS: Record<string, ToolConfig> = {
     relatedConverters: ["csv-to-excel", "excel-to-json"],
     relatedTools: ["sql-query-studio", "sheet-diff-checker"],
   },
+
+  "csv-to-jsonl-converter": {
+    slug: "csv-to-jsonl-converter",
+    name: "CSV to JSONL Converter (AI Dataset Studio)",
+    category: "data-developer",
+    title: "CSV to JSONL Converter Online - AI Dataset Preparation Studio",
+    subtitle: "Convert CSV, TSV, and Excel spreadsheets into clean, token-counted JSONL training datasets for OpenAI, Anthropic Claude, and Llama fine-tuning. 100% private.",
+    metaDescription: "Free online CSV to JSONL converter for AI fine-tuning. Map columns to system, user, and assistant roles, estimate tokens, scrub PII, and export directly in your browser.",
+    answerSummary: "Convert tabular CSV or Excel data to OpenAI, Anthropic, or Alpaca JSONL formats directly in your browser with automatic role mapping, token counts, and zero cloud uploads.",
+    badge: "AI Fine-Tuning",
+    featured: true,
+    keywords: [
+      "csv to jsonl",
+      "csv to jsonl converter",
+      "excel to jsonl",
+      "jsonl converter for openai",
+      "prepare dataset for fine tuning",
+      "format csv for chatgpt",
+      "claude messages jsonl converter",
+      "ai dataset preparation tool",
+      "csv token counter",
+    ],
+    formulaDescription:
+      "Serializes tabular row records into newline-delimited JSON (JSONL / NDJSON) conforming to OpenAI Chat completions or Anthropic Messages schema with BPE token estimation.",
+    about:
+      "Fine-tuning large language models like GPT-4o, Claude 3.5, or Llama 3 requires training data formatted in Newline Delimited JSON (.jsonl) with specific role schemas (system, user, assistant). Writing custom Python or Pandas scripts for every dataset is time-consuming and prone to formatting errors like broken curly quotes, unescaped newlines, or missing fields. ConvertSheet's AI Dataset & JSONL Studio allows developers, researchers, and data analysts to drag-and-drop spreadsheets, visually map columns to LLM roles, estimate token counts and fine-tuning costs in real-time, and download validation-ready JSONL files without uploading confidential data to external servers.",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload CSV, Excel, or JSON File",
+        description:
+          "Drop your tabular dataset into the studio, or click one of our instant sample presets (Customer Support or Code Assistant).",
+      },
+      {
+        step: 2,
+        title: "Map Columns to LLM Roles",
+        description:
+          "Select which columns represent the System Prompt, User Query, and Assistant Output using our visual role selector.",
+      },
+      {
+        step: 3,
+        title: "Inspect Tokens & Export .JSONL",
+        description:
+          "Review real-time BPE token counts and fine-tuning cost estimates, inspect the live dual-pane preview, and download your .jsonl file with one click.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does the exported JSONL work with OpenAI fine-tuning CLI?",
+        answer:
+          "Yes. Our OpenAI Chat preset formats each row into the exact `{\"messages\": [{\"role\": \"system\", ...}, {\"role\": \"user\", ...}, {\"role\": \"assistant\", ...}]}` JSONL structure required by OpenAI.",
+      },
+      {
+        question: "Is my training data uploaded to ConvertSheet servers?",
+        answer:
+          "No. All parsing, validation, token estimation, and JSONL generation occur 100% locally in your browser memory. Your confidential customer conversations or proprietary training data never touch our servers.",
+      },
+      {
+        question: "Can I convert Excel files (.xlsx) directly to JSONL?",
+        answer:
+          "Yes. The studio parses Excel (.xlsx, .xls), CSV, TSV, and raw JSON arrays with equal speed directly in-browser.",
+      },
+    ],
+    relatedConverters: ["csv-to-excel", "excel-to-json", "json-to-excel"],
+    relatedTools: ["data-anonymizer-cleaner", "sql-query-studio", "json-formatter-validator"],
+  },
 };

@@ -44,7 +44,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(json["@graph"][0]["@type"]).toBe("CollectionPage");
       expect(json["@graph"][1]["@type"]).toBe("BreadcrumbList");
       expect(json["@graph"][2]["@type"]).toBe("ItemList");
-      expect(json["@graph"][2]["numberOfItems"]).toBe(53);
+      expect(json["@graph"][2]["numberOfItems"]).toBe(54);
     });
 
     it("live filter updates tool list when typing in search input", () => {
@@ -119,7 +119,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(screen.getByText(/Explore Other Tool Suites/i)).toBeInTheDocument();
     });
 
-    it("renders data-developer category page with 9 tools", () => {
+    it("renders data-developer category page with 13 tools", () => {
       render(<ToolCategoryPage params={{ category: "data-developer" }} />);
 
       expect(
@@ -132,7 +132,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(
         screen.getByRole("heading", {
           level: 2,
-          name: /Available Data & Developer Tools \(12\)/i,
+          name: /Available Data & Developer Tools \(13\)/i,
         })
       ).toBeInTheDocument();
     });

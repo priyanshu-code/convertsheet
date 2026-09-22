@@ -62,6 +62,7 @@ import { PdfCompressorTool } from "@/components/tools/PdfCompressorTool";
 import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
 import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
+import { AiDataPrepTool } from "@/components/tools/AiDataPrepTool";
 
 export interface ToolPageProps {
   params: {
@@ -226,6 +227,7 @@ export default function ToolPage({ params }: ToolPageProps) {
     "sql-query-studio": SqlStudioTool,
     "sheet-diff-checker": SheetDiffTool,
     "data-anonymizer-cleaner": DataCleanerTool,
+    "csv-to-jsonl-converter": AiDataPrepTool,
   };
 
   const ToolComponent = componentMap[tool.slug];
