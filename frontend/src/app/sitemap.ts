@@ -29,12 +29,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  const toolRoutes: MetadataRoute.Sitemap = getAllToolSlugs().map((slug) => ({
-    url: `${baseUrl}/tools/${slug}`,
-    lastModified: currentDate,
-    changeFrequency: "weekly",
-    priority: 0.85,
-  }));
+  const OFFBRAND_LIFESTYLE_SLUGS = new Set([
+    "bmi-calculator",
+    "age-calculator",
+    "tip-calculator",
+  ]);
+
+  const toolRoutes: MetadataRoute.Sitemap = getAllToolSlugs()
+    .filter((slug) => !OFFBRAND_LIFESTYLE_SLUGS.has(slug))
+    .map((slug) => ({
+      url: `${baseUrl}/tools/${slug}`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    }));
 
   const presetRoutes: MetadataRoute.Sitemap = getAllPresetStaticParams().map(
     ({ slug, preset }) => ({

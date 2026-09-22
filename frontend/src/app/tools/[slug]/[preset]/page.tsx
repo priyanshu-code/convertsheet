@@ -28,6 +28,9 @@ import { IncomeTaxCalculator } from "@/components/tools/IncomeTaxCalculator";
 import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
 import { MortgageTermComparisonTable } from "@/components/calculator/MortgageTermComparisonTable";
 import { WageConversionMatrix } from "@/components/calculator/WageConversionMatrix";
+import { InflationErosionMatrix } from "@/components/calculator/InflationErosionMatrix";
+import { ApyCompoundingMatrix } from "@/components/calculator/ApyCompoundingMatrix";
+import { CarLoanTermMatrix } from "@/components/calculator/CarLoanTermMatrix";
 
 export interface ProgrammaticPresetPageProps {
   params: {
@@ -227,6 +230,30 @@ export default function ProgrammaticPresetPage({
           <div className="max-w-5xl mx-auto w-full">
             <WageConversionMatrix
               initialHourlyRate={Number(preset.initialValues?.hourlyRate) || 25}
+            />
+          </div>
+        )}
+
+        {tool.slug === "inflation-calculator" && (
+          <div className="max-w-5xl mx-auto w-full">
+            <InflationErosionMatrix
+              initialAmount={Number(preset.initialValues?.amount) || 100000}
+            />
+          </div>
+        )}
+
+        {tool.slug === "high-yield-savings-cd-calculator" && (
+          <div className="max-w-5xl mx-auto w-full">
+            <ApyCompoundingMatrix
+              initialDeposit={Number(preset.initialValues?.initialDeposit) || 50000}
+            />
+          </div>
+        )}
+
+        {tool.slug === "car-loan-calculator" && (
+          <div className="max-w-5xl mx-auto w-full">
+            <CarLoanTermMatrix
+              initialLoanAmount={Number(preset.initialValues?.vehiclePrice) || 35000}
             />
           </div>
         )}

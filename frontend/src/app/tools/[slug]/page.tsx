@@ -91,11 +91,18 @@ export async function generateMetadata({
 
   const canonicalUrl = `https://www.convertsheet.com/tools/${tool.slug}`;
   const ogImage = `https://www.convertsheet.com/tools/${tool.slug}/opengraph-image`;
+  const isOffbrandLifestyle =
+    params.slug === "bmi-calculator" ||
+    params.slug === "age-calculator" ||
+    params.slug === "tip-calculator";
 
   return {
     title: tool.title,
     description: tool.metaDescription,
     keywords: tool.keywords,
+    robots: isOffbrandLifestyle
+      ? { index: false, follow: true }
+      : { index: true, follow: true },
     alternates: {
       canonical: canonicalUrl,
     },

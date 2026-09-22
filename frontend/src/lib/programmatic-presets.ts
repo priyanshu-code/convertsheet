@@ -1501,7 +1501,7 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "presetSlug": "50k-in-10-years",
     "name": "What Will $50,000 Be Worth in 10 Years?",
     "title": "What Will $50k Be Worth in 10 Years? Inflation Calculator | ConvertSheet",
-    "metaDescription": "Calculate purchasing power of $50k in 10 years at historical 3.0% inflation. See future purchasing loss and export schedule to Excel.",
+    "metaDescription": "At 3% inflation, $50,000 will be worth $37,205 in 10 years (losing $12,795 in real value). You will need $67,196 to match today's buying power. Free Excel export.",
     "answerSummary": "At a 3.0% annual inflation rate, $50,000 today will lose 26% of its purchasing power over 10 years, falling to an equivalent value of $37,205 in today's dollars. Conversely, you will need $67,196 in 10 years to buy what $50,000 buys today.",
     "about": "Understanding the silent decay of inflation on $50,000 highlights the importance of putting cash into high-yield savings accounts, index funds, or Treasuries rather than leaving it in checking accounts.",
     "initialValues": {
@@ -1525,7 +1525,7 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "presetSlug": "100k-in-10-years",
     "name": "What Will $100,000 Be Worth in 10 Years?",
     "title": "What Will $100k Be Worth in 10 Years? Inflation Calculator | ConvertSheet",
-    "metaDescription": "Calculate the future purchasing power of $100,000 in 10 years at various inflation rates. Free client-side calculator with Excel export.",
+    "metaDescription": "In 10 years at 3.2% inflation, $100,000 drops to $72,980 in real purchasing power. You will need $137,024 to match today's buying power. Free Excel export.",
     "answerSummary": "At a historical average inflation rate of 3.2%, $100,000 today will lose approximately 27% of its real purchasing power in 10 years, having an effective equivalent value of $72,980. Conversely, you will need $137,024 in 10 years to purchase what $100,000 buys today.",
     "about": "Visualizing inflation over a decade shows the critical necessity of investing surplus cash in yield-bearing assets or equity index funds rather than keeping it in cash.",
     "initialValues": {
@@ -1549,7 +1549,7 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "presetSlug": "100k-in-20-years",
     "name": "What Will $100,000 Be Worth in 20 Years?",
     "title": "What Will $100k Be Worth in 20 Years? Inflation Calculator | ConvertSheet",
-    "metaDescription": "Calculate the purchasing power of $100k in 20 years. Discover the cumulative inflation impact and export projections to Excel.",
+    "metaDescription": "In 20 years at 3.2% inflation, $100,000 loses 47% of its value, falling to $53,261 in real purchasing power. You will need $187,756 to equal $100k today. Free Excel export.",
     "answerSummary": "At a 3.2% annual inflation rate over 20 years, $100,000 in uninvested cash suffers a 47% loss in real purchasing power, declining to just $53,261 in real terms. You would need $187,756 in 20 years to match today's standard of living.",
     "about": "Two decades of compounding inflation cuts purchasing power almost in half. This calculator reveals the math behind long-term capital preservation.",
     "initialValues": {
@@ -1693,7 +1693,7 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "presetSlug": "50k-in-15-years",
     "name": "What Will $50,000 Be Worth in 15 Years?",
     "title": "What Will $50k Be Worth in 15 Years? Inflation Calculator | ConvertSheet",
-    "metaDescription": "Calculate purchasing power of $50,000 in 15 years at 3.2% inflation. See cumulative purchasing loss and export to Excel.",
+    "metaDescription": "At 3.2% inflation, $50,000 loses 38% of its purchasing power in 15 years, declining to $31,164. You will need $80,221 to match today's buying power. Excel export.",
     "answerSummary": "At a 3.2% inflation rate, $50,000 today will lose 38% of its purchasing power over 15 years, falling to an equivalent value of $31,164. You will need $80,221 in 15 years to match today's buying power of $50,000.",
     "about": "A 15-year horizon spans the period between having a toddler and paying for their college tuition. Learn how inflation affects mid-term financial goals.",
     "initialValues": {
