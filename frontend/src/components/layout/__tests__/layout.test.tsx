@@ -139,7 +139,7 @@ describe("Layout Components", () => {
         "href",
         "/convert/csv-to-excel"
       );
-      expect(screen.getByRole("menuitem", { name: /Excel to JSON/i })).toHaveAttribute(
+      expect(screen.getByRole("menuitem", { name: /^Excel to JSON\b(?!L)/i })).toHaveAttribute(
         "href",
         "/convert/excel-to-json"
       );
@@ -278,7 +278,7 @@ describe("Layout Components", () => {
         "href",
         "/convert/csv-to-excel"
       );
-      expect(screen.getByRole("link", { name: /Excel to JSON/i })).toHaveAttribute(
+      expect(screen.getByRole("link", { name: /^Excel to JSON(?!L)/i })).toHaveAttribute(
         "href",
         "/convert/excel-to-json"
       );

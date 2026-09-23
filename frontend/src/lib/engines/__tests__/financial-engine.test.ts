@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   calculateMortgage,
   calculateCarLoan,
+  calculateCarLeaseVsBuy,
   calculateRetirement,
   calculateInflation,
   calculateHourlyToSalary,
@@ -104,6 +105,29 @@ describe("financial-engine", () => {
 
       expect(res.monthlyPayment).toBe(500);
       expect(res.totalInterest).toBe(0);
+    });
+  });
+
+  describe("calculateCarLeaseVsBuy", () => {
+    it("compares loan purchase and lease options side-by-side with residual equity", () => {
+      const res = calculateCarLeaseVsBuy({
+        vehiclePrice: 35000,
+        downPayment: 5000,
+        tradeInValue: 3000,
+        interestRate: 5.9,
+        loanTermMonths: 36,
+        salesTaxPercent: 7.0,
+        dealerFees: 500,
+      });
+
+      expect(res.termMonths).toBe(36);
+      expect(res.purchaseMonthlyPayment).toBeGreaterThan(0);
+      expect(res.leaseMonthlyPayment).toBeGreaterThan(0);
+      expect(res.purchaseEstimatedEndingEquity).toBe(18200); // 52% of 35,000
+      expect(res.leaseEstimatedEndingEquity).toBe(0); // vehicle returned
+      expect(res.purchaseNetCostOfOwnership).toBeLessThan(res.leaseNetCostOfOwnership);
+      expect(res.longTermFinancialAdvantage).toBe("buy");
+      expect(res.verdictSummary).toContain("Buying saves");
     });
   });
 

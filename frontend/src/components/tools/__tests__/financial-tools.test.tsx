@@ -65,12 +65,14 @@ describe("Financial Calculators Suite", () => {
     expect(screen.getByText("₹1,800")).toBeInTheDocument();
   });
 
-  it("PercentageCalculator computes all 3 percentage problem types", () => {
+  it("PercentageCalculator computes all 6 percentage problem types and renders matrix", () => {
     render(<PercentageCalculator />);
     expect(screen.getByText("Percentage Calculator")).toBeInTheDocument();
 
-    // Mode 1: 15% of 200 = 30
-    expect(screen.getByText("30")).toBeInTheDocument();
+    // Mode 1: 15% of 200 = 30 (primary result card and breakdown table)
+    expect(screen.getAllByText("30").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Instant Percentage Matrix for 200")).toBeInTheDocument();
+    expect(screen.getByText("Download .xlsx Reference Sheet")).toBeInTheDocument();
   });
 
   it("DiscountCalculator computes single and stacked discounts", () => {

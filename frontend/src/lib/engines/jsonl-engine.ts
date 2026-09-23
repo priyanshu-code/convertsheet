@@ -484,6 +484,127 @@ export class CsvToJsonlEngine implements IConverterEngine {
   }
 }
 
+export class ExcelToJsonlEngine implements IConverterEngine {
+  readonly id: ConverterEngineId = "excel-to-jsonl";
+
+  async parsePreview(file: File, maxRows: number = 10, tableName?: string): Promise<TabularData> {
+    if (file.size === 0) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
+
+    const buffer = await file.arrayBuffer();
+    const wb = XLSX.read(buffer, { type: "array", cellDates: true });
+    const targetSheetName = tableName && wb.SheetNames.includes(tableName) ? tableName : wb.SheetNames[0];
+    const sheet = wb.Sheets[targetSheetName];
+
+    if (!sheet) {
+      return { columns: [], rows: [], totalRows: 0, tables: wb.SheetNames };
+    }
+
+    const rawRows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "" });
+    const columns = rawRows.length > 0 ? Object.keys(rawRows[0]) : [];
+
+    return {
+      columns,
+      rows: rawRows.slice(0, maxRows),
+      totalRows: rawRows.length,
+      tables: wb.SheetNames,
+      activeTable: targetSheetName,
+    };
+  }
+
+  async convert(file: File, options?: ConversionOptions): Promise<ConversionOutput> {
+    if (file.size === 0) {
+      throw new Error("Excel file is empty");
+    }
+
+    const buffer = await file.arrayBuffer();
+    const wb = XLSX.read(buffer, { type: "array", cellDates: true });
+    const targetSheetName = options?.sheetName && wb.SheetNames.includes(options.sheetName)
+      ? options.sheetName
+      : wb.SheetNames[0];
+    const sheet = wb.Sheets[targetSheetName];
+
+    if (!sheet) {
+      throw new Error(`Sheet "${targetSheetName}" not found in Excel workbook`);
+    }
+
+    const rawRows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: "" });
+    const jsonlContent = rawRows.map((r) => JSON.stringify(r)).join("\n");
+    const baseName = file.name.replace(/\.(xlsx|xls)$/i, "");
+
+    const blob = new Blob([jsonlContent], {
+      type: "application/x-ndjson",
+    });
+
+    return {
+      blob,
+      filename: `${baseName}.jsonl`,
+      mimeType: "application/x-ndjson",
+    };
+  }
+}
+
+/**
+ * Converts Standard JSON (.json array / records) to Newline-Delimited JSON (.jsonl / .ndjson).
+ */
+export class JsonToJsonlEngine implements IConverterEngine {
+  readonly id: ConverterEngineId = "json-to-jsonl";
+
+  async parsePreview(file: File, maxRows: number = 10): Promise<TabularData> {
+    if (file.size === 0) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
+
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    const records = Array.isArray(parsed) ? parsed : [parsed];
+
+    if (records.length === 0) {
+      return { columns: [], rows: [], totalRows: 0 };
+    }
+
+    const columnSet = new Set<string>();
+    for (const rec of records.slice(0, 50)) {
+      if (rec && typeof rec === "object") {
+        Object.keys(rec).forEach((k) => columnSet.add(k));
+      }
+    }
+    const columns = Array.from(columnSet);
+
+    return {
+      columns,
+      rows: records.slice(0, maxRows),
+      totalRows: records.length,
+    };
+  }
+
+  async convert(file: File): Promise<ConversionOutput> {
+    if (file.size === 0) {
+      throw new Error("JSON file is empty");
+    }
+
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    const records = Array.isArray(parsed) ? parsed : [parsed];
+
+    const jsonlContent = records.map((r) => JSON.stringify(r)).join("\n");
+    const baseName = file.name.replace(/\.json$/i, "");
+
+    const blob = new Blob([jsonlContent], {
+      type: "application/x-ndjson",
+    });
+
+    return {
+      blob,
+      filename: `${baseName}.jsonl`,
+      mimeType: "application/x-ndjson",
+    };
+  }
+}
+
 export const jsonlToExcelEngine = new JsonlToExcelEngine();
 export const jsonlToCsvEngine = new JsonlToCsvEngine();
 export const csvToJsonlEngine = new CsvToJsonlEngine();
+export const excelToJsonlEngine = new ExcelToJsonlEngine();
+export const jsonToJsonlEngine = new JsonToJsonlEngine();

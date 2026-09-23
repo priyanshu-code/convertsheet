@@ -18,9 +18,9 @@ import {
 
 describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
-    it("returns all 19 registered converter slugs", () => {
+    it("returns all 21 registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(19);
+      expect(slugs).toHaveLength(21);
       expect(slugs).toContain("parquet-to-excel");
       expect(slugs).toContain("parquet-to-csv");
       expect(slugs).toContain("parquet-to-json");
@@ -29,6 +29,8 @@ describe("Converter Registry & Utilities", () => {
       expect(slugs).toContain("jsonl-to-excel");
       expect(slugs).toContain("jsonl-to-csv");
       expect(slugs).toContain("csv-to-jsonl");
+      expect(slugs).toContain("excel-to-jsonl");
+      expect(slugs).toContain("json-to-jsonl");
       expect(slugs).toContain("markdown-to-excel");
       expect(slugs).toContain("sqlite-to-excel");
       expect(slugs).toContain("json-to-ndjson");

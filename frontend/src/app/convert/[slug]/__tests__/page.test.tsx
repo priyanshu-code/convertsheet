@@ -35,10 +35,10 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
 
   describe("generateStaticParams", () => {
-    it("returns all 19 converter slugs for static pre-rendering", () => {
+    it("returns all 21 converter slugs for static pre-rendering", () => {
       const params = generateStaticParams();
 
-      expect(params).toHaveLength(19);
+      expect(params).toHaveLength(21);
       const slugs = params.map((p) => p.slug);
       expect(slugs).toEqual(
         expect.arrayContaining([
@@ -57,6 +57,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
           "jsonl-to-excel",
           "jsonl-to-csv",
           "csv-to-jsonl",
+          "excel-to-jsonl",
+          "json-to-jsonl",
           "markdown-to-excel",
           "sqlite-to-excel",
           "json-to-ndjson",
@@ -146,11 +148,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         )
       ).toBeInTheDocument();
 
-      // Other Popular Data Converters (should list the other 18)
+      // Other Popular Data Converters (should list the other 20)
       const otherSection = screen.getByTestId("other-converters-section");
       expect(otherSection).toBeInTheDocument();
       const otherLinks = otherSection.querySelectorAll("a");
-      expect(otherLinks).toHaveLength(18);
+      expect(otherLinks).toHaveLength(20);
 
       const linkedHrefs = Array.from(otherLinks).map((a) =>
         a.getAttribute("href")
@@ -308,8 +310,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + About/Privacy/Terms (3) + 3 Category Silos + 19 Converters + 51 On-Brand Tools + 117 Presets + 6 Blog Posts + 3 Comparisons = 205 entries
-      expect(entries).toHaveLength(205);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + About/Privacy/Terms (3) + 3 Category Silos + 21 Converters + 51 On-Brand Tools + 117 Presets + 6 Blog Posts + 3 Comparisons = 207 entries
+      expect(entries).toHaveLength(207);
 
       // Home entry
       const homeEntry = entries.find(

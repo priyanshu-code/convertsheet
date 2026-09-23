@@ -248,6 +248,139 @@ export function calculateCarLoan(input: CarLoanInput): CarLoanResult {
   };
 }
 
+export interface CarLeaseVsBuyInput {
+  vehiclePrice: number;
+  downPayment?: number;
+  tradeInValue?: number;
+  loanTermMonths?: number; // default 36
+  interestRate?: number; // APR % e.g. 5.9
+  salesTaxPercent?: number; // e.g. 7
+  dealerFees?: number; // e.g. 500
+  // Lease specific inputs
+  leaseTermMonths?: number; // default 36
+  leaseResidualPercent?: number; // default 55%
+  leaseMoneyFactor?: number; // default interestRate / 2400 or 0.0025
+  leaseAcquisitionFee?: number; // default $650
+  dispositionFee?: number; // default $395
+  expectedDepreciationRetentionBuyPercent?: number; // default 52% (residual market value after term)
+}
+
+export interface CarLeaseVsBuyResult {
+  termMonths: number;
+  // Buying (Loan)
+  purchaseMonthlyPayment: number;
+  purchaseTotalOutflow: number;
+  purchaseTotalInterest: number;
+  purchaseEstimatedEndingEquity: number;
+  purchaseNetCostOfOwnership: number; // outflow - ending equity
+
+  // Leasing
+  leaseMonthlyPayment: number;
+  leaseTotalOutflow: number;
+  leaseFinanceCharges: number;
+  leaseEstimatedEndingEquity: number; // 0
+  leaseNetCostOfOwnership: number; // leaseTotalOutflow
+
+  // Metrics & Comparison
+  monthlyPaymentSavingsWithLease: number;
+  longTermFinancialAdvantage: "buy" | "lease";
+  netCostDifference: number;
+  verdictSummary: string;
+}
+
+export function calculateCarLeaseVsBuy(input: CarLeaseVsBuyInput): CarLeaseVsBuyResult {
+  const price = Math.max(0, input.vehiclePrice || 0);
+  const down = Math.max(0, input.downPayment || 0);
+  const tradeIn = Math.max(0, input.tradeInValue || 0);
+  const termMonths = Math.max(1, input.loanTermMonths || input.leaseTermMonths || 36);
+  const taxRate = Math.max(0, input.salesTaxPercent ?? 7.0) / 100;
+  const fees = Math.max(0, input.dealerFees ?? 500);
+  const annualRate = Math.max(0, input.interestRate ?? 5.9);
+
+  // 1. BUYING (Loan) over termMonths
+  const loanCalc = calculateCarLoan({
+    vehiclePrice: price,
+    downPayment: down,
+    tradeInValue: tradeIn,
+    interestRate: annualRate,
+    loanTermMonths: termMonths,
+    salesTaxPercent: input.salesTaxPercent ?? 7.0,
+    dealerFees: fees,
+  });
+
+  const purchaseMonthlyPayment = loanCalc.monthlyPayment;
+  const purchaseTotalOutflow = roundTo(down + tradeIn + purchaseMonthlyPayment * termMonths, 2);
+  const purchaseTotalInterest = loanCalc.totalInterest;
+
+  // Estimated Market Value / Equity after term (default 52% for 3 years)
+  const retentionPct = (input.expectedDepreciationRetentionBuyPercent ?? 52) / 100;
+  const purchaseEstimatedEndingEquity = roundTo(price * retentionPct, 2);
+  const purchaseNetCostOfOwnership = roundTo(purchaseTotalOutflow - purchaseEstimatedEndingEquity, 2);
+
+  // 2. LEASING over termMonths
+  const acqFee = input.leaseAcquisitionFee ?? 650;
+  const dispFee = input.dispositionFee ?? 395;
+  const residualPct = (input.leaseResidualPercent ?? 55) / 100;
+  const residualValue = roundTo(price * residualPct, 2);
+
+  // Gross capitalized cost
+  const grossCapCost = price + fees + acqFee;
+  const capCostReduction = down + tradeIn;
+  const adjustedCapCost = Math.max(0, grossCapCost - capCostReduction);
+
+  // Monthly Depreciation
+  const monthlyDepreciation = termMonths > 0 ? (adjustedCapCost - residualValue) / termMonths : 0;
+  const safeMonthlyDepreciation = Math.max(0, monthlyDepreciation);
+
+  // Money Factor: APR / 2400 (e.g. 6% APR / 2400 = 0.0025)
+  const moneyFactor = input.leaseMoneyFactor ?? (annualRate > 0 ? annualRate / 2400 : 0.0025);
+  const monthlyRentCharge = (adjustedCapCost + residualValue) * moneyFactor;
+  const safeMonthlyRentCharge = Math.max(0, monthlyRentCharge);
+
+  // Monthly Lease Pre-Tax
+  const preTaxMonthlyLease = safeMonthlyDepreciation + safeMonthlyRentCharge;
+  // Tax on lease payments
+  const monthlyLeaseTax = preTaxMonthlyLease * taxRate;
+  const leaseMonthlyPayment = roundTo(preTaxMonthlyLease + monthlyLeaseTax, 2);
+
+  // Lease Outflow: Upfront (down + tradeIn) + (Monthly Payment * Term) + Disposition Fee
+  const leaseTotalOutflow = roundTo(down + tradeIn + leaseMonthlyPayment * termMonths + dispFee, 2);
+  const leaseFinanceCharges = roundTo(safeMonthlyRentCharge * termMonths, 2);
+  const leaseEstimatedEndingEquity = 0;
+  const leaseNetCostOfOwnership = leaseTotalOutflow;
+
+  // 3. COMPARISON & VERDICT
+  const monthlyPaymentSavingsWithLease = roundTo(Math.max(0, purchaseMonthlyPayment - leaseMonthlyPayment), 2);
+  const netDifference = roundTo(Math.abs(purchaseNetCostOfOwnership - leaseNetCostOfOwnership), 2);
+
+  const longTermFinancialAdvantage = purchaseNetCostOfOwnership <= leaseNetCostOfOwnership ? "buy" : "lease";
+
+  let verdictSummary = "";
+  if (longTermFinancialAdvantage === "buy") {
+    verdictSummary = `Buying saves $${netDifference.toLocaleString()} in net ownership cost over ${termMonths} months because you keep $${purchaseEstimatedEndingEquity.toLocaleString()} in vehicle equity.`;
+  } else {
+    verdictSummary = `Leasing saves $${netDifference.toLocaleString()} in net cost and frees up $${monthlyPaymentSavingsWithLease.toLocaleString()}/month in cash flow during the ${termMonths}-month period.`;
+  }
+
+  return {
+    termMonths,
+    purchaseMonthlyPayment,
+    purchaseTotalOutflow,
+    purchaseTotalInterest,
+    purchaseEstimatedEndingEquity,
+    purchaseNetCostOfOwnership,
+    leaseMonthlyPayment,
+    leaseTotalOutflow,
+    leaseFinanceCharges,
+    leaseEstimatedEndingEquity,
+    leaseNetCostOfOwnership,
+    monthlyPaymentSavingsWithLease,
+    longTermFinancialAdvantage,
+    netCostDifference: netDifference,
+    verdictSummary,
+  };
+}
+
 // ==========================================
 // 3. RETIREMENT & 401(K) CALCULATOR
 // ==========================================

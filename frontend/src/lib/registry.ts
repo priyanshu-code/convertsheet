@@ -874,6 +874,120 @@ export const CONVERTER_REGISTRY = {
     ],
   },
 
+  "excel-to-jsonl": {
+    slug: "excel-to-jsonl",
+    sourceFormat: "Excel",
+    targetFormat: "JSONL",
+    sourceExtension: ".xlsx",
+    additionalExtensions: [".xls"],
+    targetExtension: ".jsonl",
+    acceptedMimeTypes: [
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel",
+    ],
+    category: "data-engineering",
+    title: "Convert Excel to JSONL Online — Free (.xlsx to .jsonl), AI Datasets",
+    subtitle:
+      "Convert Excel spreadsheets (.xlsx, .xls) into Newline-Delimited JSON (JSONL / NDJSON) datasets for LLM fine-tuning, OpenAI, and streaming pipelines.",
+    metaDescription:
+      "Convert Excel (.xlsx) workbooks into JSONL and NDJSON files online. 100% private in-browser conversion for AI model training and data engineering.",
+    engineId: "excel-to-jsonl",
+    isClientSide: true,
+    featured: true,
+    badge: "AI & LLM",
+    about:
+      "Excel to JSONL conversion transforms multi-column spreadsheets into line-by-line JSON objects, making them instantly ingestible by AI training frameworks (OpenAI fine-tuning, Hugging Face datasets, Claude context loading) and high-throughput data lakes (Snowflake, BigQuery, AWS Athena).\n\nWith ConvertSheet, your entire Excel workbook is converted locally in your browser with WebAssembly and SheetJS. Formulas, cell values, and dates are accurately translated into standardized JSON keys without sending sensitive business sheets or training prompts across the network.",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload Excel Spreadsheet",
+        description: "Drop your .xlsx or .xls file into the secure in-browser converter.",
+      },
+      {
+        step: 2,
+        title: "Preview & Select Sheet",
+        description: "Preview rows and choose which worksheet to convert.",
+      },
+      {
+        step: 3,
+        title: "Download JSONL File",
+        description: "Save a clean, newline-delimited JSONL file formatted for AI pipelines.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can I use the converted JSONL for OpenAI fine-tuning?",
+        answer:
+          "Yes. Each row in your Excel file is converted into an independent JSON object formatted on its own line, strictly adhering to the JSONL format required by OpenAI, Anthropic, and Llama.",
+      },
+      {
+        question: "Are multi-sheet workbooks supported?",
+        answer:
+          "Yes. You can preview and convert any sheet within your Excel workbook directly from the sheet selector dropdown.",
+      },
+      {
+        question: "Does any data leave my device?",
+        answer:
+          "No. All parsing and serialization runs 100% locally in your browser using SheetJS and WebAssembly.",
+      },
+    ],
+  },
+
+  "json-to-jsonl": {
+    slug: "json-to-jsonl",
+    sourceFormat: "JSON",
+    targetFormat: "JSONL",
+    sourceExtension: ".json",
+    targetExtension: ".jsonl",
+    acceptedMimeTypes: ["application/json", "text/plain"],
+    category: "data-engineering",
+    title: "Convert JSON to JSONL Online — Free (.json to .jsonl / .ndjson)",
+    subtitle:
+      "Convert massive standard JSON arrays into streaming Newline-Delimited JSON (JSONL / NDJSON) for LLMs, OpenAI, and vector database ingestion.",
+    metaDescription:
+      "Convert JSON arrays and nested records into JSONL / NDJSON files online. Fast, zero-install, 100% client-side conversion for AI fine-tuning and big data.",
+    engineId: "json-to-jsonl",
+    isClientSide: true,
+    featured: true,
+    badge: "LLM Streaming",
+    about:
+      "Standard JSON stores collections in one monolithic array [...], requiring parsers to load the entire document into RAM before accessing a single object. JSONL (Newline-Delimited JSON) solves this by placing each JSON object on its own line, enabling lightning-fast streaming, parallel chunking, and direct compatibility with OpenAI GPT-4o, Anthropic Claude, and Llama fine-tuning APIs.\n\nConvertSheet converts your JSON files directly inside your browser memory with zero server uploads.",
+    howTo: [
+      {
+        step: 1,
+        title: "Upload JSON File",
+        description: "Select or drop your JSON file containing an array of objects or records.",
+      },
+      {
+        step: 2,
+        title: "Verify Preview",
+        description: "Inspect parsed fields and total record count in the interactive grid.",
+      },
+      {
+        step: 3,
+        title: "Export JSONL",
+        description: "Download the formatted .jsonl file ready for streaming and training.",
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the difference between JSON and JSONL?",
+        answer:
+          "Standard JSON wraps all items in an array `[ {...}, {...} ]`. JSONL places each object on a separate line without surrounding brackets or trailing commas, enabling streaming and chunking.",
+      },
+      {
+        question: "Can I convert large JSON dumps?",
+        answer:
+          "Yes. Our client-side parser processes records efficiently in browser memory without sending data to a third-party server.",
+      },
+      {
+        question: "Is this format compatible with Hugging Face datasets?",
+        answer:
+          "Yes. JSONL is the standard format used across Hugging Face, OpenAI, and LangChain document loaders.",
+      },
+    ],
+  },
+
   "markdown-to-excel": {
     slug: "markdown-to-excel",
     sourceFormat: "Markdown",

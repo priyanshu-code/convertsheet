@@ -143,4 +143,71 @@ describe("jsonl-engine (Smart LLM Message Flattener)", () => {
       expect(csvContent).toContain("Hello!");
     });
   });
+
+  describe("ExcelToJsonlEngine", () => {
+    it("parses preview and converts Excel workbook into valid JSONL", async () => {
+      const XLSX = await import("xlsx");
+      const wb = XLSX.utils.book_new();
+      const data = [
+        { model: "gpt-4o", context: 128000, active: true },
+        { model: "claude-3-5-sonnet", context: 200000, active: true },
+      ];
+      const ws = XLSX.utils.json_to_sheet(data);
+      XLSX.utils.book_append_sheet(wb, ws, "Models");
+      const buffer = XLSX.write(wb, { type: "array", bookType: "xlsx" });
+
+      const file = new File([buffer], "models.xlsx", {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      const engine = new (await import("../jsonl-engine")).ExcelToJsonlEngine();
+
+      // Test preview
+      const preview = await engine.parsePreview(file);
+      expect(preview.columns).toEqual(["model", "context", "active"]);
+      expect(preview.rows).toHaveLength(2);
+      expect(preview.tables).toContain("Models");
+
+      // Test conversion
+      const output = await engine.convert(file);
+      expect(output.filename).toBe("models.jsonl");
+      expect(output.mimeType).toBe("application/x-ndjson");
+
+      const text = await output.blob.text();
+      const lines = text.trim().split("\n");
+      expect(lines).toHaveLength(2);
+      expect(JSON.parse(lines[0])).toEqual({ model: "gpt-4o", context: 128000, active: true });
+      expect(JSON.parse(lines[1])).toEqual({ model: "claude-3-5-sonnet", context: 200000, active: true });
+    });
+  });
+
+  describe("JsonToJsonlEngine", () => {
+    it("parses preview and converts standard JSON array into JSONL", async () => {
+      const jsonRecords = [
+        { id: 1, role: "system", message: "Initialize agent" },
+        { id: 2, role: "user", message: "Execute workflow" },
+      ];
+      const file = new File([JSON.stringify(jsonRecords, null, 2)], "workflow.json", {
+        type: "application/json",
+      });
+
+      const engine = new (await import("../jsonl-engine")).JsonToJsonlEngine();
+
+      // Test preview
+      const preview = await engine.parsePreview(file);
+      expect(preview.columns).toEqual(["id", "role", "message"]);
+      expect(preview.totalRows).toBe(2);
+
+      // Test conversion
+      const output = await engine.convert(file);
+      expect(output.filename).toBe("workflow.jsonl");
+      expect(output.mimeType).toBe("application/x-ndjson");
+
+      const text = await output.blob.text();
+      const lines = text.trim().split("\n");
+      expect(lines).toHaveLength(2);
+      expect(JSON.parse(lines[0])).toEqual({ id: 1, role: "system", message: "Initialize agent" });
+      expect(JSON.parse(lines[1])).toEqual({ id: 2, role: "user", message: "Execute workflow" });
+    });
+  });
 });

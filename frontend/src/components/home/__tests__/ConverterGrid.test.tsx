@@ -14,12 +14,12 @@ describe("ConverterGrid Component", () => {
     expect(screen.getByRole("button", { name: /Spreadsheets & Docs/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Data Engineering/i })).toBeInTheDocument();
 
-    expect(screen.getByText("(19)")).toBeInTheDocument();
+    expect(screen.getByText("(21)")).toBeInTheDocument();
     expect(screen.getByText("(9)")).toBeInTheDocument();
-    expect(screen.getByText("(10)")).toBeInTheDocument();
+    expect(screen.getByText("(12)")).toBeInTheDocument();
   });
 
-  it("shows all 19 converters by default", () => {
+  it("shows all 21 converters by default", () => {
     render(<ConverterGrid converters={allConverters} />);
 
     expect(screen.getByText("JSON to Excel")).toBeInTheDocument();
