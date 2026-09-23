@@ -102,4 +102,30 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
     expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Standard Deduction/i).length).toBeGreaterThanOrEqual(1);
   });
+
+  it("renders Canada and Australia paycheck calculator presets cleanly", () => {
+    const { unmount } = render(
+      <ProgrammaticPresetPage
+        params={{ slug: "canada-paycheck-calculator", preset: "80k-salary-ontario" }}
+      />
+    );
+
+    expect(
+      screen.getAllByText(/\$80,000 Ontario Salary After Tax/i).length
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+
+    unmount();
+
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "australia-pay-calculator", preset: "90k-salary-australia" }}
+      />
+    );
+
+    expect(
+      screen.getAllByText(/\$90,000 Salary After Tax Australia/i).length
+    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+  });
 });

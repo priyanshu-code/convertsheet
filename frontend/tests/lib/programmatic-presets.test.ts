@@ -34,6 +34,8 @@ describe("Programmatic SEO Presets Registry", () => {
       "salary-calculator",
       "income-tax-calculator",
       "uk-salary-calculator",
+      "canada-paycheck-calculator",
+      "australia-pay-calculator",
     ]);
 
     PROGRAMMATIC_PRESETS.forEach((preset) => {
@@ -176,6 +178,33 @@ describe("Programmatic SEO Presets Registry", () => {
       otherDeductionsIn: 0,
     });
     expect(inTax?.faqs.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("retrieves valid configurations for Canada and Australia presets", () => {
+    const ontario80k = getProgrammaticPreset("canada-paycheck-calculator", "80k-salary-ontario");
+    expect(ontario80k).toBeDefined();
+    expect(ontario80k?.name).toBe("$80,000 Ontario Salary After Tax (2024)");
+    expect(ontario80k?.initialValues).toEqual({
+      grossSalary: 80000,
+      province: "ON",
+      rrspContributionPercent: 0,
+    });
+    expect(ontario80k?.faqs.length).toBeGreaterThanOrEqual(2);
+
+    const aus90k = getProgrammaticPreset("australia-pay-calculator", "90k-salary-australia");
+    expect(aus90k).toBeDefined();
+    expect(aus90k?.name).toBe("$90,000 Salary After Tax Australia (2024/25 Stage 3 Tax Cuts)");
+    expect(aus90k?.initialValues).toEqual({
+      grossSalary: 90000,
+      superannuationPercent: 11.5,
+      hasHelpDebt: false,
+      medicareExempt: false,
+    });
+    expect(aus90k?.faqs.length).toBeGreaterThanOrEqual(2);
+
+    const uk40k = getProgrammaticPreset("uk-salary-calculator", "uk-take-home-40k");
+    expect(uk40k).toBeDefined();
+    expect(uk40k?.name).toBe("£40,000 UK Salary Take-Home Pay Calculator (2024/25)");
   });
 
   it("generates static params for all presets with slug and preset keys", () => {

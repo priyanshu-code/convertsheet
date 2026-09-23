@@ -26,6 +26,8 @@ import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
 import { SalaryCalculator } from "@/components/tools/SalaryCalculator";
 import { IncomeTaxCalculator } from "@/components/tools/IncomeTaxCalculator";
 import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
+import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
+import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
 import { MortgageTermComparisonTable } from "@/components/calculator/MortgageTermComparisonTable";
 import { WageConversionMatrix } from "@/components/calculator/WageConversionMatrix";
 import { InflationErosionMatrix } from "@/components/calculator/InflationErosionMatrix";
@@ -129,6 +131,10 @@ export default function ProgrammaticPresetPage({
         return <IncomeTaxCalculator initialValues={preset.initialValues} />;
       case "uk-salary-calculator":
         return <UkSalaryCalculator initialValues={preset.initialValues} />;
+      case "canada-paycheck-calculator":
+        return <CanadaPaycheckCalculator initialValues={preset.initialValues} />;
+      case "australia-pay-calculator":
+        return <AustraliaPayCalculator initialValues={preset.initialValues} />;
       default:
         return null;
     }

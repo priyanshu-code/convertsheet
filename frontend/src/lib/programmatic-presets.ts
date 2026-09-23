@@ -8,7 +8,7 @@ export interface ProgrammaticPreset {
   metaDescription: string;
   answerSummary: string;
   about: string;
-  initialValues: Record<string, number | string>;
+  initialValues: Record<string, number | string | boolean>;
   faqs: FAQItem[];
   relatedPresetSlugs?: string[];
 }
@@ -3082,6 +3082,176 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         question: "How do you avoid the 60% tax trap using pension contributions?",
         answer: "By contributing earnings above £100,000 into a SIPP or workplace pension (via salary sacrifice or relief at source), your adjusted net income is reduced back to £100,000, fully restoring your £12,570 Personal Allowance and reclaiming 40% tax relief.",
+      },
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-40k",
+    name: "£40,000 UK Salary Take-Home Pay Calculator (2024/25)",
+    title: "£40,000 Salary Take-Home Pay UK — 2024/25 Net Monthly Paycheck",
+    metaDescription: "Calculate take-home pay on a £40,000 UK salary. Breakdown of 20% basic rate tax, 8% National Insurance, 5% pension, and monthly net pay (£2,610/mo).",
+    answerSummary: "On a £40,000 UK salary in 2024/25, your net in-hand take-home pay is approximately £31,319 per year or £2,610 per month (with a standard 5% workplace pension). Total annual deductions include £5,486 PAYE Income Tax, £2,194 National Insurance (8%), and £1,000 employee pension.",
+    about: "A £40,000 gross annual salary places you comfortably within the UK 20% basic tax band, well above the UK median wage. Calculate your exact net take-home pay after recent 2024 National Insurance cuts (down to 8%) and plan student loan repayments or salary sacrifice arrangements.",
+    initialValues: {
+      grossSalary: 40000,
+      pensionPercent: 5,
+      studentLoanPlan: "none",
+    },
+    faqs: [
+      {
+        question: "What is the monthly take-home pay on £40,000 in the UK?",
+        answer: "With a standard 1257L tax code and 5% pension contribution, a £40,000 salary yields approximately £2,610 per month after £457 in income tax and £183 in National Insurance.",
+      },
+      {
+        question: "What tax band is a £40,000 salary in the UK?",
+        answer: "£40,000 falls entirely within the 20% basic rate tax band (which covers taxable income between £12,571 and £50,270).",
+      },
+      {
+        question: "How much did the 2024 National Insurance cuts save on £40k?",
+        answer: "The reduction in employee Class 1 NI from 12% to 8% saves a £40,000 earner approximately £1,097 per year compared to 2023 rates.",
+      },
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-70k",
+    name: "£70,000 UK Salary Take-Home Pay Calculator (2024/25)",
+    title: "£70,000 Salary Take-Home Pay UK — 2024/25 Net Monthly Paycheck",
+    metaDescription: "Calculate net take-home pay on a £70,000 UK salary. Breakdown of 40% higher rate tax, 8% and 2% National Insurance, pension deductions, and monthly net earnings (£4,088/mo).",
+    answerSummary: "On a £70,000 UK salary in 2024/25, your net in-hand take-home pay is approximately £49,057 per year or £4,088 per month (with 5% pension). Annual deductions include £14,032 in PAYE Income Tax (spanning basic and 40% higher rate bands), £3,411 in National Insurance, and £3,500 in pension contributions.",
+    about: "A £70,000 salary puts earners into the UK's 40% higher rate tax bracket, which kicks in on taxable income exceeding £50,270. Understanding how income above £50,270 is taxed and leveraging salary sacrifice (pension contributions, EV schemes, cycle-to-work) can save thousands in higher rate PAYE tax.",
+    initialValues: {
+      grossSalary: 70000,
+      pensionPercent: 5,
+      studentLoanPlan: "none",
+    },
+    faqs: [
+      {
+        question: "How much is £70,000 after tax in the UK per month?",
+        answer: "With a 5% workplace pension, a £70,000 salary provides approximately £4,088 net per month after £1,169 in monthly income tax and £284 in National Insurance.",
+      },
+      {
+        question: "How much 40% tax do you pay on £70,000 in the UK?",
+        answer: "Taxable income above the £50,270 higher rate threshold is taxed at 40%. After personal allowance and 5% pension relief, you pay approximately £6,492 at the 40% higher rate.",
+      },
+      {
+        question: "How does salary sacrifice benefit a £70k earner?",
+        answer: "Every pound contributed to a pension above £50,270 receives 40% tax relief + 2% NI relief, meaning an additional £1,000 in your pension only reduces take-home pay by £580.",
+      },
+    ],
+  },
+  {
+    toolSlug: "canada-paycheck-calculator",
+    presetSlug: "80k-salary-ontario",
+    name: "$80,000 Ontario Salary After Tax (2024)",
+    title: "$80,000 Salary After Tax in Ontario — Take-Home Pay Calculator (2024)",
+    metaDescription: "Calculate take-home pay on an $80,000 salary in Ontario. Breakdown of CRA Federal tax, Ontario provincial tax, CPP ($4,056), and EI ($1,049). Net monthly pay: $4,945.",
+    answerSummary: "On an $80,000 gross salary in Ontario for 2024, your estimated net annual take-home pay is $59,339 per year ($4,945/month or $2,282 bi-weekly). Total deductions equal $20,661: $10,972 in Federal tax, $4,585 in Ontario provincial tax, $4,056 in CPP/CPP2, and $1,049 in Employment Insurance (EI).",
+    about: "Evaluate your net take-home earnings on an $80,000 salary in Ontario under 2024 Canada Revenue Agency (CRA) and Ontario Ministry of Finance guidelines. Includes the 2024 CPP Tier 2 enhancement and basic personal amount credits.",
+    initialValues: {
+      grossSalary: 80000,
+      province: "ON",
+      rrspContributionPercent: 0,
+    },
+    faqs: [
+      {
+        question: "What is the take-home pay on an $80,000 salary in Ontario?",
+        answer: "Your net annual in-hand take-home pay is approximately $59,339, which translates to $4,945 per month or $2,282 every two weeks.",
+      },
+      {
+        question: "What are the mandatory payroll deductions on $80k in Ontario?",
+        answer: "In 2024, mandatory statutory deductions on $80,000 include maximum CPP contributions of $4,055.50 (including CPP2) and maximum EI premiums of $1,049.12.",
+      },
+      {
+        question: "How does an RRSP contribution increase take-home pay on $80k?",
+        answer: "At $80,000 in Ontario, your marginal tax rate is approximately 29.65%. A $5,000 RRSP contribution generates a tax refund of approximately $1,482.",
+      },
+    ],
+  },
+  {
+    toolSlug: "canada-paycheck-calculator",
+    presetSlug: "100k-salary-bc",
+    name: "$100,000 British Columbia Salary After Tax (2024)",
+    title: "$100,000 Salary After Tax in BC — British Columbia Take-Home Pay",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in British Columbia. Breakdown of Federal tax, BC provincial tax, CPP, and EI. Net take-home pay: ~$73,645/year.",
+    answerSummary: "On a $100,000 gross salary in British Columbia (BC) for 2024, your net take-home pay is approximately $73,645 per year ($6,137/month or $2,832 bi-weekly). Deductions include $15,571 in Federal income tax, $5,680 in BC provincial tax, $4,056 in CPP/CPP2, and $1,049 in EI premiums.",
+    about: "British Columbia boasts competitive provincial income tax rates for upper-middle earners. This calculator models a six-figure $100,000 compensation package in Vancouver and BC, factoring in federal progressive brackets and provincial tax relief.",
+    initialValues: {
+      grossSalary: 100000,
+      province: "BC",
+      rrspContributionPercent: 0,
+    },
+    faqs: [
+      {
+        question: "What is the take-home pay on $100k in British Columbia?",
+        answer: "On a $100,000 salary in BC, take-home pay is approximately $73,645 annually, or $6,137 per month ($2,832 bi-weekly).",
+      },
+      {
+        question: "Is BC provincial tax lower than Ontario on $100,000?",
+        answer: "Yes, BC has lower provincial income tax brackets for middle and upper-middle income brackets compared to Ontario, saving roughly $800-$1,200 annually in provincial tax on a $100k salary.",
+      },
+      {
+        question: "When do CPP and EI deductions max out on a $100,000 salary?",
+        answer: "Because you earn above the maximum pensionable earnings threshold ($73,200 for CPP and $63,200 for EI), you will max out both deductions by August/September, increasing your take-home pay in the final months of the year.",
+      },
+    ],
+  },
+  {
+    toolSlug: "australia-pay-calculator",
+    presetSlug: "90k-salary-australia",
+    name: "$90,000 Salary After Tax Australia (2024/25 Stage 3 Tax Cuts)",
+    title: "$90,000 Salary After Tax Australia — Stage 3 Net Take-Home Pay",
+    metaDescription: "Calculate take-home pay on a $90,000 salary in Australia under the July 2024 Stage 3 tax cuts. Net pay: $70,412/year ($5,868/mo) plus $10,350 employer superannuation.",
+    answerSummary: "On a $90,000 gross salary in Australia for 2024/25, your net in-hand take-home pay is $70,412 per year ($5,868 per month or $2,708 fortnightly) under the revised Stage 3 tax cuts. Deductions include $17,788 in ATO income tax and $1,800 in Medicare levy (2%). In addition, your employer contributes $10,350 (11.5%) to your superannuation fund.",
+    about: "A $90,000 salary represents the average full-time Australian wage. Under the revised Stage 3 tax cuts effective July 1, 2024, the 32.5% tax rate was reduced to 30%, delivering significant tax savings for earners between $45,000 and $135,000.",
+    initialValues: {
+      grossSalary: 90000,
+      superannuationPercent: 11.5,
+      hasHelpDebt: false,
+      medicareExempt: false,
+    },
+    faqs: [
+      {
+        question: "How much is $90,000 after tax in Australia per month?",
+        answer: "Under 2024/25 Stage 3 rates, a $90,000 salary yields approximately $5,868 net per month ($2,708 fortnightly) after $1,482 in monthly income tax and $150 in Medicare levy.",
+      },
+      {
+        question: "How much did Stage 3 tax cuts save on a $90,000 salary?",
+        answer: "The Stage 3 tax cuts delivered an annual tax saving of approximately $1,929 to an Australian earning $90,000 compared to prior year brackets.",
+      },
+      {
+        question: "How much superannuation is paid on $90,000?",
+        answer: "Under the statutory 11.5% Superannuation Guarantee (effective July 1, 2024), your employer pays $10,350 annually into your super fund on top of your $90k base salary.",
+      },
+    ],
+  },
+  {
+    toolSlug: "australia-pay-calculator",
+    presetSlug: "120k-salary-australia",
+    name: "$120,000 Salary After Tax Australia (2024/25 Stage 3 Tax Cuts)",
+    title: "$120,000 Salary After Tax Australia — Stage 3 Net Take-Home Pay",
+    metaDescription: "Calculate take-home pay on a $120,000 salary in Australia. Breakdown of 30% tax bracket under Stage 3 cuts, 2% Medicare levy, and $13,800 employer superannuation.",
+    answerSummary: "On a $120,000 gross salary in Australia for 2024/25, your net in-hand take-home pay is $90,812 per year ($7,568 per month or $3,493 fortnightly). Total deductions include $26,788 in income tax and $2,400 in Medicare levy (2%). Your employer additionally pays $13,800 (11.5%) into your superannuation fund.",
+    about: "Six-figure compensation packages in Sydney, Melbourne, and Brisbane benefit substantially from the 2024 Stage 3 tax cuts, keeping earnings up to $135,000 taxed at a flat 30% rate rather than the previous 37% bracket.",
+    initialValues: {
+      grossSalary: 120000,
+      superannuationPercent: 11.5,
+      hasHelpDebt: false,
+      medicareExempt: false,
+    },
+    faqs: [
+      {
+        question: "What is the take-home pay on a $120k salary in Australia?",
+        answer: "Your take-home pay is approximately $90,812 per year, which equates to $7,568 per month or $3,493 per fortnight.",
+      },
+      {
+        question: "What tax bracket is $120,000 in Australia?",
+        answer: "Under the 2024/25 Stage 3 tax reform, $120,000 sits within the 30% marginal tax bracket, which now covers income from $45,001 all the way to $135,000.",
+      },
+      {
+        question: "How much superannuation is paid on $120,000?",
+        answer: "At the 11.5% Superannuation Guarantee rate, employer super contributions equal $13,800 per year ($1,150 per month).",
       },
     ],
   },
