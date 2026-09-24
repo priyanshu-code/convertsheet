@@ -31,12 +31,21 @@ export function Footer() {
 
   const toolsLinks = [
     { name: "Tools Directory Hub", href: "/tools" },
+    { name: "Complete Tools Directory", href: "/directory" },
     { name: "Mortgage Calculator", href: "/tools/mortgage-calculator" },
     { name: "Retirement Calculator", href: "/tools/retirement-calculator" },
     { name: "SIP Calculator", href: "/tools/sip-calculator" },
     { name: "EMI Calculator", href: "/tools/emi-calculator" },
     { name: "JSON Formatter", href: "/tools/json-formatter-validator" },
     { name: "Base64 Encoder", href: "/tools/base64-encoder-decoder" },
+  ];
+
+  const trendingLinks = [
+    { name: "15 vs 30 Year Mortgage", href: "/tools/mortgage-calculator/15-year-vs-30-year" },
+    { name: "What is 20% of 100?", href: "/tools/percentage-calculator/what-is-20-percent-of-100" },
+    { name: "$100k Salary After Tax", href: "/tools/salary-calculator/us-take-home-100k" },
+    { name: "20% Off Discount Calculator", href: "/tools/percentage-calculator/20-percent-off-discount-calculator" },
+    { name: "UK £100k Tax Trap", href: "/tools/uk-salary-calculator/uk-100k-tax-trap" },
   ];
 
   const privacyLinks = [
@@ -79,7 +88,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-8">
           {/* Brand & Mission Column */}
-          <div className="sm:col-span-2 lg:col-span-2 space-y-4">
+          <div className="sm:col-span-2 lg:col-span-1 space-y-4">
             <Link
               href="/"
               className="flex items-center gap-2.5 group inline-flex"
@@ -149,6 +158,25 @@ export function Footer() {
             </h3>
             <ul className="space-y-2">
               {toolsLinks.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Trending Scenarios Column */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white mb-4">
+              Trending Scenarios
+            </h3>
+            <ul className="space-y-2">
+              {trendingLinks.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}

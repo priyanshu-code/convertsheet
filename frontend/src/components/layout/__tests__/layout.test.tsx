@@ -316,6 +316,22 @@ describe("Layout Components", () => {
       );
     });
 
+    it("renders Trending Scenarios and Master Directory links", () => {
+      render(<Footer />);
+      expect(screen.getByRole("link", { name: "Complete Tools Directory" })).toHaveAttribute(
+        "href",
+        "/directory"
+      );
+      expect(screen.getByRole("link", { name: "15 vs 30 Year Mortgage" })).toHaveAttribute(
+        "href",
+        "/tools/mortgage-calculator/15-year-vs-30-year"
+      );
+      expect(screen.getByRole("link", { name: "What is 20% of 100?" })).toHaveAttribute(
+        "href",
+        "/tools/percentage-calculator/what-is-20-percent-of-100"
+      );
+    });
+
     it("renders Privacy & Security links", () => {
       render(<Footer />);
       expect(screen.getByRole("link", { name: "100% Client-Side Processing" })).toHaveAttribute(
