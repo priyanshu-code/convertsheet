@@ -154,6 +154,9 @@ export default function ProgrammaticPresetPage({
           about: preset.about,
           faqs: preset.faqs,
         }}
+        canonicalUrl={`https://www.convertsheet.com/tools/${params.slug}/${params.preset}`}
+        presetName={preset.name}
+        parentToolName={tool.name}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">

@@ -3,9 +3,16 @@ import { ToolConfig } from "@/types/tool";
 
 export interface ToolJsonLdSchemaProps {
   config: ToolConfig;
+  canonicalUrl?: string;
+  presetName?: string;
+  parentToolName?: string;
 }
 
-export function generateToolSoftwareApplicationSchema(config: ToolConfig) {
+export function generateToolSoftwareApplicationSchema(
+  config: ToolConfig,
+  canonicalUrl?: string
+) {
+  const pageUrl = canonicalUrl || `https://www.convertsheet.com/tools/${config.slug}`;
   return {
     "@type": "SoftwareApplication",
     name: `ConvertSheet - ${config.name}`,
@@ -17,11 +24,15 @@ export function generateToolSoftwareApplicationSchema(config: ToolConfig) {
       priceCurrency: "USD",
     },
     description: config.metaDescription,
-    url: `https://www.convertsheet.com/tools/${config.slug}`,
+    url: pageUrl,
   };
 }
 
-export function generateToolHowToSchema(config: ToolConfig) {
+export function generateToolHowToSchema(
+  config: ToolConfig,
+  canonicalUrl?: string
+) {
+  const pageUrl = canonicalUrl || `https://www.convertsheet.com/tools/${config.slug}`;
   return {
     "@type": "HowTo",
     name: `How to Use ${config.name} Online`,
@@ -30,7 +41,7 @@ export function generateToolHowToSchema(config: ToolConfig) {
       position: step.step || index + 1,
       name: step.title,
       text: step.description,
-      url: `https://www.convertsheet.com/tools/${config.slug}#step-${step.step || index + 1}`,
+      url: `${pageUrl}#step-${step.step || index + 1}`,
     })),
   };
 }
@@ -49,38 +60,63 @@ export function generateToolFAQPageSchema(config: ToolConfig) {
   };
 }
 
-export function generateToolBreadcrumbSchema(config: ToolConfig) {
+export function generateToolBreadcrumbSchema(
+  config: ToolConfig,
+  canonicalUrl?: string,
+  presetName?: string,
+  parentToolName?: string
+) {
+  const items: Array<{
+    "@type": "ListItem";
+    position: number;
+    name: string;
+    item: string;
+  }> = [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://www.convertsheet.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Tools Hub",
+      item: "https://www.convertsheet.com/tools",
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: parentToolName || config.name,
+      item: `https://www.convertsheet.com/tools/${config.slug}`,
+    },
+  ];
+
+  if (canonicalUrl && presetName) {
+    items.push({
+      "@type": "ListItem",
+      position: 4,
+      name: presetName,
+      item: canonicalUrl,
+    });
+  }
+
   return {
     "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://www.convertsheet.com",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Tools",
-        item: "https://www.convertsheet.com/#tools",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: config.name,
-        item: `https://www.convertsheet.com/tools/${config.slug}`,
-      },
-    ],
+    itemListElement: items,
   };
 }
 
-export function generateToolWebPageSchema(config: ToolConfig) {
+export function generateToolWebPageSchema(
+  config: ToolConfig,
+  canonicalUrl?: string
+) {
+  const pageUrl = canonicalUrl || `https://www.convertsheet.com/tools/${config.slug}`;
   return {
     "@type": "WebPage",
     name: config.title,
     description: config.metaDescription,
-    url: `https://www.convertsheet.com/tools/${config.slug}`,
+    url: pageUrl,
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: [".tool-answer-summary", ".tool-about-section"],
@@ -88,21 +124,36 @@ export function generateToolWebPageSchema(config: ToolConfig) {
   };
 }
 
-export function getToolJsonLdData(config: ToolConfig) {
+export function getToolJsonLdData(
+  config: ToolConfig,
+  canonicalUrl?: string,
+  presetName?: string,
+  parentToolName?: string
+) {
   return {
     "@context": "https://schema.org",
     "@graph": [
-      generateToolSoftwareApplicationSchema(config),
-      generateToolHowToSchema(config),
+      generateToolSoftwareApplicationSchema(config, canonicalUrl),
+      generateToolHowToSchema(config, canonicalUrl),
       generateToolFAQPageSchema(config),
-      generateToolBreadcrumbSchema(config),
-      generateToolWebPageSchema(config),
+      generateToolBreadcrumbSchema(config, canonicalUrl, presetName, parentToolName),
+      generateToolWebPageSchema(config, canonicalUrl),
     ],
   };
 }
 
-export function ToolJsonLdSchema({ config }: ToolJsonLdSchemaProps) {
-  const structuredData = getToolJsonLdData(config);
+export function ToolJsonLdSchema({
+  config,
+  canonicalUrl,
+  presetName,
+  parentToolName,
+}: ToolJsonLdSchemaProps) {
+  const structuredData = getToolJsonLdData(
+    config,
+    canonicalUrl,
+    presetName,
+    parentToolName
+  );
 
   return (
     <script

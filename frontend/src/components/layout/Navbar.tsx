@@ -13,6 +13,7 @@ import {
   Calculator,
   Terminal,
   Layers,
+  ShieldCheck,
 } from "lucide-react";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 import { getAllTools } from "@/lib/tool-registry";
@@ -397,6 +398,16 @@ export function Navbar() {
                   ⌘K
                 </kbd>
               </button>
+
+              {/* Site-wide Privacy Value Prop Indicator */}
+              <Link
+                href="/privacy#client-side"
+                className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors shrink-0"
+                title="100% Client-Side Processing: Your data never leaves your device"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span>100% Private (No Uploads)</span>
+              </Link>
 
               {/* Currency & Region Selector */}
               <CurrencySelector />

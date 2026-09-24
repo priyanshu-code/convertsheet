@@ -173,4 +173,33 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
     expect(screen.getAllByText(/\$30,000 Auto Loan Payment Calculator/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
   });
+
+  it("generates 4-tier breadcrumbs and exact canonical URL in preset JSON-LD", () => {
+    const { container } = render(
+      <ProgrammaticPresetPage
+        params={{ slug: "inflation-calculator", preset: "50k-in-20-years" }}
+      />
+    );
+
+    const script = container.querySelector('script[type="application/ld+json"]');
+    expect(script).not.toBeNull();
+    const json = JSON.parse(script!.textContent || "{}");
+    const graph = json["@graph"] as any[];
+
+    // Check SoftwareApplication and WebPage URLs
+    const app = graph.find((item) => item["@type"] === "SoftwareApplication");
+    expect(app.url).toBe("https://www.convertsheet.com/tools/inflation-calculator/50k-in-20-years");
+
+    const webPage = graph.find((item) => item["@type"] === "WebPage");
+    expect(webPage.url).toBe("https://www.convertsheet.com/tools/inflation-calculator/50k-in-20-years");
+
+    // Check 4-tier breadcrumbs
+    const breadcrumb = graph.find((item) => item["@type"] === "BreadcrumbList");
+    expect(breadcrumb.itemListElement).toHaveLength(4);
+    expect(breadcrumb.itemListElement[0].name).toBe("Home");
+    expect(breadcrumb.itemListElement[1].name).toBe("Tools Hub");
+    expect(breadcrumb.itemListElement[2].name).toBe("Inflation & Purchasing Power Calculator");
+    expect(breadcrumb.itemListElement[3].name).toBe("What Will $50,000 Be Worth in 20 Years?");
+    expect(breadcrumb.itemListElement[3].item).toBe("https://www.convertsheet.com/tools/inflation-calculator/50k-in-20-years");
+  });
 });

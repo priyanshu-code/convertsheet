@@ -249,9 +249,49 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(avgCar?.name).toContain("Average Car Payment");
   });
 
+  it("retrieves new presets from Car Models and Homebuyer Income clusters", () => {
+    // Car Models
+    const tesla = getProgrammaticPreset("car-loan-calculator", "tesla-model-y-monthly-payment");
+    expect(tesla).toBeDefined();
+    expect(tesla?.name).toContain("Tesla Model Y");
+    expect(tesla?.initialValues.vehiclePrice).toBe(44990);
+
+    const f150 = getProgrammaticPreset("car-loan-calculator", "ford-f150-monthly-payment");
+    expect(f150).toBeDefined();
+    expect(f150?.name).toContain("Ford F-150");
+    expect(f150?.initialValues.loanTermMonths).toBe(72);
+
+    const rav4 = getProgrammaticPreset("car-loan-calculator", "toyota-rav4-monthly-payment");
+    expect(rav4).toBeDefined();
+    expect(rav4?.name).toContain("Toyota RAV4");
+
+    const civic = getProgrammaticPreset("car-loan-calculator", "honda-civic-monthly-payment");
+    expect(civic).toBeDefined();
+    expect(civic?.name).toContain("Honda Civic");
+
+    // Homebuyer Income
+    const salary400k = getProgrammaticPreset("mortgage-calculator", "salary-needed-for-400k-mortgage");
+    expect(salary400k).toBeDefined();
+    expect(salary400k?.name).toContain("Salary Needed for a $400,000 Mortgage");
+    expect(salary400k?.initialValues.homePrice).toBe(400000);
+
+    const salary1m = getProgrammaticPreset("mortgage-calculator", "salary-needed-for-1-million-dollar-home");
+    expect(salary1m).toBeDefined();
+    expect(salary1m?.name).toContain("Salary Needed for a $1 Million Dollar Home");
+    expect(salary1m?.initialValues.homePrice).toBe(1000000);
+
+    const nyHome = getProgrammaticPreset("mortgage-calculator", "income-needed-to-buy-a-house-in-new-york");
+    expect(nyHome).toBeDefined();
+    expect(nyHome?.name).toContain("Income Needed to Buy a House in New York");
+
+    const caHome = getProgrammaticPreset("mortgage-calculator", "income-needed-to-buy-a-house-in-california");
+    expect(caHome).toBeDefined();
+    expect(caHome?.name).toContain("Income Needed to Buy a House in California");
+  });
+
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
-    expect(params.length).toBeGreaterThanOrEqual(124);
+    expect(params.length).toBeGreaterThanOrEqual(133);
     expect(params[0]).toHaveProperty("slug");
     expect(params[0]).toHaveProperty("preset");
   });

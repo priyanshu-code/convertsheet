@@ -3940,6 +3940,285 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       },
     ],
   },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "tesla-model-y-monthly-payment",
+    name: "Tesla Model Y Monthly Payment Calculator",
+    title: "Tesla Model Y Monthly Payment Calculator (2026 Rates) | ConvertSheet",
+    metaDescription: "Calculate Tesla Model Y monthly payments. At $44,990 base MSRP with $4.5k down at 6.2% APR over 60 months, pay ~$779/mo. Free Excel amortization schedule.",
+    answerSummary: "On a Tesla Model Y Long Range ($44,990 MSRP) with 10% down ($4,499) at 6.2% APR over a 60-month term, estimated monthly payment is approximately $779/month (net loan ~$40,491 after 7% sales tax and fees). Total interest paid over 5 years is roughly $6,740.",
+    about: "The Tesla Model Y is one of the best-selling passenger vehicles in the world. Calculate your true monthly financing commitment after accounting for state sales taxes, registration fees, potential EV tax credits, and loan term lengths from 36 to 72 months.",
+    initialValues: {
+      vehiclePrice: 44990,
+      downPayment: 4500,
+      tradeInValue: 0,
+      interestRate: 6.2,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 250,
+    },
+    faqs: [
+      {
+        question: "What is the average monthly payment on a Tesla Model Y?",
+        answer: "With 10% down at current national average auto rates (~6.2% APR) over 60 months, monthly payment on a base Model Y is approximately $779/month.",
+      },
+      {
+        question: "How much does a Tesla Model Y cost per month with $0 down?",
+        answer: "Financing $44,990 with zero down payment at 6.2% for 60 months results in a monthly payment of roughly $865/month.",
+      },
+      {
+        question: "Does the $7,500 federal EV tax credit lower the monthly payment?",
+        answer: "Yes! If you apply the $7,500 federal clean vehicle credit as a point-of-sale down payment, your financed balance drops by $7,500, reducing your monthly payment by roughly $145/month.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "ford-f150-monthly-payment",
+    name: "Ford F-150 Monthly Payment Calculator",
+    title: "Ford F-150 Monthly Payment Calculator — Truck Loan Amortization | ConvertSheet",
+    metaDescription: "Calculate Ford F-150 truck loan payments. At $42,000 base MSRP with $4.2k down at 6.5% APR over 72 months, pay ~$668/mo. Free Excel schedule export.",
+    answerSummary: "Financing a popular Ford F-150 trim ($42,000 MSRP) with 10% down ($4,200) at 6.5% APR over 72 months costs approximately $668/month (net loan ~$41,200 with 7% sales tax and fees). Total interest paid over 6 years is approximately $8,680.",
+    about: "The Ford F-150 has been America's best-selling truck for over 40 years. Model your monthly payments across SuperCab, SuperCrew, and XLT configurations with down payment options and realistic 60 vs 72-month financing schedules.",
+    initialValues: {
+      vehiclePrice: 42000,
+      downPayment: 4200,
+      tradeInValue: 0,
+      interestRate: 6.5,
+      loanTermMonths: 72,
+      salesTaxPercent: 7.0,
+      dealerFees: 500,
+    },
+    faqs: [
+      {
+        question: "How much is a monthly payment on a Ford F-150?",
+        answer: "With 10% down at 6.5% APR over a standard 72-month truck financing term, monthly payment is roughly $668/month.",
+      },
+      {
+        question: "What credit score is needed to finance a Ford truck at 6.5%?",
+        answer: "A FICO auto score of 680 to 740 is typically required by Ford Credit or top credit unions to qualify for competitive APRs.",
+      },
+      {
+        question: "Is 72 months standard for a truck loan?",
+        answer: "Yes, over 70% of new full-size pickup truck buyers choose 72-month or 84-month terms to keep monthly payments manageable on higher MSRPs.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "toyota-rav4-monthly-payment",
+    name: "Toyota RAV4 Monthly Payment Calculator",
+    title: "Toyota RAV4 Monthly Payment Calculator — Compact SUV Financing | ConvertSheet",
+    metaDescription: "Calculate Toyota RAV4 auto loan payments. At $31,500 MSRP with $3,150 down at 5.9% APR over 60 months, pay ~$585/mo ($4,720 interest). Free Excel export.",
+    answerSummary: "Financing a Toyota RAV4 ($31,500 MSRP) with 10% down ($3,150) at 5.9% interest over 60 months costs approximately $585/month (net loan ~$30,800 including 7% sales tax and dealer fees). Total interest paid over 5 years is roughly $4,720.",
+    about: "As the top-selling non-pickup passenger vehicle in the US, the Toyota RAV4 offers exceptional resale value. Model monthly financing costs for LE, XLE, and Hybrid trims with customizable down payments and trade-in allowances.",
+    initialValues: {
+      vehiclePrice: 31500,
+      downPayment: 3150,
+      tradeInValue: 0,
+      interestRate: 5.9,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a Toyota RAV4?",
+        answer: "On a $31,500 RAV4 with 10% down at 5.9% APR over 60 months, your payment is approximately $585/month.",
+      },
+      {
+        question: "How much interest do you pay on a Toyota RAV4 loan?",
+        answer: "Over a 5-year loan at 5.9% APR, total interest charges equal approximately $4,720.",
+      },
+      {
+        question: "Does the RAV4 Hybrid have lower total cost of ownership?",
+        answer: "Yes! While the Hybrid MSRP is roughly $2,000 to $3,000 higher (adding ~$38/month to loan payments), fuel savings of 40 MPG vs 30 MPG typically save $50 to $75/month in gas.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "honda-civic-monthly-payment",
+    name: "Honda Civic Monthly Payment Calculator",
+    title: "Honda Civic Monthly Payment Calculator — Compact Car Loan Schedule | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a Honda Civic. At $25,500 MSRP with $2.5k down at 5.5% APR over 48 months, pay ~$545/mo. Free Excel amortization schedule.",
+    answerSummary: "A Honda Civic ($25,500 MSRP) with 10% down ($2,550) at 5.5% APR over a 48-month term costs approximately $545/month (net loan balance ~$24,960 with 7% sales tax and fees). Total interest paid over 4 years is just $2,870.",
+    about: "The Honda Civic is the gold standard for reliable, fuel-efficient daily commuting. Calculate your monthly commitment on 48, 60, or 72-month terms and export your complete amortization schedule to Microsoft Excel.",
+    initialValues: {
+      vehiclePrice: 25500,
+      downPayment: 2550,
+      tradeInValue: 0,
+      interestRate: 5.5,
+      loanTermMonths: 48,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a new Honda Civic?",
+        answer: "With 10% down at 5.5% APR over 48 months, monthly payment is roughly $545/month (or $453/month if extended to 60 months).",
+      },
+      {
+        question: "How much income do you need for a Honda Civic?",
+        answer: "Following the 10% gross income rule, a household income of roughly $55,000 to $65,000 comfortably covers Civic financing, fuel, and insurance.",
+      },
+    ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "salary-needed-for-400k-mortgage",
+    name: "Salary Needed for a $400,000 Mortgage",
+    title: "Salary Needed for a $400k Mortgage — Income & Down Payment Guide | ConvertSheet",
+    metaDescription: "Calculate the exact income needed to qualify for a $400,000 mortgage at 6.5%. Front-end 28% DTI requires ~$109,500/year. Full amortization & Excel export.",
+    answerSummary: "To qualify for a $400,000 mortgage at 6.5% interest with 20% down ($80,000), monthly principal & interest is $2,023. With estimated property taxes ($400/mo) and insurance ($133/mo), total payment is ~$2,556/month. Under the standard 28% front-end debt-to-income rule, you need an annual gross salary of approximately $109,540.",
+    about: "Determine whether your annual household income satisfies strict lender qualification standards for a $400k home. Evaluates 28/36 debt-to-income (DTI) rules, property tax obligations, and monthly debt carry.",
+    initialValues: {
+      homePrice: 400000,
+      downPayment: 80000,
+      interestRate: 6.5,
+      loanTermYears: 30,
+      propertyTaxYearly: 4800,
+      homeInsuranceYearly: 1600,
+    },
+    faqs: [
+      {
+        question: "What salary do I need for a $400k mortgage?",
+        answer: "Under conventional underwriting (28% front-end DTI), you need roughly $109,500/year gross income with 20% down at 6.5% interest.",
+      },
+      {
+        question: "What is the monthly payment on a $400,000 home loan?",
+        answer: "With 20% down, monthly principal & interest is $2,023. Including property taxes and insurance, total payment is approximately $2,556/month.",
+      },
+      {
+        question: "Can I buy a $400,000 house making $80k a year?",
+        answer: "At $80,000/year ($6,667/mo), a $2,556 payment represents a 38% debt-to-income ratio, which exceeds conventional guidelines unless you have zero other debts or put down a larger down payment.",
+      },
+    ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "salary-needed-for-500k-mortgage",
+    name: "Salary Needed for a $500,000 Mortgage",
+    title: "Salary Needed for a $500k Mortgage — Income & Down Payment Calculator | ConvertSheet",
+    metaDescription: "What salary is needed for a $500,000 mortgage? At 6.5% interest, you need ~$136,900/year income with 20% down. Complete PITI and Excel amortization.",
+    answerSummary: "Qualifying for a $500,000 mortgage with 20% down ($100,000) at 6.5% fixed interest requires a monthly PITI payment of approximately $3,195 ($2,528 principal & interest, $500 tax, $167 insurance). Under the 28% front-end DTI guideline, you need an annual gross salary of roughly $136,928.",
+    about: "A $500,000 property is the benchmark for move-up homes in suburban areas and metro suburbs. Calculate exact lender income requirements, test the impact of extra debt payments, and export a complete 30-year schedule to Excel.",
+    initialValues: {
+      homePrice: 500000,
+      downPayment: 100000,
+      interestRate: 6.5,
+      loanTermYears: 30,
+      propertyTaxYearly: 6000,
+      homeInsuranceYearly: 2000,
+    },
+    faqs: [
+      {
+        question: "How much income is required for a $500,000 mortgage?",
+        answer: "A household income of at least $137,000 is recommended under conventional 28% debt-to-income ratios at 6.5% interest.",
+      },
+      {
+        question: "What is the monthly payment on a $500,000 house?",
+        answer: "With 20% down ($100,000), total monthly payment including taxes and insurance is approximately $3,195/month.",
+      },
+      {
+        question: "How much down payment is needed for a $500k home?",
+        answer: "A 20% down payment is $100,000 (eliminating private mortgage insurance). An FHA loan allows as little as 3.5% ($17,500), but increases monthly payments and requires annual MIP.",
+      },
+    ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "salary-needed-for-1-million-dollar-home",
+    name: "Salary Needed for a $1 Million Dollar Home",
+    title: "Salary Needed for a $1 Million Dollar House | Jumbo Loan Calculator | ConvertSheet",
+    metaDescription: "Calculate income needed for a $1,000,000 home purchase. At 6.5% interest with 20% down, you need ~$273,800/yr gross income. Jumbo loan amortization & Excel.",
+    answerSummary: "Buying a $1,000,000 home with 20% down ($200,000) leaves an $800,000 jumbo loan balance. At 6.5% for 30 years, monthly principal & interest is $5,057. Adding property taxes (~$1,000/mo) and insurance (~$333/mo), total monthly payment is ~$6,390. You need an annual gross income of approximately $273,850 to qualify under the 28% rule.",
+    about: "Purchasing a seven-figure home usually requires a jumbo mortgage. Jumbo lenders impose strict underwriting requirements: 20% down, minimum 700+ credit scores, and 6 to 12 months of liquid cash reserves. Calculate exact income and reserve requirements.",
+    initialValues: {
+      homePrice: 1000000,
+      downPayment: 200000,
+      interestRate: 6.5,
+      loanTermYears: 30,
+      propertyTaxYearly: 12000,
+      homeInsuranceYearly: 4000,
+    },
+    faqs: [
+      {
+        question: "What salary do you need to buy a 1 million dollar house?",
+        answer: "Under standard lending guidelines (28% front-end DTI), you need an annual household income of roughly $274,000 at 6.5% interest with 20% down.",
+      },
+      {
+        question: "What is the monthly payment on a 1 million dollar home?",
+        answer: "Total monthly payment with 20% down is approximately $6,390/month ($5,057 principal & interest, $1,000 taxes, and $333 homeowners insurance).",
+      },
+      {
+        question: "Do you need 20% down for a $1 Million house?",
+        answer: "Most jumbo lenders require at least 10% to 20% down ($100,000 to $200,000) and require buyers to prove 6 to 12 months of mortgage payments in liquid retirement or bank reserves.",
+      },
+    ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "income-needed-to-buy-a-house-in-new-york",
+    name: "Income Needed to Buy a House in New York",
+    title: "Income Needed to Buy a House in New York (2026 NYC Benchmarks) | ConvertSheet",
+    metaDescription: "Calculate income needed to buy in New York. With median home prices at $750,000 at 6.5%, you need ~$215,000/year income. NYC property tax & coop fee guide.",
+    answerSummary: "Based on a median New York metropolitan purchase price of $750,000 with 20% down ($150,000) at 6.5% interest, monthly principal & interest is $3,792. Factoring in NY property taxes ($850/mo) and common charges/insurance ($375/mo), total monthly carrying cost is ~$5,017. A buyer needs an annual gross income of approximately $215,000 to comfortably qualify.",
+    about: "The New York housing market features distinct financing constraints: high property taxes in Westchester and Long Island, and strict co-op post-closing liquidity and DTI requirements (often capped at 25-28%) in Manhattan and Brooklyn. Model your exact numbers with our NYC calculator.",
+    initialValues: {
+      homePrice: 750000,
+      downPayment: 150000,
+      interestRate: 6.5,
+      loanTermYears: 30,
+      propertyTaxYearly: 10200,
+      homeInsuranceYearly: 4500,
+    },
+    faqs: [
+      {
+        question: "What salary do you need to buy a home in New York?",
+        answer: "For a median $750,000 home or condo, an individual or household gross income of at least $215,000 is typically needed to meet bank DTI standards.",
+      },
+      {
+        question: "Why do NYC co-ops have stricter income requirements?",
+        answer: "Many NYC co-op boards require a maximum debt-to-income ratio of 25% to 28% and demand 12 to 24 months of maintenance fees and mortgage payments in liquid reserves after closing.",
+      },
+      {
+        question: "How much are closing costs on a New York home?",
+        answer: "New York has some of the highest closing costs in the nation, including the NY State and City Mansion Tax (1% on homes over $1M) and Mortgage Recording Tax (1.8% to 1.925%), typically adding 3% to 5% to the purchase price.",
+      },
+    ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "income-needed-to-buy-a-house-in-california",
+    name: "Income Needed to Buy a House in California",
+    title: "Income Needed to Buy a House in California (2026 CA Benchmarks) | ConvertSheet",
+    metaDescription: "Calculate income needed to buy a house in California. Based on the $860,000 median price at 6.5%, you need ~$238,000/year salary. Proposition 13 tax guide.",
+    answerSummary: "Based on California's statewide median home price of $860,000 with 20% down ($172,000) at 6.5% interest, monthly principal & interest is $4,349. Adding Prop 13 property taxes ($895/mo) and insurance ($315/mo), total monthly payment is ~$5,559. A California homebuyer requires an annual gross household salary of approximately $238,200 to qualify.",
+    about: "California represents the highest median home prices in the continental US. This preset models financing across Los Angeles, Orange County, San Diego, and the Bay Area, accounting for Proposition 13 base tax rates (1.25% including local bonds) and realistic down payments.",
+    initialValues: {
+      homePrice: 860000,
+      downPayment: 172000,
+      interestRate: 6.5,
+      loanTermYears: 30,
+      propertyTaxYearly: 10750,
+      homeInsuranceYearly: 3780,
+    },
+    faqs: [
+      {
+        question: "What salary do you need to buy a house in California?",
+        answer: "To purchase a median California home ($860,000) with 20% down at 6.5% interest, you need an annual household income of approximately $238,200.",
+      },
+      {
+        question: "How does California Proposition 13 affect property taxes?",
+        answer: "Prop 13 caps the base property tax rate at 1% of assessed value (plus local assessments, typically totaling 1.1% to 1.25%) and limits annual assessment increases to 2% until the home is sold.",
+      },
+      {
+        question: "What percentage of Californians can afford a median-priced home?",
+        answer: "According to the California Association of Realtors (CAR), only about 15% to 17% of California households earn the minimum income needed to purchase a median-priced home.",
+      },
+    ],
+  },
 ];
 
 // Indexed Maps for O(1) SSG and metadata lookups
