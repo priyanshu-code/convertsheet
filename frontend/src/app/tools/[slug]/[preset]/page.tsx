@@ -225,7 +225,12 @@ export default function ProgrammaticPresetPage({
         {(tool.slug === "hourly-to-salary-calculator" || preset.presetSlug.includes("-an-hour-salary")) && (
           <div className="max-w-5xl mx-auto w-full">
             <WageConversionMatrix
-              initialHourlyRate={Number(preset.initialValues?.hourlyRate) || 25}
+              initialHourlyRate={
+                Number(
+                  preset.initialValues?.hourlyRate ??
+                    preset.initialValues?.hourlyWage
+                ) || 25
+              }
             />
           </div>
         )}

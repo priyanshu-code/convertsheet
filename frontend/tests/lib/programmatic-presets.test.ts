@@ -208,9 +208,50 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(uk40k?.name).toBe("£40,000 UK Salary Take-Home Pay Calculator (2024/25)");
   });
 
+  it("retrieves new presets from Inflation, Wage Ladder, and Car Loan pillars", () => {
+    // Pillar 1: Inflation
+    const inf50k = getProgrammaticPreset("inflation-calculator", "50k-in-20-years");
+    expect(inf50k).toBeDefined();
+    expect(inf50k?.name).toContain("$50,000 Be Worth in 20 Years");
+    expect(inf50k?.initialValues.amount).toBe(50000);
+    expect(inf50k?.initialValues.years).toBe(20);
+
+    const inf1m = getProgrammaticPreset("inflation-calculator", "1-million-in-30-years");
+    expect(inf1m).toBeDefined();
+    expect(inf1m?.name).toContain("$1 Million Be Worth in 30 Years");
+    expect(inf1m?.initialValues.amount).toBe(1000000);
+    expect(inf1m?.initialValues.years).toBe(30);
+
+    // Pillar 2: Wage Ladder
+    const wage18 = getProgrammaticPreset("hourly-to-salary-calculator", "18-an-hour-salary");
+    expect(wage18).toBeDefined();
+    expect(wage18?.name).toContain("$18 an Hour is How Much a Year");
+    expect(wage18?.initialValues.hourlyWage).toBe(18);
+
+    const wage75 = getProgrammaticPreset("hourly-to-salary-calculator", "75-an-hour-salary");
+    expect(wage75).toBeDefined();
+    expect(wage75?.name).toContain("$75 an Hour is How Much a Year");
+    expect(wage75?.initialValues.hourlyWage).toBe(75);
+
+    // Pillar 3: Car Loan
+    const car30k = getProgrammaticPreset("car-loan-calculator", "30k-car-loan");
+    expect(car30k).toBeDefined();
+    expect(car30k?.name).toContain("$30,000 Auto Loan");
+    expect(car30k?.initialValues.vehiclePrice).toBe(30000);
+
+    const truck50k = getProgrammaticPreset("car-loan-calculator", "50k-truck-loan");
+    expect(truck50k).toBeDefined();
+    expect(truck50k?.name).toContain("$50,000 Truck");
+    expect(truck50k?.initialValues.vehiclePrice).toBe(50000);
+
+    const avgCar = getProgrammaticPreset("car-loan-calculator", "average-car-payment-2026");
+    expect(avgCar).toBeDefined();
+    expect(avgCar?.name).toContain("Average Car Payment");
+  });
+
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
-    expect(params.length).toBeGreaterThanOrEqual(60);
+    expect(params.length).toBeGreaterThanOrEqual(124);
     expect(params[0]).toHaveProperty("slug");
     expect(params[0]).toHaveProperty("preset");
   });

@@ -139,4 +139,38 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
     expect(screen.getAllByText(/What is 20% of 100\?/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Direct Answer:/i).length).toBeGreaterThanOrEqual(1);
   });
+
+  it("renders InflationCalculator preset with InflationErosionMatrix", () => {
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "inflation-calculator", preset: "50k-in-20-years" }}
+      />
+    );
+
+    expect(screen.getAllByText(/What Will \$50,000 Be Worth in 20 Years\?/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+  });
+
+  it("renders HourlyToSalaryCalculator preset with WageConversionMatrix", () => {
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "hourly-to-salary-calculator", preset: "18-an-hour-salary" }}
+      />
+    );
+
+    expect(screen.getAllByText(/\$18 an Hour is How Much a Year\?/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$18 an Hour Wage Conversion Matrix/i)).toBeInTheDocument();
+  });
+
+  it("renders CarLoanCalculator preset with CarLoanTermMatrix", () => {
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "car-loan-calculator", preset: "30k-car-loan" }}
+      />
+    );
+
+    expect(screen.getAllByText(/\$30,000 Auto Loan Payment Calculator/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+  });
 });
