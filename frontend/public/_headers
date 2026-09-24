@@ -1,5 +1,5 @@
 /*
-  Cache-Control: public, max-age=0, s-maxage=31536000, stale-while-revalidate=31536000
+  Cache-Control: public, max-age=0, must-revalidate
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 
