@@ -128,4 +128,15 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
     ).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
   });
+
+  it("renders PercentageCalculator preset cleanly with direct answer box", () => {
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "percentage-calculator", preset: "what-is-20-percent-of-100" }}
+      />
+    );
+
+    expect(screen.getAllByText(/What is 20% of 100\?/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/Direct Answer:/i).length).toBeGreaterThanOrEqual(1);
+  });
 });

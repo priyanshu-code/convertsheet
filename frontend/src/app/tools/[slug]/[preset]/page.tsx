@@ -28,7 +28,7 @@ import { IncomeTaxCalculator } from "@/components/tools/IncomeTaxCalculator";
 import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
 import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
-import { MortgageTermComparisonTable } from "@/components/calculator/MortgageTermComparisonTable";
+import { PercentageCalculator } from "@/components/tools/PercentageCalculator";
 import { WageConversionMatrix } from "@/components/calculator/WageConversionMatrix";
 import { InflationErosionMatrix } from "@/components/calculator/InflationErosionMatrix";
 import { ApyCompoundingMatrix } from "@/components/calculator/ApyCompoundingMatrix";
@@ -135,6 +135,8 @@ export default function ProgrammaticPresetPage({
         return <CanadaPaycheckCalculator initialValues={preset.initialValues} />;
       case "australia-pay-calculator":
         return <AustraliaPayCalculator initialValues={preset.initialValues} />;
+      case "percentage-calculator":
+        return <PercentageCalculator initialValues={preset.initialValues} />;
       default:
         return null;
     }
@@ -220,18 +222,6 @@ export default function ProgrammaticPresetPage({
         </div>
 
         {/* Specialized High-Intent Preset Add-ons */}
-        {preset.presetSlug === "15-year-vs-30-year" && (
-          <div className="max-w-5xl mx-auto w-full">
-            <MortgageTermComparisonTable
-              initialLoanAmount={
-                typeof preset.initialValues?.homePrice === "number" && typeof preset.initialValues?.downPayment === "number"
-                  ? preset.initialValues.homePrice - preset.initialValues.downPayment
-                  : 320000
-              }
-            />
-          </div>
-        )}
-
         {(tool.slug === "hourly-to-salary-calculator" || preset.presetSlug.includes("-an-hour-salary")) && (
           <div className="max-w-5xl mx-auto w-full">
             <WageConversionMatrix

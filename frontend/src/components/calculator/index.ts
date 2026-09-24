@@ -22,3 +22,4 @@ export * from "./CalcShareButton";
 export * from "./CarLeaseVsBuyMatrix";
 export * from "./CarLoanEarlyPayoffCard";
 export * from "./InflationErosionMatrix";
+export * from "./MortgageTermComparisonTable";

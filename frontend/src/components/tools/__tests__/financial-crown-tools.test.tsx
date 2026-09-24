@@ -45,6 +45,16 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
 
       expect(screen.getAllByText(/Year 1/i)[0]).toBeInTheDocument();
     });
+
+    it("renders 15-Year vs 30-Year comparison table with visual trade-off bars and strategy guide", () => {
+      render(<MortgageCalculator />);
+
+      expect(screen.getByText(/15-Year vs. 30-Year Mortgage Side-by-Side/i)).toBeInTheDocument();
+      expect(screen.getByText(/Monthly Payment Burden/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Lifetime Interest Cost/i).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText(/15-Year Forced Discipline vs. 30-Year Payment Flexibility/i)).toBeInTheDocument();
+      expect(screen.getByText(/Export Comparison \(\.xlsx\)/i)).toBeInTheDocument();
+    });
   });
 
   describe("CarLoanCalculator", () => {

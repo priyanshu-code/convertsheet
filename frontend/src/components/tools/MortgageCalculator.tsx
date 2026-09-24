@@ -14,6 +14,7 @@ import {
   CalcPdfReportButton,
   CalcSaveButton,
   CalcShareButton,
+  MortgageTermComparisonTable,
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 import { calculateMortgage } from "@/lib/engines/financial-engine";
@@ -480,6 +481,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
     </CalcCard>
 
     <MortgageRatesCard loanAmount={mortgage.loanAmount} />
+    <MortgageTermComparisonTable initialLoanAmount={mortgage.loanAmount} />
   </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Check, ArrowDownRight, TrendingDown, DollarSign, Calendar, FileSpreadsheet, Percent } from "lucide-react";
 import * as XLSX from "xlsx";
 
@@ -14,6 +14,12 @@ export function MortgageTermComparisonTable({
   const [loanAmount, setLoanAmount] = useState(initialLoanAmount);
   const [rate15, setRate15] = useState(5.8);
   const [rate30, setRate30] = useState(6.5);
+
+  useEffect(() => {
+    if (initialLoanAmount && initialLoanAmount > 0) {
+      setLoanAmount(initialLoanAmount);
+    }
+  }, [initialLoanAmount]);
 
   const calculateMonthly = (principal: number, annualRate: number, years: number) => {
     const r = annualRate / 100 / 12;
@@ -32,6 +38,13 @@ export function MortgageTermComparisonTable({
 
   const monthlyDiff = monthly15 - monthly30;
   const interestSavings = totalInterest30 - totalInterest15;
+
+  const maxMonthly = Math.max(monthly15, monthly30) || 1;
+  const maxInterest = Math.max(totalInterest15, totalInterest30) || 1;
+  const monthly15Pct = Math.round((monthly15 / maxMonthly) * 100);
+  const monthly30Pct = Math.round((monthly30 / maxMonthly) * 100);
+  const interest15Pct = Math.round((totalInterest15 / maxInterest) * 100);
+  const interest30Pct = Math.round((totalInterest30 / maxInterest) * 100);
 
   const handleExport = () => {
     const rows = [
@@ -119,6 +132,77 @@ export function MortgageTermComparisonTable({
         </div>
       </div>
 
+      {/* Visual Trade-Off Comparison Bars */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 sm:p-5 rounded-xl bg-zinc-50 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800">
+        {/* Monthly Payment Bar */}
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+            <span>Monthly Payment Burden</span>
+            <span className="text-amber-600 dark:text-amber-400 font-mono font-bold">+${Math.round(monthlyDiff).toLocaleString()}/mo on 15-Yr</span>
+          </div>
+          <div className="space-y-2">
+            <div>
+              <div className="flex justify-between text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">
+                <span>15-Year Fixed ({rate15}%)</span>
+                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">${Math.round(monthly15).toLocaleString()}/mo</span>
+              </div>
+              <div className="w-full bg-zinc-200 dark:bg-zinc-700 h-2.5 rounded-full overflow-hidden">
+                <div
+                  className="bg-amber-500 h-full rounded-full transition-all duration-300"
+                  style={{ width: `${monthly15Pct}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">
+                <span>30-Year Fixed ({rate30}%)</span>
+                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">${Math.round(monthly30).toLocaleString()}/mo</span>
+              </div>
+              <div className="w-full bg-zinc-200 dark:bg-zinc-700 h-2.5 rounded-full overflow-hidden">
+                <div
+                  className="bg-emerald-500 h-full rounded-full transition-all duration-300"
+                  style={{ width: `${monthly30Pct}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Lifetime Interest Cost Bar */}
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+            <span>Lifetime Interest Cost</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Save ${Math.round(interestSavings).toLocaleString()}</span>
+          </div>
+          <div className="space-y-2">
+            <div>
+              <div className="flex justify-between text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">
+                <span>15-Year Fixed (Interest)</span>
+                <span className="font-mono font-bold text-emerald-700 dark:text-emerald-300">${Math.round(totalInterest15).toLocaleString()}</span>
+              </div>
+              <div className="w-full bg-zinc-200 dark:bg-zinc-700 h-2.5 rounded-full overflow-hidden">
+                <div
+                  className="bg-emerald-500 h-full rounded-full transition-all duration-300"
+                  style={{ width: `${Math.max(5, interest15Pct)}%` }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-[11px] text-zinc-600 dark:text-zinc-400 mb-1">
+                <span>30-Year Fixed (Interest)</span>
+                <span className="font-mono font-bold text-rose-600 dark:text-rose-400">${Math.round(totalInterest30).toLocaleString()}</span>
+              </div>
+              <div className="w-full bg-zinc-200 dark:bg-zinc-700 h-2.5 rounded-full overflow-hidden">
+                <div
+                  className="bg-rose-500/80 h-full rounded-full transition-all duration-300"
+                  style={{ width: `${interest30Pct}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Comparison Grid Table */}
       <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
         <table className="w-full text-left text-sm">
@@ -173,6 +257,31 @@ export function MortgageTermComparisonTable({
             </tr>
           </tbody>
         </table>
+      </div>
+
+      {/* Strategy Recommendation: 15-Year Forced Discipline vs 30-Year Flexibility */}
+      <div className="p-4 sm:p-5 rounded-xl bg-zinc-50 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 space-y-3">
+        <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+          <span>15-Year Forced Discipline vs. 30-Year Payment Flexibility</span>
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
+          <div className="p-3.5 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
+            <span className="font-bold text-emerald-700 dark:text-emerald-400 block mb-1">
+              ✓ Choose 15-Year Fixed for Forced Wealth Accumulation
+            </span>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Guarantees full debt freedom in 15 years while saving ${Math.round(interestSavings).toLocaleString()} in interest. Ideal for stable, high-earning households where the +${Math.round(monthlyDiff).toLocaleString()}/mo higher payment stays below 28% of monthly income.
+            </p>
+          </div>
+          <div className="p-3.5 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800">
+            <span className="font-bold text-blue-700 dark:text-blue-400 block mb-1">
+              ✓ Choose 30-Year Fixed with Voluntary Prepayment
+            </span>
+            <p className="text-zinc-600 dark:text-zinc-400">
+              Protects cash-flow with a lower required payment (${Math.round(monthly30).toLocaleString()}/mo). You can voluntarily apply the extra ${Math.round(monthlyDiff).toLocaleString()}/mo toward principal when finances allow, achieving a 15-year payoff without strict obligation.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

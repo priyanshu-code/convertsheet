@@ -37,7 +37,7 @@ describe("PercentageCalculator Suite", () => {
     fireEvent.click(modeBtn);
 
     expect(screen.getByText("Percentage change from 100 to 125")).toBeInTheDocument();
-    expect(screen.getByText("+25%")).toBeInTheDocument();
+    expect(screen.getAllByText("+25%").length).toBeGreaterThan(0);
     expect(screen.getByText("Growth (Increase)")).toBeInTheDocument();
   });
 
@@ -47,8 +47,8 @@ describe("PercentageCalculator Suite", () => {
     fireEvent.click(modeBtn);
 
     expect(screen.getByText("Final Sale Price (25% off)")).toBeInTheDocument();
-    expect(screen.getByText("$60")).toBeInTheDocument();
-    expect(screen.getByText("$20")).toBeInTheDocument(); // amount saved
+    expect(screen.getAllByText("$60").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("$20").length).toBeGreaterThan(0); // amount saved
   });
 
   it("switches to 'Sales Tax / VAT' mode and calculates tax on $120 at 8.25%", () => {
@@ -57,8 +57,8 @@ describe("PercentageCalculator Suite", () => {
     fireEvent.click(modeBtn);
 
     expect(screen.getByText("Total Price (Including Tax)")).toBeInTheDocument();
-    expect(screen.getByText("$129.9")).toBeInTheDocument();
-    expect(screen.getByText("$9.9")).toBeInTheDocument(); // tax amount
+    expect(screen.getAllByText("$129.9").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("$9.9").length).toBeGreaterThan(0); // tax amount
   });
 
   it("switches to 'Margin & Markup' mode and calculates selling price from cost and markup", () => {
@@ -67,8 +67,8 @@ describe("PercentageCalculator Suite", () => {
     fireEvent.click(modeBtn);
 
     expect(screen.getByText("Recommended Selling Price")).toBeInTheDocument();
-    expect(screen.getByText("$130")).toBeInTheDocument();
-    expect(screen.getByText("$30")).toBeInTheDocument(); // profit
+    expect(screen.getAllByText("$130").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("$30").length).toBeGreaterThan(0); // profit
     expect(screen.getByText("23.08% gross margin")).toBeInTheDocument();
   });
 
@@ -79,5 +79,37 @@ describe("PercentageCalculator Suite", () => {
 
     expect(XLSX.utils.book_new).toHaveBeenCalled();
     expect(XLSX.writeFile).toHaveBeenCalled();
+  });
+
+  it("hydrates from initialValues preset and displays Google Snippet Direct Answer", () => {
+    render(
+      <PercentageCalculator
+        initialValues={{
+          mode: "whatIs",
+          valX: 20,
+          valY: 100,
+        }}
+      />
+    );
+
+    expect(screen.getByText("What is 20% of 100?")).toBeInTheDocument();
+    expect(screen.getByText("Direct Answer:")).toBeInTheDocument();
+    expect(screen.getByText(/20% of 100 is/i)).toBeInTheDocument();
+  });
+
+  it("hydrates discount mode from initialValues", () => {
+    render(
+      <PercentageCalculator
+        initialValues={{
+          mode: "discount",
+          originalPrice: 100,
+          discountPercent: 20,
+        }}
+      />
+    );
+
+    expect(screen.getByText("Final Sale Price (20% off)")).toBeInTheDocument();
+    expect(screen.getAllByText("$80").length).toBeGreaterThan(0);
+    expect(screen.getByText(/A 20% discount on \$100 saves/i)).toBeInTheDocument();
   });
 });

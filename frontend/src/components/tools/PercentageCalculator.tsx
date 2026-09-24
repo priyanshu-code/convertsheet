@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Percent, Download, Table, TrendingUp, Tag, Receipt, DollarSign } from "lucide-react";
+import { Percent, Download, Table, TrendingUp, Tag, Receipt, DollarSign, Sparkles } from "lucide-react";
 import * as XLSX from "xlsx";
 import { roundTo } from "@/lib/math-utils";
 import {
@@ -20,34 +20,62 @@ export type PercentageCalcMode =
   | "tax"
   | "marginMarkup";
 
-export function PercentageCalculator() {
-  const [calcMode, setCalcMode] = useState<PercentageCalcMode>("whatIs");
+export interface PercentageCalculatorProps {
+  initialValues?: Partial<{
+    mode: PercentageCalcMode;
+    valX: number;
+    valY: number;
+    originalPrice: number;
+    discountPercent: number;
+    taxBasePrice: number;
+    taxPercent: number;
+    taxMode: "add" | "extract";
+    costPrice: number;
+    marginMarkupPercent: number;
+    marginMarkupType: "margin" | "markup";
+  }>;
+}
+
+export function PercentageCalculator({ initialValues }: PercentageCalculatorProps = {}) {
+  const [calcMode, setCalcMode] = useState<PercentageCalcMode>(initialValues?.mode || "whatIs");
 
   // Mode 1: What is X% of Y?
-  const [valX1, setValX1] = useState<number>(15);
-  const [valY1, setValY1] = useState<number>(200);
+  const [valX1, setValX1] = useState<number>(Number(initialValues?.valX) || 15);
+  const [valY1, setValY1] = useState<number>(Number(initialValues?.valY) || 200);
 
   // Mode 2: X is what % of Y?
-  const [valX2, setValX2] = useState<number>(30);
-  const [valY2, setValY2] = useState<number>(150);
+  const [valX2, setValX2] = useState<number>(Number(initialValues?.valX) || 30);
+  const [valY2, setValY2] = useState<number>(Number(initialValues?.valY) || 150);
 
   // Mode 3: Percentage increase/decrease from X to Y
-  const [valX3, setValX3] = useState<number>(100);
-  const [valY3, setValY3] = useState<number>(125);
+  const [valX3, setValX3] = useState<number>(Number(initialValues?.valX) || 100);
+  const [valY3, setValY3] = useState<number>(Number(initialValues?.valY) || 125);
 
   // Mode 4: Discount & Sale
-  const [originalPrice, setOriginalPrice] = useState<number>(80);
-  const [discountPercent, setDiscountPercent] = useState<number>(25);
+  const [originalPrice, setOriginalPrice] = useState<number>(
+    Number(initialValues?.originalPrice ?? (initialValues?.mode === "discount" ? initialValues?.valY : undefined)) || 80
+  );
+  const [discountPercent, setDiscountPercent] = useState<number>(
+    Number(initialValues?.discountPercent ?? (initialValues?.mode === "discount" ? initialValues?.valX : undefined)) || 25
+  );
 
   // Mode 5: Sales Tax / VAT
-  const [taxBasePrice, setTaxBasePrice] = useState<number>(120);
-  const [taxPercent, setTaxPercent] = useState<number>(8.25);
-  const [taxMode, setTaxMode] = useState<"add" | "extract">("add");
+  const [taxBasePrice, setTaxBasePrice] = useState<number>(
+    Number(initialValues?.taxBasePrice ?? (initialValues?.mode === "tax" ? initialValues?.valY : undefined)) || 120
+  );
+  const [taxPercent, setTaxPercent] = useState<number>(
+    Number(initialValues?.taxPercent ?? (initialValues?.mode === "tax" ? initialValues?.valX : undefined)) || 8.25
+  );
+  const [taxMode, setTaxMode] = useState<"add" | "extract">(initialValues?.taxMode || "add");
 
   // Mode 6: Margin vs Markup
-  const [costPrice, setCostPrice] = useState<number>(100);
-  const [marginMarkupPercent, setMarginMarkupPercent] = useState<number>(30);
-  const [marginMarkupType, setMarginMarkupType] = useState<"margin" | "markup">("markup");
+  const [costPrice, setCostPrice] = useState<number>(
+    Number(initialValues?.costPrice ?? (initialValues?.mode === "marginMarkup" ? initialValues?.valY : undefined)) || 100
+  );
+  const [marginMarkupPercent, setMarginMarkupPercent] = useState<number>(
+    Number(initialValues?.marginMarkupPercent ?? (initialValues?.mode === "marginMarkup" ? initialValues?.valX : undefined)) || 30
+  );
+  const [marginMarkupType, setMarginMarkupType] = useState<"margin" | "markup">(initialValues?.marginMarkupType || "markup");
 
   // Reference Matrix Base Value
   const matrixBase = useMemo(() => {
@@ -245,6 +273,17 @@ export function PercentageCalculator() {
                 { label: "Decimal Equivalent", value: (valX1 / 100).toString() },
               ]}
             />
+
+            {/* Direct Answer Box (Google Snippet Optimized) */}
+            <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-xs text-emerald-950 dark:text-emerald-200 flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-bold">Direct Answer:</strong> {valX1}% of {valY1} is <strong className="font-bold">{result1.value}</strong>.
+                <span className="block text-[11px] text-zinc-600 dark:text-zinc-400 mt-0.5">
+                  Calculation: ({valX1} ÷ 100) × {valY1} = {(valX1 / 100).toFixed(4)} × {valY1} = {result1.value}.
+                </span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -274,6 +313,17 @@ export function PercentageCalculator() {
                 { label: "Fraction Representation", value: `${valX2}/${valY2}` },
               ]}
             />
+
+            {/* Direct Answer Box (Google Snippet Optimized) */}
+            <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-xs text-emerald-950 dark:text-emerald-200 flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-bold">Direct Answer:</strong> {valX2} is <strong className="font-bold">{result2.value}</strong> of {valY2}.
+                <span className="block text-[11px] text-zinc-600 dark:text-zinc-400 mt-0.5">
+                  Calculation: ({valX2} ÷ {valY2}) × 100 = {result2.value}.
+                </span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -303,6 +353,17 @@ export function PercentageCalculator() {
                 { label: "Trend Direction", value: result3.type === "increase" ? "Growth (Increase)" : "Decline (Decrease)", highlight: true },
               ]}
             />
+
+            {/* Direct Answer Box (Google Snippet Optimized) */}
+            <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-xs text-emerald-950 dark:text-emerald-200 flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-bold">Direct Answer:</strong> Changing from {valX3} to {valY3} represents a <strong className="font-bold">{result3.value}</strong>.
+                <span className="block text-[11px] text-zinc-600 dark:text-zinc-400 mt-0.5">
+                  Calculation: [({valY3} - {valX3}) ÷ {valX3}] × 100 = {result3.value}.
+                </span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -334,6 +395,14 @@ export function PercentageCalculator() {
                 { label: "Calculation Formula", value: result4.formula },
               ]}
             />
+
+            {/* Direct Answer Box (Google Snippet Optimized) */}
+            <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-xs text-emerald-950 dark:text-emerald-200 flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-bold">Direct Answer:</strong> A {discountPercent}% discount on ${originalPrice} saves <strong className="font-bold">${result4.savings}</strong>, leaving a final price of <strong className="font-bold">${result4.finalPrice}</strong>.
+              </div>
+            </div>
           </div>
         )}
 
@@ -418,6 +487,17 @@ export function PercentageCalculator() {
                 { label: "Formula", value: result6.formula },
               ]}
             />
+
+            {/* Direct Answer Box (Google Snippet Optimized) */}
+            <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-xs text-emerald-950 dark:text-emerald-200 flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-bold">Direct Answer:</strong> A ${costPrice} cost with {marginMarkupPercent}% {marginMarkupType} yields a selling price of <strong className="font-bold">${result6.sellingPrice}</strong> with <strong className="font-bold">${result6.profit}</strong> profit.
+                <span className="block text-[11px] text-zinc-600 dark:text-zinc-400 mt-0.5">
+                  Formula: {result6.formula}.
+                </span>
+              </div>
+            </div>
           </div>
         )}
       </CalcCard>

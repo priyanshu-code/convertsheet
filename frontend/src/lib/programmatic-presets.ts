@@ -3307,6 +3307,127 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       },
     ],
   },
+  {
+    toolSlug: "percentage-calculator",
+    presetSlug: "what-is-20-percent-of-100",
+    name: "What is 20% of 100?",
+    title: "What is 20% of 100? Percentage Calculator & Formula | ConvertSheet",
+    metaDescription: "20% of 100 is 20. See the step-by-step formula, decimal calculation (0.20 × 100 = 20), interactive percentage matrix, and free Excel sheet download.",
+    answerSummary: "20% of 100 equals 20. To calculate this, convert 20% to a decimal by dividing by 100 (0.20), then multiply by 100: 0.20 × 100 = 20.",
+    about: "Calculate percentages instantly with step-by-step mathematical breakdowns. Understand how to convert percentages to decimals, fractions, and apply them to discounts, taxes, and tips.",
+    initialValues: {
+      mode: "whatIs",
+      valX: 20,
+      valY: 100,
+    },
+    faqs: [
+      {
+        question: "How do you calculate 20% of 100?",
+        answer: "Divide 20 by 100 to get the decimal 0.20, then multiply by 100 to get 20.",
+      },
+      {
+        question: "What is a fast mental math trick for 20%?",
+        answer: "To find 20% of any number quickly in your head, divide the number by 10 (which gives 10%), then double that result (10% × 2 = 20%). For 100: 100 ÷ 10 = 10; 10 × 2 = 20.",
+      },
+    ],
+  },
+  {
+    toolSlug: "percentage-calculator",
+    presetSlug: "what-is-15-percent-of-80",
+    name: "What is 15% of 80?",
+    title: "What is 15% of 80? Percentage Calculator & Tip Formula | ConvertSheet",
+    metaDescription: "15% of 80 is 12. Calculate exact percentage with step-by-step formula (0.15 × 80 = 12), tipping guide, reference matrix, and Excel sheet download.",
+    answerSummary: "15% of 80 is 12. To find 15% of 80, multiply 80 by 0.15 (80 × 0.15 = 12). If calculating a 15% tip on an $80 bill, the total is $92.",
+    about: "Find 15% of 80 and learn the standard restaurant tipping and sales discount formulas with instant client-side calculation.",
+    initialValues: {
+      mode: "whatIs",
+      valX: 15,
+      valY: 80,
+    },
+    faqs: [
+      {
+        question: "What is 15 percent of 80?",
+        answer: "15 percent of 80 is 12.",
+      },
+      {
+        question: "How do you calculate a 15% tip on $80?",
+        answer: "Multiply $80 by 0.15 to get a $12 tip, bringing the total check to $92.",
+      },
+    ],
+  },
+  {
+    toolSlug: "percentage-calculator",
+    presetSlug: "percentage-increase-calculator",
+    name: "Percentage Increase & Growth Calculator",
+    title: "Percentage Increase Calculator — Calculate % Growth from X to Y | ConvertSheet",
+    metaDescription: "Calculate percentage increase or growth between two numbers. Formula: ((New - Old) / Old) × 100. Step-by-step breakdown and Excel sheet export.",
+    answerSummary: "The percentage increase formula is ((New Value - Old Value) / |Old Value|) × 100. For example, moving from 100 to 125 is a 25% increase (+25 difference).",
+    about: "Measure growth rates, revenue increases, salary raises, and population changes with exact relative and absolute percentage difference formulas.",
+    initialValues: {
+      mode: "change",
+      valX: 100,
+      valY: 125,
+    },
+    faqs: [
+      {
+        question: "What is the formula for percentage increase?",
+        answer: "Subtract the starting value from the final value, divide that difference by the starting value, and multiply by 100.",
+      },
+      {
+        question: "What is the difference between percentage change and percentage points?",
+        answer: "Percentage change measures the relative proportional change, while percentage points measure the simple arithmetic difference between two percentages.",
+      },
+    ],
+  },
+  {
+    toolSlug: "percentage-calculator",
+    presetSlug: "20-percent-off-discount-calculator",
+    name: "20% Off Sale & Discount Calculator",
+    title: "20% Off Calculator — Calculate Final Sale Price & Savings | ConvertSheet",
+    metaDescription: "Calculate final sale price with 20% off. On a $100 item, 20% off saves $20, leaving a final price of $80. Instant sales tax & discount matrix.",
+    answerSummary: "20% off a $100 purchase saves you $20.00, resulting in a final discounted price of $80.00 before sales tax. The formula is: Final Price = Original Price × 0.80.",
+    about: "Quickly compute discount savings, clearance sale reductions, and coupon values. Compare retail prices before and after promotional markdowns.",
+    initialValues: {
+      mode: "discount",
+      originalPrice: 100,
+      discountPercent: 20,
+    },
+    faqs: [
+      {
+        question: "How do you calculate 20 percent off?",
+        answer: "Multiply the original price by 0.20 to find your savings, then subtract that from the original price (or directly multiply by 0.80).",
+      },
+      {
+        question: "How much is 20% off $50?",
+        answer: "20% off $50 is $10 off, so you pay $40.",
+      },
+    ],
+  },
+  {
+    toolSlug: "percentage-calculator",
+    presetSlug: "margin-vs-markup-calculator",
+    name: "Margin vs Markup Pricing Calculator",
+    title: "Margin vs Markup Calculator — Profit Margin & Price Formula | ConvertSheet",
+    metaDescription: "Calculate profit margin vs markup percentage on product costs. Understand the difference: 30% markup on $100 cost gives $130 price and 23.08% margin.",
+    answerSummary: "Markup is profit divided by cost, whereas Margin is profit divided by revenue. A 30% markup on a $100 cost results in a $130 selling price ($30 profit), which equals a 23.08% gross profit margin.",
+    about: "Understand commercial retail and wholesale pricing. Convert between markup percentage and gross margin to ensure your business maintains healthy profitability.",
+    initialValues: {
+      mode: "marginMarkup",
+      costPrice: 100,
+      marginMarkupPercent: 30,
+      marginMarkupType: "markup",
+    },
+    faqs: [
+      {
+        question: "What is the difference between margin and markup?",
+        answer: "Markup is the percentage added to cost to determine selling price: Profit / Cost. Margin is the percentage of revenue retained as profit: Profit / Revenue.",
+      },
+      {
+        question: "If cost is $100, what markup gives a 50% profit margin?",
+        answer: "To achieve a 50% profit margin on a $100 cost, you need a 100% markup, setting the selling price at $200 ($100 profit ÷ $200 price = 50% margin).",
+      },
+    ],
+  },
 ];
 
 // Indexed Maps for O(1) SSG and metadata lookups

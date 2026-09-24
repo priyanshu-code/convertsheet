@@ -36,6 +36,7 @@ describe("Programmatic SEO Presets Registry", () => {
       "uk-salary-calculator",
       "canada-paycheck-calculator",
       "australia-pay-calculator",
+      "percentage-calculator",
     ]);
 
     PROGRAMMATIC_PRESETS.forEach((preset) => {
