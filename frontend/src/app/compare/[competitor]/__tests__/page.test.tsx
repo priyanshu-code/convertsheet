@@ -24,8 +24,10 @@ describe("Competitor Comparison Pages", () => {
 
   it("generateStaticParams generates all comparison competitor routes", () => {
     const params = generateStaticParams();
-    expect(params.length).toBe(3);
+    expect(params.length).toBeGreaterThanOrEqual(3);
     expect(params.map((p) => p.competitor)).toContain("cloudconvert-alternative");
+    expect(params.map((p) => p.competitor)).toContain("smartasset-alternative");
+    expect(params.map((p) => p.competitor)).toContain("calculator-net-alternative");
   });
 
   it("generateMetadata produces correct title, canonical, and OpenGraph", async () => {

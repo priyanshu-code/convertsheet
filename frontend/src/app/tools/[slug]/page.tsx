@@ -14,6 +14,7 @@ import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 import { HowToGuide, FAQAccordion } from "@/components/seo";
 import { AdBanner } from "@/components/layout";
 import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
+import { PresetPillsBar } from "@/components/calculator/PresetPillsBar";
 import { getProgrammaticPresetsByTool } from "@/lib/programmatic-presets";
 
 // Import all 18 tool components
@@ -307,6 +308,7 @@ export default function ToolPage({ params }: ToolPageProps) {
 
         {/* Primary Calculator UI */}
         <div className="max-w-6xl mx-auto w-full">
+          <PresetPillsBar toolSlug={tool.slug} />
           {ToolComponent ? <ToolComponent /> : <div>Loading tool...</div>}
         </div>
 

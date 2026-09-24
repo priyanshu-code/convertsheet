@@ -13,6 +13,7 @@ import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 import { FAQAccordion } from "@/components/seo";
 import { AdBanner } from "@/components/layout";
 import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
+import { PresetPillsBar } from "@/components/calculator/PresetPillsBar";
 
 // Import financial calculators that support programmatic presets
 import { MortgageCalculator } from "@/components/tools/MortgageCalculator";
@@ -221,6 +222,7 @@ export default function ProgrammaticPresetPage({
 
         {/* Primary Interactive Calculator UI pre-populated with preset parameters */}
         <div className="max-w-6xl mx-auto w-full">
+          <PresetPillsBar toolSlug={tool.slug} currentPresetSlug={preset.presetSlug} />
           {renderCalculator()}
         </div>
 

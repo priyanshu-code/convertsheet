@@ -315,6 +315,198 @@ export const COMPARISONS: CompetitorComparison[] = [
       },
     ],
   },
+  {
+    slug: "smartasset-alternative",
+    competitorName: "SmartAsset",
+    title: "Best Free SmartAsset Alternative (No Financial Advisor Spam)",
+    metaDescription: "Looking for a privacy-first SmartAsset alternative? ConvertSheet provides accurate salary, income tax, and mortgage calculators without lead capture forms or advisor sales calls.",
+    heroHeadline: "The Private SmartAsset Alternative Without Advisor Lead-Gen",
+    heroSubheadline: "Stop giving away your email, phone number, and net worth just to see a paycheck calculation. ConvertSheet calculates everything 100% in your browser with zero lead forms.",
+    prosCompetitor: [
+      "Established brand with extensive financial planning content",
+      "Connects users with vetted fiduciary financial advisors",
+    ],
+    consCompetitor: [
+      "Aggressive lead generation traps that capture your contact info to sell to advisors",
+      "Unsolicited sales phone calls and marketing emails after using calculators",
+      "No direct export of amortization schedules to Excel spreadsheets",
+      "Heavy advertising and sponsored loan placement banners",
+    ],
+    convertsheetAdvantages: [
+      "Zero Lead Capture: No email, phone number, or name requested ever",
+      "100% Client-Side Privacy: Your salary and net worth calculations never touch a server",
+      "Instant Excel Export: Download full tax breakdowns and amortization tables in 1 click",
+      "Modern, Ad-Free UX: No popups, no sponsored advisor match walls",
+    ],
+    featuresMatrix: [
+      {
+        feature: "Lead Capture / Advisor Forms",
+        convertsheet: "None (Zero Personal Data Collected)",
+        competitor: "Mandatory Contact Capture for Advisor Matching",
+        isAdvantage: true,
+      },
+      {
+        feature: "Data Storage & Privacy",
+        convertsheet: "100% Local In-Browser Processing",
+        competitor: "Data Logged and Sold to Financial Advisory Firms",
+        isAdvantage: true,
+      },
+      {
+        feature: "Spreadsheet Exports",
+        convertsheet: "Native .xlsx Excel Downloads",
+        competitor: "None (On-Screen View Only)",
+        isAdvantage: true,
+      },
+      {
+        feature: "Global Salary & Tax Support",
+        convertsheet: "US, UK, Canada, Australia, India & Germany",
+        competitor: "US Focus Only",
+        isAdvantage: true,
+      },
+      {
+        feature: "Ad Intrusion & Clutter",
+        convertsheet: "Clean, Distraction-Free Layout",
+        competitor: "High-Frequency Sponsored Ads & Lead Overlays",
+        isAdvantage: true,
+      },
+    ],
+    recommendedConverters: [
+      {
+        slug: "salary-calculator",
+        name: "Take-Home Salary Calculator",
+        description: "Exact net paycheck calculation with federal, FICA, and state tax breakdowns.",
+        type: "tool",
+      },
+      {
+        slug: "income-tax-calculator",
+        name: "Income Tax Calculator",
+        description: "Federal and state tax bracket calculator for single, married, and head of household.",
+        type: "tool",
+      },
+      {
+        slug: "mortgage-calculator",
+        name: "Mortgage Calculator & Amortization",
+        description: "Full principal, interest, taxes, and insurance breakdown with downloadable PDF dossier.",
+        type: "tool",
+      },
+      {
+        slug: "retirement-calculator",
+        name: "Retirement & 401(k) Calculator",
+        description: "Model compounding savings, employer matches, and inflation-adjusted nest eggs.",
+        type: "tool",
+      },
+    ],
+    faqs: [
+      {
+        question: "Why do people look for a SmartAsset alternative?",
+        answer: "SmartAsset operates primarily as a lead generation network for financial advisors. When you use their paycheck or mortgage tools, they frequently prompt for your email, phone number, and zip code, which often leads to persistent advisor sales calls. ConvertSheet provides identical or superior financial calculations 100% client-side with zero lead capture.",
+      },
+      {
+        question: "Are ConvertSheet tax calculations as accurate as SmartAsset?",
+        answer: "Yes. ConvertSheet models the exact IRS federal tax brackets, FICA payroll contributions (6.2% Social Security up to wage base, 1.45% Medicare + Additional Medicare), and state tax deductions without storing your numbers.",
+      },
+      {
+        question: "Can I export my amortization or tax results to Excel?",
+        answer: "Yes. ConvertSheet allows you to download a fully formatted Microsoft Excel (.xlsx) workbook containing your complete monthly payment schedule and annual deductions.",
+      },
+    ],
+  },
+  {
+    slug: "calculator-net-alternative",
+    competitorName: "Calculator.net",
+    title: "Modern Calculator.net Alternative (Fast, Mobile-First, Zero Ads)",
+    metaDescription: "Need a clean, modern alternative to Calculator.net? ConvertSheet offers fast financial, math, and developer tools with zero ads, mobile-first design, and Excel export.",
+    heroHeadline: "The Fast, Clean Calculator.net Alternative for Modern Web",
+    heroSubheadline: "Say goodbye to 90s-era layouts covered in banner ads. ConvertSheet delivers fast, responsive financial calculators, loan schedules, and file converters that run 100% in your browser.",
+    prosCompetitor: [
+      "Extensive library of diverse everyday and academic calculators",
+      "Completely free to use without paywalls",
+    ],
+    consCompetitor: [
+      "Dated 2000s desktop-only interface with poor mobile responsiveness",
+      "Surrounded by third-party display banner ads and tracking scripts",
+      "No integrated file conversion tools (CSV, JSON, XML, Excel)",
+      "Basic table exports with limited spreadsheet formatting",
+    ],
+    convertsheetAdvantages: [
+      "Modern Responsive Design: Optimized for seamless touch inputs on iOS and Android",
+      "Integrated File Utilities: Convert, diff, and anonymize datasets alongside your calculations",
+      "Zero Ad Intrusion: Fast loading with zero third-party tracking scripts",
+      "One-Click Excel Amortization: Beautifully formatted .xlsx workbooks",
+    ],
+    featuresMatrix: [
+      {
+        feature: "Mobile User Experience",
+        convertsheet: "Modern, Touch-Optimized Responsive UI",
+        competitor: "Outdated Desktop-First Layout",
+        isAdvantage: true,
+      },
+      {
+        feature: "File Conversion Suite",
+        convertsheet: "Integrated In-Browser Converters (JSON, CSV, Excel)",
+        competitor: "Calculators Only",
+        isAdvantage: true,
+      },
+      {
+        feature: "Banner Advertising",
+        convertsheet: "Clean, Minimalist Layout",
+        competitor: "Multiple Display Banner Ads & Trackers",
+        isAdvantage: true,
+      },
+      {
+        feature: "Data Export Quality",
+        convertsheet: "Formatted Excel Workbooks & PDF Reports",
+        competitor: "Raw Text & Basic HTML Tables",
+        isAdvantage: true,
+      },
+      {
+        feature: "Client-Side Processing",
+        convertsheet: "100% In-Browser Execution via Web Workers",
+        competitor: "Traditional Web Requests",
+        isAdvantage: true,
+      },
+    ],
+    recommendedConverters: [
+      {
+        slug: "car-loan-calculator",
+        name: "Car Loan & Auto Financing Calculator",
+        description: "Calculate monthly auto payments across vehicle loan terms with instant Excel amortization.",
+        type: "tool",
+      },
+      {
+        slug: "mortgage-calculator",
+        name: "Mortgage Calculator & Amortization",
+        description: "Full principal, interest, taxes, and insurance breakdown with downloadable PDF dossier.",
+        type: "tool",
+      },
+      {
+        slug: "percentage-calculator",
+        name: "Percentage Calculator Suite",
+        description: "Calculate percentage increases, decreases, discounts, and fractions instantly.",
+        type: "tool",
+      },
+      {
+        slug: "compound-interest-calculator",
+        name: "Compound Interest & Investment Calculator",
+        description: "Simulate compound returns with daily, monthly, and annual contribution intervals.",
+        type: "tool",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is ConvertSheet free like Calculator.net?",
+        answer: "Yes, ConvertSheet is 100% free with no signups, subscriptions, or hidden fees.",
+      },
+      {
+        question: "How does ConvertSheet improve upon Calculator.net?",
+        answer: "ConvertSheet offers a modern, high-contrast UI that works flawlessly on mobile screens, includes rich export capabilities directly into Microsoft Excel, and combines financial calculators with powerful file and developer converters in one unified platform.",
+      },
+      {
+        question: "Does ConvertSheet track my data or run third-party advertising cookies?",
+        answer: "No. ConvertSheet runs calculations client-side in your browser, meaning zero numbers or personal inputs are transmitted to external servers.",
+      },
+    ],
+  },
 ];
 
 export function getAllComparisons(): CompetitorComparison[] {

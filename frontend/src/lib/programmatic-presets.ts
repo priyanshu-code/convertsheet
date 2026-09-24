@@ -4219,6 +4219,365 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       },
     ],
   },
+  {
+    toolSlug: "debt-payoff-calculator",
+    presetSlug: "pay-off-5k-credit-card",
+    name: "$5,000 Credit Card Payoff Calculator",
+    title: "$5,000 Credit Card Payoff Calculator - Months to Debt-Free & Interest Cost",
+    metaDescription: "Calculate how to pay off a $5,000 credit card balance. Compare payoff timelines at $150/mo vs $300/mo, calculate total interest, and download Excel payoff schedule.",
+    answerSummary: "At an average 24% APR, paying $200 per month will pay off a $5,000 credit card in 36 months (3 years) with $1,732 in total interest paid. Increasing your payment to $300 per month clears the balance in 21 months and cuts total interest to $985 (saving $747).",
+    about: "Eliminating a $5,000 credit card balance requires outpacing compound daily interest. This preset models credit card debt repayment across various monthly payment levels, highlighting the dramatic difference between paying minimums versus structured fixed payments.",
+    initialValues: {
+      totalStartingDebt: 5000,
+      extraMonthlyPayment: 150,
+      strategy: "avalanche",
+    },
+    faqs: [
+      {
+        question: "How long does it take to pay off $5,000 on a credit card?",
+        answer: "At 24% APR paying $150/month, it takes 52 months (over 4 years) and costs $2,780 in interest. Paying $300/month reduces the timeline to 21 months and total interest to $985.",
+      },
+      {
+        question: "What is the minimum payment on a $5,000 credit card?",
+        answer: "Most card issuers calculate minimum payments as 1% to 2% of the principal plus monthly interest, typically starting around $125 to $150 per month.",
+      },
+      {
+        question: "Can I save money with a 0% APR balance transfer?",
+        answer: "Yes. Transferring a $5,000 balance to a 0% APR card for 18 months (with a 3% transfer fee of $150) and paying $286/month eliminates the debt with $0 in ongoing interest, saving over $1,500.",
+      },
+    ],
+  },
+  {
+    toolSlug: "debt-payoff-calculator",
+    presetSlug: "pay-off-10k-credit-card",
+    name: "$10,000 Credit Card Payoff Calculator",
+    title: "$10,000 Credit Card Payoff Calculator - Payoff Plan, Timeline & Interest",
+    metaDescription: "Calculate the fastest way to pay off $10,000 in credit card debt. Compare Avalanche vs Snowball, interest costs at 24% APR, and export payoff schedules to Excel.",
+    answerSummary: "Paying $400 per month on a $10,000 credit card balance at 24.99% APR clears the debt in 36 months (3 years) with $4,228 in total interest. Paying only the minimum payment ($250/mo tapering down) will take over 18 years and cost more than $14,000 in interest.",
+    about: "A $10,000 credit card debt milestone is often the tipping point where minimum payments become mathematically unsustainable. This preset demonstrates how adding even $100 to $200 in extra monthly principal payments collapses both the payoff timeline and the compound finance charges.",
+    initialValues: {
+      totalStartingDebt: 10000,
+      extraMonthlyPayment: 250,
+      strategy: "avalanche",
+    },
+    faqs: [
+      {
+        question: "How much interest will I pay on $10,000 credit card debt?",
+        answer: "At a standard 24.99% APR, paying $350 monthly results in roughly $5,120 in interest over 43 months. Paying $500 monthly cuts interest to $2,980 over 26 months.",
+      },
+      {
+        question: "Should I use debt avalanche or debt snowball for $10k in credit cards?",
+        answer: "The Debt Avalanche (paying highest APR first) saves the most money mathematically. The Debt Snowball (paying smallest balance first) provides psychological wins. On a single $10k card, focusing all extra cash flow on principal yields the same maximal savings.",
+      },
+      {
+        question: "Does debt consolidation make sense for $10,000 in credit card debt?",
+        answer: "Yes. Replacing a 24.99% credit card with a fixed personal loan at 10% to 12% APR can save between $2,500 and $3,500 in interest on a 3-year term.",
+      },
+    ],
+  },
+  {
+    toolSlug: "debt-payoff-calculator",
+    presetSlug: "pay-off-20k-credit-card",
+    name: "$20,000 Credit Card Payoff Calculator",
+    title: "$20,000 Credit Card Payoff Calculator - Amortization & Debt Elimination",
+    metaDescription: "Calculate monthly payment required to eliminate $20,000 in credit card debt. Full interest breakdown, consolidation comparison, and Excel payoff schedule.",
+    answerSummary: "To pay off a $20,000 credit card debt at 24% APR within 3 years, you need a fixed monthly payment of $786, resulting in $8,296 in total interest. At 4 years, a payment of $651/mo clears the balance with $11,248 in interest.",
+    about: "At $20,000 in credit card debt, finance charges alone can exceed $400 every month. This preset allows you to test realistic budget payments and download a complete month-by-month debt reduction schedule.",
+    initialValues: {
+      totalStartingDebt: 20000,
+      extraMonthlyPayment: 400,
+      strategy: "avalanche",
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment to pay off $20k credit card debt in 3 years?",
+        answer: "At 24% APR, you need to pay approximately $786 every month for 36 months to become completely debt-free.",
+      },
+      {
+        question: "How much will $20,000 credit card debt cost in total interest?",
+        answer: "Depending on your payment pace, interest ranges from $5,400 (aggressive 2-year payoff at $1,058/mo) to over $26,000 if making only near-minimum payments.",
+      },
+      {
+        question: "Can I negotiate a lower interest rate on $20,000 debt?",
+        answer: "Yes. Calling card issuers to request hardship programs or balance retention rates often drops APR from 25% down to 9%–14% for 12 to 36 months.",
+      },
+    ],
+  },
+  {
+    toolSlug: "debt-payoff-calculator",
+    presetSlug: "credit-card-minimum-payment-trap",
+    name: "Credit Card Minimum Payment Trap Calculator",
+    title: "Credit Card Minimum Payment Trap Calculator - True Cost of Minimum Payments",
+    metaDescription: "See why paying only the minimum credit card payment keeps you in debt for decades. Compare minimum payments vs fixed payments with exact interest math.",
+    answerSummary: "On a $7,500 credit card balance at 24.99% APR, paying only the minimum (2% of balance or $25) takes 24 years and 7 months to pay off, costing $15,840 in interest on a $7,500 initial charge. Switching to a fixed payment of $250/mo clears the card in 4 years and saves over $11,000.",
+    about: "Credit card minimum payments are intentionally structured by issuers to maximize lender interest revenue. Because the required payment shrinks as the balance declines, principal reduction stalls. This calculator exposes the true mathematical cost of the minimum payment trap.",
+    initialValues: {
+      totalStartingDebt: 7500,
+      extraMonthlyPayment: 50,
+      strategy: "avalanche",
+    },
+    faqs: [
+      {
+        question: "Why do credit card minimum payments take so long to pay off?",
+        answer: "Minimum payments are recalculated each month as a percentage of the remaining balance (typically 1% to 2% plus accrued interest). As the balance goes down, the payment decreases, stretching amortization over decades.",
+      },
+      {
+        question: "How much more do you pay when making only minimum payments?",
+        answer: "Borrowers frequently pay between 200% and 300% of their original purchase amount in finance charges when sticking strictly to minimum payments.",
+      },
+      {
+        question: "What is the single best rule to escape credit card debt?",
+        answer: "Never pay the declining minimum. Fix your payment at the initial minimum amount (or higher) and keep paying that exact dollar figure every month until the balance is zero.",
+      },
+    ],
+  },
+  {
+    toolSlug: "retirement-calculator",
+    presetSlug: "401k-at-30-with-50k",
+    name: "$50k in 401(k) at Age 30 Retirement Calculator",
+    title: "$50k in 401(k) at Age 30: Projected Growth & Nest Egg at 65",
+    metaDescription: "Calculate retirement projection starting with $50,000 in your 401(k) at age 30. Compounding growth model at 7%-9% return, employer matches, and Excel export.",
+    answerSummary: "Starting with $50,000 in your 401(k) at age 30 and contributing $800/month (with employer match) at an 8% average annual return yields a projected $2,427,000 by age 65. At a 4% safe withdrawal rate, this generates $97,080 per year ($8,090/month) in retirement income.",
+    about: "Having $50,000 saved by age 30 puts you on solid track for financial independence. Over a 35-year horizon to age 65, compound interest does the heavy lifting, with investment gains accounting for over 70% of the final portfolio value.",
+    initialValues: {
+      currentAge: 30,
+      retirementAge: 65,
+      currentSavings: 50000,
+      monthlyContribution: 800,
+      annualReturn: 8,
+      employerMatchPercent: 50,
+      postRetirementAnnualSpend: 75000,
+      postRetirementReturn: 5,
+      inflationRate: 2.5,
+    },
+    faqs: [
+      {
+        question: "Is $50,000 in 401(k) good for a 30-year-old?",
+        answer: "Yes. Most financial benchmarks recommend having 1x your annual salary saved by age 30. If your salary is $50,000 to $60,000, having $50k invested is right on target.",
+      },
+      {
+        question: "How much will $50k at age 30 grow to by age 65 with zero additional contributions?",
+        answer: "At an 8% historical stock market return, $50,000 compounded over 35 years without adding another dime grows to approximately $739,000.",
+      },
+      {
+        question: "What monthly contribution is needed to reach $2 Million by age 65?",
+        answer: "Starting with $50k at age 30 at 8% return, contributing approximately $600 per month (including employer match) reaches the $2 Million milestone.",
+      },
+    ],
+  },
+  {
+    toolSlug: "retirement-calculator",
+    presetSlug: "retire-with-2-million",
+    name: "Retire with $2 Million Portfolio Calculator",
+    title: "Retire with $2 Million: Safe Withdrawal Rate & Monthly Income Model",
+    metaDescription: "How long does $2 Million last in retirement? Calculate 4% safe withdrawal monthly income, tax considerations, portfolio longevity, and Excel schedule.",
+    answerSummary: "A $2,000,000 retirement nest egg supports a sustainable 4% rule annual withdrawal of $80,000 ($6,667 per month) adjusted annually for inflation, with a 95%+ probability of lasting 30+ years in a diversified 60/40 or 70/30 stock/bond portfolio.",
+    about: "A $2 Million portfolio is a common benchmark for financial independence. This preset models the balance between post-retirement asset allocation returns, inflation erosions, and annual withdrawal amounts.",
+    initialValues: {
+      currentAge: 40,
+      retirementAge: 65,
+      currentSavings: 200000,
+      monthlyContribution: 1500,
+      annualReturn: 8,
+      employerMatchPercent: 50,
+      postRetirementAnnualSpend: 80000,
+      postRetirementReturn: 5.5,
+      inflationRate: 2.5,
+    },
+    faqs: [
+      {
+        question: "How much monthly income does $2 Million generate in retirement?",
+        answer: "Under the 4% safe withdrawal rule, $2,000,000 generates $80,000 in year one, or $6,667 per month before taxes. Combined with Social Security, typical retirees enjoy $9,000+ monthly gross income.",
+      },
+      {
+        question: "Can $2 Million run out in retirement?",
+        answer: "With a disciplined 3.5% to 4.0% withdrawal rate and appropriate asset allocation, historical backtests show $2M rarely depletes over a 30-year horizon.",
+      },
+      {
+        question: "How much do I need to save monthly to reach $2 Million in 25 years?",
+        answer: "Starting with $50k at an 8% return, you need to invest approximately $1,850 per month for 25 years to reach $2,000,000.",
+      },
+    ],
+  },
+  {
+    toolSlug: "retirement-calculator",
+    presetSlug: "max-out-roth-ira-by-40",
+    name: "Max Out Roth IRA ($7,000/yr) Growth Calculator",
+    title: "Maxing Out Roth IRA Growth Calculator - Tax-Free Wealth by 40 and 65",
+    metaDescription: "Calculate compounding wealth from maxing out a Roth IRA ($7,000/year). Model 100% tax-free growth, total contributions vs returns, and Excel export.",
+    answerSummary: "Maxing out a Roth IRA at $7,000 per year ($583/month) from age 25 to 65 at an 8% average return yields a projected $1,980,000 completely tax-free. Your total cash invested is only $280,000, while compound growth accounts for $1,700,000 in tax-free gains.",
+    about: "The Roth IRA is one of the most powerful wealth-building tools because qualified withdrawals in retirement are 100% free of federal and state income taxes. This preset models the compounding trajectory of contributing the annual IRS maximum.",
+    initialValues: {
+      currentAge: 25,
+      retirementAge: 65,
+      currentSavings: 7000,
+      monthlyContribution: 583,
+      annualReturn: 8,
+      employerMatchPercent: 0,
+      postRetirementAnnualSpend: 70000,
+      postRetirementReturn: 5,
+      inflationRate: 2.5,
+    },
+    faqs: [
+      {
+        question: "What is the 2024 Roth IRA contribution limit?",
+        answer: "The IRS limit for 2024 is $7,000 per year for individuals under 50 ($8,000 for age 50 and older), subject to income phase-outs.",
+      },
+      {
+        question: "Are Roth IRA earnings tax-free in retirement?",
+        answer: "Yes. Because contributions are made with after-tax dollars, both your principal and all investment earnings withdraw 100% tax-free after age 59½.",
+      },
+      {
+        question: "How much will a Roth IRA be worth if I start at 25 vs 35?",
+        answer: "Starting at 25 at $583/mo (8% return) grows to ~$1.98M by 65. Delaying until 35 with the same monthly amount yields ~$830k—a difference of over $1.15 Million from 10 years of compounding.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "india-in-hand-6-lakh",
+    name: "₹6 Lakh CTC In-Hand Salary Calculator (India)",
+    title: "₹6 Lakh CTC In-Hand Salary Calculator - Monthly Paycheck (Zero Tax under 87A)",
+    metaDescription: "Calculate monthly in-hand salary for ₹6 LPA CTC in India. Zero income tax under Section 87A rebate, EPF deductions, and take-home pay breakdown.",
+    answerSummary: "For a ₹6,00,000 (6 LPA) CTC in India under the New Tax Regime (FY 2024-25), your income tax is ₹0 due to the Section 87A rebate and ₹75,000 standard deduction. Your estimated net monthly in-hand salary is approximately ₹46,800 after ₹3,000/month EPF and ₹200 professional tax deductions.",
+    about: "Salaries up to ₹7.75 Lakhs incur zero income tax in India under the revised New Tax Regime (with standard deduction and Section 87A rebate). This preset models in-hand salary for entry to mid-level professionals.",
+    initialValues: {
+      regime: "IN",
+      annualCtc: 600000,
+      epfPercent: 12,
+      professionalTaxMonthly: 200,
+    },
+    faqs: [
+      {
+        question: "Is there any tax on a 6 LPA salary in India?",
+        answer: "No. Under the New Tax Regime for FY 2024-25, taxable income after the ₹75,000 standard deduction is ₹5,25,000. Full tax rebate under Section 87A applies, reducing tax liability to ₹0.",
+      },
+      {
+        question: "What is the monthly in-hand salary for 6 LPA?",
+        answer: "Around ₹46,500 to ₹47,000 per month, assuming 12% employee EPF on 50% basic pay and statutory professional tax.",
+      },
+      {
+        question: "Can I opt out of EPF on a 6 LPA package?",
+        answer: "If your basic salary is above ₹15,000 per month at joining, employer/employee PF contribution flexibility depends on your company's HR policy.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "india-in-hand-18-lakh",
+    name: "₹18 Lakh CTC In-Hand Salary Calculator (India)",
+    title: "₹18 Lakh CTC In-Hand Salary Calculator - Monthly Net Pay (FY 2024-25)",
+    metaDescription: "Calculate in-hand salary for ₹18 LPA CTC in India. Detailed breakdown of New Tax Regime slabs, TDS deductions, EPF, and monthly bank credit.",
+    answerSummary: "For an ₹18,00,000 (18 LPA) CTC under the New Tax Regime (FY 2024-25), your estimated monthly in-hand salary is approximately ₹1,18,000 to ₹1,22,000. Annual deductions include ₹1,08,000 in EPF, ₹2,400 in professional tax, and roughly ₹1,95,000 in income tax TDS.",
+    about: "The ₹18 LPA CTC tier is a standard compensation benchmark for mid-to-senior software engineers and product managers in India. This preset computes monthly bank credit after factoring in the 2024 Union Budget tax slabs.",
+    initialValues: {
+      regime: "IN",
+      annualCtc: 1800000,
+      epfPercent: 12,
+      professionalTaxMonthly: 200,
+    },
+    faqs: [
+      {
+        question: "What is the in-hand salary for 18 LPA in India?",
+        answer: "After EPF and income tax TDS deductions under the New Regime, monthly take-home is roughly ₹1,18,000 to ₹1,21,500.",
+      },
+      {
+        question: "How much income tax is deducted on an 18 Lakh CTC?",
+        answer: "Under the New Tax Regime with ₹75k standard deduction, tax liability is approximately ₹1,95,000 to ₹2,05,000 annually (~₹16,500/month TDS).",
+      },
+      {
+        question: "Is New Regime or Old Regime better for 18 LPA?",
+        answer: "For most individuals without large home loan interest deductions (Section 24) or major HRA exemptions, the New Tax Regime yields higher monthly take-home due to lower slab rates.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "india-in-hand-25-lakh",
+    name: "₹25 Lakh CTC In-Hand Salary Calculator (India)",
+    title: "₹25 Lakh CTC In-Hand Salary Calculator - Senior Tech Salary Breakdown",
+    metaDescription: "Calculate monthly in-hand salary for ₹25 LPA CTC in India. Complete TDS tax calculations, EPF contributions, and variable pay considerations.",
+    answerSummary: "On a ₹25,00,000 (25 LPA) CTC in India under the New Tax Regime, estimated net monthly in-hand salary is roughly ₹1,55,000 to ₹1,60,000. Annual deductions comprise ₹1,50,000 in EPF, ₹2,400 in professional tax, and approximately ₹3,45,000 in income tax TDS.",
+    about: "Model take-home pay on senior engineering and management salaries of ₹25 Lakhs per year. Understand the impact of 20% and 30% tax brackets on higher CTC brackets.",
+    initialValues: {
+      regime: "IN",
+      annualCtc: 2500000,
+      epfPercent: 12,
+      professionalTaxMonthly: 200,
+    },
+    faqs: [
+      {
+        question: "What is the monthly in-hand salary for 25 LPA CTC?",
+        answer: "Typically between ₹1,54,000 and ₹1,61,000 per month, depending on how much of the CTC is fixed vs variable performance pay.",
+      },
+      {
+        question: "How much tax do you pay on a 25 Lakh salary in India?",
+        answer: "Under the New Tax Regime with the ₹75,000 standard deduction, total tax including 4% Health & Education cess is approximately ₹3,45,000 per year.",
+      },
+      {
+        question: "Does surcharge apply to a 25 LPA salary?",
+        answer: "No. Income tax surcharge in India only begins for individuals with taxable income exceeding ₹50 Lakhs.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "us-take-home-150k",
+    name: "$150k Salary Take-Home Pay Calculator (US)",
+    title: "$150k Salary Take-Home Pay Calculator - Net Monthly & Bi-Weekly Paycheck",
+    metaDescription: "Calculate take-home pay on a $150,000 salary in the US. Breakdown of federal tax brackets, FICA payroll taxes, state taxes, and 401(k) deductions.",
+    answerSummary: "On a $150,000 gross salary in the US for a single filer, your estimated net take-home pay is roughly $106,800 per year ($8,900/month or $4,107 bi-weekly). Total deductions include approximately $24,800 in federal income tax, $10,540 in FICA taxes, and estimated state income tax.",
+    about: "A $150,000 salary enters the 24% marginal federal income tax bracket for single filers. This preset accurately accounts for the progressive bracket system, the standard deduction, and mandatory FICA payroll contributions.",
+    initialValues: {
+      regime: "US",
+      grossSalary: 150000,
+      filingStatus: "single",
+      stateTaxPercent: 5,
+    },
+    faqs: [
+      {
+        question: "What is the take-home pay on $150k in the US?",
+        answer: "With standard deductions and an average 5% state tax, take-home pay on $150,000 is approximately $106,800 per year, or about $8,900 monthly ($4,107 bi-weekly).",
+      },
+      {
+        question: "What is the effective tax rate on $150,000?",
+        answer: "The effective federal income tax rate is approximately 16.5%, and total effective tax (including FICA and 5% state tax) is approximately 28.8%.",
+      },
+      {
+        question: "How much can maxing out a 401(k) save in taxes on $150k?",
+        answer: "Contributing the $23,000 401(k) maximum reduces your taxable income from $135,400 to $112,400, saving approximately $5,520 in federal income taxes.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "us-take-home-200k",
+    name: "$200k Salary Take-Home Pay Calculator (US)",
+    title: "$200k Salary Take-Home Pay Calculator - Net Paycheck & Tax Deductions",
+    metaDescription: "Calculate take-home pay on a $200,000 salary in the US. Social Security wage base cap, Medicare additional tax, and monthly net paycheck.",
+    answerSummary: "On a $200,000 annual salary in the US for a single filer, your estimated net take-home pay is approximately $138,200 per year ($11,516 per month or $5,315 bi-weekly). Federal tax accounts for roughly $36,800, FICA for $13,380 (capping Social Security at the $168,600 wage base), and state tax.",
+    about: "At $200,000 per year, payroll tax calculations change because your earnings exceed the annual Social Security wage base cap ($168,600 for 2024), meaning no further 6.2% Social Security tax is deducted on dollars earned above that threshold.",
+    initialValues: {
+      regime: "US",
+      grossSalary: 200000,
+      filingStatus: "single",
+      stateTaxPercent: 5,
+    },
+    faqs: [
+      {
+        question: "What is the take-home pay on $200,000 a year?",
+        answer: "After federal taxes, FICA, and an estimated 5% state tax, a single filer takes home approximately $138,200 annually, or about $11,516 per month.",
+      },
+      {
+        question: "How does the Social Security cap affect a $200k salary?",
+        answer: "Social Security tax (6.2%) only applies up to the $168,600 wage base (max $10,453.20). Earnings above $168,600 are exempt from Social Security, giving high earners a boost in take-home pay later in the calendar year.",
+      },
+      {
+        question: "What is the bi-weekly paycheck on $200,000?",
+        answer: "Assuming 26 bi-weekly pay periods, the average net paycheck is approximately $5,315.",
+      },
+    ],
+  },
 ];
 
 // Indexed Maps for O(1) SSG and metadata lookups

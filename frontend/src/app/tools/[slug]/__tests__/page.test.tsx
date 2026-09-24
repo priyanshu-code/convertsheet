@@ -96,11 +96,11 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
       })
     ).toBeInTheDocument();
 
-    const presetLink = screen.getByRole("link", {
+    const presetLinks = screen.getAllByRole("link", {
       name: /What is 20% of 100\?/i,
     });
-    expect(presetLink).toBeInTheDocument();
-    expect(presetLink).toHaveAttribute(
+    expect(presetLinks.length).toBeGreaterThanOrEqual(1);
+    expect(presetLinks[0]).toHaveAttribute(
       "href",
       "/tools/percentage-calculator/what-is-20-percent-of-100"
     );
