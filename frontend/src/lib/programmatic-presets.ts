@@ -1137,6 +1137,34 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     ]
   },
   {
+    "toolSlug": "car-loan-calculator",
+    "presetSlug": "car-loan-early-payoff",
+    "name": "Car Loan Early Payoff Calculator",
+    "title": "Car Loan Early Payoff Calculator — Extra Payment Interest Savings",
+    "metaDescription": "Calculate how much interest and time you save by paying an extra $50, $100, or $200 per month on your auto loan. Free Excel amortization schedule export.",
+    "answerSummary": "On a standard $30,000 car loan at 6.5% interest over 60 months ($587/mo), paying an extra $100 per month saves $1,085 in interest charges and pays off your vehicle 11 months ahead of schedule.",
+    "about": "Adding extra principal to your monthly car payment shortens your loan term and reduces compound interest. Calculate the exact months shaved off and export your accelerated payoff schedule to Excel.",
+    "initialValues": {
+      "vehiclePrice": 30000,
+      "downPayment": 3000,
+      "tradeInValue": 0,
+      "interestRate": 6.5,
+      "loanTermMonths": 60,
+      "salesTaxPercent": 6.5,
+      "dealerFees": 450
+    },
+    "faqs": [
+      {
+        "question": "How much does paying an extra $100 a month on a car loan help?",
+        "answer": "On a typical 5-year, $30k auto loan at 6.5%, an extra $100/month saves over $1,000 in interest and eliminates almost a full year of payments."
+      },
+      {
+        "question": "Do auto lenders charge prepayment penalties for early payoff?",
+        "answer": "Most consumer auto loans are simple interest loans with zero prepayment penalties. Verify with your lender that extra payments are designated directly toward principal reduction."
+      }
+    ]
+  },
+  {
     "toolSlug": "retirement-calculator",
     "presetSlug": "500k-retirement-target",
     "name": "$500,000 Retirement Nest Egg Calculator",
@@ -1733,6 +1761,30 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       {
         "question": "How much will I need in 15 years to buy what $100,000 buys today?",
         "answer": "You will need approximately $160,441 in 15 years to match today's standard of living."
+      }
+    ]
+  },
+  {
+    "toolSlug": "inflation-calculator",
+    "presetSlug": "200k-in-20-years",
+    "name": "What Will $200,000 Be Worth in 20 Years?",
+    "title": "What Will $200k Be Worth in 20 Years? Inflation Calculator | ConvertSheet",
+    "metaDescription": "At 3.2% inflation, $200,000 loses 46.7% of its value in 20 years, dropping to $106,521. You will need $375,512 to match today's purchasing power. Excel schedule.",
+    "answerSummary": "Over 20 years at 3.2% annual inflation, $200,000 loses 46.7% of its purchasing power, dropping to an effective real value of $106,521. You will need $375,512 in 20 years to match today's buying power.",
+    "about": "A 20-year horizon is pivotal for college savings and pre-retiree nest eggs. Model the corrosive impact of inflation on substantial cash reserves and see necessary growth rates.",
+    "initialValues": {
+      "amount": 200000,
+      "inflationRate": 3.2,
+      "years": 20
+    },
+    "faqs": [
+      {
+        "question": "What will $200,000 be worth in 20 years?",
+        "answer": "Assuming an average annual inflation rate of 3.2%, $200,000 will be worth approximately $106,521 in real purchasing power 20 years from now."
+      },
+      {
+        "question": "How much will $200,000 buy in 20 years?",
+        "answer": "It will buy approximately 53.3% of what it buys today, meaning you will need $375,512 to afford the same basket of goods."
       }
     ]
   },

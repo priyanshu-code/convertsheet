@@ -3,6 +3,7 @@ import {
   calculateMortgage,
   calculateCarLoan,
   calculateCarLeaseVsBuy,
+  calculateCarLoanEarlyPayoff,
   calculateRetirement,
   calculateInflation,
   calculateHourlyToSalary,
@@ -128,6 +129,39 @@ describe("financial-engine", () => {
       expect(res.purchaseNetCostOfOwnership).toBeLessThan(res.leaseNetCostOfOwnership);
       expect(res.longTermFinancialAdvantage).toBe("buy");
       expect(res.verdictSummary).toContain("Buying saves");
+    });
+  });
+
+  describe("calculateCarLoanEarlyPayoff", () => {
+    it("computes interest saved and months shaved off with extra monthly payments", () => {
+      const res = calculateCarLoanEarlyPayoff({
+        loanAmount: 30000,
+        interestRate: 6.0,
+        originalTermMonths: 60,
+        extraMonthlyPayment: 100,
+      });
+
+      expect(res.originalMonthlyPayment).toBe(579.98);
+      expect(res.acceleratedMonthlyPayment).toBe(679.98);
+      expect(res.originalTotalInterest).toBeGreaterThan(4790);
+      expect(res.acceleratedTotalInterest).toBeLessThan(res.originalTotalInterest);
+      expect(res.totalInterestSaved).toBeGreaterThan(700);
+      expect(res.monthsSaved).toBeGreaterThan(8);
+      expect(res.yearsSaved).toBeGreaterThan(0.5);
+      expect(res.payoffScheduleComparison.length).toBeGreaterThanOrEqual(5);
+    });
+
+    it("handles zero extra payments cleanly with 0 months saved", () => {
+      const res = calculateCarLoanEarlyPayoff({
+        loanAmount: 20000,
+        interestRate: 5.0,
+        originalTermMonths: 48,
+        extraMonthlyPayment: 0,
+      });
+
+      expect(res.monthsSaved).toBe(0);
+      expect(res.totalInterestSaved).toBe(0);
+      expect(res.newPayoffMonths).toBe(48);
     });
   });
 

@@ -381,6 +381,121 @@ export function calculateCarLeaseVsBuy(input: CarLeaseVsBuyInput): CarLeaseVsBuy
   };
 }
 
+export interface CarLoanEarlyPayoffInput {
+  loanAmount: number;
+  interestRate: number; // Annual % e.g. 5.9%
+  originalTermMonths: number; // e.g. 60
+  extraMonthlyPayment: number; // e.g. 100
+  oneTimeLumpSum?: number; // e.g. 1000
+}
+
+export interface CarLoanEarlyPayoffResult {
+  originalMonthlyPayment: number;
+  acceleratedMonthlyPayment: number;
+  originalTotalInterest: number;
+  acceleratedTotalInterest: number;
+  totalInterestSaved: number;
+  originalTermMonths: number;
+  newPayoffMonths: number;
+  monthsSaved: number;
+  yearsSaved: number;
+  payoffScheduleComparison: {
+    year: number;
+    standardBalance: number;
+    acceleratedBalance: number;
+  }[];
+}
+
+export function calculateCarLoanEarlyPayoff(input: CarLoanEarlyPayoffInput): CarLoanEarlyPayoffResult {
+  const principal = Math.max(0, input.loanAmount || 0);
+  const annualRate = Math.max(0, input.interestRate || 0);
+  const monthlyRate = annualRate > 0 ? annualRate / 100 / 12 : 0;
+  const originalTermMonths = Math.max(1, input.originalTermMonths || 60);
+  const extraMonthly = Math.max(0, input.extraMonthlyPayment || 0);
+  const lumpSum = Math.max(0, input.oneTimeLumpSum || 0);
+
+  // Standard loan metrics
+  let originalMonthlyPayment = 0;
+  if (monthlyRate === 0) {
+    originalMonthlyPayment = principal / originalTermMonths;
+  } else if (principal > 0) {
+    originalMonthlyPayment =
+      (principal * (monthlyRate * Math.pow(1 + monthlyRate, originalTermMonths))) /
+      (Math.pow(1 + monthlyRate, originalTermMonths) - 1);
+  }
+  originalMonthlyPayment = roundTo(originalMonthlyPayment, 2);
+  const originalTotalInterest = Math.max(0, roundTo(originalMonthlyPayment * originalTermMonths - principal, 2));
+
+  // Accelerated amortization
+  let stdBalance = principal;
+  let accBalance = Math.max(0, principal - lumpSum);
+  let acceleratedTotalInterest = 0;
+  let newPayoffMonths = 0;
+
+  const payoffScheduleComparison: {
+    year: number;
+    standardBalance: number;
+    acceleratedBalance: number;
+  }[] = [];
+
+  for (let m = 1; m <= originalTermMonths; m++) {
+    // Standard step
+    if (stdBalance > 0) {
+      const stdInterest = roundTo(stdBalance * monthlyRate, 2);
+      const stdPrincipal = Math.min(stdBalance, originalMonthlyPayment - stdInterest);
+      stdBalance = Math.max(0, roundTo(stdBalance - stdPrincipal, 2));
+    }
+
+    // Accelerated step
+    if (accBalance > 0) {
+      const accInterest = roundTo(accBalance * monthlyRate, 2);
+      acceleratedTotalInterest += accInterest;
+      const accPayment = originalMonthlyPayment + extraMonthly;
+      const accPrincipal = Math.min(accBalance, accPayment - accInterest);
+      accBalance = Math.max(0, roundTo(accBalance - accPrincipal, 2));
+      if (accBalance === 0 && newPayoffMonths === 0) {
+        newPayoffMonths = m;
+      }
+    }
+
+    // Record yearly checkpoints
+    if (m % 12 === 0 || m === originalTermMonths) {
+      payoffScheduleComparison.push({
+        year: Math.ceil(m / 12),
+        standardBalance: stdBalance,
+        acceleratedBalance: accBalance,
+      });
+    }
+  }
+
+  if (extraMonthly === 0 && lumpSum === 0) {
+    newPayoffMonths = originalTermMonths;
+    acceleratedTotalInterest = originalTotalInterest;
+  } else if (newPayoffMonths === 0) {
+    newPayoffMonths = originalTermMonths;
+  }
+
+  acceleratedTotalInterest = roundTo(acceleratedTotalInterest, 2);
+  const totalInterestSaved = (extraMonthly === 0 && lumpSum === 0)
+    ? 0
+    : Math.max(0, roundTo(originalTotalInterest - acceleratedTotalInterest, 2));
+  const monthsSaved = Math.max(0, originalTermMonths - newPayoffMonths);
+  const yearsSaved = roundTo(monthsSaved / 12, 1);
+
+  return {
+    originalMonthlyPayment,
+    acceleratedMonthlyPayment: roundTo(originalMonthlyPayment + extraMonthly, 2),
+    originalTotalInterest,
+    acceleratedTotalInterest,
+    totalInterestSaved,
+    originalTermMonths,
+    newPayoffMonths,
+    monthsSaved,
+    yearsSaved,
+    payoffScheduleComparison,
+  };
+}
+
 // ==========================================
 // 3. RETIREMENT & 401(K) CALCULATOR
 // ==========================================

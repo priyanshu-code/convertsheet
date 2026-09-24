@@ -121,14 +121,15 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
     });
   });
 
-  describe("InflationCalculator", () => {
+    describe("InflationCalculator", () => {
     it("renders inflation and purchasing power calculator with preset buttons", () => {
       render(<InflationCalculator />);
 
       expect(
         screen.getByText(/Inflation & Purchasing Power Calculator/i)
       ).toBeInTheDocument();
-      expect(screen.getByText(/Purchasing Power Loss/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Purchasing Power Loss/i).length).toBeGreaterThan(0);
+      expect(screen.getByText(/Salary Protection/i)).toBeInTheDocument();
       expect(screen.getByText(/Common Inflation Benchmarks:/i)).toBeInTheDocument();
 
       expect(screen.getByRole("button", { name: /Fed Target \(2\.0%\)/i })).toBeInTheDocument();
@@ -144,6 +145,17 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
 
       const rateInput = screen.getByLabelText(/Annual Inflation Rate \(%\)/i);
       expect(rateInput).toHaveValue(2.0);
+    });
+
+    it("toggles between purchasing power decay and salary protection mode", () => {
+      render(<InflationCalculator />);
+
+      const salaryToggle = screen.getByRole("button", { name: /Salary Protection/i });
+      fireEvent.click(salaryToggle);
+
+      expect(screen.getByText(/Salary Needed to Beat Inflation Calculator/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/Current Annual Salary/i)).toBeInTheDocument();
+      expect(screen.getByText(/Annual Merit Raise Required/i)).toBeInTheDocument();
     });
   });
 

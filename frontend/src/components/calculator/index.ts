@@ -20,4 +20,5 @@ export * from "./EmbedTrigger";
 export * from "./CurrencySelector";
 export * from "./CalcShareButton";
 export * from "./CarLeaseVsBuyMatrix";
-
+export * from "./CarLoanEarlyPayoffCard";
+export * from "./InflationErosionMatrix";

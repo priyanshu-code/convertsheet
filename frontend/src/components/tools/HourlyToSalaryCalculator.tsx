@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { DollarSign, Clock, Calendar, Briefcase, Table as TableIcon } from "lucide-react";
+import { DollarSign, Clock, Calendar, Briefcase, Table as TableIcon, Wallet } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
@@ -11,7 +11,7 @@ import {
   CalcShareButton,
   ModernSlider,
 } from "@/components/calculator";
-import { calculateHourlyToSalary } from "@/lib/engines/financial-engine";
+import { calculateHourlyToSalary, calculateUsSalary } from "@/lib/engines/financial-engine";
 
 export interface HourlyToSalaryCalculatorProps {
   initialValues?: Partial<{
@@ -93,21 +93,32 @@ export function HourlyToSalaryCalculator({
     overtimeMultiplier,
   ]);
 
+  const netPayEst = useMemo(() => {
+    return calculateUsSalary({
+      grossSalary: result.annualSalary,
+      filingStatus: "single",
+    });
+  }, [result.annualSalary]);
+
   // SheetJS formatted export rows
   const exportData = useMemo(() => {
     return [
       { Interval: "Hourly Wage", Amount: `$${result.hourlyRate.toFixed(2)}`, Note: "Base rate" },
       { Interval: "Daily Pay", Amount: `$${result.dailyPay.toLocaleString()}`, Note: "Based on 8h/day (or 1/5th weekly)" },
       { Interval: "Weekly Pay", Amount: `$${result.weeklyPay.toLocaleString()}`, Note: `${hoursPerWeek}h regular + ${overtimeHours}h OT` },
-      { Interval: "Bi-Weekly Pay", Amount: `$${result.biWeeklyPay.toLocaleString()}`, Note: "26 paychecks per year" },
-      { Interval: "Semi-Monthly Pay", Amount: `$${result.semiMonthlyPay.toLocaleString()}`, Note: "24 paychecks per year (twice monthly)" },
+      { Interval: "Bi-Weekly Pay (Gross)", Amount: `$${result.biWeeklyPay.toLocaleString()}`, Note: "26 paychecks per year" },
+      { Interval: "Semi-Monthly Pay (Gross)", Amount: `$${result.semiMonthlyPay.toLocaleString()}`, Note: "24 paychecks per year (twice monthly)" },
       { Interval: "Monthly Gross Pay", Amount: `$${result.monthlyPay.toLocaleString()}`, Note: "12 paychecks per year" },
       { Interval: "Annual Gross Salary", Amount: `$${result.annualSalary.toLocaleString()}`, Note: `${weeksPerYear} weeks worked per year` },
+      { Interval: "--- ESTIMATED TAKE-HOME (AFTER TAXES) ---", Amount: "", Note: "" },
+      { Interval: "Annual Net Take-Home", Amount: `$${Math.round(netPayEst.netAnnualTakeHome).toLocaleString()}`, Note: `Effective Tax Rate: ${netPayEst.effectiveTaxRate}%` },
+      { Interval: "Monthly Net Take-Home", Amount: `$${Math.round(netPayEst.netMonthlyTakeHome).toLocaleString()}`, Note: "Post-tax take-home" },
+      { Interval: "Bi-Weekly Net Take-Home", Amount: `$${Math.round(netPayEst.netBiWeeklyTakeHome).toLocaleString()}`, Note: "Post-tax take-home" },
     ];
-  }, [result, hoursPerWeek, overtimeHours, weeksPerYear]);
+  }, [result, hoursPerWeek, overtimeHours, weeksPerYear, netPayEst]);
 
   const aiPrompt = useMemo(() => {
-    return `Analyze this salary breakdown:
+    return `Analyze this wage and take-home pay breakdown:
 - Hourly Rate: $${hourlyRate}/hr
 - Hours Worked: ${hoursPerWeek} hrs/week across ${weeksPerYear} weeks/year
 - Overtime: ${overtimeHours} hrs/week at ${overtimeMultiplier}x rate
@@ -116,8 +127,13 @@ export function HourlyToSalaryCalculator({
   • Monthly Pay: $${result.monthlyPay.toLocaleString()}
   • Bi-Weekly Pay: $${result.biWeeklyPay.toLocaleString()}
   • Weekly Pay: $${result.weeklyPay.toLocaleString()}
+- Estimated Net Take-Home (Single Filer):
+  • Net Annual: $${Math.round(netPayEst.netAnnualTakeHome).toLocaleString()}
+  • Net Monthly: $${Math.round(netPayEst.netMonthlyTakeHome).toLocaleString()}
+  • Net Bi-Weekly: $${Math.round(netPayEst.netBiWeeklyTakeHome).toLocaleString()}
+  • Effective Tax Rate: ${netPayEst.effectiveTaxRate}%
 Provide career budgeting insights, estimated tax brackets, and negotiating advice.`;
-  }, [hourlyRate, hoursPerWeek, weeksPerYear, overtimeHours, overtimeMultiplier, result]);
+  }, [hourlyRate, hoursPerWeek, weeksPerYear, overtimeHours, overtimeMultiplier, result, netPayEst]);
 
   return (
     <div className="space-y-8">
@@ -178,6 +194,29 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                   suffix="h"
                   onChange={setHoursPerWeek}
                 />
+
+                {/* Workweek Quick Presets (35h vs 40h) */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  {[
+                    { hours: 40, label: "40h (Standard FT)" },
+                    { hours: 35, label: "35h (35h Workweek)" },
+                    { hours: 37.5, label: "37.5h (Office Standard)" },
+                    { hours: 20, label: "20h (Part-Time)" },
+                  ].map((preset) => (
+                    <button
+                      key={preset.hours}
+                      type="button"
+                      onClick={() => setHoursPerWeek(preset.hours)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        hoursPerWeek === preset.hours
+                          ? "bg-emerald-600 text-white shadow-xs"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Weeks Worked Per Year */}
@@ -311,6 +350,50 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                     ${Math.round(result.dailyPay).toLocaleString()}
                   </div>
                   <span className="text-[10px] text-zinc-400">Per work day</span>
+                </div>
+              </div>
+
+              {/* Estimated Net Take-Home Pay (After Taxes) */}
+              <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-50/70 to-teal-50/40 p-4 sm:p-5 dark:border-emerald-500/20 dark:from-emerald-950/30 dark:to-teal-950/10 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Wallet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-200">
+                      Estimated Net Take-Home Pay
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded-md">
+                    Single Filer • US Fed + FICA
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  <div className="p-3 rounded-xl bg-white/90 dark:bg-zinc-900/90 border border-emerald-200/60 dark:border-emerald-800/40">
+                    <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Net Annual</div>
+                    <div className="text-base sm:text-lg font-bold font-mono text-emerald-700 dark:text-emerald-300">
+                      ${Math.round(netPayEst.netAnnualTakeHome).toLocaleString()}
+                    </div>
+                    <div className="text-[10px] text-zinc-400">in your pocket / yr</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/90 dark:bg-zinc-900/90 border border-emerald-200/60 dark:border-emerald-800/40">
+                    <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Net Monthly</div>
+                    <div className="text-base sm:text-lg font-bold font-mono text-emerald-700 dark:text-emerald-300">
+                      ${Math.round(netPayEst.netMonthlyTakeHome).toLocaleString()}
+                    </div>
+                    <div className="text-[10px] text-zinc-400">per month take-home</div>
+                  </div>
+                  <div className="p-3 rounded-xl bg-white/90 dark:bg-zinc-900/90 border border-emerald-200/60 dark:border-emerald-800/40">
+                    <div className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Net Bi-Weekly</div>
+                    <div className="text-base sm:text-lg font-bold font-mono text-emerald-700 dark:text-emerald-300">
+                      ${Math.round(netPayEst.netBiWeeklyTakeHome).toLocaleString()}
+                    </div>
+                    <div className="text-[10px] text-zinc-400">every 2 weeks paycheck</div>
+                  </div>
+                </div>
+
+                <div className="text-[10px] sm:text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center justify-between pt-0.5">
+                  <span>Effective Tax Rate: <strong>{netPayEst.effectiveTaxRate}%</strong> (Federal Tax + FICA)</span>
+                  <span className="hidden sm:inline">Excludes state/local taxes</span>
                 </div>
               </div>
 

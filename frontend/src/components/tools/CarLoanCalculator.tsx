@@ -15,6 +15,7 @@ import {
   CalcSaveButton,
   CalcShareButton,
   CarLeaseVsBuyMatrix,
+  CarLoanEarlyPayoffCard,
 } from "@/components/calculator";
 import { calculateCarLoan } from "@/lib/engines/financial-engine";
 import { generateCarLoanDossierPdf } from "@/lib/engines/pdf-dossier-engine";
@@ -365,6 +366,12 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
         />
       </div>
     </CalcCard>
+
+    <CarLoanEarlyPayoffCard
+      loanAmount={carLoan.netLoanAmount}
+      interestRate={interestRate}
+      loanTermMonths={loanTermMonths}
+    />
 
     <CarLeaseVsBuyMatrix
       vehiclePrice={vehiclePrice}
