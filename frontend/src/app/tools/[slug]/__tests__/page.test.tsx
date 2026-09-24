@@ -85,4 +85,24 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
     expect(screen.getByRole("heading", { level: 2, name: "Bulk PDF Compressor" })).toBeInTheDocument();
     expect(screen.getByText(/Drag & drop PDF files here/i)).toBeInTheDocument();
   });
+
+  it("renders Popular Scenarios & Calculations preset grid for tools with registered presets", () => {
+    render(<ToolPage params={{ slug: "percentage-calculator" }} />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 2,
+        name: /Popular Percentage Calculator Scenarios & Calculations/i,
+      })
+    ).toBeInTheDocument();
+
+    const presetLink = screen.getByRole("link", {
+      name: /What is 20% of 100\?/i,
+    });
+    expect(presetLink).toBeInTheDocument();
+    expect(presetLink).toHaveAttribute(
+      "href",
+      "/tools/percentage-calculator/what-is-20-percent-of-100"
+    );
+  });
 });

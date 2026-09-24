@@ -14,6 +14,7 @@ import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 import { HowToGuide, FAQAccordion } from "@/components/seo";
 import { AdBanner } from "@/components/layout";
 import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
+import { getProgrammaticPresetsByTool } from "@/lib/programmatic-presets";
 
 // Import all 18 tool components
 import { Base64Tool } from "@/components/tools/Base64Tool";
@@ -241,6 +242,8 @@ export default function ToolPage({ params }: ToolPageProps) {
     .map((slug) => getToolBySlug(slug))
     .filter(Boolean);
 
+  const toolPresets = getProgrammaticPresetsByTool(tool.slug);
+
   return (
     <>
       <ToolJsonLdSchema config={tool} />
@@ -385,6 +388,57 @@ export default function ToolPage({ params }: ToolPageProps) {
             })()}
           </div>
         </section>
+
+        {/* Popular Scenarios & Calculations (Internal Link Equity Grid) */}
+        {toolPresets.length > 0 && (
+          <section
+            aria-labelledby="tool-presets-heading"
+            className="space-y-6 max-w-4xl mx-auto pt-8 border-t border-zinc-200 dark:border-zinc-800"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-200/60 dark:border-emerald-800/60 inline-block mb-1.5">
+                  Pre-Calculated Scenarios
+                </span>
+                <h2
+                  id="tool-presets-heading"
+                  className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
+                >
+                  Popular {tool.name} Scenarios &amp; Calculations
+                </h2>
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                  Instant answers, complete amortization schedules, and benchmark scenarios.
+                </p>
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 self-start sm:self-center border border-zinc-200 dark:border-zinc-700">
+                {toolPresets.length} Quick Lookups
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {toolPresets.map((preset) => (
+                <Link
+                  key={preset.presetSlug}
+                  href={`/tools/${tool.slug}/${preset.presetSlug}`}
+                  className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-all flex flex-col justify-between group shadow-xs hover:shadow-sm"
+                >
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+                      Instant Calculation
+                    </span>
+                    <h3 className="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
+                      {preset.name}
+                    </h3>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-zinc-400 group-hover:text-emerald-500 pt-2 border-t border-zinc-100 dark:border-zinc-800/80 mt-2">
+                    <span>View calculation</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 shrink-0" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* How-To Step Guide */}
         <div className="max-w-4xl mx-auto">
