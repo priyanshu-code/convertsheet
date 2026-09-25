@@ -249,7 +249,7 @@ export default function ToolPage({ params }: ToolPageProps) {
     <>
       <ToolJsonLdSchema config={tool} />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-12 sm:pt-6 sm:pb-16 space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-5 sm:space-y-7">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
@@ -287,7 +287,7 @@ export default function ToolPage({ params }: ToolPageProps) {
         </nav>
 
         {/* Answer-First AEO Hero Section */}
-        <div className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3">
+        <div className="text-center max-w-4xl mx-auto space-y-1.5 sm:space-y-2">
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -296,7 +296,7 @@ export default function ToolPage({ params }: ToolPageProps) {
             <EmbedTrigger tool={tool} />
           </div>
 
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
             {tool.name}
           </h1>
 
@@ -306,8 +306,8 @@ export default function ToolPage({ params }: ToolPageProps) {
           </div>
         </div>
 
-        {/* Primary Calculator UI */}
-        <div className="max-w-6xl mx-auto w-full">
+        {/* Primary Calculator UI - Spacious, pro-grade desktop width */}
+        <div className="max-w-7xl mx-auto w-full">
           <PresetPillsBar toolSlug={tool.slug} />
           {ToolComponent ? <ToolComponent /> : <div>Loading tool...</div>}
         </div>

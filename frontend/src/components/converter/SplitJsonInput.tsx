@@ -255,7 +255,7 @@ export function SplitJsonInput({
     <div
       data-testid="split-json-input"
       className={cn(
-        "grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch",
+        "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-stretch",
         disabled && "opacity-60 pointer-events-none",
         className
       )}
@@ -289,84 +289,82 @@ export function SplitJsonInput({
           </div>
         </div>
 
-        {/* Action Toolbar: Paste | Copy | Format | Remove white space | Clear | Load JSON data */}
-        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 px-2 mb-2.5 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
-          <button
-            type="button"
-            onClick={handlePasteFromClipboard}
-            disabled={disabled}
-            aria-label="Paste from Clipboard"
-            title="Paste from clipboard"
-            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
-          >
-            <Clipboard className="w-3.5 h-3.5" />
-            <span>Paste</span>
-          </button>
-          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
-          <button
-            type="button"
-            onClick={handleCopy}
-            disabled={disabled || !text}
-            aria-label="Copy"
-            title="Copy JSON text"
-            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5" />
-                <span>Copy</span>
-              </>
-            )}
-          </button>
-          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
-          <button
-            type="button"
-            onClick={handleFormat}
-            disabled={disabled || !text}
-            aria-label="Format"
-            title="Format / Prettify JSON with indentation"
-            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
-          >
-            <AlignLeft className="w-3.5 h-3.5" />
-            <span>Format</span>
-          </button>
-          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
-          <button
-            type="button"
-            onClick={handleRemoveWhitespace}
-            disabled={disabled || !text}
-            aria-label="Remove white space"
-            title="Remove white space / Minify JSON"
-            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
-          >
-            <Minimize2 className="w-3.5 h-3.5" />
-            <span>Remove white space</span>
-          </button>
-          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
-          <button
-            type="button"
-            onClick={handleClear}
-            disabled={disabled || !text}
-            aria-label="Clear"
-            title="Clear text editor"
-            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Clear</span>
-          </button>
-          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        {/* Action Toolbar: Clean grouped layout without orphan pipe dividers */}
+        <div className="flex flex-wrap items-center justify-between gap-1.5 py-1.5 px-2 mb-2.5 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
+          <div className="flex items-center flex-wrap gap-1">
+            <button
+              type="button"
+              onClick={handlePasteFromClipboard}
+              disabled={disabled}
+              aria-label="Paste from Clipboard"
+              title="Paste from clipboard"
+              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+            >
+              <Clipboard className="w-3.5 h-3.5" />
+              <span>Paste</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleCopy}
+              disabled={disabled || !text}
+              aria-label="Copy"
+              title="Copy JSON text"
+              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>Copy</span>
+                </>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={handleFormat}
+              disabled={disabled || !text}
+              aria-label="Format"
+              title="Format / Prettify JSON with indentation"
+              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+            >
+              <AlignLeft className="w-3.5 h-3.5" />
+              <span>Format</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleRemoveWhitespace}
+              disabled={disabled || !text}
+              aria-label="Remove white space"
+              title="Remove white space / Minify JSON"
+              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+            >
+              <Minimize2 className="w-3.5 h-3.5" />
+              <span>Remove white space</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleClear}
+              disabled={disabled || !text}
+              aria-label="Clear"
+              title="Clear text editor"
+              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Clear</span>
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={handleLoadSample}
             disabled={disabled}
             aria-label="Load Sample JSON"
             title="Load Sample JSON"
-            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-amber-600 dark:hover:text-amber-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+            className="inline-flex items-center gap-1 px-2.5 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 bg-emerald-50/80 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/60 dark:border-emerald-800/60 transition-colors disabled:opacity-40 cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Load JSON data</span>
@@ -374,7 +372,7 @@ export function SplitJsonInput({
         </div>
 
         {/* Monospace JSON Textarea */}
-        <div className="relative flex-1 min-h-[220px]">
+        <div className="relative flex-1 min-h-[240px] sm:min-h-[280px]">
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}

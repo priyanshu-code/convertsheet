@@ -160,7 +160,7 @@ export default function ProgrammaticPresetPage({
         parentToolName={tool.name}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-5 sm:space-y-7">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">
@@ -201,27 +201,27 @@ export default function ProgrammaticPresetPage({
         </nav>
 
         {/* Answer-First AEO Hero Section */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="flex items-center justify-center gap-2.5 flex-wrap">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <div className="text-center max-w-4xl mx-auto space-y-1.5 sm:space-y-2">
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>100% Client-Side • Amortization Excel Export</span>
             </div>
             <EmbedTrigger tool={tool} />
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
             {preset.name}
           </h1>
 
           {/* AEO Speakable Direct Answer Box */}
-          <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium tool-answer-summary text-left sm:text-center">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium tool-answer-summary text-left sm:text-center">
             💡 <strong className="text-zinc-900 dark:text-zinc-100">Direct Answer:</strong> {preset.answerSummary}
           </div>
         </div>
 
-        {/* Primary Interactive Calculator UI pre-populated with preset parameters */}
-        <div className="max-w-6xl mx-auto w-full">
+        {/* Primary Interactive Calculator UI pre-populated with preset parameters - Spacious max-w-7xl */}
+        <div className="max-w-7xl mx-auto w-full">
           <PresetPillsBar toolSlug={tool.slug} currentPresetSlug={preset.presetSlug} />
           {renderCalculator()}
         </div>

@@ -90,9 +90,9 @@ export default function ConverterPage({ params }: ConverterPageProps) {
   const featuredTools = getAllTools().slice(0, 3);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-12 sm:pt-6 sm:pb-16 space-y-8 sm:space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-6 sm:space-y-8">
       {/* Hero Section */}
-      <div className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3">
+      <div className="text-center max-w-4xl mx-auto space-y-1.5 sm:space-y-2">
         {/* Breadcrumb Navigation & Privacy Badge in one compact line */}
         <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
           <nav
@@ -139,23 +139,23 @@ export default function ConverterPage({ params }: ConverterPageProps) {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
           {config.title}
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto leading-normal">
+        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-normal">
           {config.subtitle}
         </p>
       </div>
 
-      {/* Converter Card - Immediately Above the fold */}
-      <div className="max-w-4xl mx-auto">
+      {/* Converter Card - Spacious, pro-grade desktop width */}
+      <div className="w-full max-w-7xl mx-auto">
         <ConverterCard config={config} />
       </div>
 
       {/* Leaderboard Ad Slot */}
-      <div className="flex justify-center w-full my-6 sm:my-8">
+      <div className="flex justify-center w-full my-4 sm:my-6">
         <AdBanner format="leaderboard" />
       </div>
 
