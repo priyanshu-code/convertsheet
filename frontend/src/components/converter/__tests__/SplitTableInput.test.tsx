@@ -184,9 +184,9 @@ describe("SplitTableInput", () => {
       expect(screen.getByTestId("split-dropzone-area")).toBeInTheDocument();
     });
 
-    it("renders standard DropZone when config.slug is not 'markdown-to-excel'", () => {
-      const csvConfig = CONVERTER_REGISTRY["csv-to-excel"];
-      render(<ConverterCard config={csvConfig} />);
+    it("renders standard DropZone when config.sourceFormat is binary (e.g. PDF)", () => {
+      const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
+      render(<ConverterCard config={pdfConfig} />);
 
       expect(screen.queryByTestId("split-table-input")).not.toBeInTheDocument();
       expect(screen.getByTestId("dropzone-area")).toBeInTheDocument();

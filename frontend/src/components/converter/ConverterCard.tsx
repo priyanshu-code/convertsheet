@@ -18,6 +18,8 @@ import { useConverter, MAX_FREE_FILE_SIZE_BYTES } from "@/hooks/useConverter";
 import { DropZone } from "./DropZone";
 import { SplitTableInput } from "./SplitTableInput";
 import { SplitJsonInput } from "./SplitJsonInput";
+import { SplitCsvInput } from "./SplitCsvInput";
+import { SplitXmlInput } from "./SplitXmlInput";
 import { DataPreviewTable } from "./DataPreviewTable";
 import { FormatSelector } from "./FormatSelector";
 import { ProUpgradeModal } from "./ProUpgradeModal";
@@ -158,14 +160,30 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
 
       {/* Main Content Area */}
       {!file ? (
-        /* State 1: No file loaded - Show SplitJsonInput for JSON sources, SplitTableInput for Markdown, otherwise DropZone */
-        config.sourceFormat === "JSON" ? (
+        /* State 1: No file loaded - Show format-specific Split Input for text-based sources, otherwise DropZone */
+        config.sourceFormat === "JSON" ||
+        config.sourceFormat === "JSONL" ||
+        config.sourceFormat === "NDJSON" ? (
           <SplitJsonInput
             config={config}
             onFileSelect={setFile}
             disabled={isParsing}
           />
-        ) : config.slug === "markdown-to-excel" || config.sourceFormat === "Markdown" ? (
+        ) : config.sourceFormat === "CSV" || config.sourceFormat === "TSV" ? (
+          <SplitCsvInput
+            config={config}
+            onFileSelect={setFile}
+            disabled={isParsing}
+          />
+        ) : config.sourceFormat === "XML" || config.sourceFormat === "Tally XML" ? (
+          <SplitXmlInput
+            config={config}
+            onFileSelect={setFile}
+            disabled={isParsing}
+          />
+        ) : config.slug === "markdown-to-excel" ||
+          config.sourceFormat === "Markdown" ||
+          config.sourceFormat === "HTML" ? (
           <SplitTableInput
             config={config}
             onFileSelect={setFile}

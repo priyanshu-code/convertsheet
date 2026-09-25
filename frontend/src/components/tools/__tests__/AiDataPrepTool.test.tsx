@@ -91,4 +91,52 @@ describe("AiDataPrepTool", () => {
       screen.getByText(/Drop your CSV, Excel, or JSON dataset here/i)
     ).toBeInTheDocument();
   });
+
+  it("supports switching to Paste tab and parsing pasted CSV dataset", () => {
+    render(<AiDataPrepTool />);
+
+    // Switch to Paste tab
+    const pasteTab = screen.getByRole("button", { name: /Paste CSV \/ JSON/i });
+    fireEvent.click(pasteTab);
+
+    const textarea = screen.getByLabelText(/Paste CSV or JSON dataset/i) as HTMLTextAreaElement;
+    expect(textarea).toBeInTheDocument();
+
+    const sampleCsv = `prompt,completion,category\n"How do I reset password?","Click forgot password.","auth"\n"How to cancel plan?","Go to settings.","billing"`;
+    fireEvent.change(textarea, { target: { value: sampleCsv } });
+
+    // Format button
+    const formatBtn = screen.getByRole("button", { name: /Format/i });
+    fireEvent.click(formatBtn);
+    expect(textarea.value.length).toBeGreaterThan(0);
+
+    // Parse button
+    const parseBtn = screen.getByRole("button", { name: /Parse & Prepare Dataset/i });
+    fireEvent.click(parseBtn);
+
+    // Active file info
+    expect(screen.getByText(/pasted-dataset.csv/i)).toBeInTheDocument();
+    expect(screen.getByText(/2 rows, 3 columns/i)).toBeInTheDocument();
+    expect(screen.getByText(/JSONL Preview/i)).toBeInTheDocument();
+  });
+
+  it("supports parsing pasted JSON records array in Paste tab", () => {
+    render(<AiDataPrepTool />);
+
+    // Switch to Paste tab
+    fireEvent.click(screen.getByRole("button", { name: /Paste CSV \/ JSON/i }));
+
+    const textarea = screen.getByLabelText(/Paste CSV or JSON dataset/i);
+    const sampleJson = JSON.stringify([
+      { input: "Explain recursion", output: "A function calling itself", tag: "cs" },
+      { input: "What is an API?", output: "Application programming interface", tag: "dev" }
+    ]);
+    fireEvent.change(textarea, { target: { value: sampleJson } });
+
+    fireEvent.click(screen.getByRole("button", { name: /Parse & Prepare Dataset/i }));
+
+    expect(screen.getByText(/pasted-dataset.json/i)).toBeInTheDocument();
+    expect(screen.getByText(/2 rows, 3 columns/i)).toBeInTheDocument();
+  });
 });
+

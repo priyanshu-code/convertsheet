@@ -334,12 +334,12 @@ describe("Converter Components", () => {
   });
 
   describe("ConverterCard", () => {
-    it("renders DropZone and FormatSelector initially when no file is chosen", () => {
-      render(<ConverterCard config={csvConfig} />);
+    it("renders DropZone and FormatSelector initially when no file is chosen for binary formats", () => {
+      render(<ConverterCard config={pdfConfig} />);
 
-      expect(screen.getByText("CSV")).toBeInTheDocument();
-      expect(screen.getAllByText(".csv").length).toBeGreaterThanOrEqual(1);
-      expect(screen.getByText(/Drop your CSV file here or/i)).toBeInTheDocument();
+      expect(screen.getByText("PDF")).toBeInTheDocument();
+      expect(screen.getAllByText(".pdf").length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText(/Drop your PDF file here or/i)).toBeInTheDocument();
       expect(screen.getByText("browse")).toBeInTheDocument();
     });
 

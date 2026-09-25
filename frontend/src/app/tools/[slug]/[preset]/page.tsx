@@ -213,17 +213,19 @@ export default function ProgrammaticPresetPage({
           <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
             {preset.name}
           </h1>
-
-          {/* AEO Speakable Direct Answer Box */}
-          <div className="p-3 sm:p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium tool-answer-summary text-left sm:text-center">
-            💡 <strong className="text-zinc-900 dark:text-zinc-100">Direct Answer:</strong> {preset.answerSummary}
-          </div>
         </div>
 
         {/* Primary Interactive Calculator UI pre-populated with preset parameters - Spacious max-w-7xl */}
         <div className="max-w-7xl mx-auto w-full">
           <PresetPillsBar toolSlug={tool.slug} currentPresetSlug={preset.presetSlug} />
           {renderCalculator()}
+        </div>
+
+        {/* AEO Speakable Direct Answer Box */}
+        <div className="max-w-4xl mx-auto w-full">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium tool-answer-summary text-left sm:text-center">
+            💡 <strong className="text-zinc-900 dark:text-zinc-100">Direct Answer:</strong> {preset.answerSummary}
+          </div>
         </div>
 
         {/* Specialized High-Intent Preset Add-ons */}

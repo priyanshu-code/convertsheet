@@ -299,17 +299,19 @@ export default function ToolPage({ params }: ToolPageProps) {
           <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
             {tool.name}
           </h1>
-
-          {/* AEO Speakable Direct Answer Box */}
-          <div className="p-3 sm:p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium tool-answer-summary">
-            💡 <strong className="text-zinc-900 dark:text-zinc-100">Direct Answer:</strong> {tool.answerSummary}
-          </div>
         </div>
 
         {/* Primary Calculator UI - Spacious, pro-grade desktop width */}
         <div className="max-w-7xl mx-auto w-full">
           <PresetPillsBar toolSlug={tool.slug} />
           {ToolComponent ? <ToolComponent /> : <div>Loading tool...</div>}
+        </div>
+
+        {/* AEO Speakable Direct Answer Box */}
+        <div className="max-w-4xl mx-auto w-full">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium tool-answer-summary">
+            💡 <strong className="text-zinc-900 dark:text-zinc-100">Direct Answer:</strong> {tool.answerSummary}
+          </div>
         </div>
 
         {/* Top Ad Slot */}

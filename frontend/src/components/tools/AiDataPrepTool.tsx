@@ -21,8 +21,12 @@ import {
   Cpu,
   Layers,
   ArrowRight,
+  AlignLeft,
+  RotateCcw,
+  Clipboard,
 } from "lucide-react";
 import { CalcCard } from "@/components/calculator";
+import { cn } from "@/lib/utils";
 import { useFileDropAndPaste } from "@/hooks/useFileDropAndPaste";
 import {
   LlmRole,
@@ -73,6 +77,10 @@ export function AiDataPrepTool() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [inputMode, setInputMode] = useState<"upload" | "paste">("upload");
+  const [pastedText, setPastedText] = useState("");
+  const [pasteError, setPasteError] = useState<string | null>(null);
+
   // Parse Raw Tabular Data (CSV, Excel, JSON)
   const processParsedData = useCallback((detectedHeaders: string[], rows: Record<string, any>[], name: string) => {
     setFileName(name);
@@ -81,6 +89,69 @@ export function AiDataPrepTool() {
     const initialMapping = guessColumnRoles(detectedHeaders);
     setColumnMapping(initialMapping);
   }, []);
+
+  const handleParsePastedText = useCallback(() => {
+    setPasteError(null);
+    const trimmed = pastedText.trim();
+    if (!trimmed) {
+      setPasteError("Please enter or paste tabular CSV or JSON data.");
+      return;
+    }
+
+    if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const rows = Array.isArray(parsed) ? parsed : [parsed];
+        if (rows.length > 0 && typeof rows[0] === "object" && rows[0] !== null) {
+          processParsedData(Object.keys(rows[0]), rows, "pasted-dataset.json");
+          return;
+        } else {
+          setPasteError("JSON must be an array of objects or a record object.");
+          return;
+        }
+      } catch (err: any) {
+        setPasteError(`Invalid JSON: ${err.message}`);
+        return;
+      }
+    }
+
+    // Default to PapaParse for CSV / TSV
+    Papa.parse(trimmed, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        if (results.meta.fields && results.data.length > 0) {
+          processParsedData(results.meta.fields, results.data as Record<string, any>[], "pasted-dataset.csv");
+        } else {
+          setPasteError("Could not detect columns. Ensure your data has a header row.");
+        }
+      },
+      error: (err: any) => {
+        setPasteError(err.message);
+      },
+    });
+  }, [pastedText, processParsedData]);
+
+  const handleFormatPastedText = useCallback(() => {
+    const trimmed = pastedText.trim();
+    if (!trimmed) return;
+    if (trimmed.startsWith("[") || trimmed.startsWith("{")) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        setPastedText(JSON.stringify(parsed, null, 2));
+        setPasteError(null);
+        return;
+      } catch {
+        // Not valid JSON, continue to CSV formatting
+      }
+    }
+    const cleaned = trimmed
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .join("\n");
+    setPastedText(cleaned);
+  }, [pastedText]);
 
   const parseFile = useCallback(
     async (file: File) => {
@@ -214,40 +285,140 @@ export function AiDataPrepTool() {
       badge="Client-Side Privacy"
     >
       <div className="space-y-6">
-        {/* Upload State or DropZone */}
+        {/* Upload State or DropZone / Paste Editor */}
         {!fileName ? (
           <div className="space-y-4">
-            <div
-              {...dragHandlers}
-              onClick={() => fileInputRef.current?.click()}
-              className={`relative cursor-pointer rounded-2xl border-2 border-dashed p-10 text-center transition-all ${
-                isDragOver
-                  ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
-                  : "border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-800/30 hover:border-emerald-500/60"
-              }`}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv,.xlsx,.xls,.tsv,.json"
-                aria-label="Select CSV or Excel file for AI dataset conversion"
-                onChange={(e) => e.target.files?.[0] && parseFile(e.target.files[0])}
-                className="hidden"
-              />
-              <div className="flex flex-col items-center justify-center space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                  <Upload className="w-6 h-6" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                    Drop your CSV, Excel, or JSON dataset here, or click to browse
-                  </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                    Supports .csv, .xlsx, .tsv, .json • No file size limit • Processed 100% locally
-                  </p>
+            {/* Input Mode Selector */}
+            <div className="flex items-center gap-2 p-1 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl w-fit border border-zinc-200/80 dark:border-zinc-700/80 text-xs font-medium">
+              <button
+                type="button"
+                onClick={() => setInputMode("upload")}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer",
+                  inputMode === "upload"
+                    ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs font-semibold"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                )}
+              >
+                <Upload className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Upload File</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setInputMode("paste")}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer",
+                  inputMode === "paste"
+                    ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xs font-semibold"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                )}
+              >
+                <Clipboard className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Paste CSV / JSON</span>
+              </button>
+            </div>
+
+            {inputMode === "upload" ? (
+              <div
+                {...dragHandlers}
+                onClick={() => fileInputRef.current?.click()}
+                className={`relative cursor-pointer rounded-2xl border-2 border-dashed p-10 text-center transition-all ${
+                  isDragOver
+                    ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
+                    : "border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-800/30 hover:border-emerald-500/60"
+                }`}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".csv,.xlsx,.xls,.tsv,.json"
+                  aria-label="Select CSV or Excel file for AI dataset conversion"
+                  onChange={(e) => e.target.files?.[0] && parseFile(e.target.files[0])}
+                  className="hidden"
+                />
+                <div className="flex flex-col items-center justify-center space-y-3">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                    <Upload className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                      Drop your CSV, Excel, or JSON dataset here, or click to browse
+                    </p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                      Supports .csv, .xlsx, .tsv, .json • No file size limit • Processed 100% locally
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 p-4 sm:p-5 transition-all space-y-3">
+                {/* Paste Toolbar */}
+                <div className="flex flex-wrap items-center justify-between gap-1.5 py-1.5 px-2 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={handleFormatPastedText}
+                      disabled={!pastedText.trim()}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 disabled:opacity-40 disabled:pointer-events-none transition cursor-pointer font-medium"
+                      title="Format & clean indentation/whitespace"
+                    >
+                      <AlignLeft className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
+                      <span>Format</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPastedText("");
+                        setPasteError(null);
+                      }}
+                      disabled={!pastedText.trim()}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/40 text-zinc-700 dark:text-zinc-300 hover:text-red-600 dark:hover:text-red-400 disabled:opacity-40 disabled:pointer-events-none transition cursor-pointer font-medium"
+                      title="Clear textarea"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
+                      <span>Clear</span>
+                    </button>
+                  </div>
+
+                  <div className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+                    {pastedText.length.toLocaleString()} chars
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <textarea
+                    value={pastedText}
+                    onChange={(e) => {
+                      setPastedText(e.target.value);
+                      if (pasteError) setPasteError(null);
+                    }}
+                    placeholder={`Paste CSV data or JSON array of records here:\n\nExample CSV:\nrole,prompt,completion\nsupport,"How do I reset password?","Click on forgot password link on the login page."\nsupport,"Where is my invoice?","Invoices are sent to your account email on the 1st of every month."`}
+                    aria-label="Paste CSV or JSON dataset"
+                    rows={9}
+                    className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-3.5 font-mono text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-y min-h-[220px]"
+                  />
+                </div>
+
+                {pasteError && (
+                  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 text-xs text-red-600 dark:text-red-400 font-medium">
+                    <AlertTriangle className="w-4 h-4 shrink-0" />
+                    <span>{pasteError}</span>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-end">
+                  <button
+                    type="button"
+                    onClick={handleParsePastedText}
+                    disabled={!pastedText.trim()}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl text-white bg-emerald-600 hover:bg-emerald-500 shadow-xs active:scale-[0.99] transition-all disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+                  >
+                    <span>Parse &amp; Prepare Dataset</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Quick Test Pre-baked Samples */}
             <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60">
