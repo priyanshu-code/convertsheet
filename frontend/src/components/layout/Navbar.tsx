@@ -117,10 +117,10 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-8 shrink-0">
               <Link
                 href="/"
-                className="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-xl"
+                className="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-xl shrink-0"
                 aria-label="ConvertSheet Home"
               >
                 <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm shadow-emerald-500/20 group-hover:scale-105 transition-transform">
@@ -384,7 +384,7 @@ export function Navbar() {
             </div>
 
             {/* Right Header Actions */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               {/* Cmd+K Search Trigger Button */}
               <button
                 type="button"
@@ -410,10 +410,14 @@ export function Navbar() {
               </Link>
 
               {/* Currency & Region Selector */}
-              <CurrencySelector />
+              <div className="hidden md:inline-block">
+                <CurrencySelector />
+              </div>
 
               {/* Saved Calculations History Drawer */}
-              <SavedCalculationsDrawer />
+              <div className="hidden sm:inline-block">
+                <SavedCalculationsDrawer />
+              </div>
 
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -510,6 +514,10 @@ export function Navbar() {
               <div className="flex items-center justify-between px-3 py-1">
                 <span className="text-xs font-semibold text-zinc-500">Market &amp; Currency</span>
                 <CurrencySelector />
+              </div>
+              <div className="flex items-center justify-between px-3 py-1">
+                <span className="text-xs font-semibold text-zinc-500">Saved Scenarios</span>
+                <SavedCalculationsDrawer />
               </div>
               <div className="px-3 py-1">
                 <PwaInstallButton />

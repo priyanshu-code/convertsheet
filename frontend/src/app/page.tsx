@@ -134,11 +134,8 @@ export default function HomePage() {
       </div>
 
       {/* Popular Converters Grid */}
-      <section aria-labelledby="popular-tools-heading" className="space-y-8">
+      <section aria-labelledby="popular-tools-heading" className="space-y-6">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/60">
-            Conversion Suite
-          </span>
           <h2
             id="popular-tools-heading"
             className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
@@ -146,7 +143,7 @@ export default function HomePage() {
             Popular Conversion Tools
           </h2>
           <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
-            Dedicated landing pages optimized for high-traffic file format transformations.
+            Fast, client-side format transformations with zero uploads and zero data retention.
           </p>
         </div>
 
@@ -154,11 +151,8 @@ export default function HomePage() {
       </section>
 
       {/* Free Calculators & Online Tools Grid */}
-      <section aria-labelledby="free-tools-heading" className="space-y-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+      <section aria-labelledby="free-tools-heading" className="space-y-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/60">
-            Calculators &amp; Utilities
-          </span>
           <h2
             id="free-tools-heading"
             className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
@@ -166,7 +160,7 @@ export default function HomePage() {
             Free Online Calculators &amp; Developer Tools
           </h2>
           <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400">
-            18 specialized financial, developer, and everyday math calculators executing 100% in your browser.
+            Interactive financial planning, developer encoding, and data utilities running 100% in your browser.
           </p>
         </div>
 
@@ -174,11 +168,8 @@ export default function HomePage() {
       </section>
 
       {/* Value Propositions Section */}
-      <section aria-labelledby="why-convertsheet-heading" className="space-y-10 pt-8 border-t border-zinc-200 dark:border-zinc-800">
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/60">
-            Why ConvertSheet?
-          </span>
+      <section aria-labelledby="why-convertsheet-heading" className="space-y-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2
             id="why-convertsheet-heading"
             className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
@@ -238,7 +229,7 @@ export default function HomePage() {
             href="/#converters"
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700 transition-colors"
           >
-            <span>Browse 15 File Converters</span>
+            <span>Browse All Converters</span>
           </Link>
         </div>
 
