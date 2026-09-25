@@ -95,6 +95,30 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                   step={1000}
                   helpText="Gross annual salary before taxes and deductions"
                 />
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                  {[
+                    { label: "$40k", val: 40000 },
+                    { label: "$60k", val: 60000 },
+                    { label: "$75k", val: 75000 },
+                    { label: "$100k", val: 100000 },
+                    { label: "$125k", val: 125000 },
+                    { label: "$150k", val: 150000 },
+                  ].map((p) => (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => setAnnualSalary(p.val)}
+                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                        annualSalary === p.val
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
                 <ModernSlider
                   id="annualSalarySlider"
                   label="Annual Salary"
@@ -241,8 +265,18 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                 </div>
               </div>
 
-              {/* Action Buttons: Export & AI Prompt */}
+              {/* Action Buttons: Export & AI Prompt & Quick Copy */}
               <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const str = `$${annualSalary.toLocaleString()}/yr = $${result.hourlyRate.toFixed(2)}/hr ($${Math.round(result.monthlySalary).toLocaleString()}/mo, $${Math.round(result.biWeeklySalary).toLocaleString()} bi-weekly)`;
+                    navigator.clipboard.writeText(str);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors"
+                >
+                  <span>📋 Copy Summary</span>
+                </button>
                 <CalcExportButton
                   data={exportData}
                   filename={`annual_salary_${annualSalary}_breakdown.xlsx`}

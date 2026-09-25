@@ -36,6 +36,8 @@ export interface PercentageCalculatorProps {
   }>;
 }
 
+const MATRIX_PERCENTAGES = [1, 5, 10, 15, 20, 25, 30, 33.333, 50, 75, 100, 150, 200];
+
 export function PercentageCalculator({ initialValues }: PercentageCalculatorProps = {}) {
   const [calcMode, setCalcMode] = useState<PercentageCalcMode>(initialValues?.mode || "whatIs");
 
@@ -185,9 +187,8 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
   }, [costPrice, marginMarkupPercent, marginMarkupType]);
 
   // Reference Matrix Data
-  const matrixPercentages = [1, 5, 10, 15, 20, 25, 30, 33.333, 50, 75, 100, 150, 200];
   const matrixRows = useMemo(() => {
-    return matrixPercentages.map((pct) => {
+    return MATRIX_PERCENTAGES.map((pct) => {
       const calculated = roundTo((pct / 100) * matrixBase, 2);
       const multiplier = roundTo(pct / 100, 4);
       return {
@@ -268,6 +269,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
               title="Percentage Output"
               primaryLabel={`What is ${valX1}% of ${valY1}?`}
               primaryValue={result1.value}
+              copyValue={`${valX1}% of ${valY1} = ${result1.value}`}
               items={[
                 { label: "Mathematical Formula", value: result1.formula },
                 { label: "Decimal Equivalent", value: (valX1 / 100).toString() },
@@ -308,6 +310,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
               title="Percentage Ratio"
               primaryLabel={`${valX2} is what percent of ${valY2}?`}
               primaryValue={result2.value}
+              copyValue={`${valX2} is ${result2.value} of ${valY2}`}
               items={[
                 { label: "Mathematical Formula", value: result2.formula },
                 { label: "Fraction Representation", value: `${valX2}/${valY2}` },
@@ -348,6 +351,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
               title="Relative Change"
               primaryLabel={`Percentage change from ${valX3} to ${valY3}`}
               primaryValue={result3.value}
+              copyValue={`From ${valX3} to ${valY3} is a ${result3.value} (${result3.type})`}
               items={[
                 { label: "Absolute Difference", value: result3.diff || "0" },
                 { label: "Trend Direction", value: result3.type === "increase" ? "Growth (Increase)" : "Decline (Decrease)", highlight: true },
@@ -390,6 +394,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
               title="Discount Breakdown"
               primaryLabel={`Final Sale Price (${discountPercent}% off)`}
               primaryValue={`$${result4.finalPrice}`}
+              copyValue={`$${originalPrice} with ${discountPercent}% discount = $${result4.finalPrice} (Saved: $${result4.savings})`}
               items={[
                 { label: "Total Amount Saved", value: `$${result4.savings}`, highlight: true },
                 { label: "Calculation Formula", value: result4.formula },
@@ -439,6 +444,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
               title="Sales Tax / VAT Breakdown"
               primaryLabel={taxMode === "add" ? "Total Price (Including Tax)" : "Net Price (Excluding Tax)"}
               primaryValue={`$${taxMode === "add" ? result5.total : result5.preTax}`}
+              copyValue={`${taxMode === "add" ? "Pre-Tax" : "Gross"}: $${taxBasePrice} at ${taxPercent}% tax = Final: $${taxMode === "add" ? result5.total : result5.preTax} (Tax: $${result5.taxAmount})`}
               items={[
                 { label: "Tax Amount Collected", value: `$${result5.taxAmount}`, highlight: true },
                 { label: taxMode === "add" ? "Pre-Tax Base" : "Gross Total", value: `$${taxMode === "add" ? result5.preTax : result5.total}` },
@@ -481,6 +487,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
               title="Commercial Pricing Output"
               primaryLabel="Recommended Selling Price"
               primaryValue={`$${result6.sellingPrice}`}
+              copyValue={`Cost: $${costPrice} at ${marginMarkupPercent}% ${marginMarkupType} = Selling Price: $${result6.sellingPrice} (Profit: $${result6.profit})`}
               items={[
                 { label: "Gross Profit per Unit", value: `$${result6.profit}`, highlight: true },
                 { label: "Equivalent Metric", value: result6.equivalent },

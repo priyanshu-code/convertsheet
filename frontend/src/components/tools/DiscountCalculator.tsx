@@ -34,6 +34,10 @@ export function DiscountCalculator() {
     };
   }, [originalPrice, discountPercent, extraDiscount]);
 
+  const QUICK_DISCOUNTS = [10, 15, 20, 25, 30, 40, 50, 70];
+  const QUICK_COUPONS = [0, 5, 10, 15, 20];
+  const QUICK_PRICES = [50, 100, 250, 500, 1000, 2000];
+
   return (
     <CalcCard
       title="Discount & Sale Price Calculator"
@@ -52,6 +56,22 @@ export function DiscountCalculator() {
             prefix={currencySymbol}
             onChange={(v) => setOriginalPrice(Number(v) || 0)}
           />
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {QUICK_PRICES.map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => setOriginalPrice(p)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                  originalPrice === p
+                    ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                    : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                }`}
+              >
+                {currencySymbol}{p.toLocaleString()}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="space-y-4">
@@ -65,9 +85,25 @@ export function DiscountCalculator() {
             suffix="%"
             onChange={(v) => setDiscountPercent(Number(v) || 0)}
           />
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {QUICK_DISCOUNTS.map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => setDiscountPercent(d)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                  discountPercent === d
+                    ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                    : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                }`}
+              >
+                {d}%
+              </button>
+            ))}
+          </div>
           <CalcSlider
             id="discount-slider"
-            label="Primary Discount"
+            label="Primary Discount Slider"
             value={discountPercent}
             min={0}
             max={90}
@@ -89,6 +125,22 @@ export function DiscountCalculator() {
             onChange={(v) => setExtraDiscount(Number(v) || 0)}
             helperText="Stacked on top of primary discount"
           />
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {QUICK_COUPONS.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setExtraDiscount(c)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                  extraDiscount === c
+                    ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                    : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                }`}
+              >
+                {c === 0 ? "None" : `+${c}%`}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -96,6 +148,7 @@ export function DiscountCalculator() {
         title="Final Payable Price"
         primaryLabel="Final Price After Discounts"
         primaryValue={formatCurrency(finalPrice, { maxDecimals: 2 })}
+        copyValue={`Original: ${formatCurrency(originalPrice)} | Discount: ${discountPercent}%${extraDiscount > 0 ? ` + ${extraDiscount}% coupon` : ""} | Final Price: ${formatCurrency(finalPrice)} (Saved: ${formatCurrency(totalSavings)})`}
         items={[
           {
             label: "Total Money Saved",

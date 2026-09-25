@@ -179,16 +179,34 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
             prefix="$"
           />
 
-          <CalcInput
-            id="car-down-payment"
-            label="Cash Down Payment"
-            value={downPayment}
-            onChange={(val) => setDownPayment(Number(val) || 0)}
-            type="number"
-            min={0}
-            step={500}
-            prefix="$"
-          />
+          <div className="space-y-1">
+            <CalcInput
+              id="car-down-payment"
+              label="Cash Down Payment"
+              value={downPayment}
+              onChange={(val) => setDownPayment(Number(val) || 0)}
+              type="number"
+              min={0}
+              step={500}
+              prefix="$"
+            />
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {[0, 2500, 5000, 10000].map((amt) => (
+                <button
+                  key={amt}
+                  type="button"
+                  onClick={() => setDownPayment(amt)}
+                  className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                    downPayment === amt
+                      ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  }`}
+                >
+                  ${amt.toLocaleString()}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <CalcInput
             id="car-trade-in"
@@ -214,19 +232,37 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
             suffix="%"
           />
 
-          <CalcSelect
-            id="car-term"
-            label="Loan Term"
-            value={loanTermMonths.toString()}
-            onChange={(val) => setLoanTermMonths(Number(val))}
-            options={[
-              { label: "36 Months (3 Years)", value: "36" },
-              { label: "48 Months (4 Years)", value: "48" },
-              { label: "60 Months (5 Years - Standard)", value: "60" },
-              { label: "72 Months (6 Years)", value: "72" },
-              { label: "84 Months (7 Years)", value: "84" },
-            ]}
-          />
+          <div className="space-y-1">
+            <CalcSelect
+              id="car-term"
+              label="Loan Term"
+              value={loanTermMonths.toString()}
+              onChange={(val) => setLoanTermMonths(Number(val))}
+              options={[
+                { label: "36 Months (3 Years)", value: "36" },
+                { label: "48 Months (4 Years)", value: "48" },
+                { label: "60 Months (5 Years - Standard)", value: "60" },
+                { label: "72 Months (6 Years)", value: "72" },
+                { label: "84 Months (7 Years)", value: "84" },
+              ]}
+            />
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {[36, 48, 60, 72].map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setLoanTermMonths(m)}
+                  className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                    loanTermMonths === m
+                      ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  }`}
+                >
+                  {m} mos
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div className="grid grid-cols-2 gap-3">
             <CalcInput
@@ -260,6 +296,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
           primaryLabel="Monthly Auto Loan Payment"
           primaryValue={`$${carLoan.monthlyPayment.toLocaleString()}`}
           primarySubtext={`Based on $${carLoan.netLoanAmount.toLocaleString()} financed over ${loanTermMonths} months at ${interestRate}% APR.`}
+          copyValue={`Monthly Payment: $${carLoan.monthlyPayment.toLocaleString()}/mo | Net Loan Financed: $${carLoan.netLoanAmount.toLocaleString()} | Total Interest: $${carLoan.totalInterest.toLocaleString()} (${loanTermMonths} months @ ${interestRate}% APR)`}
           items={[
             {
               label: "Net Loan Financed",

@@ -50,6 +50,14 @@ export function GstCalculator() {
     };
   }, [amount, rate, mode]);
 
+  const GST_RATES = ["0", "3", "5", "12", "18", "28", "custom"];
+  const QUICK_AMOUNTS = [500, 1000, 5000, 10000, 25000, 50000, 100000];
+  const [customRate, setCustomRate] = useState<number>(18);
+
+  const effectiveRate = rate === "custom" ? customRate : Number(rate) || 0;
+
+  const copySummary = `${mode === "exclusive" ? "Add" : "Remove"} ${effectiveRate}% GST | Net Base: ${formatCurrency(netAmount)} | Total GST: ${formatCurrency(gstAmount)} (CGST: ${formatCurrency(cgst)}, SGST: ${formatCurrency(sgst)}) | Gross Total: ${formatCurrency(totalAmount)}`;
+
   return (
     <CalcCard
       title="GST Calculator"
@@ -57,62 +65,106 @@ export function GstCalculator() {
       icon={Receipt}
       badge="Tax Compliant"
     >
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <CalcToggle
-          value={mode}
-          options={[
-            { value: "exclusive", label: "Add GST (Exclusive)" },
-            { value: "inclusive", label: "Remove GST (Inclusive)" },
-          ]}
-          onChange={(val) => setMode(val as "exclusive" | "inclusive")}
-        />
-
-        <div className="w-48">
-          <CalcSelect
-            id="gst-rate"
-            label="GST Tax Rate"
-            value={rate}
+      <div className="space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <CalcToggle
+            value={mode}
             options={[
-              { value: "5", label: "5% (Essential Goods)" },
-              { value: "12", label: "12% (Standard Low)" },
-              { value: "18", label: "18% (Standard / Services)" },
-              { value: "28", label: "28% (Luxury / De-merit)" },
+              { value: "exclusive", label: "Add GST (Exclusive)" },
+              { value: "inclusive", label: "Remove GST (Inclusive)" },
             ]}
-            onChange={setRate}
+            onChange={(val) => setMode(val as "exclusive" | "inclusive")}
           />
         </div>
+
+        {/* 1-Tap GST Rate Chips */}
+        <div className="space-y-2">
+          <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 block">
+            Select GST Rate (%)
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {GST_RATES.map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => setRate(r)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-xl transition-all cursor-pointer border ${
+                  rate === r
+                    ? "bg-emerald-600 text-white border-emerald-600 font-semibold shadow-xs"
+                    : "bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                }`}
+              >
+                {r === "custom" ? "Custom %" : r === "3" ? "3% (Gold)" : `${r}%`}
+              </button>
+            ))}
+          </div>
+
+          {rate === "custom" && (
+            <div className="max-w-xs pt-1">
+              <CalcInput
+                id="custom-gst-rate"
+                label="Custom GST Rate (%)"
+                value={customRate}
+                min={0}
+                max={100}
+                step={0.1}
+                suffix="%"
+                onChange={(val) => setCustomRate(Number(val) || 0)}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <CalcInput
+            id="gst-amount"
+            label={mode === "exclusive" ? "Net Base Amount (Pre-Tax)" : "Total Gross Amount (MRP / Post-Tax)"}
+            value={amount}
+            min={0}
+            step={100}
+            prefix={currencySymbol}
+            onChange={(val) => setAmount(Number(val) || 0)}
+          />
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {QUICK_AMOUNTS.map((amt) => (
+              <button
+                key={amt}
+                type="button"
+                onClick={() => setAmount(amt)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                  amount === amt
+                    ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                    : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                }`}
+              >
+                {currencySymbol}{amt.toLocaleString()}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <CalcResult
+          title="GST Tax Computation"
+          primaryLabel={mode === "exclusive" ? "Total Payable Amount" : "Net Base Amount"}
+          primaryValue={formatCurrency(mode === "exclusive" ? totalAmount : netAmount, { maxDecimals: 2 })}
+          copyValue={copySummary}
+          items={[
+            {
+              label: "Total GST Amount",
+              value: formatCurrency(gstAmount, { maxDecimals: 2 }),
+              highlight: true,
+            },
+            {
+              label: "Central GST (CGST - 50%)",
+              value: formatCurrency(cgst, { maxDecimals: 2 }),
+            },
+            {
+              label: "State GST (SGST - 50%)",
+              value: formatCurrency(sgst, { maxDecimals: 2 }),
+            },
+          ]}
+        />
       </div>
-
-      <CalcInput
-        id="gst-amount"
-        label={mode === "exclusive" ? "Net Base Amount (Pre-Tax)" : "Total Gross Amount (MRP / Post-Tax)"}
-        value={amount}
-        min={0}
-        step={100}
-        prefix={currencySymbol}
-        onChange={(val) => setAmount(Number(val) || 0)}
-      />
-
-      <CalcResult
-        title="GST Tax Computation"
-        primaryLabel={mode === "exclusive" ? "Total Payable Amount" : "Net Base Amount"}
-        primaryValue={formatCurrency(mode === "exclusive" ? totalAmount : netAmount, { maxDecimals: 2 })}
-        items={[
-          {
-            label: "Total GST Amount",
-            value: formatCurrency(gstAmount, { maxDecimals: 2 }),
-            highlight: true,
-          },
-          {
-            label: "Central GST (CGST - 50%)",
-            value: formatCurrency(cgst, { maxDecimals: 2 }),
-          },
-          {
-            label: "State GST (SGST - 50%)",
-            value: formatCurrency(sgst, { maxDecimals: 2 }),
-          },
-        ]}
-      />
 
       {/* Action Buttons */}
       <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap gap-2">

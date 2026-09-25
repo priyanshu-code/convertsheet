@@ -86,6 +86,26 @@ export function SipCalculator() {
             prefix={currencySymbol}
             onChange={(val) => setMonthlyInvestment(Number(val) || 0)}
           />
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Quick:</span>
+            {(currencySymbol === "₹"
+              ? [1000, 2500, 5000, 10000, 25000]
+              : [100, 250, 500, 1000, 2500]
+            ).map((amt) => (
+              <button
+                key={amt}
+                type="button"
+                onClick={() => setMonthlyInvestment(amt)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                  monthlyInvestment === amt
+                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                {currencySymbol}{amt >= 1000 ? `${amt / 1000}k` : amt}
+              </button>
+            ))}
+          </div>
           <CalcSlider
             id="sip-amount-slider"
             label="Adjust Monthly Contribution"
@@ -109,6 +129,27 @@ export function SipCalculator() {
             suffix="%"
             onChange={(val) => setAnnualReturnRate(Number(val) || 0)}
           />
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Presets:</span>
+            {[
+              { rate: 8, label: "8% (Conservative)" },
+              { rate: 12, label: "12% (Index)" },
+              { rate: 15, label: "15% (Growth)" },
+            ].map((p) => (
+              <button
+                key={p.rate}
+                type="button"
+                onClick={() => setAnnualReturnRate(p.rate)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                  annualReturnRate === p.rate
+                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
           <CalcSlider
             id="sip-rate-slider"
             label="Return Rate Range"
@@ -132,6 +173,23 @@ export function SipCalculator() {
             suffix="Years"
             onChange={(val) => setTimeYears(Number(val) || 1)}
           />
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Tenure:</span>
+            {[5, 10, 15, 20, 25].map((yr) => (
+              <button
+                key={yr}
+                type="button"
+                onClick={() => setTimeYears(yr)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                  timeYears === yr
+                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                {yr}y
+              </button>
+            ))}
+          </div>
           <CalcSlider
             id="sip-tenure-slider"
             label="Tenure (Years)"
@@ -148,6 +206,7 @@ export function SipCalculator() {
         title="Maturity Breakdown"
         primaryLabel="Total Expected Maturity Value"
         primaryValue={formatCurrency(totalMaturity)}
+        copyValue={`SIP Maturity: ${formatCurrency(totalMaturity)} | Total Invested: ${formatCurrency(totalInvested)} | Wealth Gained: ${formatCurrency(wealthGained)} (${timeYears} years at ${annualReturnRate}%)`}
         items={[
           {
             label: "Total Invested Capital",
@@ -189,7 +248,7 @@ export function SipCalculator() {
       {/* AEO / GEO Actions & Export Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
         <CalcPromptButton
-          promptText={`Analyze this SIP investment strategy: I am investing ₹${monthlyInvestment.toLocaleString('en-IN')}/month for ${timeYears} years at an expected return of ${annualReturnRate}%. My projected maturity value is ₹${totalMaturity.toLocaleString('en-IN')} (₹${totalInvested.toLocaleString('en-IN')} invested + ₹${wealthGained.toLocaleString('en-IN')} gains). Is this realistic, what are the inflation-adjusted returns, and what mutual fund categories are recommended?`}
+          promptText={`Analyze this SIP investment strategy: I am investing ${formatCurrency(monthlyInvestment)}/month for ${timeYears} years at an expected return of ${annualReturnRate}%. My projected maturity value is ${formatCurrency(totalMaturity)} (${formatCurrency(totalInvested)} invested + ${formatCurrency(wealthGained)} gains). Is this realistic, what are the inflation-adjusted returns, and what mutual fund categories are recommended?`}
           label="Copy Prompt for ChatGPT / Claude"
         />
 
@@ -198,9 +257,9 @@ export function SipCalculator() {
           sheetName="SIP Projections"
           data={chartData.map((d) => ({
             Year: d.label,
-            "Invested Capital (INR)": d.invested,
-            "Wealth Gained (INR)": d.wealthGained,
-            "Total Portfolio Value (INR)": d.totalValue,
+            [`Invested Capital (${currencySymbol})`]: d.invested,
+            [`Wealth Gained (${currencySymbol})`]: d.wealthGained,
+            [`Total Portfolio Value (${currencySymbol})`]: d.totalValue,
           }))}
           label="Download Schedule (.xlsx)"
         />

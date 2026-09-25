@@ -30,8 +30,10 @@ export interface AustraliaPayCalculatorProps {
 
 const PRESET_SALARIES = [
   { label: "$60k", value: 60000 },
+  { label: "$75k", value: 75000 },
   { label: "$90k", value: 90000 },
-  { label: "$130k", value: 130000 },
+  { label: "$120k", value: 120000 },
+  { label: "$150k", value: 150000 },
   { label: "$180k", value: 180000 },
 ];
 
@@ -362,6 +364,7 @@ Please advise on Australian tax strategies (concessional super contributions, sa
             primaryLabel="Net Fortnightly Take-Home"
             primaryValue={formatCurrency(result.netFortnightlyTakeHome)}
             primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+            copyValue={`Australia Take-Home Pay: ${formatCurrency(result.netFortnightlyTakeHome)}/fortnight (${formatCurrency(result.netMonthlyTakeHome)}/mo, ${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: $${grossSalary.toLocaleString()} | Tax: ${formatCurrency(result.incomeTax)} | Medicare: ${formatCurrency(result.medicareLevy)} | Effective Rate: ${result.effectiveTaxRate}%`}
             columns={2}
             items={[
               {

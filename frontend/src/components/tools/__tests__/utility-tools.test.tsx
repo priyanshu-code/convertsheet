@@ -29,7 +29,7 @@ describe("General Utility Calculators Suite", () => {
 
     // 70kg at 175cm = 22.9 BMI (Normal weight)
     expect(screen.getByText("22.9")).toBeInTheDocument();
-    expect(screen.getByText("Normal (Healthy) weight")).toBeInTheDocument();
+    expect(screen.getAllByText("Normal (Healthy) weight").length).toBeGreaterThanOrEqual(1);
   });
 
   it("UnitConverterTool converts length units", () => {

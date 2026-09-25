@@ -369,16 +369,41 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
         <div className="space-y-6">
           {regime === "US" ? (
             <>
-              <CalcInput
-                id="gross-income-us"
-                label="Gross Annual Income"
-                value={grossIncomeUs}
-                onChange={(val) => setGrossIncomeUs(Number(val) || 0)}
-                prefix="$"
-                min={0}
-                step={5000}
-                helpText="W-2 wages, self-employment earnings, or total annual taxable revenue"
-              />
+              <div>
+                <CalcInput
+                  id="gross-income-us"
+                  label="Gross Annual Income"
+                  value={grossIncomeUs}
+                  onChange={(val) => setGrossIncomeUs(Number(val) || 0)}
+                  prefix="$"
+                  min={0}
+                  step={5000}
+                  helpText="W-2 wages, self-employment earnings, or total annual taxable revenue"
+                />
+                <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                  {[
+                    { label: "$50k", val: 50000 },
+                    { label: "$75k", val: 75000 },
+                    { label: "$100k", val: 100000 },
+                    { label: "$150k", val: 150000 },
+                    { label: "$250k", val: 250000 },
+                  ].map((p) => (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => setGrossIncomeUs(p.val)}
+                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                        grossIncomeUs === p.val
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <CalcSelect
                 id="filing-status"
                 label="Filing Status"
@@ -403,16 +428,41 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
             </>
           ) : (
             <>
-              <CalcInput
-                id="annual-income-in"
-                label="Gross Annual Income"
-                value={annualIncomeIn}
-                onChange={(val) => setAnnualIncomeIn(Number(val) || 0)}
-                prefix="₹"
-                min={100000}
-                step={50000}
-                helpText="Total gross annual CTC or total taxable income"
-              />
+              <div>
+                <CalcInput
+                  id="annual-income-in"
+                  label="Gross Annual Income"
+                  value={annualIncomeIn}
+                  onChange={(val) => setAnnualIncomeIn(Number(val) || 0)}
+                  prefix="₹"
+                  min={100000}
+                  step={50000}
+                  helpText="Total gross annual CTC or total taxable income"
+                />
+                <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                  {[
+                    { label: "₹8L", val: 800000 },
+                    { label: "₹12L", val: 1200000 },
+                    { label: "₹15L", val: 1500000 },
+                    { label: "₹20L", val: 2000000 },
+                    { label: "₹30L", val: 3000000 },
+                  ].map((p) => (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => setAnnualIncomeIn(p.val)}
+                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                        annualIncomeIn === p.val
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <CalcInput
                 id="standard-deduction-in"
                 label="Standard Deduction"
@@ -498,6 +548,7 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                 primaryLabel="Total Federal Tax Payable"
                 primaryValue={`$${usTaxResult.totalFederalTax.toLocaleString()}`}
                 primarySubtext={`Effective Tax Rate: ${usTaxResult.effectiveTaxRate}% | Marginal Bracket: ${usTaxResult.marginalRate}%`}
+                copyValue={`US Federal Tax: $${usTaxResult.totalFederalTax.toLocaleString()} on $${grossIncomeUs.toLocaleString()} gross income (Effective: ${usTaxResult.effectiveTaxRate}%, Marginal: ${usTaxResult.marginalRate}%) | After-Tax Income: $${usTaxResult.netAfterTaxIncome.toLocaleString()}`}
                 items={[
                   {
                     label: "Taxable Income",
@@ -569,6 +620,7 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                 primaryLabel="Total Tax Payable"
                 primaryValue={`₹${inTaxResult.totalTaxPayable.toLocaleString()}`}
                 primarySubtext={`Effective Tax Rate: ${inTaxResult.effectiveTaxRate}%`}
+                copyValue={`India Income Tax: ₹${inTaxResult.totalTaxPayable.toLocaleString()} on ₹${annualIncomeIn.toLocaleString()} income (Effective: ${inTaxResult.effectiveTaxRate}%) | Net After-Tax: ₹${inTaxResult.netAfterTaxIncome.toLocaleString()} | Taxable: ₹${inTaxResult.taxableIncome.toLocaleString()}`}
                 items={[
                   {
                     label: "Net Taxable Income",

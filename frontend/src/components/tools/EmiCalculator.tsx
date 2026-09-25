@@ -87,6 +87,38 @@ export function EmiCalculator() {
             prefix={currencySymbol}
             onChange={(val) => setLoanAmount(Number(val) || 0)}
           />
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Quick:</span>
+            {(currencySymbol === "₹"
+              ? [
+                  { label: "₹5L", val: 500000 },
+                  { label: "₹10L", val: 1000000 },
+                  { label: "₹25L", val: 2500000 },
+                  { label: "₹50L", val: 5000000 },
+                  { label: "₹1Cr", val: 10000000 },
+                ]
+              : [
+                  { label: "$25k", val: 25000 },
+                  { label: "$50k", val: 50000 },
+                  { label: "$100k", val: 100000 },
+                  { label: "$250k", val: 250000 },
+                  { label: "$500k", val: 500000 },
+                ]
+            ).map((p) => (
+              <button
+                key={p.label}
+                type="button"
+                onClick={() => setLoanAmount(p.val)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                  loanAmount === p.val
+                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
           <CalcSlider
             id="loan-amount-slider"
             label="Principal Amount"
@@ -110,6 +142,23 @@ export function EmiCalculator() {
             suffix="%"
             onChange={(val) => setInterestRate(Number(val) || 0.1)}
           />
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Presets:</span>
+            {[7.5, 8.5, 9.5, 10.5, 12.0].map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => setInterestRate(r)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                  interestRate === r
+                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                {r}%
+              </button>
+            ))}
+          </div>
           <CalcSlider
             id="loan-rate-slider"
             label="Interest Rate"
@@ -133,6 +182,23 @@ export function EmiCalculator() {
             suffix="Years"
             onChange={(val) => setLoanTenureYears(Number(val) || 1)}
           />
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Tenure:</span>
+            {[5, 10, 15, 20, 30].map((y) => (
+              <button
+                key={y}
+                type="button"
+                onClick={() => setLoanTenureYears(y)}
+                className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                  loanTenureYears === y
+                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
+                }`}
+              >
+                {y}y
+              </button>
+            ))}
+          </div>
           <CalcSlider
             id="loan-tenure-slider"
             label="Tenure Duration"
@@ -149,6 +215,7 @@ export function EmiCalculator() {
         title="Loan Repayment Schedule"
         primaryLabel="Monthly Loan EMI Payable"
         primaryValue={formatCurrency(monthlyEmi)}
+        copyValue={`Monthly EMI: ${formatCurrency(monthlyEmi)} | Loan Principal: ${formatCurrency(loanAmount)} | Interest: ${formatCurrency(totalInterest)} | Total Repayment: ${formatCurrency(totalPayment)} (${loanTenureYears} yrs @ ${interestRate}%)`}
         items={[
           {
             label: "Total Principal Amount",

@@ -160,6 +160,29 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                   max={2000000}
                   step={500}
                 />
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                  {[
+                    { label: "$5k", val: 5000 },
+                    { label: "$10k", val: 10000 },
+                    { label: "$25k", val: 25000 },
+                    { label: "$50k", val: 50000 },
+                    { label: "$100k", val: 100000 },
+                  ].map((p) => (
+                    <button
+                      key={p.label}
+                      type="button"
+                      onClick={() => setInitialDeposit(p.val)}
+                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                        initialDeposit === p.val
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
                 <ModernSlider
                   id="initialDepositSlider"
                   label="Initial Deposit"
@@ -185,6 +208,23 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                     max={20000}
                     step={50}
                   />
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Deposit:</span>
+                    {[0, 100, 250, 500, 1000].map((amt) => (
+                      <button
+                        key={amt}
+                        type="button"
+                        onClick={() => setMonthlyContribution(amt)}
+                        className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                          monthlyContribution === amt
+                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                        }`}
+                      >
+                        ${amt}
+                      </button>
+                    ))}
+                  </div>
                   <ModernSlider
                     id="monthlyContributionSlider"
                     label="Monthly Contribution"
@@ -210,6 +250,23 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                   max={20}
                   step={0.05}
                 />
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Rates:</span>
+                  {[4.0, 4.25, 4.5, 4.75, 5.0, 5.25].map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setAnnualInterestRate(r)}
+                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                        annualInterestRate === r
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                      }`}
+                    >
+                      {r}%
+                    </button>
+                  ))}
+                </div>
                 <ModernSlider
                   id="annualInterestRateSlider"
                   label="Interest Rate"
@@ -317,6 +374,7 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
               <div className="pt-2">
                 <CalcResult
                   columns={2}
+                  copyValue={`${mode === "hysa" ? "HYSA" : "CD"} Final Balance: $${Math.round(result.finalBalance).toLocaleString()} | Total Interest Earned: +$${Math.round(result.totalInterestEarned).toLocaleString()} | APY: ${result.effectiveApy}% (${termMonths} months)`}
                   items={[
                     {
                       label: "Initial Deposit",

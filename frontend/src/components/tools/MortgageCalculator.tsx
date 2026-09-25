@@ -217,6 +217,22 @@ Provide financial advice on whether refinancing or making extra principal paymen
               step={1000}
               prefix={currencySymbol}
             />
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {[5, 10, 15, 20, 25].map((pct) => (
+                <button
+                  key={pct}
+                  type="button"
+                  onClick={() => handleDownPaymentPercentChange(pct)}
+                  className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                    downPaymentPercent === pct
+                      ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  }`}
+                >
+                  {pct}%{pct >= 20 ? " (No PMI)" : ""}
+                </button>
+              ))}
+            </div>
           </div>
 
           <CalcInput
@@ -231,18 +247,36 @@ Provide financial advice on whether refinancing or making extra principal paymen
             suffix="%"
           />
 
-          <CalcSelect
-            id="loan-term"
-            label="Loan Term"
-            value={loanTermYears.toString()}
-            onChange={(val) => setLoanTermYears(Number(val))}
-            options={[
-              { label: "30 Years (Fixed)", value: "30" },
-              { label: "20 Years (Fixed)", value: "20" },
-              { label: "15 Years (Fixed)", value: "15" },
-              { label: "10 Years (Fixed)", value: "10" },
-            ]}
-          />
+          <div className="space-y-1">
+            <CalcSelect
+              id="loan-term"
+              label="Loan Term"
+              value={loanTermYears.toString()}
+              onChange={(val) => setLoanTermYears(Number(val))}
+              options={[
+                { label: "30 Years (Fixed)", value: "30" },
+                { label: "20 Years (Fixed)", value: "20" },
+                { label: "15 Years (Fixed)", value: "15" },
+                { label: "10 Years (Fixed)", value: "10" },
+              ]}
+            />
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {[15, 20, 30].map((term) => (
+                <button
+                  key={term}
+                  type="button"
+                  onClick={() => setLoanTermYears(term)}
+                  className={`px-2.5 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                    loanTermYears === term
+                      ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  }`}
+                >
+                  {term} Years
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Taxes, Insurance & Extra Payment Accordion/Grid */}
@@ -293,6 +327,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
           primaryLabel="Total Monthly Payment"
           primaryValue={formatCurrency(mortgage.totalMonthlyPayment)}
           primarySubtext={`Principal & Interest: ${formatCurrency(mortgage.monthlyPrincipalAndInterest)} • Taxes: ${formatCurrency(mortgage.monthlyPropertyTax)} • Insurance: ${formatCurrency(mortgage.monthlyInsurance)}${mortgage.monthlyPmi > 0 ? ` • PMI: ${formatCurrency(mortgage.monthlyPmi)}` : ""}`}
+          copyValue={`Monthly Payment: ${formatCurrency(mortgage.totalMonthlyPayment)}/mo | Loan: ${formatCurrency(mortgage.loanAmount)} | Total Interest: ${formatCurrency(mortgage.totalInterest)} (${loanTermYears}yr fixed @ ${interestRate}%)`}
           items={[
             {
               label: "Loan Amount Financed",

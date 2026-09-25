@@ -27,9 +27,11 @@ export interface UkSalaryCalculatorProps {
 
 const PRESET_SALARIES = [
   { label: "£30k", value: 30000 },
-  { label: "£50k", value: 50000 },
+  { label: "£45k", value: 45000 },
+  { label: "£60k", value: 60000 },
   { label: "£80k", value: 80000 },
-  { label: "£120k", value: 120000 },
+  { label: "£100k", value: 100000 },
+  { label: "£125k", value: 125000 },
 ];
 
 const STUDENT_LOAN_OPTIONS = [
@@ -297,6 +299,7 @@ Please advise on salary sacrifice pension contributions, ISA allowances, tax bra
             primaryLabel="Net Monthly Take-Home"
             primaryValue={formatCurrency(result.netMonthlyTakeHome)}
             primarySubtext={`Weekly: ${formatCurrency(result.netWeeklyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+            copyValue={`UK Take-Home: ${formatCurrency(result.netMonthlyTakeHome)}/mo (${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: £${grossSalary.toLocaleString()} | Tax: ${formatCurrency(result.incomeTax)} | NI: ${formatCurrency(result.nationalInsurance)} | Effective Rate: ${result.effectiveTaxRate}%`}
             columns={2}
             items={[
               {

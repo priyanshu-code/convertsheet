@@ -268,6 +268,23 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
                   onChange={setExtraMonthlyPayment}
                   helpText="Additional money applied toward debt elimination each month"
                 />
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick boost:</span>
+                  {[50, 100, 200, 500].map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => setExtraMonthlyPayment(amt)}
+                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                        extraMonthlyPayment === amt
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                      }`}
+                    >
+                      +${amt}/mo
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </CalcCard>
@@ -311,6 +328,7 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
               <div className="pt-2">
                 <CalcResult
                   columns={2}
+                  copyValue={`Debt-Free In: ${payoffResult.payoffMonths} months (${payoffResult.payoffYears} yrs) | Strategy: ${strategy} | Total Interest Saved: $${Math.round(payoffResult.interestSavedComparedToMinOnly).toLocaleString()} | Total Starting Debt: $${Math.round(payoffResult.totalOriginalBalance).toLocaleString()}`}
                   items={[
                     {
                       label: "Total Starting Debt",

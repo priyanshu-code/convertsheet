@@ -30,9 +30,11 @@ export interface CanadaPaycheckCalculatorProps {
 
 const PRESET_SALARIES = [
   { label: "$50k", value: 50000 },
-  { label: "$75k", value: 75000 },
+  { label: "$70k", value: 70000 },
+  { label: "$85k", value: 85000 },
   { label: "$100k", value: 100000 },
-  { label: "$140k", value: 140000 },
+  { label: "$120k", value: 120000 },
+  { label: "$150k", value: 150000 },
 ];
 
 const PROVINCE_OPTIONS = [
@@ -311,6 +313,7 @@ Please advise on tax optimization strategies (RRSP deduction limit, TFSA contrib
             primaryLabel="Net Bi-Weekly Take-Home"
             primaryValue={formatCurrency(result.netBiWeeklyTakeHome)}
             primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+            copyValue={`Canada Net Pay: ${formatCurrency(result.netBiWeeklyTakeHome)} bi-weekly (${formatCurrency(result.netMonthlyTakeHome)}/mo, ${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: $${grossSalary.toLocaleString()} (${province}) | Effective Tax: ${result.effectiveTaxRate}%`}
             columns={2}
             items={[
               {
