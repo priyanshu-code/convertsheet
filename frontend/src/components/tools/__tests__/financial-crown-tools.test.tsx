@@ -128,10 +128,11 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       fireEvent.click(playgroundToggle);
 
       expect(screen.getByText(/Retirement & 401\(k\) Nest Egg Calculator/i)).toBeInTheDocument();
+      expect(screen.getAllByRole("button", { name: /copy/i }).length).toBeGreaterThanOrEqual(1);
     });
   });
 
-    describe("InflationCalculator", () => {
+  describe("InflationCalculator", () => {
     it("renders inflation and purchasing power calculator with preset buttons", () => {
       render(<InflationCalculator />);
 
@@ -166,6 +167,15 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(screen.getByText(/Salary Needed to Beat Inflation Calculator/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Current Annual Salary/i)).toBeInTheDocument();
       expect(screen.getByText(/Annual Merit Raise Required/i)).toBeInTheDocument();
+    });
+
+    it("updates amount using quick preset chip and copies results", () => {
+      render(<InflationCalculator />);
+      const chip50k = screen.getByRole("button", { name: "$50k" });
+      expect(chip50k).toBeInTheDocument();
+      fireEvent.click(chip50k);
+      expect(screen.getByLabelText(/Initial Amount \/ Price Today/i)).toHaveValue(50000);
+      expect(screen.getAllByRole("button", { name: /copy/i }).length).toBeGreaterThanOrEqual(1);
     });
   });
 

@@ -75,6 +75,16 @@ export function RoiCalculator() {
 
 Please evaluate this performance against the S&P 500 index baseline (~10% CAGR) and assess risk-adjusted return viability.`;
 
+  const INVESTMENT_PRESETS = [1000, 5000, 10000, 25000, 50000, 100000];
+  const RETURN_MULTIPLIERS = [
+    { label: "+20%", mult: 1.2 },
+    { label: "+50%", mult: 1.5 },
+    { label: "2x Double", mult: 2.0 },
+    { label: "3x Triple", mult: 3.0 },
+    { label: "5x", mult: 5.0 },
+  ];
+  const DURATION_PRESETS = [1, 2, 3, 5, 7, 10];
+
   return (
     <CalcCard
       title="Return on Investment (ROI) Calculator"
@@ -84,37 +94,93 @@ Please evaluate this performance against the S&P 500 index baseline (~10% CAGR) 
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
-          <CalcInput
-            id="initial-investment"
-            label="Initial Investment (Cost Basis)"
-            value={initialInvestment}
-            onChange={setInitialInvestment}
-            prefix="$"
-            min={1}
-            step={500}
-            helpText="Initial capital invested or project outlay"
-          />
-          <CalcInput
-            id="final-return"
-            label="Final Return Value"
-            value={finalReturn}
-            onChange={setFinalReturn}
-            prefix="$"
-            min={0}
-            step={500}
-            helpText="Total liquidated value or revenue returned"
-          />
-          <CalcSlider
-            id="investment-years"
-            label="Investment Duration"
-            value={investmentYears}
-            onChange={setInvestmentYears}
-            min={0.5}
-            max={30}
-            step={0.5}
-            unit="years"
-            helpText="Holding horizon for annualized CAGR computation"
-          />
+          <div className="space-y-1.5">
+            <CalcInput
+              id="initial-investment"
+              label="Initial Investment (Cost Basis)"
+              value={initialInvestment}
+              onChange={(v) => setInitialInvestment(Math.max(0, Number(v) || 0))}
+              prefix="$"
+              min={1}
+              step={500}
+              helpText="Initial capital invested or project outlay"
+            />
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {INVESTMENT_PRESETS.map((amt) => (
+                <button
+                  key={amt}
+                  type="button"
+                  onClick={() => setInitialInvestment(amt)}
+                  className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                    initialInvestment === amt
+                      ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                      : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                  }`}
+                >
+                  ${amt >= 1000 ? `${amt / 1000}k` : amt}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <CalcInput
+              id="final-return"
+              label="Final Return Value"
+              value={finalReturn}
+              onChange={(v) => setFinalReturn(Math.max(0, Number(v) || 0))}
+              prefix="$"
+              min={0}
+              step={500}
+              helpText="Total liquidated value or revenue returned"
+            />
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              <span className="text-[10px] uppercase font-semibold text-zinc-400">Quick Target:</span>
+              {RETURN_MULTIPLIERS.map(({ label, mult }) => {
+                const targetVal = Math.round(initialInvestment * mult);
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => setFinalReturn(targetVal)}
+                    className="px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <CalcSlider
+              id="investment-years"
+              label="Investment Duration"
+              value={investmentYears}
+              onChange={setInvestmentYears}
+              min={0.5}
+              max={30}
+              step={0.5}
+              unit="years"
+              helpText="Holding horizon for annualized CAGR computation"
+            />
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {DURATION_PRESETS.map((yr) => (
+                <button
+                  key={yr}
+                  type="button"
+                  onClick={() => setInvestmentYears(yr)}
+                  className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                    investmentYears === yr
+                      ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                      : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                  }`}
+                >
+                  {yr} {yr === 1 ? "Year" : "Years"}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div className="pt-2 flex flex-wrap gap-3">
             <CalcPromptButton promptText={llmPrompt} />
@@ -132,6 +198,7 @@ Please evaluate this performance against the S&P 500 index baseline (~10% CAGR) 
             primaryLabel="Total Return on Investment"
             primaryValue={simpleRoi >= 0 ? `+${simpleRoi}%` : `${simpleRoi}%`}
             primarySubtext={`Annualized CAGR: ${annualizedRoi}% / yr`}
+            copyValue={`ROI: ${simpleRoi >= 0 ? `+${simpleRoi}%` : `${simpleRoi}%`} | Net Profit: $${netProfit.toLocaleString()} | Initial: $${initialInvestment.toLocaleString()} | Final: $${finalReturn.toLocaleString()} | CAGR: ${annualizedRoi}%/yr over ${investmentYears} years`}
             items={[
               {
                 label: "Net Capital Gain",

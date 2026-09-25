@@ -55,7 +55,7 @@ export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}
       const q = new URLSearchParams(window.location.search).get("tradeInValue");
       if (q) return Number(q);
     }
-    return Number(initialValues?.tradeInValue) ?? 3000;
+    return initialValues?.tradeInValue !== undefined ? Number(initialValues.tradeInValue) : 3000;
   });
 
   const [interestRate, setInterestRate] = useState<number>(() => {
@@ -79,7 +79,7 @@ export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}
       const q = new URLSearchParams(window.location.search).get("salesTaxPercent");
       if (q) return Number(q);
     }
-    return Number(initialValues?.salesTaxPercent) ?? 7.0;
+    return initialValues?.salesTaxPercent !== undefined ? Number(initialValues.salesTaxPercent) : 7.0;
   });
 
   const [dealerFees, setDealerFees] = useState<number>(() => {
@@ -87,7 +87,7 @@ export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}
       const q = new URLSearchParams(window.location.search).get("dealerFees");
       if (q) return Number(q);
     }
-    return Number(initialValues?.dealerFees) ?? 500;
+    return initialValues?.dealerFees !== undefined ? Number(initialValues.dealerFees) : 500;
   });
 
   const carLoan = useMemo(() => {

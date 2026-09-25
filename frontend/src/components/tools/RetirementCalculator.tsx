@@ -494,6 +494,7 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
               primaryLabel="Portfolio at Retirement"
               primaryValue={formatCurrency(retirement.nestEggAtRetirement)}
               primarySubtext={`Equal to ${formatCurrency(retirement.inflationAdjustedNestEgg)} in today's purchasing power (adjusted for ${inflationRate}% inflation over ${retirementAge - currentAge} years)`}
+              copyValue={`Retirement Nest Egg: ${formatCurrency(retirement.nestEggAtRetirement)} at age ${retirementAge} (${formatCurrency(retirement.monthlyRetirementIncome)}/mo safe income, Total Growth: ${formatCurrency(retirement.totalInterestEarned)})`}
               items={[
                 {
                   label: "Safe Monthly Income (4% Rule)",

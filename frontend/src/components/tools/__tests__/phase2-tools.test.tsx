@@ -133,11 +133,26 @@ describe("Phase 2 Calculators and Tools", () => {
   });
 
   describe("RoiCalculator", () => {
-    it("renders ROI metrics and compound growth trajectory", () => {
+    it("renders ROI metrics and compound growth trajectory with quick chips", () => {
       render(<RoiCalculator />);
       expect(screen.getByText("Return on Investment (ROI) Calculator")).toBeInTheDocument();
       expect(screen.getByText("Total Return on Investment")).toBeInTheDocument();
       expect(screen.getByText("Net Capital Gain")).toBeInTheDocument();
+
+      // Test quick investment preset
+      const chip25k = screen.getByRole("button", { name: "$25k" });
+      expect(chip25k).toBeInTheDocument();
+      fireEvent.click(chip25k);
+
+      // Test quick target 2x Double
+      const doubleBtn = screen.getByRole("button", { name: "2x Double" });
+      expect(doubleBtn).toBeInTheDocument();
+      fireEvent.click(doubleBtn);
+
+      // Investment = 25,000, Return = 50,000 -> ROI = +100%, Net Gain = $25,000
+      expect(screen.getByText("+100%")).toBeInTheDocument();
+      expect(screen.getByText("$25,000")).toBeInTheDocument();
+      expect(screen.getAllByRole("button", { name: /copy/i }).length).toBeGreaterThanOrEqual(1);
     });
   });
 });

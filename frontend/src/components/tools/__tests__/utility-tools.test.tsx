@@ -32,10 +32,24 @@ describe("General Utility Calculators Suite", () => {
     expect(screen.getAllByText("Normal (Healthy) weight").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("UnitConverterTool converts length units", () => {
+  it("UnitConverterTool converts length units with shortcuts and quick chips", () => {
     render(<UnitConverterTool />);
     expect(screen.getByText("Universal Unit Converter")).toBeInTheDocument();
     expect(screen.getByText("Unit Conversion Result")).toBeInTheDocument();
+
+    // Verify popular 1-tap shortcut button
+    const kmMiBtn = screen.getByRole("button", { name: "km ↔ mi" });
+    expect(kmMiBtn).toBeInTheDocument();
+    fireEvent.click(kmMiBtn);
+
+    // Verify quick value chip
+    const val50Btn = screen.getByRole("button", { name: "50" });
+    expect(val50Btn).toBeInTheDocument();
+    fireEvent.click(val50Btn);
+
+    // 50 km = ~31.069 miles
+    expect(screen.getAllByText(/31\.069/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByRole("button", { name: /copy/i }).length).toBeGreaterThanOrEqual(1);
   });
 
   it("TipCalculator computes tips and splits bill per person", () => {

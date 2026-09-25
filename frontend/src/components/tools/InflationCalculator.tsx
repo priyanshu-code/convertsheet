@@ -114,16 +114,37 @@ Provide actionable asset allocation advice to protect wealth against this inflat
 
           {/* Controls */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <CalcInput
-              id="initial-amount"
-              label={isSalaryMode ? "Current Annual Salary" : "Initial Amount / Price Today"}
-              value={amount}
-              onChange={(val) => setAmount(Number(val) || 0)}
-              type="number"
-              min={1}
-              step={isSalaryMode ? 2500 : 500}
-              prefix="$"
-            />
+            <div className="space-y-1.5">
+              <CalcInput
+                id="initial-amount"
+                label={isSalaryMode ? "Current Annual Salary" : "Initial Amount / Price Today"}
+                value={amount}
+                onChange={(val) => setAmount(Number(val) || 0)}
+                type="number"
+                min={1}
+                step={isSalaryMode ? 2500 : 500}
+                prefix="$"
+              />
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {(isSalaryMode
+                  ? [50000, 75000, 100000, 125000, 150000, 200000]
+                  : [1000, 5000, 10000, 25000, 50000, 100000]
+                ).map((amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    onClick={() => setAmount(amt)}
+                    className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                      amount === amt
+                        ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                        : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                    }`}
+                  >
+                    ${amt >= 1000 ? `${amt / 1000}k` : amt}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <CalcInput
               id="inflation-rate"
@@ -137,17 +158,35 @@ Provide actionable asset allocation advice to protect wealth against this inflat
               suffix="%"
             />
 
-            <CalcInput
-              id="time-horizon"
-              label="Time Horizon (Years)"
-              value={years}
-              onChange={(val) => setYears(Math.max(1, Math.min(60, Number(val) || 1)))}
-              type="number"
-              min={1}
-              max={60}
-              step={1}
-              suffix="yrs"
-            />
+            <div className="space-y-1.5">
+              <CalcInput
+                id="time-horizon"
+                label="Time Horizon (Years)"
+                value={years}
+                onChange={(val) => setYears(Math.max(1, Math.min(60, Number(val) || 1)))}
+                type="number"
+                min={1}
+                max={60}
+                step={1}
+                suffix="yrs"
+              />
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {[1, 3, 5, 10, 15, 20, 30].map((yr) => (
+                  <button
+                    key={yr}
+                    type="button"
+                    onClick={() => setYears(yr)}
+                    className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                      years === yr
+                        ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                        : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                    }`}
+                  >
+                    {yr}y
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Quick presets for inflation rate */}
@@ -192,6 +231,7 @@ Provide actionable asset allocation advice to protect wealth against this inflat
               primaryLabel={`Salary Needed in ${years} Years`}
               primaryValue={`$${inflation.futureEquivalentValue.toLocaleString()}`}
               primarySubtext={`To maintain the exact standard of living of a $${amount.toLocaleString()} salary today, your compensation must reach $${inflation.futureEquivalentValue.toLocaleString()} in ${years} years.`}
+              copyValue={`Salary Needed: $${inflation.futureEquivalentValue.toLocaleString()} in ${years} yrs (Current: $${amount.toLocaleString()} at ${inflationRate}% inflation, +${inflation.cumulativeInflationPercent}% total)`}
               items={[
                 {
                   label: "Annual Merit Raise Required",
@@ -222,6 +262,7 @@ Provide actionable asset allocation advice to protect wealth against this inflat
               primaryLabel={`Future Cost Needed in ${years} Years`}
               primaryValue={`$${inflation.futureEquivalentValue.toLocaleString()}`}
               primarySubtext={`You will need $${inflation.futureEquivalentValue.toLocaleString()} to purchase what $${amount.toLocaleString()} buys today at a ${inflationRate}% annual inflation rate.`}
+              copyValue={`Future Needed: $${inflation.futureEquivalentValue.toLocaleString()} in ${years} yrs (Today: $${amount.toLocaleString()} at ${inflationRate}% inflation | Future Value of Today's Capital: $${inflation.futurePurchasingPower.toLocaleString()})`}
               items={[
                 {
                   label: "Future Value of Today's $",
