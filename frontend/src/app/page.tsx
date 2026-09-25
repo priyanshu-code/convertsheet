@@ -95,7 +95,7 @@ export default function HomePage() {
   const allTools = getAllTools();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16 sm:space-y-20">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-12 sm:pt-6 sm:pb-16 space-y-10 sm:space-y-14">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -103,27 +103,27 @@ export default function HomePage() {
         }}
       />
       {/* Hero Section */}
-      <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
+      <div className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3">
         {/* Top Trust Badge */}
-        <div className="flex items-center justify-center gap-2">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <div className="flex items-center justify-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>100% In-Browser Privacy • Zero Server Uploads</span>
           </div>
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.12]">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
           Fast, Private Structured Data Converter
         </h1>
 
         {/* Subtitle */}
-        <p className="text-base sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto leading-normal">
           Convert JSON, CSV, Excel &amp; XML instantly in your browser — 100% private, zero cost, and zero server uploads.
         </p>
       </div>
 
-      {/* Hero Universal Converter Card - Above the fold */}
+      {/* Hero Universal Converter Card - Immediately Above the Fold */}
       <div className="max-w-4xl mx-auto">
         <DynamicConverterCard config={defaultConverter} />
       </div>

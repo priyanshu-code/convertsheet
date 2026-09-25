@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Table, Eye, Layers } from "lucide-react";
+import { Table, Eye, Layers, Copy, Check } from "lucide-react";
 import { TabularData } from "@/types/converter";
 import { cn } from "@/lib/utils";
 
@@ -86,10 +86,36 @@ export function DataPreviewTable({
   className,
   onTableChange,
 }: DataPreviewTableProps) {
+  const [copied, setCopied] = React.useState(false);
   const rowsToDisplay = preview.rows.slice(0, maxDisplayRows);
   const totalRows = preview.totalRows ?? preview.rows.length;
   const isAllRows = totalRows <= rowsToDisplay.length;
   const hasMultipleTables = Boolean(preview.tables && preview.tables.length > 1);
+
+  const handleCopyData = React.useCallback(() => {
+    if (!preview || preview.columns.length === 0) return;
+    try {
+      const headerLine = preview.columns.join("\t");
+      const rowLines = preview.rows.map((row) =>
+        preview.columns
+          .map((col) => {
+            const val = row[col];
+            if (val === null || val === undefined) return "";
+            if (typeof val === "object") return JSON.stringify(val);
+            return String(val);
+          })
+          .join("\t")
+      );
+      const tsv = [headerLine, ...rowLines].join("\n");
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(tsv);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard might fail in restricted environments
+    }
+  }, [preview]);
 
   return (
     <div className={cn("w-full space-y-3", className)}>
@@ -147,13 +173,34 @@ export function DataPreviewTable({
           </span>
         </div>
 
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
-          <Table className="w-3.5 h-3.5 text-zinc-500" />
-          <span>
-            {isAllRows
-              ? `Showing preview of all ${totalRows} rows`
-              : `Showing preview of first ${rowsToDisplay.length} rows (${totalRows} total rows detected)`}
-          </span>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleCopyData}
+            aria-label="Copy table data to clipboard"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition-colors cursor-pointer"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3 h-3 text-emerald-500" />
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3 h-3 text-zinc-500" />
+                <span>Copy Data</span>
+              </>
+            )}
+          </button>
+
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
+            <Table className="w-3.5 h-3.5 text-zinc-500" />
+            <span>
+              {isAllRows
+                ? `Showing preview of all ${totalRows} rows`
+                : `Showing preview of first ${rowsToDisplay.length} rows (${totalRows} total rows detected)`}
+            </span>
+          </div>
         </div>
       </div>
 

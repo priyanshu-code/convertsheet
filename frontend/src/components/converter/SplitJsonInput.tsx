@@ -384,11 +384,11 @@ export function SplitJsonInput({
           </div>
 
           <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
-            Or upload your JSON file
+            Or upload your {config.sourceFormat} file
           </h2>
 
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4 max-w-xs">
-            Drag and drop a JSON file here, or{" "}
+            Drag and drop a {config.sourceFormat} file here, or{" "}
             <span className="text-emerald-600 dark:text-emerald-400 font-medium underline underline-offset-4 group-hover:text-emerald-500">
               browse
             </span>

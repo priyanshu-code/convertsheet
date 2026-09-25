@@ -63,7 +63,7 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
   return (
     <div
       className={cn(
-        "w-full rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 shadow-sm p-4 sm:p-8 space-y-6 transition-all",
+        "w-full rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl shadow-zinc-200/40 dark:shadow-none p-4 sm:p-7 space-y-5 transition-all",
         className
       )}
     >
@@ -158,15 +158,15 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
 
       {/* Main Content Area */}
       {!file ? (
-        /* State 1: No file loaded - Show SplitTableInput for markdown-to-excel, SplitJsonInput for json-to-ndjson and json-to-schema, otherwise DropZone */
-        config.slug === "markdown-to-excel" ? (
-          <SplitTableInput
+        /* State 1: No file loaded - Show SplitJsonInput for JSON sources, SplitTableInput for Markdown, otherwise DropZone */
+        config.sourceFormat === "JSON" ? (
+          <SplitJsonInput
             config={config}
             onFileSelect={setFile}
             disabled={isParsing}
           />
-        ) : config.slug === "json-to-ndjson" || config.slug === "json-to-schema" ? (
-          <SplitJsonInput
+        ) : config.slug === "markdown-to-excel" || config.sourceFormat === "Markdown" ? (
+          <SplitTableInput
             config={config}
             onFileSelect={setFile}
             disabled={isParsing}

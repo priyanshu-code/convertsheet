@@ -90,47 +90,45 @@ export default function ConverterPage({ params }: ConverterPageProps) {
   const featuredTools = getAllTools().slice(0, 3);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-12 sm:pt-6 sm:pb-16 space-y-8 sm:space-y-12">
       {/* Hero Section */}
-      <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
-        {/* Breadcrumb Navigation */}
-        <nav
-          aria-label="Breadcrumb"
-          className="flex items-center justify-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400"
-        >
-          <Link
-            href="/"
-            className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+      <div className="text-center max-w-3xl mx-auto space-y-2.5 sm:space-y-3">
+        {/* Breadcrumb Navigation & Privacy Badge in one compact line */}
+        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-1.5"
           >
-            Home
-          </Link>
-          <span className="text-zinc-300 dark:text-zinc-700">/</span>
-          <Link
-            href="/#converters"
-            className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-          >
-            Converters
-          </Link>
-          <span className="text-zinc-300 dark:text-zinc-700">/</span>
-          <span className="text-zinc-800 dark:text-zinc-200">
-            {config.sourceFormat} to {config.targetFormat}
-          </span>
-        </nav>
-
-        {/* Privacy Badge & Featured Status */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5">
+            <Link
+              href="/"
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            >
+              Home
+            </Link>
+            <span className="text-zinc-300 dark:text-zinc-700">/</span>
+            <Link
+              href="/#converters"
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            >
+              Converters
+            </Link>
+            <span className="text-zinc-300 dark:text-zinc-700">/</span>
+            <span className="text-zinc-800 dark:text-zinc-200">
+              {config.sourceFormat} to {config.targetFormat}
+            </span>
+          </nav>
+          <span className="text-zinc-300 dark:text-zinc-700 hidden sm:inline">•</span>
           <div
             data-testid="privacy-badge"
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 shadow-xs"
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800/80 px-2 py-0.5 rounded-full"
           >
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>
               {config.isClientSide
                 ? "100% Client-Side & Private • Zero Server Uploads"
                 : "Secure End-to-End Processing • Zero Retention"}
             </span>
           </div>
-
           <EmbedTrigger
             tool={{
               slug: config.slug,
@@ -138,27 +136,20 @@ export default function ConverterPage({ params }: ConverterPageProps) {
               type: "converter",
             }}
           />
-
-          {config.badge && (
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
-              <span>{config.badge}</span>
-            </span>
-          )}
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.15]">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 leading-tight">
           {config.title}
         </h1>
 
         {/* Subtitle */}
-        <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto leading-normal">
           {config.subtitle}
         </p>
       </div>
 
-      {/* Converter Card - Above the fold */}
+      {/* Converter Card - Immediately Above the fold */}
       <div className="max-w-4xl mx-auto">
         <ConverterCard config={config} />
       </div>

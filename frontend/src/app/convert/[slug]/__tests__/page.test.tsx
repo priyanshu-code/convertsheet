@@ -127,7 +127,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       );
 
       // ConverterCard
-      expect(screen.getByText(/Drop your JSON file here or/i)).toBeInTheDocument();
+      expect(screen.getByText(/upload your JSON file|Drop your JSON file here or/i)).toBeInTheDocument();
 
       // Leaderboard AdBanner
       const adBanner = screen.getByTestId("ad-banner");

@@ -50,12 +50,23 @@ export function DropZone({
       if (files && files.length > 0) {
         e.preventDefault();
         onFileSelect(files[0]);
+        return;
+      }
+
+      // Also support raw text paste from clipboard (e.g. copied CSV, XML, data)
+      const text = e.clipboardData?.getData("text");
+      if (text && text.trim().length > 0) {
+        e.preventDefault();
+        const ext = config.sourceExtension || ".txt";
+        const mime = config.acceptedMimeTypes?.[0] || "text/plain";
+        const file = new File([text.trim()], `pasted-data${ext}`, { type: mime });
+        onFileSelect(file);
       }
     };
 
     window.addEventListener("paste", handlePaste);
     return () => window.removeEventListener("paste", handlePaste);
-  }, [disabled, onFileSelect]);
+  }, [disabled, onFileSelect, config]);
 
   const handleDragOver = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
