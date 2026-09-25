@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import HomePage from "../page";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 
@@ -49,7 +49,11 @@ describe("Pages (Home)", () => {
         })
       ).toBeInTheDocument();
 
-      // All 15 tools listed in cards
+      // Expand Popular Converters grid to reveal all cards
+      const showAllBtn = screen.getByRole("button", { name: /Show All .* Converters/i });
+      fireEvent.click(showAllBtn);
+
+      // All tools listed in cards
       const allConverters = Object.values(CONVERTER_REGISTRY);
       for (const converter of allConverters) {
         expect(

@@ -147,7 +147,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <ConverterGrid converters={allConverters} />
+        <ConverterGrid converters={allConverters} initialLimit={6} />
       </section>
 
       {/* Free Calculators & Online Tools Grid */}
@@ -168,7 +168,7 @@ export default function HomePage() {
       </section>
 
       {/* Value Propositions Section */}
-      <section aria-labelledby="why-convertsheet-heading" className="space-y-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+      <section aria-labelledby="why-convertsheet-heading" className="space-y-6 sm:space-y-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
         <div className="text-center max-w-2xl mx-auto space-y-2">
           <h2
             id="why-convertsheet-heading"
@@ -181,16 +181,16 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {VALUE_PROPS.map((prop, idx) => {
             const Icon = prop.icon;
             return (
               <div
                 key={idx}
-                className="p-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4"
+                className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 sm:space-y-4"
               >
-                <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                  <Icon className="w-6 h-6" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                   {prop.title}
@@ -205,7 +205,7 @@ export default function HomePage() {
       </section>
 
       {/* Free Platform & Open Tools Suite Banner */}
-      <section className="relative overflow-hidden rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-zinc-900 to-zinc-950 p-8 sm:p-12 text-center max-w-5xl mx-auto space-y-6">
+      <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-zinc-900 to-zinc-950 p-6 sm:p-12 text-center max-w-5xl mx-auto space-y-4 sm:space-y-6">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
           <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
           <span>100% Free • No Signups • Client-Side Privacy</span>
