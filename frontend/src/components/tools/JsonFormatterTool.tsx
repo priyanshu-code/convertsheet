@@ -1,7 +1,17 @@
 "use client";
 
 import React, { useState, useMemo, useCallback } from "react";
-import { FileCode2, Minimize2, Maximize2 } from "lucide-react";
+import {
+  FileCode2,
+  Minimize2,
+  Maximize2,
+  Clipboard,
+  Copy,
+  Check,
+  RotateCcw,
+  Sparkles,
+  AlignLeft,
+} from "lucide-react";
 import {
   CalcCard,
   CalcTextarea,
@@ -59,6 +69,8 @@ export function JsonFormatterTool() {
     }
   }, [input, indent]);
 
+  const [copied, setCopied] = useState(false);
+
   const handleMinify = useCallback(() => {
     if (minified) setInput(minified);
   }, [minified]);
@@ -66,6 +78,38 @@ export function JsonFormatterTool() {
   const handleBeautify = useCallback(() => {
     if (formatted) setInput(formatted);
   }, [formatted]);
+
+  const handlePaste = useCallback(async () => {
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text) setInput(text);
+      }
+    } catch {
+      // browser might block clipboard
+    }
+  }, []);
+
+  const handleCopy = useCallback(async () => {
+    if (!input) return;
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(input);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch {
+      // clipboard write failed
+    }
+  }, [input]);
+
+  const handleClear = useCallback(() => {
+    setInput("");
+  }, []);
+
+  const handleLoadSample = useCallback(() => {
+    setInput(`{\n  "name": "ConvertSheet",\n  "status": "online",\n  "features": ["Converters", "Calculators"],\n  "privacy": true\n}`);
+  }, []);
 
   return (
     <CalcCard
@@ -97,25 +141,89 @@ export function JsonFormatterTool() {
             }}
             label="Share JSON"
           />
-          <button
-            type="button"
-            onClick={handleBeautify}
-            disabled={!formatted || !!error}
-            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-colors disabled:opacity-50"
-          >
-            <Maximize2 className="w-3.5 h-3.5" />
-            <span>Beautify</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleMinify}
-            disabled={!minified || !!error}
-            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 transition-colors disabled:opacity-50"
-          >
-            <Minimize2 className="w-3.5 h-3.5" />
-            <span>Minify</span>
-          </button>
         </div>
+      </div>
+
+      {/* Toolbar: Paste | Copy | Format | Remove white space | Clear | Load JSON data */}
+      <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 px-2 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
+        <button
+          type="button"
+          onClick={handlePaste}
+          aria-label="Paste from Clipboard"
+          title="Paste from clipboard"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+        >
+          <Clipboard className="w-3.5 h-3.5" />
+          <span>Paste</span>
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          disabled={!input}
+          aria-label="Copy"
+          title="Copy JSON to clipboard"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3.5 h-3.5" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleBeautify}
+          disabled={!formatted || !!error}
+          aria-label="Format"
+          title="Format / Beautify JSON"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          <AlignLeft className="w-3.5 h-3.5" />
+          <span>Format</span>
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleMinify}
+          disabled={!minified || !!error}
+          aria-label="Remove white space"
+          title="Remove white space / Minify"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          <Minimize2 className="w-3.5 h-3.5" />
+          <span>Remove white space</span>
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleClear}
+          disabled={!input}
+          aria-label="Clear"
+          title="Clear JSON input"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          <span>Clear</span>
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleLoadSample}
+          aria-label="Load Sample JSON"
+          title="Load Sample JSON"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-amber-600 dark:hover:text-amber-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          <span>Load JSON data</span>
+        </button>
       </div>
 
       <CalcTextarea

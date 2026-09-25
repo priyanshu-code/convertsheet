@@ -128,6 +128,53 @@ describe("SplitTableInput", () => {
     expect(loadSampleBtn).toBeDisabled();
   });
 
+  it("formats and aligns markdown table pipes when 'Format' button is clicked", () => {
+    render(<SplitTableInput config={markdownConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste table text/i) as HTMLTextAreaElement;
+    const messyTable = "|Col A|Col B|\n|---|---|\n|1|Long Text Value|";
+    fireEvent.change(textarea, { target: { value: messyTable } });
+
+    const formatBtn = screen.getByRole("button", { name: /^Format$/i });
+    fireEvent.click(formatBtn);
+
+    expect(textarea.value).toContain(" | ");
+    expect(textarea.value).toContain("Col A");
+  });
+
+  it("removes white space and blank lines when 'Remove white space' button is clicked", () => {
+    render(<SplitTableInput config={markdownConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste table text/i) as HTMLTextAreaElement;
+    const tableWithSpaces = "  | A | B |   \n\n\n  | 1 | 2 |  ";
+    fireEvent.change(textarea, { target: { value: tableWithSpaces } });
+
+    const removeWhitespaceBtn = screen.getByRole("button", { name: /Remove white space/i });
+    fireEvent.click(removeWhitespaceBtn);
+
+    expect(textarea.value).toBe("| A | B |\n| 1 | 2 |");
+  });
+
+  it("copies table text to clipboard when 'Copy' button is clicked", async () => {
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+
+    render(<SplitTableInput config={markdownConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste table text/i);
+    fireEvent.change(textarea, { target: { value: "| Header |\n| --- |\n| Data |" } });
+
+    const copyBtn = screen.getByRole("button", { name: /^Copy$/i });
+    fireEvent.click(copyBtn);
+
+    expect(writeTextMock).toHaveBeenCalledWith("| Header |\n| --- |\n| Data |");
+    expect(await screen.findByText(/Copied!/i)).toBeInTheDocument();
+  });
+
   describe("Integration with ConverterCard", () => {
     it("renders SplitTableInput when config.slug is 'markdown-to-excel' and no file is loaded", () => {
       render(<ConverterCard config={markdownConfig} />);

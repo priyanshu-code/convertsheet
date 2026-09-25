@@ -170,6 +170,54 @@ describe("SplitJsonInput", () => {
     expect(content).toBe(clipJson);
   });
 
+  it("formats unindented or minified JSON when 'Format' button is clicked", () => {
+    render(<SplitJsonInput config={jsonToNdjsonConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste JSON data/i) as HTMLTextAreaElement;
+    const minifiedJson = '{"id":1,"name":"Alice","skills":["Python","AI"]}';
+    fireEvent.change(textarea, { target: { value: minifiedJson } });
+
+    const formatBtn = screen.getByRole("button", { name: /^Format$/i });
+    fireEvent.click(formatBtn);
+
+    const expectedFormatted = JSON.stringify(JSON.parse(minifiedJson), null, 2);
+    expect(textarea.value).toBe(expectedFormatted);
+    expect(textarea.value).toContain("\n");
+  });
+
+  it("minifies and removes whitespace when 'Remove white space' button is clicked", () => {
+    render(<SplitJsonInput config={jsonToNdjsonConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste JSON data/i) as HTMLTextAreaElement;
+    const multiLineJson = `[\n  {\n    "id": 1,\n    "name": "Bob"\n  }\n]`;
+    fireEvent.change(textarea, { target: { value: multiLineJson } });
+
+    const removeWhitespaceBtn = screen.getByRole("button", { name: /Remove white space/i });
+    fireEvent.click(removeWhitespaceBtn);
+
+    expect(textarea.value).toBe('[{"id":1,"name":"Bob"}]');
+  });
+
+  it("copies textarea content to clipboard when 'Copy' button is clicked", async () => {
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+
+    render(<SplitJsonInput config={jsonToNdjsonConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste JSON data/i);
+    fireEvent.change(textarea, { target: { value: '{"test": 123}' } });
+
+    const copyBtn = screen.getByRole("button", { name: /^Copy$/i });
+    fireEvent.click(copyBtn);
+
+    expect(writeTextMock).toHaveBeenCalledWith('{"test": 123}');
+    expect(await screen.findByText(/Copied!/i)).toBeInTheDocument();
+  });
+
   describe("Integration with ConverterCard", () => {
     it("renders SplitJsonInput when config.slug is 'json-to-ndjson' and no file is loaded", () => {
       render(<ConverterCard config={jsonToNdjsonConfig} />);

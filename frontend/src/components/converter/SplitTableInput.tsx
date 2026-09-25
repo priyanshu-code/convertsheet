@@ -8,6 +8,10 @@ import {
   Sparkles,
   UploadCloud,
   ArrowRight,
+  Copy,
+  Check,
+  AlignLeft,
+  Minimize2,
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { cn } from "@/lib/utils";
@@ -85,10 +89,71 @@ export function SplitTableInput({
     setText(SAMPLE_MARKDOWN_TABLE);
   }, [disabled]);
 
+  const [copied, setCopied] = useState(false);
+
   const handleClear = useCallback(() => {
     if (disabled) return;
     setText("");
   }, [disabled]);
+
+  const handleCopy = useCallback(async () => {
+    if (!text || disabled) return;
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch {
+      // browser might block clipboard
+    }
+  }, [text, disabled]);
+
+  const handleFormat = useCallback(() => {
+    if (!text.trim() || disabled) return;
+    const lines = text.trim().split("\n").filter((l) => l.trim().length > 0);
+    if (lines.some((l) => l.includes("|"))) {
+      const rows = lines.map((line) => {
+        const parts = line.split("|");
+        return parts.map((c) => c.trim());
+      });
+      const maxCols = Math.max(...rows.map((r) => r.length));
+      const colWidths: number[] = Array(maxCols).fill(0);
+      rows.forEach((r) => {
+        r.forEach((c, idx) => {
+          colWidths[idx] = Math.max(colWidths[idx] || 0, c.length);
+        });
+      });
+      const formattedLines = rows.map((r) => {
+        return r
+          .map((c, idx) => {
+            if (idx === 0 && c === "") return "";
+            if (idx === r.length - 1 && c === "") return "";
+            if (/^:?-+:?$/.test(c)) {
+              const hasLeft = c.startsWith(":");
+              const hasRight = c.endsWith(":");
+              const width = Math.max(3, colWidths[idx]);
+              const dashes = "-".repeat(
+                width - (hasLeft ? 1 : 0) - (hasRight ? 1 : 0)
+              );
+              return (hasLeft ? ":" : "-") + dashes + (hasRight ? ":" : "-");
+            }
+            return c.padEnd(colWidths[idx], " ");
+          })
+          .join(" | ");
+      });
+      setText(formattedLines.join("\n"));
+    }
+  }, [text, disabled]);
+
+  const handleRemoveWhitespace = useCallback(() => {
+    if (!text.trim() || disabled) return;
+    const lines = text
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    setText(lines.join("\n"));
+  }, [text, disabled]);
 
   const handleDragOver = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -167,8 +232,8 @@ export function SplitTableInput({
     >
       {/* Left Panel: Monospace Textarea with Quick Actions */}
       <div className="flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 p-4 sm:p-5 transition-all">
-        {/* Header & Quick Action Buttons */}
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        {/* Header with Title */}
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
               <FileCode className="h-3.5 w-3.5" />
@@ -177,41 +242,90 @@ export function SplitTableInput({
               Paste Markdown or HTML Table
             </span>
           </div>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-1.5">
-            <button
-              type="button"
-              onClick={handlePasteFromClipboard}
-              disabled={disabled}
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-50"
-              title="Paste from Clipboard"
-            >
-              <Clipboard className="w-3 h-3" />
-              <span>Paste from Clipboard</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleLoadSample}
-              disabled={disabled}
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-lg border border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-50"
-              title="Load Sample Table"
-            >
-              <Sparkles className="w-3 h-3 text-amber-500" />
-              <span>Load Sample Table</span>
-            </button>
-            {text && (
-              <button
-                type="button"
-                onClick={handleClear}
-                disabled={disabled}
-                className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg text-zinc-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-                title="Clear"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>Clear</span>
-              </button>
+        {/* Action Toolbar: Paste | Copy | Format | Remove white space | Clear | Load sample table */}
+        <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 px-2 mb-2.5 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
+          <button
+            type="button"
+            onClick={handlePasteFromClipboard}
+            disabled={disabled}
+            aria-label="Paste from Clipboard"
+            title="Paste from clipboard"
+            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+          >
+            <Clipboard className="w-3.5 h-3.5" />
+            <span>Paste</span>
+          </button>
+          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+          <button
+            type="button"
+            onClick={handleCopy}
+            disabled={disabled || !text}
+            aria-label="Copy"
+            title="Copy table text"
+            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+          >
+            {copied ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5" />
+                <span>Copy</span>
+              </>
             )}
-          </div>
+          </button>
+          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+          <button
+            type="button"
+            onClick={handleFormat}
+            disabled={disabled || !text}
+            aria-label="Format"
+            title="Format and align table columns"
+            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+          >
+            <AlignLeft className="w-3.5 h-3.5" />
+            <span>Format</span>
+          </button>
+          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+          <button
+            type="button"
+            onClick={handleRemoveWhitespace}
+            disabled={disabled || !text}
+            aria-label="Remove white space"
+            title="Remove white space and blank lines"
+            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+          >
+            <Minimize2 className="w-3.5 h-3.5" />
+            <span>Remove white space</span>
+          </button>
+          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+          <button
+            type="button"
+            onClick={handleClear}
+            disabled={disabled || !text}
+            aria-label="Clear"
+            title="Clear table editor"
+            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Clear</span>
+          </button>
+          <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+          <button
+            type="button"
+            onClick={handleLoadSample}
+            disabled={disabled}
+            aria-label="Load Sample Table"
+            title="Load Sample Table"
+            className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-amber-600 dark:hover:text-amber-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>Load sample table</span>
+          </button>
         </div>
 
         {/* Monospace Textarea */}

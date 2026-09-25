@@ -220,7 +220,7 @@ export function DropZone({
         </div>
         <div className="flex items-center gap-1.5">
           <Zap className="w-4 h-4 text-amber-500 shrink-0" />
-          <span>Max 10MB for free in-browser conversion</span>
+          <span>Max 200MB for free in-browser conversion</span>
         </div>
       </div>
     </div>

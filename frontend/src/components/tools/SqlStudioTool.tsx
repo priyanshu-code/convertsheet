@@ -269,6 +269,44 @@ export function SqlStudioTool() {
                   >
                     Summarize (Stats)
                   </button>
+                  <span className="text-zinc-300 dark:text-zinc-700 select-none text-[10px]">|</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!sqlQuery.trim()) return;
+                      const formatted = sqlQuery.replace(
+                        /\b(select|from|where|and|or|join|inner join|left join|right join|outer join|on|group by|order by|limit|having|as|count|sum|avg|min|max|desc|asc|insert|update|delete)\b/gi,
+                        (match) => match.toUpperCase()
+                      );
+                      setSqlQuery(formatted);
+                    }}
+                    title="Format SQL keywords to uppercase"
+                    className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer"
+                  >
+                    Format
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!sqlQuery.trim()) return;
+                      const collapsed = sqlQuery.split("\n").map(l => l.trim()).filter(Boolean).join(" ");
+                      setSqlQuery(collapsed);
+                    }}
+                    title="Remove extra whitespace and newlines"
+                    className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer"
+                  >
+                    Remove white space
+                  </button>
+                  {sqlQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSqlQuery("")}
+                      title="Clear query"
+                      className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
                 </div>
               </div>
 

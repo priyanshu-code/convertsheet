@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useState, useMemo, useCallback } from "react";
-import { Binary, ArrowRightLeft } from "lucide-react";
+import {
+  Binary,
+  ArrowRightLeft,
+  Clipboard,
+  Copy,
+  Check,
+  RotateCcw,
+  Minimize2,
+} from "lucide-react";
 import {
   CalcCard,
   CalcTextarea,
@@ -49,12 +57,47 @@ export function Base64Tool() {
     }
   }, [input, mode]);
 
+  const [copied, setCopied] = useState(false);
+
   const handleSwap = useCallback(() => {
     if (output && !error) {
       setInput(output);
       setMode((prev) => (prev === "encode" ? "decode" : "encode"));
     }
   }, [output, error]);
+
+  const handlePaste = useCallback(async () => {
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text) setInput(text);
+      }
+    } catch {
+      // browser might block clipboard
+    }
+  }, []);
+
+  const handleCopy = useCallback(async () => {
+    if (!input) return;
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(input);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch {
+      // clipboard write failed
+    }
+  }, [input]);
+
+  const handleClear = useCallback(() => {
+    setInput("");
+  }, []);
+
+  const handleRemoveWhitespace = useCallback(() => {
+    if (!input) return;
+    setInput(input.replace(/\s+/g, ""));
+  }, [input]);
 
   return (
     <CalcCard
@@ -85,13 +128,72 @@ export function Base64Tool() {
             <button
               type="button"
               onClick={handleSwap}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-zinc-100 dark:bg-zinc-800 rounded-lg transition-colors cursor-pointer"
             >
               <ArrowRightLeft className="w-3.5 h-3.5" />
               <span>Swap Input/Output</span>
             </button>
           )}
         </div>
+      </div>
+
+      {/* Action Toolbar: Paste | Copy | Remove white space | Clear */}
+      <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 px-2 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
+        <button
+          type="button"
+          onClick={handlePaste}
+          aria-label="Paste from Clipboard"
+          title="Paste from clipboard"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
+        >
+          <Clipboard className="w-3.5 h-3.5" />
+          <span>Paste</span>
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          disabled={!input}
+          aria-label="Copy input text"
+          title="Copy input text"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3.5 h-3.5" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleRemoveWhitespace}
+          disabled={!input}
+          aria-label="Remove white space"
+          title="Remove all whitespace and newlines"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          <Minimize2 className="w-3.5 h-3.5" />
+          <span>Remove white space</span>
+        </button>
+        <span className="text-zinc-300 dark:text-zinc-700 select-none">|</span>
+        <button
+          type="button"
+          onClick={handleClear}
+          disabled={!input}
+          aria-label="Clear"
+          title="Clear input"
+          className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-md text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          <span>Clear</span>
+        </button>
       </div>
 
       <CalcTextarea

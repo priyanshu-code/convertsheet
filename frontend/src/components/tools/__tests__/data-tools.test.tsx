@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Base64Tool } from "../Base64Tool";
@@ -20,6 +20,35 @@ describe("Data & Developer Tools Suite", () => {
     expect(screen.getByText("SGVsbG8=")).toBeInTheDocument();
   });
 
+  it("Base64Tool toolbar supports Remove white space, Clear, and Copy actions", async () => {
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+
+    render(<Base64Tool />);
+
+    const textarea = screen.getByLabelText(/Plain Text Input/i) as HTMLTextAreaElement;
+    fireEvent.change(textarea, { target: { value: "Hello World With Spaces\nAnd Newlines" } });
+
+    // Remove white space
+    const removeWhitespaceBtn = screen.getByRole("button", { name: /Remove white space/i });
+    fireEvent.click(removeWhitespaceBtn);
+    expect(textarea.value).toBe("HelloWorldWithSpacesAndNewlines");
+
+    // Copy
+    const copyBtn = screen.getByRole("button", { name: /Copy input text/i });
+    fireEvent.click(copyBtn);
+    expect(writeTextMock).toHaveBeenCalledWith("HelloWorldWithSpacesAndNewlines");
+
+    // Clear
+    const clearBtn = screen.getByRole("button", { name: /^Clear$/i });
+    fireEvent.click(clearBtn);
+    expect(textarea.value).toBe("");
+  });
+
   it("JsonFormatterTool validates and formats valid JSON and shows error for invalid JSON", () => {
     render(<JsonFormatterTool />);
     expect(screen.getByText("JSON Formatter & Validator")).toBeInTheDocument();
@@ -31,6 +60,45 @@ describe("Data & Developer Tools Suite", () => {
     // Invalid JSON
     fireEvent.change(textarea, { target: { value: '{invalid: true' } });
     expect(screen.getAllByText(/Syntax Error/i)[0]).toBeInTheDocument();
+  });
+
+  it("JsonFormatterTool toolbar supports Clear, Format, Minify, and Copy actions", async () => {
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+
+    render(<JsonFormatterTool />);
+
+    const textarea = screen.getByLabelText(/JSON Editor/i) as HTMLTextAreaElement;
+    expect(textarea.value.length).toBeGreaterThan(0);
+
+    // Clear
+    const clearBtn = screen.getByRole("button", { name: /^Clear$/i });
+    fireEvent.click(clearBtn);
+    expect(textarea.value).toBe("");
+
+    // Load Sample JSON
+    const loadSampleBtn = screen.getByRole("button", { name: /Load Sample JSON|Load JSON data/i });
+    fireEvent.click(loadSampleBtn);
+    expect(textarea.value).toContain("ConvertSheet");
+
+    // Remove whitespace
+    const minifyBtn = screen.getByRole("button", { name: /Remove white space/i });
+    fireEvent.click(minifyBtn);
+    expect(textarea.value).not.toContain("\n");
+
+    // Format
+    const formatBtn = screen.getByRole("button", { name: /^Format$/i });
+    fireEvent.click(formatBtn);
+    expect(textarea.value).toContain("\n");
+
+    // Copy
+    const copyBtn = screen.getByTitle("Copy JSON to clipboard");
+    fireEvent.click(copyBtn);
+    expect(writeTextMock).toHaveBeenCalledWith(textarea.value);
   });
 
   it("UrlEncoderTool encodes and decodes URI strings", () => {

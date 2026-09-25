@@ -224,7 +224,7 @@ describe("useConverter hook", () => {
     expect(result.current.error).toBe("Please select a file to convert.");
   });
 
-  it("aborts convert() and triggers Pro modal if file size exceeds 10MB limit", async () => {
+  it("aborts convert() and triggers Pro modal if file size exceeds free size limit (200MB)", async () => {
     const { result } = renderHook(() => useConverter(jsonConfig));
 
     const largeFile = new File(["dummy"], "large.json", { type: "application/json" });

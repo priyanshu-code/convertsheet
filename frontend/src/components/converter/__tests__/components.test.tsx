@@ -27,7 +27,7 @@ describe("Converter Components", () => {
         screen.getByText(/Processed locally in browser - never uploaded to any server/i)
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/Max 10MB for free in-browser conversion/i)
+        screen.getByText(/Max 200MB for free in-browser conversion/i)
       ).toBeInTheDocument();
     });
 
@@ -372,7 +372,7 @@ describe("Converter Components", () => {
       expect(screen.getByText("Upgrade to Pro for Heavy Files")).toBeInTheDocument();
     });
 
-    it("displays Pro requirement warning when file exceeds 10MB", async () => {
+    it("displays Pro requirement warning when file exceeds free limit", async () => {
       const { container } = render(<ConverterCard config={jsonConfig} />);
 
       const input = container.querySelector('input[type="file"]') as HTMLInputElement;

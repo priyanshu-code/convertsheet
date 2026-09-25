@@ -52,7 +52,7 @@ export const CONVERTER_REGISTRY = {
       {
         question: "What is the maximum JSON file size supported in the browser?",
         answer:
-          "Client-side conversion smoothly handles JSON files up to 10MB (typically tens of thousands of rows). For massive datasets, our background processing tier is available.",
+          "Client-side conversion smoothly handles JSON files up to 100MB–200MB (typically hundreds of thousands of rows). For massive datasets, our background processing tier is available.",
       },
       {
         question: "Can I convert an array of JSON objects directly to Excel?",
@@ -108,7 +108,7 @@ export const CONVERTER_REGISTRY = {
       {
         question: "Will large enterprise XML exports convert reliably?",
         answer:
-          "Yes. Our streaming XML parser parses repeat nodes directly into memory and handles files up to 10MB in your browser.",
+          "Yes. Our streaming XML parser parses repeat nodes directly into memory and handles files up to 100MB in your browser.",
       },
       {
         question: "Are there any privacy risks when converting sensitive business XML?",
@@ -176,7 +176,7 @@ export const CONVERTER_REGISTRY = {
       {
         question: "Can I convert large CSV exports from databases and APIs?",
         answer:
-          "Yes. Files up to 10MB convert in under 200ms directly in your browser. For multi-gigabyte files, our ConvertSheet Pro tier provides high-speed chunked streaming via Web Workers.",
+          "Yes. Files up to 100MB+ convert in under a second directly in your browser. For multi-gigabyte files, our ConvertSheet Pro tier provides high-speed chunked streaming via Web Workers.",
       },
       {
         question: "Is my CSV data kept private and secure?",
@@ -811,7 +811,7 @@ export const CONVERTER_REGISTRY = {
       {
         question: "Is there a limit on line count?",
         answer:
-          "Files up to 10MB (typically 20,000–50,000 lines) convert in under a second in browser memory.",
+          "Files up to 100MB+ (typically hundreds of thousands of lines) convert in under a second in browser memory.",
       },
       {
         question: "Is my data stored or logged?",
