@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { Base64Tool } from "../Base64Tool";
 import { JsonFormatterTool } from "../JsonFormatterTool";
 import { UrlEncoderTool } from "../UrlEncoderTool";
@@ -31,21 +31,29 @@ describe("Data & Developer Tools Suite", () => {
     render(<Base64Tool />);
 
     const textarea = screen.getByLabelText(/Plain Text Input/i) as HTMLTextAreaElement;
-    fireEvent.change(textarea, { target: { value: "Hello World With Spaces\nAnd Newlines" } });
+    act(() => {
+      fireEvent.change(textarea, { target: { value: "Hello World With Spaces\nAnd Newlines" } });
+    });
 
     // Remove white space
     const removeWhitespaceBtn = screen.getByRole("button", { name: /Remove white space/i });
-    fireEvent.click(removeWhitespaceBtn);
+    act(() => {
+      fireEvent.click(removeWhitespaceBtn);
+    });
     expect(textarea.value).toBe("HelloWorldWithSpacesAndNewlines");
 
     // Copy
     const copyBtn = screen.getByRole("button", { name: /Copy input text/i });
-    fireEvent.click(copyBtn);
+    await act(async () => {
+      fireEvent.click(copyBtn);
+    });
     expect(writeTextMock).toHaveBeenCalledWith("HelloWorldWithSpacesAndNewlines");
 
     // Clear
     const clearBtn = screen.getByRole("button", { name: /^Clear$/i });
-    fireEvent.click(clearBtn);
+    act(() => {
+      fireEvent.click(clearBtn);
+    });
     expect(textarea.value).toBe("");
   });
 
@@ -77,27 +85,37 @@ describe("Data & Developer Tools Suite", () => {
 
     // Clear
     const clearBtn = screen.getByRole("button", { name: /^Clear$/i });
-    fireEvent.click(clearBtn);
+    act(() => {
+      fireEvent.click(clearBtn);
+    });
     expect(textarea.value).toBe("");
 
     // Load Sample JSON
     const loadSampleBtn = screen.getByRole("button", { name: /Load Sample JSON|Load JSON data/i });
-    fireEvent.click(loadSampleBtn);
+    act(() => {
+      fireEvent.click(loadSampleBtn);
+    });
     expect(textarea.value).toContain("ConvertSheet");
 
     // Remove whitespace
     const minifyBtn = screen.getByRole("button", { name: /Remove white space/i });
-    fireEvent.click(minifyBtn);
+    act(() => {
+      fireEvent.click(minifyBtn);
+    });
     expect(textarea.value).not.toContain("\n");
 
     // Format
     const formatBtn = screen.getByRole("button", { name: /^Format$/i });
-    fireEvent.click(formatBtn);
+    act(() => {
+      fireEvent.click(formatBtn);
+    });
     expect(textarea.value).toContain("\n");
 
     // Copy
     const copyBtn = screen.getByTitle("Copy JSON to clipboard");
-    fireEvent.click(copyBtn);
+    await act(async () => {
+      fireEvent.click(copyBtn);
+    });
     expect(writeTextMock).toHaveBeenCalledWith(textarea.value);
   });
 
