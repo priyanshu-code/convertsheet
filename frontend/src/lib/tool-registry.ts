@@ -42,19 +42,20 @@ export const TOOL_REGISTRY = {
     category: "data-developer",
     title: "JSON Formatter, Beautifier & Validator Online",
     subtitle: "Format, beautify, minify, and validate JSON payloads with accurate syntax error highlighting and tree structure viewing.",
-    metaDescription: "Free online JSON formatter and validator. Pretty-print nested JSON, detect syntax errors with line indicators, and minify payloads directly in your browser.",
-    answerSummary: "Use our JSON Formatter to beautify minified JSON strings with 2-space or 4-space indentation and pinpoint syntax errors instantly.",
+    metaDescription: "Free online JSON formatter and validator. Just paste the JSON or upload your file to pretty-print, detect syntax errors, and minify directly in your browser.",
+    answerSummary: "Use our JSON Formatter to beautify minified JSON strings. Just paste the JSON or upload a payload to format with clean indentation and pinpoint syntax errors instantly.",
     badge: "Popular",
     featured: true,
-    keywords: ["json formatter", "json beautifier", "json validator", "pretty print json", "minify json", "json parser online"],
+    keywords: ["json formatter", "json beautifier", "json validator", "pretty print json", "minify json", "json parser online", "just paste json", "paste json or upload", "paste the json"],
     formulaDescription: "JSON syntax trees are parsed via native ECMAScript JSON engines, validating RFC 8259 compliance and re-serializing with configurable whitespace indentation.",
-    about: "Working with raw API outputs, database dumps, and webhook payloads frequently involves unformatted or malformed JSON. ConvertSheet's JSON Formatter cleans, indents, and validates your JSON in real-time. If there is a syntax error (such as a missing comma, unescaped quote, or trailing bracket), our validator pinpoints the exact line and character error message so you can fix it immediately.",
+    about: "Working with raw API outputs, database dumps, and webhook payloads frequently involves unformatted or malformed JSON. ConvertSheet's JSON Formatter cleans, indents, and validates your JSON in real-time. Whether you need to just paste the JSON directly into the editor or upload a file, our validator pinpoints syntax errors immediately with zero server uploads.",
     howTo: [
-      { step: 1, title: "Paste JSON", description: "Paste your raw, minified, or unformatted JSON text into the editor." },
+      { step: 1, title: "Paste JSON or Upload", description: "Just paste your raw, minified, or unformatted JSON text into the editor or upload your file." },
       { step: 2, title: "Format & Validate", description: "Click Format to beautify with clean indentation, or Minify to strip unnecessary whitespace." },
       { step: 3, title: "Inspect & Copy", description: "Review the validated structure and copy the clean JSON output directly to your clipboard." }
     ],
     faqs: [
+      { question: "Can I just paste the JSON into the formatter?", answer: "Yes! Just paste the JSON directly into the editor or upload a file. The tool validates syntax and formats it in real-time with zero server uploads." },
       { question: "Why is my JSON failing validation?", answer: "Common causes include trailing commas after the last array or object element, single quotes instead of double quotes, or unescaped control characters." },
       { question: "Can this format large JSON files?", answer: "Yes, our client-side formatter comfortably handles multi-megabyte payloads in browser memory without lag or server upload limits." },
       { question: "Is my JSON payload kept private?", answer: "100% private. Parsing and formatting take place in your browser. Nothing is logged, stored, or sent over the network." }

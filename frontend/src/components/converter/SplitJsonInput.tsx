@@ -383,8 +383,8 @@ export function SplitJsonInput({
               }
             }}
             disabled={disabled}
-            aria-label="Paste JSON data"
-            placeholder={`[\n  {\n    "id": 1,\n    "title": "Data Pipeline",\n    "active": true\n  }\n]`}
+            aria-label="Paste JSON data or upload"
+            placeholder={`// Just paste the JSON here or upload a file on the right\n[\n  {\n    "id": 1,\n    "title": "Data Pipeline",\n    "active": true\n  }\n]`}
             className={cn(
               "w-full h-full min-h-[220px] resize-none rounded-xl border bg-white dark:bg-zinc-950 p-3.5 font-mono text-xs leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2",
               !jsonValidation.isEmpty && !jsonValidation.isValid
@@ -399,7 +399,7 @@ export function SplitJsonInput({
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-zinc-200/60 dark:border-zinc-800/60">
           <div className="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             {jsonValidation.isEmpty ? (
-              <span>Paste JSON array or single object</span>
+              <span>Just paste the JSON or upload your file</span>
             ) : jsonValidation.isValid ? (
               <span className="flex items-center gap-1.5 font-mono">
                 <span className="text-emerald-600 dark:text-emerald-400 font-semibold">

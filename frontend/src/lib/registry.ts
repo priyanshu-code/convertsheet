@@ -11,19 +11,21 @@ export const CONVERTER_REGISTRY = {
     category: "spreadsheets",
     title: "Convert JSON to Excel Online - Fast, Free & Private",
     subtitle:
-      "Transform JSON data, nested objects, and API arrays into formatted Microsoft Excel (.xlsx) spreadsheets instantly in your browser.",
+      "Transform JSON data, nested objects, and API arrays into formatted Microsoft Excel (.xlsx) spreadsheets. Just paste the JSON or upload a file — 100% private in your browser.",
     metaDescription:
-      "Free online JSON to Excel converter. Cleanly flattens nested objects and arrays into structured XLSX worksheets with zero data uploaded to external servers.",
+      "Free online JSON to Excel converter. Just paste the JSON or upload a .json file. Flattens nested objects into clean XLSX worksheets with zero data uploaded to external servers.",
     engineId: "json-to-excel",
     isClientSide: true,
     featured: true,
     badge: "Popular",
+    about:
+      "Converting JSON data into Microsoft Excel spreadsheets is essential for developers, analysts, and business teams who need to analyze API payloads or database exports in a familiar spreadsheet format.\n\nWith ConvertSheet, you can just paste the JSON text directly into the editor or upload a .json file from your computer. Our intelligent engine unrolls arrays of objects, flattens nested JSON structures using dot-notation column names (e.g., user.address.city), and exports cleanly formatted .xlsx workbooks.\n\nBest of all, your data stays 100% private. All processing occurs locally in your browser memory without uploading any bytes to remote servers.",
     howTo: [
       {
         step: 1,
-        title: "Upload JSON File",
+        title: "Paste JSON or Upload File",
         description:
-          "Select or drag and drop your .json file into the upload dropzone.",
+          "Just paste the JSON directly into the editor or drag and drop your .json file into the upload zone.",
       },
       {
         step: 2,
@@ -39,6 +41,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can I just paste the JSON or do I have to upload a file?",
+        answer:
+          "You can do either! You can just paste the JSON payload directly into our web editor or upload any .json file. ConvertSheet processes both methods instantly in memory with zero server uploads.",
+      },
       {
         question: "Is my JSON data uploaded to any remote server?",
         answer:
@@ -72,9 +79,9 @@ export const CONVERTER_REGISTRY = {
     category: "spreadsheets",
     title: "Convert XML to Excel Online (.xlsx) - Fast In-Browser Tool",
     subtitle:
-      "Parse XML trees, feeds, and attribute structures into clean, multi-column Excel workbooks without installing software.",
+      "Parse XML trees, feeds, and attribute structures into clean, multi-column Excel workbooks. Just paste the XML or upload an XML file.",
     metaDescription:
-      "Convert XML files to Excel spreadsheets (.xlsx) online for free. Automatically detects XML record repeating nodes and converts attributes into structured spreadsheet columns.",
+      "Convert XML files to Excel spreadsheets (.xlsx) online for free. Just paste the XML or upload a file. Auto-detects repeating nodes with zero server uploads.",
     engineId: "xml-to-excel",
     isClientSide: true,
     featured: true,
@@ -82,9 +89,9 @@ export const CONVERTER_REGISTRY = {
     howTo: [
       {
         step: 1,
-        title: "Select XML Document",
+        title: "Paste XML or Upload File",
         description:
-          "Drop your XML dataset, RSS/Atom feed, or ERP export file into the upload area.",
+          "Just paste your XML data directly or drop your XML dataset, RSS/Atom feed, or ERP export file into the upload area.",
       },
       {
         step: 2,
@@ -100,6 +107,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can I just paste XML code instead of uploading a file?",
+        answer:
+          "Yes! You can just paste the raw XML text into the editor or upload an XML file. ConvertSheet extracts rows and columns instantly in your browser.",
+      },
       {
         question: "Does this XML to Excel converter support XML attributes?",
         answer:
@@ -128,9 +140,9 @@ export const CONVERTER_REGISTRY = {
     category: "spreadsheets",
     title: "CSV to Excel Converter Online — Free, Instant (.xlsx), No Upload",
     subtitle:
-      "Convert CSV, TSV, semicolon, and pipe-delimited text files into authentic Microsoft Excel spreadsheets directly in your browser with zero server uploads.",
+      "Convert CSV, TSV, semicolon, and pipe-delimited text files into authentic Microsoft Excel spreadsheets. Just paste the CSV or upload a file.",
     metaDescription:
-      "Convert CSV to Excel online in one click. 100% private, free, and instant in your browser — zero file uploads. Auto-detects delimiters, preserves leading zeros, and downloads clean .xlsx.",
+      "Convert CSV to Excel online in one click. Just paste the CSV or upload a file. 100% private, free, and instant in your browser with zero server uploads.",
     engineId: "csv-to-excel",
     isClientSide: true,
     featured: true,
@@ -140,9 +152,9 @@ export const CONVERTER_REGISTRY = {
     howTo: [
       {
         step: 1,
-        title: "Upload CSV File",
+        title: "Paste CSV or Upload File",
         description:
-          "Drag and drop any .csv, .tsv, or text file into the converter box.",
+          "Just paste your CSV text directly or drag and drop any .csv, .tsv, or text file into the converter box.",
       },
       {
         step: 2,
@@ -158,6 +170,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can I just paste the CSV text directly instead of uploading a file?",
+        answer:
+          "Yes! You can just paste raw CSV, TSV, or tab-delimited text directly into the web editor or upload a file. Both convert instantly to Excel with zero server uploads.",
+      },
       {
         question: "Does the CSV to Excel converter preserve leading zeros and formatting?",
         answer:
@@ -664,16 +681,16 @@ export const CONVERTER_REGISTRY = {
     category: "data-engineering",
     title: "Convert JSON to Parquet Online - Columnar Compression",
     subtitle:
-      "Transform JSON datasets and API outputs into high-efficiency Apache Parquet files in your browser.",
+      "Transform JSON datasets and API outputs into high-efficiency Apache Parquet files. Just paste the JSON or upload your file to convert instantly.",
     metaDescription:
-      "Convert JSON to Parquet online for free. Compress JSON arrays into columnar Apache Parquet files using DuckDB WebAssembly with zero data leakage.",
+      "Convert JSON to Parquet online for free. Just paste the JSON or upload a .json file to generate columnar Apache Parquet datasets using DuckDB WebAssembly.",
     engineId: "json-to-parquet",
     isClientSide: true,
     howTo: [
       {
         step: 1,
-        title: "Upload JSON Document",
-        description: "Select any JSON array of objects or API export.",
+        title: "Paste JSON or Upload File",
+        description: "Just paste your JSON records directly or select/drag-and-drop a .json file.",
       },
       {
         step: 2,
@@ -687,6 +704,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can I just paste the JSON or upload a file?",
+        answer:
+          "Yes! You can just paste the JSON text directly into the input area or upload any .json file. Both are converted into Apache Parquet entirely client-side.",
+      },
       {
         question: "Can it handle nested JSON structures?",
         answer:
@@ -943,20 +965,20 @@ export const CONVERTER_REGISTRY = {
     category: "data-engineering",
     title: "Convert JSON to JSONL Online — Free (.json to .jsonl / .ndjson)",
     subtitle:
-      "Convert massive standard JSON arrays into streaming Newline-Delimited JSON (JSONL / NDJSON) for LLMs, OpenAI, and vector database ingestion.",
+      "Convert massive standard JSON arrays into streaming Newline-Delimited JSON (JSONL / NDJSON). Just paste the JSON or upload a file for LLMs, OpenAI, and vector database ingestion.",
     metaDescription:
-      "Convert JSON arrays and nested records into JSONL / NDJSON files online. Fast, zero-install, 100% client-side conversion for AI fine-tuning and big data.",
+      "Convert JSON arrays and nested records into JSONL / NDJSON files online. Just paste the JSON or upload your file. Fast, zero-install, 100% client-side conversion for AI fine-tuning.",
     engineId: "json-to-jsonl",
     isClientSide: true,
     featured: true,
     badge: "LLM Streaming",
     about:
-      "Standard JSON stores collections in one monolithic array [...], requiring parsers to load the entire document into RAM before accessing a single object. JSONL (Newline-Delimited JSON) solves this by placing each JSON object on its own line, enabling lightning-fast streaming, parallel chunking, and direct compatibility with OpenAI GPT-4o, Anthropic Claude, and Llama fine-tuning APIs.\n\nConvertSheet converts your JSON files directly inside your browser memory with zero server uploads.",
+      "Standard JSON stores collections in one monolithic array [...], requiring parsers to load the entire document into RAM before accessing a single object. JSONL (Newline-Delimited JSON) solves this by placing each JSON object on its own line, enabling lightning-fast streaming, parallel chunking, and direct compatibility with OpenAI GPT-4o, Anthropic Claude, and Llama fine-tuning APIs.\n\nWhether you need to just paste the JSON directly into your browser or upload a file, ConvertSheet converts your records directly inside browser memory with zero server uploads.",
     howTo: [
       {
         step: 1,
-        title: "Upload JSON File",
-        description: "Select or drop your JSON file containing an array of objects or records.",
+        title: "Paste JSON or Upload File",
+        description: "Just paste the JSON array directly or select/drop your JSON file into the converter.",
       },
       {
         step: 2,
@@ -970,6 +992,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can I just paste the JSON or do I have to upload a file?",
+        answer:
+          "You can do either! Just paste the JSON array directly into the input area or upload your .json file. Both convert instantly in browser memory.",
+      },
       {
         question: "What is the difference between JSON and JSONL?",
         answer:
@@ -1146,15 +1173,15 @@ export const CONVERTER_REGISTRY = {
     badge: "AI & Vector DB",
     title: "Convert JSON to NDJSON / JSONL Online - Fast, Free & Private",
     subtitle:
-      "Transform JSON objects and arrays into Newline-Delimited JSON (NDJSON/JSONL) for vector database embeddings, Elasticsearch, and LLM finetuning locally in your browser.",
+      "Transform JSON objects and arrays into Newline-Delimited JSON (NDJSON/JSONL). Just paste the JSON or upload a file for vector databases and LLM finetuning.",
     metaDescription:
-      "Free online JSON to NDJSON / JSONL converter. Format JSON arrays into streaming line-delimited objects for Pinecone, Weaviate, Qdrant, and OpenAI finetuning with zero server uploads.",
+      "Free online JSON to NDJSON / JSONL converter. Just paste the JSON or upload a file to convert into streaming line-delimited records with zero server uploads.",
     howTo: [
       {
         step: 1,
-        title: "Upload JSON File",
+        title: "Paste JSON or Upload File",
         description:
-          "Drag and drop or select your standard .json file containing an array of objects or key-value structures.",
+          "Just paste the JSON array into the editor or drag and drop a .json file into the upload zone.",
       },
       {
         step: 2,
@@ -1170,6 +1197,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can I just paste the JSON or do I need to upload a file?",
+        answer:
+          "You can do either! Just paste the JSON text directly into the input area or upload your .json file. Both are converted to NDJSON / JSONL instantly in your browser.",
+      },
       {
         question: "Is my JSON data uploaded to any remote server during conversion?",
         answer:
@@ -1213,15 +1245,15 @@ export const CONVERTER_REGISTRY = {
     badge: "Schema Generator",
     title: "Generate JSON Schema from JSON Online - In-Browser Generator",
     subtitle:
-      "Automatically infer and generate standard Draft-07 JSON Schema specifications from sample JSON objects and API payloads instantly with zero cloud storage.",
+      "Infer and generate standard Draft-07 JSON Schema specifications from sample JSON objects. Just paste the JSON or upload a file — 100% private in your browser.",
     metaDescription:
-      "Free online JSON Schema generator. Infer data types, required properties, and nested structures to produce standard Draft-07 JSON Schema documents in your browser.",
+      "Free online JSON Schema generator. Just paste the JSON or upload a file to automatically infer data types, required properties, and nested structures.",
     howTo: [
       {
         step: 1,
-        title: "Upload JSON Payload",
+        title: "Paste JSON or Upload File",
         description:
-          "Select or drop any sample JSON file, API response, or configuration payload into the secure browser dropzone.",
+          "Just paste the JSON payload or drop any sample JSON file into the secure browser upload zone.",
       },
       {
         step: 2,
@@ -1237,6 +1269,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can I just paste the JSON to generate a schema?",
+        answer:
+          "Yes! Just paste your JSON object or array directly into the editor or upload a .json file. Our engine immediately infers types and generates a standard Draft-07 schema.",
+      },
       {
         question: "Is my JSON payload or schema shared with third parties or cloud servers?",
         answer:

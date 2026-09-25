@@ -78,7 +78,7 @@ const homeJsonLd = {
       name: "ConvertSheet",
       url: "https://www.convertsheet.com",
       description:
-        "Fast, private structured data conversion. Convert spreadsheets, JSON arrays, and XML feeds directly in your browser with zero server uploads.",
+        "Fast, private structured data conversion. Just paste the JSON or upload your spreadsheet, CSV, or XML directly in your browser with zero server uploads.",
     },
     {
       "@type": "Organization",
@@ -119,7 +119,7 @@ export default function HomePage() {
 
         {/* Subtitle */}
         <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-normal">
-          Convert JSON, CSV, Excel &amp; XML instantly in your browser — 100% private, zero cost, and zero server uploads.
+          Just paste the JSON, CSV, or XML, or upload your file to convert instantly in your browser — 100% private, zero cost, and zero server uploads.
         </p>
       </div>
 

@@ -340,7 +340,7 @@ export function SplitCsvInput({
               }
             }}
             disabled={disabled}
-            aria-label={`Paste ${formatName} data`}
+            aria-label={`Paste ${formatName} data or upload`}
             placeholder={
               isTsv
                 ? `id\tname\temail\tdepartment\n1\tAlice\talice@example.com\tEngineering`
@@ -358,7 +358,7 @@ export function SplitCsvInput({
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-zinc-200/60 dark:border-zinc-800/60">
           <div className="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             {stats.isEmpty ? (
-              <span>Paste comma or tab separated values</span>
+              <span>Just paste the {formatName} or upload your file</span>
             ) : (
               <span className="flex items-center gap-1.5 font-mono">
                 <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
