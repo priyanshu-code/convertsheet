@@ -14,9 +14,49 @@ import {
   Check,
   AlignLeft,
   Minimize2,
+  ExternalLink,
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { cn } from "@/lib/utils";
+
+function jsonToTsv(jsonText: string): string {
+  try {
+    const data = JSON.parse(jsonText);
+    const rows: Record<string, unknown>[] = Array.isArray(data)
+      ? data
+      : typeof data === "object" && data !== null
+      ? [data]
+      : [];
+    if (rows.length === 0) return "";
+
+    const keys: string[] = [];
+    for (const row of rows) {
+      if (typeof row === "object" && row !== null) {
+        for (const k of Object.keys(row)) {
+          if (!keys.includes(k)) keys.push(k);
+        }
+      }
+    }
+    if (keys.length === 0) return "";
+
+    const headerRow = keys.join("\t");
+    const dataRows = rows.map((row) => {
+      if (typeof row !== "object" || row === null) return String(row);
+      return keys
+        .map((k) => {
+          const val = (row as Record<string, unknown>)[k];
+          if (val === undefined || val === null) return "";
+          if (typeof val === "object") return JSON.stringify(val).replace(/[\t\n\r]/g, " ");
+          return String(val).replace(/[\t\n\r]/g, " ");
+        })
+        .join("\t");
+    });
+
+    return [headerRow, ...dataRows].join("\n");
+  } catch {
+    return "";
+  }
+}
 
 export interface SplitJsonInputProps {
   config: ConverterConfig;
@@ -140,11 +180,30 @@ export function SplitJsonInput({
   }, [disabled]);
 
   const [copied, setCopied] = useState(false);
+  const [openedSheets, setOpenedSheets] = useState(false);
 
   const handleClear = useCallback(() => {
     if (disabled) return;
     setText("");
   }, [disabled]);
+
+  const handleOpenGoogleSheets = useCallback(async () => {
+    if (disabled || !text.trim() || !jsonValidation.isValid) return;
+    const tsvContent = jsonToTsv(text.trim());
+    if (!tsvContent) return;
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(tsvContent);
+      }
+    } catch {
+      // Fallback
+    }
+    if (typeof window !== "undefined") {
+      window.open("https://sheets.new", "_blank", "noopener,noreferrer");
+    }
+    setOpenedSheets(true);
+    setTimeout(() => setOpenedSheets(false), 3500);
+  }, [disabled, text, jsonValidation.isValid]);
 
   const handleCopy = useCallback(async () => {
     if (!text || disabled) return;
@@ -355,6 +414,17 @@ export function SplitJsonInput({
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Clear</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleOpenGoogleSheets}
+              disabled={disabled || !text.trim() || !jsonValidation.isValid}
+              aria-label="Open in Google Sheets"
+              title="Convert JSON to table and open in Google Sheets (sheets.new) to paste"
+              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors disabled:opacity-40 cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>{openedSheets ? "Paste in Sheets (Ctrl+V)!" : "Open in Sheets"}</span>
             </button>
           </div>
 

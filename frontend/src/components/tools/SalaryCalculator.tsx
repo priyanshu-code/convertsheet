@@ -11,11 +11,14 @@ import {
   CalcChart,
   CalcPromptButton,
   CalcExportButton,
+  CalcPdfReportButton,
   CalcShareButton,
   CalcSaveButton,
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 import { calculateUsSalary, UsSalaryInput } from "@/lib/engines/financial-engine";
+import { generateSalaryDossierPdf } from "@/lib/engines/pdf-dossier-engine";
+import { RemittancePartnerCard } from "@/components/finance";
 
 export interface SalaryCalculatorProps {
   initialValues?: Partial<{
@@ -170,6 +173,9 @@ export function SalaryCalculator({ initialValues }: SalaryCalculatorProps = {}) 
       annualTakeHome: Math.round(aTakeHome),
       annualDeductions: Math.round(aDeductions),
       annualTax: Math.round(aTax),
+      annualPt: Math.round(annualPt),
+      annualEpf: Math.round(annualEpf),
+      effectiveTaxRate: ctc > 0 ? roundTo2((aTax / ctc) * 100) : 0,
     };
   }, [annualCtc, epfPercent, professionalTaxMonthly]);
 
@@ -248,7 +254,8 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
   }, [regime, usResult, filingStatus, pretaxDeductionsMonthly, annualCtc, inResult]);
 
   return (
-    <CalcCard
+    <div className="space-y-6">
+      <CalcCard
       title={
         regime === "US"
           ? "Salary & Take-Home Paycheck Calculator (US 2024)"
@@ -491,6 +498,39 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
               filename={regime === "US" ? "us-paycheck-breakdown" : "salary-breakdown"}
               sheetName="Salary Summary"
             />
+            <CalcPdfReportButton
+              filename={regime === "US" ? `us_salary_dossier_${grossSalary}.pdf` : `india_salary_dossier_${annualCtc}.pdf`}
+              label="Download Salary Dossier (PDF)"
+              onGenerate={() =>
+                generateSalaryDossierPdf(
+                  regime === "US"
+                    ? {
+                        grossSalary,
+                        netAnnualTakeHome: usResult.netAnnualTakeHome,
+                        netMonthlyTakeHome: usResult.netMonthlyTakeHome,
+                        netBiWeeklyTakeHome: usResult.netBiWeeklyTakeHome,
+                        federalTax: usResult.federalIncomeTax,
+                        stateTax: usResult.stateIncomeTax,
+                        ficaTax: usResult.socialSecurityTax + usResult.medicareTax,
+                        effectiveTaxRate: usResult.effectiveTaxRate,
+                        currencySymbol: "$",
+                        regimeLabel: "US 2026",
+                      }
+                    : {
+                        grossSalary: annualCtc,
+                        netAnnualTakeHome: inResult.annualTakeHome,
+                        netMonthlyTakeHome: inResult.monthlyTakeHome,
+                        netBiWeeklyTakeHome: Math.round(inResult.annualTakeHome / 26),
+                        federalTax: inResult.annualTax,
+                        stateTax: inResult.annualPt,
+                        ficaTax: inResult.annualEpf,
+                        effectiveTaxRate: inResult.effectiveTaxRate,
+                        currencySymbol: "₹",
+                        regimeLabel: "India FY 2024-25",
+                      }
+                )
+              }
+            />
           </div>
         </div>
 
@@ -595,7 +635,12 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
           ]}
         />
       </div>
-    </CalcCard>
+      </CalcCard>
+      <RemittancePartnerCard
+        sourceCurrency={regime === "US" ? "USD" : "INR"}
+        targetCurrency={regime === "US" ? "INR" : "USD"}
+      />
+    </div>
   );
 }
 

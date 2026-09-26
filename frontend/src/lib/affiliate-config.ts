@@ -6,7 +6,14 @@
  * When enabled, seamlessly decorates links with tracking parameters (UTM tags, ref tokens, etc.).
  */
 
-export type AffiliateCategory = "mortgage" | "auto_loan" | "retirement" | "savings" | "general";
+export type AffiliateCategory =
+  | "mortgage"
+  | "auto_loan"
+  | "retirement"
+  | "savings"
+  | "remittance"
+  | "debt_consolidation"
+  | "general";
 
 export interface AffiliateLinkParams {
   category: AffiliateCategory;

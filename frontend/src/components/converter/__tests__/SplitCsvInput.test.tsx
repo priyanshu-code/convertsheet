@@ -75,6 +75,31 @@ describe("SplitCsvInput", () => {
     expect(passedFile.name).toContain(".csv");
   });
 
+  it("'Open in Google Sheets' writes TSV to clipboard and opens sheets.new", async () => {
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+    const openMock = vi.spyOn(window, "open").mockImplementation(() => null);
+
+    render(<SplitCsvInput config={csvToExcelConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste CSV data/i);
+    fireEvent.change(textarea, { target: { value: "name,role\nAlice,Engineer" } });
+
+    const openSheetsBtn = screen.getByRole("button", { name: /Open in Google Sheets/i });
+    expect(openSheetsBtn).not.toBeDisabled();
+    fireEvent.click(openSheetsBtn);
+
+    expect(writeTextMock).toHaveBeenCalledWith("name\trole\nAlice\tEngineer");
+    await waitFor(() => {
+      expect(openMock).toHaveBeenCalledWith("https://sheets.new", "_blank", "noopener,noreferrer");
+      expect(screen.getByText(/Paste in Sheets/i)).toBeInTheDocument();
+    });
+  });
+
   it("ConverterCard renders SplitCsvInput for CSV converters", () => {
     render(<ConverterCard config={csvToExcelConfig} />);
     expect(screen.getByTestId("split-csv-input")).toBeInTheDocument();

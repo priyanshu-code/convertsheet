@@ -4,3 +4,4 @@ export * from "./AutoLoanRatesCard";
 export * from "./InflationHedgeCard";
 export * from "./SavingsRatesCard";
 export * from "./DebtConsolidationCard";
+export * from "./RemittancePartnerCard";

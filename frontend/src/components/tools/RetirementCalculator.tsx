@@ -7,6 +7,7 @@ import {
   CalcResult,
   CalcChart,
   CalcExportButton,
+  CalcPdfReportButton,
   CalcPromptButton,
   CalcSaveButton,
   CalcShareButton,
@@ -18,6 +19,7 @@ import {
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 import { calculateRetirement } from "@/lib/engines/financial-engine";
+import { generateRetirementDossierPdf } from "@/lib/engines/pdf-dossier-engine";
 import { RetirementAccountsCard } from "@/components/finance";
 
 export interface RetirementCalculatorProps {
@@ -533,6 +535,24 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
                   data={exportData}
                   filename={`retirement-plan-age-${retirementAge}`}
                   sheetName="Retirement Projection"
+                />
+
+                <CalcPdfReportButton
+                  filename={`retirement_dossier_age_${retirementAge}.pdf`}
+                  label="Download Retirement Dossier (PDF)"
+                  onGenerate={() =>
+                    generateRetirementDossierPdf({
+                      currentAge,
+                      retirementAge,
+                      currentSavings,
+                      monthlyContribution,
+                      annualReturnPercent: annualReturn,
+                      nestEggAtRetirement: retirement.nestEggAtRetirement,
+                      totalContributions: retirement.totalContributions,
+                      compoundGrowthEarned: retirement.totalInterestEarned,
+                      monthlyRetirementIncome: retirement.monthlyRetirementIncome,
+                    })
+                  }
                 />
 
                 <CalcSaveButton

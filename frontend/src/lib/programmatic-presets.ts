@@ -4578,6 +4578,294 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
       },
     ],
   },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "california-take-home-100k",
+    name: "$100,000 California Take-Home Paycheck Calculator",
+    title: "$100k Salary in California: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in California. Full breakdown of Federal taxes, CA state income tax, SDI, monthly & bi-weekly net pay.",
+    answerSummary: "On a $100,000 salary in California (Single filer, 2026), your estimated annual take-home pay is roughly $72,500 (~$6,042/month or $2,788 bi-weekly), after ~$14,260 in Federal income tax, ~$7,650 in FICA/Medicare, and ~$5,590 in California state income tax and SDI.",
+    about: "Analyze net pay and tax withholding on a $100k annual salary in California. Review federal brackets, progressive California Franchise Tax Board rates, and simulate pre-tax 401(k) contributions to maximize your net earnings.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 6.0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the take-home pay on $100,000 in California?",
+        answer: "As a single filer taking standard deductions, net annual take-home pay on $100,000 is approximately $72,500, or about $6,042 per month and $2,788 every two weeks.",
+      },
+      {
+        question: "How much state tax do you pay on $100k in CA?",
+        answer: "California state income tax on $100,000 is approximately $4,700, plus an additional ~$900 for State Disability Insurance (SDI).",
+      },
+      {
+        question: "How does a 401(k) reduce California tax liability?",
+        answer: "Contributing 5% ($5,000) to a traditional 401(k) lowers your federal and state taxable income to $95,000, saving over $1,400 in combined taxes.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "texas-take-home-100k",
+    name: "$100,000 Texas Take-Home Paycheck Calculator",
+    title: "$100k Salary in Texas: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Texas. Zero state income tax breakdown: see your net monthly and bi-weekly pay after Federal & FICA.",
+    answerSummary: "On a $100,000 salary in Texas (Single filer, 2026), your estimated take-home pay is approximately $78,090 (~$6,507/month or $3,003 bi-weekly). Because Texas has 0% state income tax, you keep over $5,500 more per year compared to high-tax states.",
+    about: "Evaluate your net paycheck in Texas on a $100k salary. With no personal state income tax, Texas workers only pay Federal income tax and FICA (Social Security & Medicare).",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the take-home pay for $100k in Texas?",
+        answer: "After federal income taxes (~$14,260) and FICA payroll taxes (~$7,650), your annual take-home pay in Texas is roughly $78,090.",
+      },
+      {
+        question: "Does Texas tax earned income?",
+        answer: "No. The Texas state constitution explicitly bans individual state income tax on personal earnings.",
+      },
+      {
+        question: "How much more do you keep in Texas vs California on $100k?",
+        answer: "A single earner keeps roughly $5,590 more per year in Texas than in California due to the absence of state income tax and SDI.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "new-york-take-home-100k",
+    name: "$100,000 New York Take-Home Paycheck Calculator",
+    title: "$100k Salary in New York: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in New York. Detailed breakdown of Federal, NY State, and NYC local taxes, net monthly & bi-weekly pay.",
+    answerSummary: "On a $100,000 salary in New York (Single filer living in NYC), your estimated annual take-home pay is approximately $69,800 (~$5,817/month or $2,685 bi-weekly), after Federal tax (~$14,260), FICA (~$7,650), NY State tax (~$4,900), and NYC local tax (~$3,390).",
+    about: "Calculate your true net earnings in New York State and New York City. Model standard deductions, FICA, NY state progressive tax tiers, and NYC resident income tax.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 8.5, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is $100k after taxes in New York City?",
+        answer: "In NYC, combined Federal, State, and City taxes total roughly $30,200, leaving an after-tax take-home pay of around $69,800 per year.",
+      },
+      {
+        question: "What are the NYC resident income tax rates?",
+        answer: "New York City levies an additional resident personal income tax ranging from 3.078% to 3.876% on top of New York State income tax.",
+      },
+      {
+        question: "How much is taken out of each paycheck on $100k in NY?",
+        answer: "On a bi-weekly payroll schedule (26 pay periods), approximately $1,161 is withheld for taxes per paycheck.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "florida-take-home-100k",
+    name: "$100,000 Florida Take-Home Paycheck Calculator",
+    title: "$100k Salary in Florida: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Florida. Zero state income tax: see net monthly, bi-weekly, and weekly pay after Federal tax & FICA.",
+    answerSummary: "On a $100,000 salary in Florida (Single filer, 2026), your estimated net take-home pay is ~$78,090 (~$6,507/month or $3,003 bi-weekly). Florida levies no individual state income tax, allowing you to maximize net earnings.",
+    about: "Analyze your net income in Florida on a $100,000 annual wage. Review federal withholding, Social Security, Medicare, and model retirement contributions.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home on $100k in Florida?",
+        answer: "Annual net take-home pay is approximately $78,090, meaning you retain over 78% of your gross earnings.",
+      },
+      {
+        question: "Does Florida have state income tax on salary?",
+        answer: "No. Florida does not tax personal earned income or wages.",
+      },
+      {
+        question: "How much can you save living in Florida on $100k?",
+        answer: "Compared to states with high local taxes like New York or California, Florida residents save between $5,500 and $8,200 annually on income taxes alone.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "10k-used-car-loan",
+    name: "$10,000 Used Car Loan Calculator",
+    title: "$10,000 Used Car Loan Calculator – Monthly Payment & Total Interest (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a $10,000 used car loan. Compare 36, 48, and 60-month terms at 7.5% APR. View total interest and Excel amortization schedule.",
+    answerSummary: "On a $10,000 used car loan with 10% down ($1,000) at 7.5% APR for 48 months, the monthly payment is roughly $218/month. Total interest paid over 4 years is $1,444, making total financing payments $10,444.",
+    about: "Calculate affordable payments for an entry-level or used vehicle purchase. Understand the impact of short loan terms on used vehicle depreciation and minimize borrowing costs.",
+    initialValues: { vehiclePrice: 10000, downPayment: 1000, interestRate: 7.5, loanTermMonths: 48, salesTaxPercent: 6.0, dealerFees: 300 },
+    faqs: [
+      {
+        question: "What is the monthly payment on a $10,000 car loan?",
+        answer: "Financing $9,000 at 7.5% APR results in approximately $218/month for 48 months or $180/month for 60 months.",
+      },
+      {
+        question: "Why are used car loan interest rates higher than new cars?",
+        answer: "Lenders face higher collateral depreciation risk on used vehicles, resulting in rates typically 1% to 2% higher than new car financing.",
+      },
+      {
+        question: "Is a 36-month loan better for a $10k car?",
+        answer: "Yes. A 36-month term raises monthly payments to $280/month but reduces total interest paid to just $1,079.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "70k-luxury-car-loan",
+    name: "$70,000 Luxury Vehicle Car Loan Calculator",
+    title: "$70,000 Luxury Car Loan Calculator – Monthly Financing & Amortization (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payment on a $70,000 luxury vehicle or EV loan at 6.2% APR. View 60 and 72-month payment options, sales tax, and full amortization schedule.",
+    answerSummary: "On a $70,000 vehicle with 15% down ($10,500) financed at 6.2% APR for 60 months, the monthly payment is roughly $1,155/month. Total interest paid equals $9,800 over 5 years.",
+    about: "Plan luxury vehicle or premium electric car financing. Model luxury vehicle tax thresholds, evaluate trade-in impact on monthly payments, and export complete financing schedules to Excel.",
+    initialValues: { vehiclePrice: 70000, downPayment: 10500, interestRate: 6.2, loanTermMonths: 60, salesTaxPercent: 7.0, dealerFees: 600 },
+    faqs: [
+      {
+        question: "What is the monthly payment on a $70,000 car?",
+        answer: "With $10,500 down at 6.2% APR for 60 months, your payment is ~$1,155/month. With zero down, payment rises to ~$1,359/month.",
+      },
+      {
+        question: "What salary is needed for a $70,000 car?",
+        answer: "Financial advisors recommend gross household income of at least $140,000 to $160,000 to keep vehicle expenses under 10-15% of take-home pay.",
+      },
+      {
+        question: "How much interest is paid on a $70k car loan?",
+        answer: "Financing $59,500 over 60 months at 6.2% results in $9,800 in interest. A 72-month loan raises interest to $11,920.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "electric-vehicle-loan",
+    name: "Electric Vehicle (EV) Car Loan Calculator",
+    title: "Electric Vehicle (EV) Car Loan Calculator (2026) – Federal Tax Credit & Payments | ConvertSheet",
+    metaDescription: "Calculate monthly payment on a new or used electric car loan. Factor in the $7,500 Federal Clean Vehicle Tax Credit, fuel savings, and financing costs.",
+    answerSummary: "On a $45,000 EV purchase utilizing the $7,500 point-of-sale Federal Clean Vehicle Credit plus $2,500 cash down, the net loan balance is $35,000. At 6.0% APR for 60 months, monthly payment is $677/month.",
+    about: "Calculate true financing costs for electric vehicles like the Tesla Model 3/Y, Hyundai Ioniq, or Ford Mustang Mach-E. Factor in federal incentives, state rebates, and long-term interest costs.",
+    initialValues: { vehiclePrice: 45000, downPayment: 10000, interestRate: 6.0, loanTermMonths: 60, salesTaxPercent: 6.5, dealerFees: 500 },
+    faqs: [
+      {
+        question: "How does the $7,500 EV tax credit apply to auto loans?",
+        answer: "Under current IRS rules, participating dealerships can apply the $7,500 Clean Vehicle Credit directly at point-of-sale as an immediate down payment reduction.",
+      },
+      {
+        question: "What is the payment on a $45,000 EV with tax credit?",
+        answer: "With the $7,500 tax credit plus $2,500 cash down ($35,000 financed at 6%), the monthly payment is roughly $677/month.",
+      },
+      {
+        question: "Do electric cars have cheaper auto loan rates?",
+        answer: "Some credit unions offer 'green auto loan' discounts of 0.25% to 0.50% APR for zero-emission and plug-in hybrid electric vehicles.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "no-money-down-car-loan",
+    name: "Zero Down ($0 Down Payment) Car Loan Calculator",
+    title: "Zero Down ($0 Down Payment) Car Loan Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payments and total interest on a zero down payment car loan. Compare 100% financing risks, negative equity, and loan terms.",
+    answerSummary: "On a $30,000 vehicle with $0 down payment financed at 7.0% APR for 60 months, the monthly payment is $594/month. Total interest paid is $5,642, and financing 100% of purchase price increases the risk of negative equity.",
+    about: "Evaluate 100% financing options for car purchases without an upfront down payment. Calculate interest costs, compare monthly payments vs putting 10% down, and understand GAP insurance requirements.",
+    initialValues: { vehiclePrice: 30000, downPayment: 0, interestRate: 7.0, loanTermMonths: 60, salesTaxPercent: 6.5, dealerFees: 500 },
+    faqs: [
+      {
+        question: "Can I get a car loan with zero down payment?",
+        answer: "Yes. Qualified borrowers with good-to-excellent credit (700+ FICO) frequently qualify for 100% financing on new and certified pre-owned vehicles.",
+      },
+      {
+        question: "What is the monthly payment on a $30,000 car with zero down?",
+        answer: "At 7.0% APR for 60 months, the payment is approximately $594/month, compared to $535/month if putting 10% ($3,000) down.",
+      },
+      {
+        question: "Why is GAP insurance essential on a zero-down car loan?",
+        answer: "Because new cars depreciate ~20% in the first year, 100% financing immediately creates negative equity ('underwater loan') where you owe more than the car is worth.",
+      },
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-60k",
+    name: "£60,000 UK Salary Take-Home Pay Calculator",
+    title: "£60,000 UK Salary: Take-Home Pay & Tax Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a £60,000 salary in the UK. Breakdown of 40% higher rate tax, National Insurance, auto-enrolment pension, and net monthly wage.",
+    answerSummary: "On a £60,000 UK salary (2026/27 tax year), your estimated take-home pay is roughly £44,120 per year (~£3,677/month or £848/week), after £11,432 in Income Tax and £4,448 in National Insurance & 5% pension contributions.",
+    about: "Calculate your take-home pay crossing into the UK 40% higher rate tax bracket (£50,270). Understand your marginal vs effective tax rate and evaluate pension salary sacrifice to stay below higher rate thresholds.",
+    initialValues: { grossSalary: 60000, pensionPercent: 5, studentLoanPlan: "none" },
+    faqs: [
+      {
+        question: "What is the take-home on £60,000 in the UK?",
+        answer: "After 20% basic rate, 40% higher rate tax, 8% National Insurance, and 5% auto-enrolment pension, net annual take-home pay is roughly £44,120.",
+      },
+      {
+        question: "How much tax do you pay on £60k in the UK?",
+        answer: "You pay £7,540 in basic rate income tax (20% on £12,571 to £50,270) plus £3,892 in higher rate tax (40% on £50,271 to £60,000), totaling £11,432 in income tax.",
+      },
+      {
+        question: "Does salary sacrifice help when earning £60,000?",
+        answer: "Yes! Sacrificing earnings above £50,270 into your pension saves 40% in income tax and 2% in National Insurance on every sacrificed pound.",
+      },
+    ],
+  },
+  {
+    toolSlug: "canada-paycheck-calculator",
+    presetSlug: "ontario-take-home-80k",
+    name: "$80,000 Ontario Paycheck Calculator",
+    title: "$80,000 Ontario Salary: After-Tax Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on an $80,000 salary in Ontario, Canada. Detailed breakdown of CRA Federal tax, Ontario provincial tax, CPP, and EI deductions.",
+    answerSummary: "On an $80,000 annual salary in Ontario (2026 CRA brackets), your estimated net take-home pay is approximately $59,620 per year (~$4,968/month or $2,293 bi-weekly), after ~$10,950 in Federal tax, ~$5,280 in Ontario provincial tax, and max CPP/EI contributions.",
+    about: "Compute your take-home pay in Ontario on an $80k salary. View marginal and average tax rates, CPP/CPP2 and EI deductions, and calculate net earnings across monthly, bi-weekly, and semi-monthly pay periods.",
+    initialValues: { grossSalary: 80000, province: "ON", rrspContributionPercent: 0 },
+    faqs: [
+      {
+        question: "What is take-home pay on $80,000 in Ontario?",
+        answer: "Net take-home pay in Ontario on an $80,000 salary is roughly $59,620 per year ($4,968/month or $2,293 bi-weekly).",
+      },
+      {
+        question: "How much CPP and EI is deducted on an $80k salary?",
+        answer: "Because $80,000 exceeds maximum pensionable and insurable earnings, you pay the maximum Canada Pension Plan ($4,055 total CPP+CPP2) and Employment Insurance ($1,049).",
+      },
+      {
+        question: "How does an RRSP contribution lower Ontario taxes on $80,000?",
+        answer: "At an $80,000 income, your marginal tax rate is roughly 29.65%. Contributing $5,000 to an RRSP generates a tax refund of approximately $1,482.",
+      },
+    ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "500k-mortgage-30-year",
+    name: "$500,000 Mortgage Payment Calculator (30-Year Fixed)",
+    title: "$500,000 Mortgage Calculator – 30-Year Fixed Payment (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payment on a $500,000 home loan at 6.5% 30-year fixed. Complete breakdown of P&I, property taxes, insurance, and Excel schedule export.",
+    answerSummary: "On a $500,000 home purchase with 20% down ($100,000) and a $400,000 loan at 6.5% interest for 30 years, monthly principal & interest is $2,528. Adding estimated property taxes (~$500/mo) and insurance (~$167/mo), total monthly payment is roughly $3,195/month.",
+    about: "Plan carrying costs for a $500,000 property purchase. Test down payment options, calculate private mortgage insurance (PMI) if putting less than 20% down, and export the entire 360-month amortization schedule to Excel.",
+    initialValues: { homePrice: 500000, downPayment: 100000, interestRate: 6.5, loanTermYears: 30, propertyTaxYearly: 6000, homeInsuranceYearly: 2000 },
+    faqs: [
+      {
+        question: "What is the monthly payment on a $500,000 mortgage?",
+        answer: "With 20% down ($100,000) at 6.5% interest for 30 years, monthly principal and interest is $2,528. Adding property taxes and homeowners insurance brings the total monthly payment to roughly $3,195.",
+      },
+      {
+        question: "How much income is needed to qualify for a $500k house?",
+        answer: "Under the standard 28% front-end debt-to-income rule, a gross household income of approximately $136,900 is recommended to afford this mortgage comfortably.",
+      },
+      {
+        question: "How much interest is paid on a $500,000 mortgage over 30 years?",
+        answer: "On a $400,000 loan balance at 6.5% over 30 years, total interest paid equals $510,194, resulting in total lifetime loan payments of $910,194.",
+      },
+    ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "700k-mortgage-30-year",
+    name: "$700,000 Mortgage Payment Calculator (30-Year Fixed)",
+    title: "$700,000 Mortgage Calculator – Monthly Payment Breakdown (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payment on a $700,000 home loan at 6.5% for 30 years. See full PITI breakdown, interest costs, and export amortization schedule to Excel.",
+    answerSummary: "On a $700,000 home with 20% down ($140,000) and a $560,000 loan at 6.5% 30-year fixed, monthly principal & interest is $3,539. Total payment including property taxes (~$700/mo) and insurance (~$233/mo) equals approximately $4,472/month.",
+    about: "Analyze monthly costs and long-term interest for a $700,000 home purchase. Compare 15-year vs 30-year terms, model extra principal payments to save tens of thousands in interest, and download the full schedule to Excel.",
+    initialValues: { homePrice: 700000, downPayment: 140000, interestRate: 6.5, loanTermYears: 30, propertyTaxYearly: 8400, homeInsuranceYearly: 2800 },
+    faqs: [
+      {
+        question: "What is the monthly payment on a $700,000 house?",
+        answer: "With 20% down ($140,000) at 6.5% for 30 years, principal & interest is $3,539. Total monthly payment with property taxes and insurance is roughly $4,472.",
+      },
+      {
+        question: "What salary do I need for a $700k mortgage?",
+        answer: "To meet standard 28% front-end debt ratios, an annual gross household salary of approximately $191,600 is recommended.",
+      },
+      {
+        question: "How much total interest is paid on a $700,000 home loan?",
+        answer: "Financing $560,000 at 6.5% over 30 years accrues $714,272 in total interest, making the total amount paid $1,274,272.",
+      },
+    ],
+  },
 ];
 
 // Indexed Maps for O(1) SSG and metadata lookups

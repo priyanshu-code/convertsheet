@@ -14,9 +14,39 @@ import {
   AlignLeft,
   Minimize2,
   ArrowRight,
+  ExternalLink,
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { cn } from "@/lib/utils";
+
+function csvToTsv(csvText: string): string {
+  const lines = csvText.split(/\r?\n/);
+  return lines
+    .map((line) => {
+      const fields: string[] = [];
+      let field = "";
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            field += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === "," && !inQuotes) {
+          fields.push(field.trim());
+          field = "";
+        } else {
+          field += char;
+        }
+      }
+      fields.push(field.trim());
+      return fields.join("\t");
+    })
+    .join("\n");
+}
 
 export interface SplitCsvInputProps {
   config: ConverterConfig;
@@ -48,6 +78,7 @@ export function SplitCsvInput({
   const [text, setText] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [openedSheets, setOpenedSheets] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isTsv = config.sourceFormat === "TSV" || config.sourceExtension === ".tsv";
@@ -153,6 +184,23 @@ export function SplitCsvInput({
     if (disabled) return;
     setText("");
   }, [disabled]);
+
+  const handleOpenGoogleSheets = useCallback(async () => {
+    if (disabled || !text.trim()) return;
+    const tsvContent = isTsv ? text.trim() : csvToTsv(text.trim());
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(tsvContent);
+      }
+    } catch {
+      // Fallback if clipboard API is restricted
+    }
+    if (typeof window !== "undefined") {
+      window.open("https://sheets.new", "_blank", "noopener,noreferrer");
+    }
+    setOpenedSheets(true);
+    setTimeout(() => setOpenedSheets(false), 3500);
+  }, [disabled, text, isTsv]);
 
   const handleDragOver = useCallback(
     (e: React.DragEvent) => {
@@ -312,6 +360,17 @@ export function SplitCsvInput({
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Clear</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleOpenGoogleSheets}
+              disabled={disabled || !text.trim()}
+              aria-label="Open in Google Sheets"
+              title="Copy as table and open in Google Sheets (sheets.new) to paste"
+              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors disabled:opacity-40 cursor-pointer"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>{openedSheets ? "Paste in Sheets (Ctrl+V)!" : "Open in Sheets"}</span>
             </button>
           </div>
 

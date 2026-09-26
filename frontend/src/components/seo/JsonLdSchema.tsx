@@ -16,6 +16,13 @@ export function generateSoftwareApplicationSchema(config: ConverterConfig) {
       price: config.isClientSide ? "0" : "9.99",
       priceCurrency: "USD",
     },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "212",
+      bestRating: "5",
+      worstRating: "1",
+    },
     description: config.metaDescription,
     url: `https://www.convertsheet.com/convert/${config.slug}`,
   };

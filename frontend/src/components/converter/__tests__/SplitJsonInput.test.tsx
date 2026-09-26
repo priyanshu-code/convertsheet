@@ -218,6 +218,35 @@ describe("SplitJsonInput", () => {
     expect(await screen.findByText(/Copied!/i)).toBeInTheDocument();
   });
 
+  it("'Open in Google Sheets' converts JSON to TSV, writes to clipboard and opens sheets.new", async () => {
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+    const openMock = vi.spyOn(window, "open").mockImplementation(() => null);
+
+    render(<SplitJsonInput config={jsonToNdjsonConfig} onFileSelect={() => {}} />);
+
+    const textarea = screen.getByLabelText(/Paste JSON data/i);
+    const sample = JSON.stringify([
+      { name: "Alice", role: "Engineer" },
+      { name: "Bob", role: "Designer" },
+    ]);
+    fireEvent.change(textarea, { target: { value: sample } });
+
+    const openSheetsBtn = screen.getByRole("button", { name: /Open in Google Sheets/i });
+    expect(openSheetsBtn).not.toBeDisabled();
+    fireEvent.click(openSheetsBtn);
+
+    expect(writeTextMock).toHaveBeenCalledWith("name\trole\nAlice\tEngineer\nBob\tDesigner");
+    await waitFor(() => {
+      expect(openMock).toHaveBeenCalledWith("https://sheets.new", "_blank", "noopener,noreferrer");
+      expect(screen.getByText(/Paste in Sheets/i)).toBeInTheDocument();
+    });
+  });
+
   describe("Integration with ConverterCard", () => {
     it("renders SplitJsonInput when config.slug is 'json-to-ndjson' and no file is loaded", () => {
       render(<ConverterCard config={jsonToNdjsonConfig} />);

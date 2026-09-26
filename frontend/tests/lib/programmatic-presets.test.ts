@@ -289,9 +289,41 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(caHome?.name).toContain("Income Needed to Buy a House in California");
   });
 
+  it("retrieves new state salary, car loan, and high-value mortgage presets", () => {
+    // US State Salary
+    const caSalary = getProgrammaticPreset("salary-calculator", "california-take-home-100k");
+    expect(caSalary).toBeDefined();
+    expect(caSalary?.name).toContain("California Take-Home");
+    expect(caSalary?.initialValues.grossSalary).toBe(100000);
+    expect(caSalary?.initialValues.stateTaxPercent).toBe(6.0);
+
+    const txSalary = getProgrammaticPreset("salary-calculator", "texas-take-home-100k");
+    expect(txSalary).toBeDefined();
+    expect(txSalary?.name).toContain("Texas Take-Home");
+    expect(txSalary?.initialValues.stateTaxPercent).toBe(0);
+
+    // Car Loan & EV
+    const used10k = getProgrammaticPreset("car-loan-calculator", "10k-used-car-loan");
+    expect(used10k).toBeDefined();
+    expect(used10k?.name).toContain("$10,000 Used Car");
+
+    const evLoan = getProgrammaticPreset("car-loan-calculator", "electric-vehicle-loan");
+    expect(evLoan).toBeDefined();
+    expect(evLoan?.name).toContain("Electric Vehicle (EV)");
+
+    // Mortgages
+    const mort500k = getProgrammaticPreset("mortgage-calculator", "500k-mortgage-30-year");
+    expect(mort500k).toBeDefined();
+    expect(mort500k?.name).toContain("$500,000 Mortgage");
+
+    const mort700k = getProgrammaticPreset("mortgage-calculator", "700k-mortgage-30-year");
+    expect(mort700k).toBeDefined();
+    expect(mort700k?.name).toContain("$700,000 Mortgage");
+  });
+
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
-    expect(params.length).toBeGreaterThanOrEqual(133);
+    expect(params.length).toBeGreaterThanOrEqual(140);
     expect(params[0]).toHaveProperty("slug");
     expect(params[0]).toHaveProperty("preset");
   });

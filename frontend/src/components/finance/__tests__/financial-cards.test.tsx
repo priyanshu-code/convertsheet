@@ -8,6 +8,7 @@ import {
   InflationHedgeCard,
   SavingsRatesCard,
   DebtConsolidationCard,
+  RemittancePartnerCard,
 } from "../index";
 
 describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
@@ -160,6 +161,19 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
       expect(screen.getByText(/Unconsolidated Credit Card Average/i)).toBeInTheDocument();
       expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
       expect(screen.getAllByText(/Potential Savings:/i).length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  describe("RemittancePartnerCard", () => {
+    it("renders international transfer providers and security badge", () => {
+      render(<RemittancePartnerCard sourceCurrency="USD" targetCurrency="INR" />);
+
+      expect(screen.getByText(/International Transfer & Currency Accounts/i)).toBeInTheDocument();
+      expect(screen.getByText(/Wise \(formerly TransferWise\)/i)).toBeInTheDocument();
+      expect(screen.getByText(/Revolut Multi-Currency/i)).toBeInTheDocument();
+      expect(screen.getByText(/OFX Global Currency/i)).toBeInTheDocument();
+      expect(screen.getByText(/Bank-Grade Security/i)).toBeInTheDocument();
+      expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
     });
   });
 });

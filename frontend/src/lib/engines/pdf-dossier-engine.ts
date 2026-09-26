@@ -35,6 +35,31 @@ export interface CarLoanDossierInput {
   }>;
 }
 
+export interface SalaryDossierInput {
+  grossSalary: number;
+  netAnnualTakeHome: number;
+  netMonthlyTakeHome: number;
+  netBiWeeklyTakeHome: number;
+  federalTax: number;
+  stateTax: number;
+  ficaTax: number;
+  effectiveTaxRate: number;
+  currencySymbol?: string;
+  regimeLabel?: string;
+}
+
+export interface RetirementDossierInput {
+  currentAge: number;
+  retirementAge: number;
+  currentSavings: number;
+  monthlyContribution: number;
+  annualReturnPercent: number;
+  nestEggAtRetirement: number;
+  totalContributions: number;
+  compoundGrowthEarned: number;
+  monthlyRetirementIncome: number;
+}
+
 export async function generateMortgageDossierPdf(input: MortgageDossierInput): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
   const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -342,3 +367,182 @@ export async function generateCarLoanDossierPdf(input: CarLoanDossierInput): Pro
 
   return await pdfDoc.save();
 }
+
+export async function generateSalaryDossierPdf(input: SalaryDossierInput): Promise<Uint8Array> {
+  const pdfDoc = await PDFDocument.create();
+  const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const page = pdfDoc.addPage([612, 792]);
+  const { width, height } = page.getSize();
+  const sym = input.currencySymbol || "$";
+
+  // Top Accent Banner
+  page.drawRectangle({ x: 0, y: height - 8, width: width, height: 8, color: rgb(0.06, 0.72, 0.51) });
+
+  page.drawText("EXECUTIVE SALARY & TAX DOSSIER", {
+    x: 50,
+    y: height - 50,
+    size: 18,
+    font: helveticaBold,
+    color: rgb(0.1, 0.1, 0.12),
+  });
+
+  page.drawText(
+    `${input.regimeLabel || "Annual"} Take-Home Paycheck Analysis & Mandatory Tax Deductions`,
+    {
+      x: 50,
+      y: height - 68,
+      size: 9,
+      font: helvetica,
+      color: rgb(0.45, 0.45, 0.48),
+    }
+  );
+
+  // Key KPI Box - Net Monthly Take-Home
+  page.drawRectangle({
+    x: 50,
+    y: height - 155,
+    width: width - 100,
+    height: 70,
+    color: rgb(0.96, 0.98, 0.97),
+    borderColor: rgb(0.8, 0.9, 0.85),
+    borderWidth: 1,
+  });
+
+  page.drawText("ESTIMATED NET MONTHLY IN-HAND PAY", {
+    x: 70,
+    y: height - 105,
+    size: 9,
+    font: helveticaBold,
+    color: rgb(0.3, 0.4, 0.35),
+  });
+
+  page.drawText(`${sym}${Math.round(input.netMonthlyTakeHome).toLocaleString()}/mo`, {
+    x: 70,
+    y: height - 138,
+    size: 24,
+    font: helveticaBold,
+    color: rgb(0.06, 0.72, 0.51),
+  });
+
+  let y = height - 185;
+  const salaryFacts = [
+    ["Gross Annual Earnings", `${sym}${Math.round(input.grossSalary).toLocaleString()}`],
+    ["Net Annual Take-Home Pay", `${sym}${Math.round(input.netAnnualTakeHome).toLocaleString()}`],
+    ["Bi-Weekly Paycheck (26 Periods)", `${sym}${Math.round(input.netBiWeeklyTakeHome).toLocaleString()}`],
+    ["Federal / National Income Tax", `${sym}${Math.round(input.federalTax).toLocaleString()}`],
+    ["State / Provincial Tax", `${sym}${Math.round(input.stateTax).toLocaleString()}`],
+    ["FICA / Payroll / Pension Deductions", `${sym}${Math.round(input.ficaTax).toLocaleString()}`],
+    ["Effective Tax Rate", `${input.effectiveTaxRate.toFixed(2)}%`],
+  ];
+
+  salaryFacts.forEach(([lbl, val], idx) => {
+    const bg = idx % 2 === 0 ? rgb(0.98, 0.98, 0.99) : rgb(1, 1, 1);
+    page.drawRectangle({ x: 50, y: y - 5, width: width - 100, height: 22, color: bg });
+    page.drawText(lbl, { x: 60, y: y + 2, size: 9, font: helvetica, color: rgb(0.3, 0.3, 0.3) });
+    page.drawText(val, { x: 380, y: y + 2, size: 9, font: helveticaBold, color: rgb(0.1, 0.1, 0.1) });
+    y -= 22;
+  });
+
+  page.drawText("Page 1 of 1  •  Generated on convertsheet.com  •  100% In-Browser Privacy", {
+    x: 50,
+    y: 30,
+    size: 8,
+    font: helvetica,
+    color: rgb(0.6, 0.6, 0.6),
+  });
+
+  return await pdfDoc.save();
+}
+
+export async function generateRetirementDossierPdf(
+  input: RetirementDossierInput
+): Promise<Uint8Array> {
+  const pdfDoc = await PDFDocument.create();
+  const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const page = pdfDoc.addPage([612, 792]);
+  const { width, height } = page.getSize();
+
+  // Top Accent Banner
+  page.drawRectangle({ x: 0, y: height - 8, width: width, height: 8, color: rgb(0.06, 0.72, 0.51) });
+
+  page.drawText("RETIREMENT NEST EGG DOSSIER", {
+    x: 50,
+    y: height - 50,
+    size: 18,
+    font: helveticaBold,
+    color: rgb(0.1, 0.1, 0.12),
+  });
+
+  page.drawText(
+    "Compound Wealth Accumulation, Contributions vs Interest & Safe Withdrawal Summary",
+    {
+      x: 50,
+      y: height - 68,
+      size: 9,
+      font: helvetica,
+      color: rgb(0.45, 0.45, 0.48),
+    }
+  );
+
+  // Key KPI Box - Nest Egg at Retirement
+  page.drawRectangle({
+    x: 50,
+    y: height - 155,
+    width: width - 100,
+    height: 70,
+    color: rgb(0.96, 0.98, 0.97),
+    borderColor: rgb(0.8, 0.9, 0.85),
+    borderWidth: 1,
+  });
+
+  page.drawText("PROJECTED NEST EGG AT RETIREMENT", {
+    x: 70,
+    y: height - 105,
+    size: 9,
+    font: helveticaBold,
+    color: rgb(0.3, 0.4, 0.35),
+  });
+
+  page.drawText("$" + Math.round(input.nestEggAtRetirement).toLocaleString(), {
+    x: 70,
+    y: height - 138,
+    size: 24,
+    font: helveticaBold,
+    color: rgb(0.06, 0.72, 0.51),
+  });
+
+  let y = height - 185;
+  const retireFacts = [
+    ["Current Age / Target Retirement Age", `${input.currentAge} Years / ${input.retirementAge} Years`],
+    ["Accumulation Investment Horizon", `${input.retirementAge - input.currentAge} Years`],
+    ["Current Starting Capital", "$" + Math.round(input.currentSavings).toLocaleString()],
+    ["Monthly Contribution", "$" + Math.round(input.monthlyContribution).toLocaleString() + "/mo"],
+    ["Assumed Annual Rate of Return", `${input.annualReturnPercent.toFixed(2)}%`],
+    ["Total Out-of-Pocket Contributions", "$" + Math.round(input.totalContributions).toLocaleString()],
+    ["Compound Growth & Interest Earned", "$" + Math.round(input.compoundGrowthEarned).toLocaleString()],
+    ["Estimated 4% Safe Monthly Income", "$" + Math.round(input.monthlyRetirementIncome).toLocaleString() + "/mo"],
+  ];
+
+  retireFacts.forEach(([lbl, val], idx) => {
+    const bg = idx % 2 === 0 ? rgb(0.98, 0.98, 0.99) : rgb(1, 1, 1);
+    page.drawRectangle({ x: 50, y: y - 5, width: width - 100, height: 22, color: bg });
+    page.drawText(lbl, { x: 60, y: y + 2, size: 9, font: helvetica, color: rgb(0.3, 0.3, 0.3) });
+    page.drawText(val, { x: 380, y: y + 2, size: 9, font: helveticaBold, color: rgb(0.1, 0.1, 0.1) });
+    y -= 22;
+  });
+
+  page.drawText("Page 1 of 1  •  Generated on convertsheet.com  •  100% In-Browser Privacy", {
+    x: 50,
+    y: 30,
+    size: 8,
+    font: helvetica,
+    color: rgb(0.6, 0.6, 0.6),
+  });
+
+  return await pdfDoc.save();
+}
+

@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { generateMortgageDossierPdf, generateCarLoanDossierPdf } from "@/lib/engines/pdf-dossier-engine";
+import {
+  generateMortgageDossierPdf,
+  generateCarLoanDossierPdf,
+  generateSalaryDossierPdf,
+  generateRetirementDossierPdf,
+} from "@/lib/engines/pdf-dossier-engine";
 import { PDFDocument } from "pdf-lib";
 
 describe("PDF Dossier Engine", () => {
@@ -49,4 +54,46 @@ describe("PDF Dossier Engine", () => {
     const pdfDoc = await PDFDocument.load(pdfBytes);
     expect(pdfDoc.getPageCount()).toBeGreaterThanOrEqual(1);
   });
+
+  it("generates a valid salary PDF dossier", async () => {
+    const pdfBytes = await generateSalaryDossierPdf({
+      grossSalary: 100000,
+      netAnnualTakeHome: 78090,
+      netMonthlyTakeHome: 6507,
+      netBiWeeklyTakeHome: 3003,
+      federalTax: 14260,
+      stateTax: 0,
+      ficaTax: 7650,
+      effectiveTaxRate: 21.91,
+      currencySymbol: "$",
+      regimeLabel: "US 2026",
+    });
+
+    expect(pdfBytes).toBeInstanceOf(Uint8Array);
+    expect(pdfBytes.length).toBeGreaterThan(1000);
+
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    expect(pdfDoc.getPageCount()).toBe(1);
+  });
+
+  it("generates a valid retirement nest egg PDF dossier", async () => {
+    const pdfBytes = await generateRetirementDossierPdf({
+      currentAge: 30,
+      retirementAge: 65,
+      currentSavings: 50000,
+      monthlyContribution: 1000,
+      annualReturnPercent: 8.0,
+      nestEggAtRetirement: 2478000,
+      totalContributions: 470000,
+      compoundGrowthEarned: 2008000,
+      monthlyRetirementIncome: 8260,
+    });
+
+    expect(pdfBytes).toBeInstanceOf(Uint8Array);
+    expect(pdfBytes.length).toBeGreaterThan(1000);
+
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    expect(pdfDoc.getPageCount()).toBe(1);
+  });
 });
+

@@ -138,11 +138,11 @@ export const CONVERTER_REGISTRY = {
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
     category: "spreadsheets",
-    title: "CSV to Excel Converter Online — Free, Instant (.xlsx), No Upload",
+    title: "Convert CSV to Excel Online (2026) — Free, 100% Private (.xlsx), No Upload",
     subtitle:
       "Convert CSV, TSV, semicolon, and pipe-delimited text files into authentic Microsoft Excel spreadsheets. Just paste the CSV or upload a file.",
     metaDescription:
-      "Convert CSV to Excel online in one click. Just paste the CSV or upload a file. 100% private, free, and instant in your browser with zero server uploads.",
+      "Convert CSV to Excel online in one click (2026). Just paste the CSV or upload a file. 100% private, free, and instant in your browser with zero server uploads.",
     engineId: "csv-to-excel",
     isClientSide: true,
     featured: true,
@@ -1104,11 +1104,11 @@ export const CONVERTER_REGISTRY = {
     isClientSide: true,
     featured: true,
     badge: "Client-Side WASM",
-    title: "Convert SQLite (.db, .sqlite) to Excel (.xlsx) Online",
+    title: "Convert SQLite to Excel Online (2026) — Free, In-Browser & 100% Private",
     subtitle:
       "Export tables from SQLite database files into formatted multi-sheet Excel spreadsheets directly in your browser with zero server uploads.",
     metaDescription:
-      "Free private SQLite to Excel converter. Load .sqlite and .db database files and export all tables to native multi-sheet XLSX spreadsheets locally via WebAssembly.",
+      "Free private SQLite to Excel converter (2026). Load .sqlite and .db database files and export all tables to native multi-sheet XLSX spreadsheets locally via WebAssembly.",
     howTo: [
       {
         step: 1,
