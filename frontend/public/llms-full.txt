@@ -1,0 +1,91 @@
+# ConvertSheet: Full Technical Reference & Tool Catalog
+
+> Complete catalog of in-browser data converters, mathematical financial engines, developer utilities, and programmatic calculations. Built by Priyanshu Rawat. 100% Client-Side WebAssembly. Zero Server Uploads.
+
+## 1. System Overview
+- **Domain:** https://www.convertsheet.com
+- **License/Model:** Free, Zero Registration, No Data Collection.
+- **Compute Architecture:** Client-side execution in Chromium/WebKit/Gecko JavaScript & WebAssembly runtimes.
+- **Key Libraries:**
+  - DuckDB-Wasm (columnar database engine compiled from C++ to WebAssembly)
+  - SheetJS (spreadsheet binary parsing and XLSX/CSV generation)
+  - PDF-Lib (client-side PDF document manipulation)
+  - Apache Arrow (zero-copy in-memory columnar data transport)
+
+## 2. All Data Converters
+
+### JSON to Excel (/convert/json-to-excel)
+- **Input:** JSON files (`.json`, `.txt`) or raw pasted text. Deeply nested objects and arrays supported.
+- **Output:** Native Excel workbook (`.xlsx`) with automated dot-notation column flattening.
+- **Security:** In-memory browser parsing. No HTTP server transmission.
+
+### SQLite to Excel (/convert/sqlite-to-excel)
+- **Input:** SQLite 3 binary database files (`.sqlite`, `.db`, `.sqlite3`, `.db3`).
+- **Output:** Multi-sheet Excel workbook (`.xlsx`) where each database table becomes a dedicated worksheet tab.
+- **Engine:** In-memory WebAssembly SQLite engine.
+
+### CSV to Excel (/convert/csv-to-excel)
+- **Input:** Comma-separated or delimiter-separated text (`.csv`, `.tsv`, `.txt`).
+- **Output:** Formatted Excel workbook (`.xlsx`) with numeric type coercion.
+
+### Excel to CSV (/convert/excel-to-csv)
+- **Input:** Excel workbooks (`.xlsx`, `.xls`).
+- **Output:** Standard UTF-8 CSV text files with sheet selection.
+
+### Excel to JSON (/convert/excel-to-json)
+- **Input:** Excel workbooks (`.xlsx`, `.xls`).
+- **Output:** Formatted JSON array of objects with downloadable `.json` file or copyable output.
+
+### Parquet to Excel (/convert/parquet-to-excel)
+- **Input:** Apache Parquet columnar files (`.parquet`).
+- **Output:** Excel workbook (`.xlsx`) with vectorized DuckDB-Wasm row group streaming.
+
+### Parquet to CSV (/convert/parquet-to-csv)
+- **Input:** Columnar Apache Parquet files (`.parquet`).
+- **Output:** Standard CSV text stream with SQL projection options.
+
+### JSONL to Excel (/convert/jsonl-to-excel)
+- **Input:** Newline-delimited JSON (`.jsonl`, `.ndjson`).
+- **Output:** Multi-row Excel spreadsheet (`.xlsx`).
+
+### JSON to NDJSON (/convert/json-to-ndjson)
+- **Input:** JSON arrays (`.json`).
+- **Output:** Streaming line-delimited records (`.ndjson`) for LLM finetuning, Elasticsearch, and vector databases.
+
+### XML to Excel (/convert/xml-to-excel)
+- **Input:** XML documents (`.xml`).
+- **Output:** Tabular Excel workbook (`.xlsx`) with hierarchical node extraction.
+
+### Tally XML to Excel (/convert/tally-xml-to-excel)
+- **Input:** Tally ERP 9 / TallyPrime XML export files (`.xml`).
+- **Output:** Excel spreadsheets configured for accounting ledgers, vouchers, and trial balances.
+
+## 3. Financial Calculation Models
+
+### Salary & Take-Home Pay (/tools/salary-calculator)
+- **US Tax Engine:** 2026 IRS Federal Brackets (10%, 12%, 22%, 24%, 32%, 35%, 37%), Standard Deduction ($14,600 Single / $29,200 Married), FICA Social Security (6.2% up to $168,600) and Medicare (1.45% + 0.9% Additional Medicare surtax over $200k).
+- **India Tax Engine:** FY 2024-25 / 2025-26 New Tax Regime (Section 115BAC) with ₹75,000 standard deduction, Section 87A rebate (zero tax up to ₹7,00,000 net taxable income) and marginal relief, plus 4% Health & Education Cess. Old Tax Regime with 80C, 80D, and HRA deductions.
+
+### UK Salary & PAYE (/tools/uk-salary-calculator)
+- **HMRC Brackets:** Personal Allowance (£12,570, tapered £1 for every £2 earned above £100,000), Basic rate 20% (£12,571–£50,270), Higher rate 40% (£50,271–£125,140), Additional rate 45% (>£125,140).
+- **National Insurance:** Class 1 primary rate (8% between £12,570 and £50,270, 2% above £50,270).
+- **Student Loans:** Repayment plans 1, 2, 4, 5, and Postgraduate loans.
+
+### Canada Paycheck (/tools/canada-paycheck-calculator)
+- **CRA Federal Brackets:** 15%, 20.5%, 26%, 29%, 33%.
+- **Provincial Brackets:** Ontario (ON), British Columbia (BC), Alberta (AB), Quebec (QC).
+- **Mandatory Contributions:** CPP (5.95% on earnings between $3,500 and $68,500 max $3,867.50) + CPP2 (4% on earnings between $68,500 and $73,200 max $188.00). Employment Insurance (EI: 1.66% up to $63,200 max $1,049.12).
+
+### Australia Pay (/tools/australia-pay-calculator)
+- **ATO Stage 3 Tax Cuts:** 0–$18,200 (0%), $18,201–$45,000 (16%), $45,001–$135,000 (30%), $135,001–$190,000 (37%), >$190,000 (45%).
+- **Superannuation:** 11.5% employer super guarantee contribution paid to super fund.
+- **Medicare & HELP:** 2.0% Medicare levy + mandatory HELP/HECS student debt repayment rates.
+
+### Mortgage & Amortization (/tools/mortgage-calculator)
+- **Formula:** M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]
+- **Features:** Complete monthly/yearly amortization schedule, extra principal payments, PMI cancellation thresholds, and downloadable Excel amortization schedule.
+
+### Inflation & Purchasing Power (/tools/inflation-calculator)
+- **Future Value:** FV = PV × (1 + r)^t
+- **Real Purchasing Power:** RealValue = PV / (1 + r)^t
+- **Presets:** 100k in 10, 20, 30 years; 2% Fed Target; 5% Elevated Inflation.

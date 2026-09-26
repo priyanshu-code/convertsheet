@@ -287,7 +287,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       });
     });
 
-    it("renders script tag with graph containing all 3 schemas", () => {
+    it("renders script tag with graph containing all 5 schemas including Speakable WebPage", () => {
       const { container } = render(<JsonLdSchema config={jsonConfig} />);
       const script = container.querySelector(
         'script[type="application/ld+json"]'
@@ -296,13 +296,17 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
 
       const json = JSON.parse(script!.textContent || "{}");
       expect(json["@context"]).toBe("https://schema.org");
-      expect(json["@graph"]).toHaveLength(4);
+      expect(json["@graph"]).toHaveLength(5);
 
       const types = json["@graph"].map((item: { "@type": string }) => item["@type"]);
       expect(types).toContain("SoftwareApplication");
       expect(types).toContain("HowTo");
       expect(types).toContain("FAQPage");
       expect(types).toContain("BreadcrumbList");
+      expect(types).toContain("WebPage");
+
+      const webPage = json["@graph"].find((item: { "@type": string }) => item["@type"] === "WebPage");
+      expect(webPage.speakable["@type"]).toBe("SpeakableSpecification");
     });
   });
 
@@ -340,14 +344,18 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       }
     });
 
-    it("robots returns permissive rules and sitemap link", () => {
+    it("robots returns permissive rules for all engines, AI crawler rules, and sitemap link", () => {
       const robotsConfig = robots();
 
-      expect(robotsConfig.rules).toEqual({
-        userAgent: "*",
-        allow: "/",
-      });
+      expect(Array.isArray(robotsConfig.rules)).toBe(true);
+      const rules = robotsConfig.rules as Array<{ userAgent: string | string[]; allow: string }>;
+      expect(rules[0].userAgent).toBe("*");
+      expect(rules[0].allow).toBe("/");
+      expect(rules[1].userAgent).toContain("GPTBot");
+      expect(rules[1].userAgent).toContain("ClaudeBot");
+      expect(rules[1].userAgent).toContain("PerplexityBot");
       expect(robotsConfig.sitemap).toBe("https://www.convertsheet.com/sitemap.xml");
+      expect(robotsConfig.host).toBe("https://www.convertsheet.com");
     });
   });
 });

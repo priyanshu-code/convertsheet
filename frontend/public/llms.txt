@@ -1,0 +1,54 @@
+# ConvertSheet
+
+> ConvertSheet is a 100% client-side WebAssembly (WASM) data conversion suite, developer utility platform, and private financial calculation engine. All computations, database queries, spreadsheet compilations, and PDF manipulations execute locally in browser memory using WebAssembly, Web Workers, and HTML5 Blobs with zero server uploads.
+
+## Core Architecture & Privacy Stance
+- **100% Client-Side Execution:** Zero user data or files are uploaded to remote servers. All processing happens on the client machine.
+- **Embedded C++ & Vectorized Engines:** Powered by DuckDB WebAssembly, Apache Arrow, SheetJS, and PDF-Lib.
+- **Offline PWA Ready:** Functional in airplane mode or on isolated corporate intranets without an internet connection.
+- **Founder & Lead Engineer:** Priyanshu Rawat (https://www.linkedin.com/in/priyanshu-rawat-570b7a19b/)
+- **Canonical URL:** https://www.convertsheet.com
+- **About & Entity Profile:** https://www.convertsheet.com/about
+- **Privacy Architecture:** https://www.convertsheet.com/privacy
+
+## In-Browser Data Converters (/convert)
+- [JSON to Excel Converter](https://www.convertsheet.com/convert/json-to-excel): Flatten deeply nested JSON arrays into structured multi-sheet XLSX spreadsheets locally via WebAssembly.
+- [SQLite to Excel Converter](https://www.convertsheet.com/convert/sqlite-to-excel): Export all database tables from .db, .sqlite, and .sqlite3 binary catalogs to multi-sheet XLSX workbooks with zero software install.
+- [CSV to Excel Converter](https://www.convertsheet.com/convert/csv-to-excel): High-performance comma-separated and semicolon-delimited text to formatted Excel converter with auto-type inference.
+- [Excel to CSV Converter](https://www.convertsheet.com/convert/excel-to-csv): Extract worksheets from XLSX and XLS files into clean UTF-8 CSV exports.
+- [Excel to JSON Converter](https://www.convertsheet.com/convert/excel-to-json): Transform spreadsheet tabs into JSON objects, key-value rows, or nested collections.
+- [Parquet to Excel Converter](https://www.convertsheet.com/convert/parquet-to-excel): Query and project multi-gigabyte Apache Parquet columnar files to Excel sheets via DuckDB-Wasm.
+- [Parquet to CSV Converter](https://www.convertsheet.com/convert/parquet-to-csv): Stream columnar Parquet records into CSV format locally.
+- [JSONL to Excel Converter](https://www.convertsheet.com/convert/jsonl-to-excel): Compile newline-delimited JSON (NDJSON/JSONL) log streams into Excel workbooks.
+- [JSON to NDJSON Converter](https://www.convertsheet.com/convert/json-to-ndjson): Convert JSON arrays into streaming line-delimited records for AI model finetuning and vector databases.
+- [XML to Excel Converter](https://www.convertsheet.com/convert/xml-to-excel): Parse complex XML schemas, invoices, and accounting dumps into tabular Excel sheets.
+- [Tally XML to Excel Converter](https://www.convertsheet.com/convert/tally-xml-to-excel): Specially tuned schema parser for Tally ERP 9 and TallyPrime XML daybooks, ledgers, and trial balances.
+- [Markdown Table to Excel Converter](https://www.convertsheet.com/convert/markdown-table-to-excel): Convert GitHub-flavored Markdown tables into formatted Excel sheets.
+- [All Converters Directory](https://www.convertsheet.com/#converters): Complete index of all 21 client-side data converters.
+
+## Financial Engines & Regional Calculators (/tools)
+- [Salary & Paycheck Calculator](https://www.convertsheet.com/tools/salary-calculator): Dual-mode US Federal/FICA and India New/Old Tax Regime in-hand take-home pay calculator with monthly and annual breakdowns.
+- [UK Salary & PAYE Calculator](https://www.convertsheet.com/tools/uk-salary-calculator): 2026/2027 HMRC tax engine modeling Personal Allowance taper (£100k+), National Insurance (8%), student loans (Plans 1-5), and pension relief.
+- [Canada Paycheck Calculator](https://www.convertsheet.com/tools/canada-paycheck-calculator): Comprehensive CRA Federal and Provincial (ON, BC, AB, QC) net pay engine with CPP/CPP2 and EI caps.
+- [Australia Pay Calculator](https://www.convertsheet.com/tools/australia-pay-calculator): ATO Stage 3 tax cuts, 11.5% superannuation guarantee, 2% Medicare levy, and HELP/HECS student debt repayment engine.
+- [Mortgage & Amortization Calculator](https://www.convertsheet.com/tools/mortgage-calculator): Monthly principal, interest, PMI, property tax, and complete year-by-year amortization schedule with Excel export.
+- [Inflation & Purchasing Power Calculator](https://www.convertsheet.com/tools/inflation-calculator): Compound inflation erosion models, real purchasing power projections, and investment benchmark comparisons.
+- [Percentage Calculator (3-in-1 Solver)](https://www.convertsheet.com/tools/percentage-calculator): Calculate X% of Y, percent change, percentage point difference, retail discounts, and profit margins.
+- [High-Yield Savings & CD Calculator](https://www.convertsheet.com/tools/high-yield-savings-cd-calculator): Compare compound APY interest growth across High-Yield Savings Accounts and fixed Certificates of Deposit.
+- [Debt Payoff & Snowball Calculator](https://www.convertsheet.com/tools/debt-payoff-calculator): Compare Debt Avalanche vs Debt Snowball acceleration strategies to eliminate credit card and personal loan balances.
+- [All Tools Hub](https://www.convertsheet.com/tools): Full directory of all 53 developer utilities, financial models, and converters.
+
+## Developer & Analytical Utilities (/tools)
+- [SQL Query Studio](https://www.convertsheet.com/tools/sql-query-studio): Run local SQL queries against CSV, Parquet, and JSON files inside an in-browser DuckDB engine.
+- [JSON Formatter & Validator](https://www.convertsheet.com/tools/json-formatter-validator): Pretty-print, validate syntax, and minify JSON payloads in browser memory.
+- [Base64 Encoder & Decoder](https://www.convertsheet.com/tools/base64-encoder-decoder): Encode and decode UTF-8 text and binary payloads with RFC 4648 compliance.
+- [Data Anonymizer & Cleaner](https://www.convertsheet.com/tools/data-anonymizer-cleaner): Scrub PII, emails, IP addresses, and phone numbers from datasets before sharing or uploading.
+- [Sheet Diff Checker](https://www.convertsheet.com/tools/sheet-diff-checker): Visual side-by-side cell-level comparison of two CSV or Excel files.
+
+## Technical Guides & Engineering Publications (/blog)
+- [Nested JSON to Excel Guide](https://www.convertsheet.com/blog/convert-json-to-excel-privately): How to flatten 50,000+ rows of nested API data to Excel without leaking company records.
+- [Client-Side WASM Architecture](https://www.convertsheet.com/blog/client-side-wasm-future-of-private-data): Why security teams are abandoning SaaS conversion APIs in favor of in-browser WebAssembly sandboxes.
+- [1099 vs W2 True Hourly Rate Calculation](https://www.convertsheet.com/blog/1099-vs-w2-true-hourly-rate-calculation): Mathematical formula converting W2 base salary to equivalent 1099 freelance rates factoring in self-employment tax, PTO, and benefits.
+- [Canadian OSFI Mortgage Stress Test Guide 2026](https://www.convertsheet.com/blog/canadian-mortgage-stress-test-guide-2026): Qualifying benchmark formulas, CMHC insurance tiers, and GDS/TDS debt service limits.
+- [Multi-Gigabyte Parquet Processing in Browser](https://www.convertsheet.com/blog/convert-large-parquet-files-to-excel-in-browser): Columnar chunking, row group projection, and memory management with DuckDB-Wasm.
+- [UK Inside vs Outside IR35 Guide](https://www.convertsheet.com/blog/uk-contractor-inside-vs-outside-ir35-calculator-guide): Deemed salary calculations, umbrella company deductions, and limited company dividend optimization.

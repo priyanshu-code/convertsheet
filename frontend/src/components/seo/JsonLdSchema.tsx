@@ -82,6 +82,19 @@ export function generateBreadcrumbSchema(config: ConverterConfig) {
   };
 }
 
+export function generateWebPageSchema(config: ConverterConfig) {
+  return {
+    "@type": "WebPage",
+    name: config.title,
+    description: config.metaDescription,
+    url: `https://www.convertsheet.com/convert/${config.slug}`,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", "[data-testid='converter-about-section']", "[data-testid='privacy-badge']"],
+    },
+  };
+}
+
 export function getJsonLdData(config: ConverterConfig) {
   return {
     "@context": "https://schema.org",
@@ -90,6 +103,7 @@ export function getJsonLdData(config: ConverterConfig) {
       generateHowToSchema(config),
       generateFAQPageSchema(config),
       generateBreadcrumbSchema(config),
+      generateWebPageSchema(config),
     ],
   };
 }

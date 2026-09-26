@@ -31,8 +31,16 @@ export const metadata: Metadata = {
     "DuckDB WebAssembly",
     "client-side data converter",
   ],
-  authors: [{ name: "ConvertSheet Team", url: "https://www.convertsheet.com" }],
+  authors: [
+    { name: "Priyanshu Rawat", url: "https://www.convertsheet.com/about" },
+    { name: "ConvertSheet Team", url: "https://www.convertsheet.com" },
+  ],
+  creator: "Priyanshu Rawat",
+  publisher: "ConvertSheet",
   metadataBase: new URL("https://www.convertsheet.com"),
+  alternates: {
+    canonical: "https://www.convertsheet.com",
+  },
   openGraph: {
     title: "ConvertSheet - Fast, Private Structured Data Converter",
     description:
@@ -47,10 +55,19 @@ export const metadata: Metadata = {
     title: "ConvertSheet - Fast, Private Structured Data Converter",
     description:
       "Convert JSON, XML, CSV, and Excel spreadsheets directly in your browser with zero server uploads.",
+    creator: "@priyanshuz_code",
+    site: "@priyanshuz_code",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
     icon: [
@@ -96,6 +113,7 @@ export default function RootLayout({
           id="theme-initializer"
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="ConvertSheet LLM Context" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -114,6 +132,35 @@ export default function RootLayout({
                 },
                 "query-input": "required name=search_term_string",
               },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "ConvertSheet",
+              url: "https://www.convertsheet.com",
+              logo: "https://www.convertsheet.com/icons/icon-192.svg",
+              description:
+                "Private, fast client-side file converter and suite of financial calculators built by Priyanshu Rawat.",
+              founder: {
+                "@type": "Person",
+                name: "Priyanshu Rawat",
+                jobTitle: "Founder & Lead Software Engineer",
+                url: "https://www.convertsheet.com/about",
+                sameAs: [
+                  "https://www.linkedin.com/in/priyanshu-rawat-570b7a19b/",
+                  "https://x.com/priyanshuz_code",
+                  "https://github.com/priyanshu-code",
+                ],
+              },
+              sameAs: [
+                "https://x.com/priyanshuz_code",
+                "https://github.com/priyanshu-code",
+              ],
             }),
           }}
         />
