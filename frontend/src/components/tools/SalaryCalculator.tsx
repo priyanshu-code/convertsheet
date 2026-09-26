@@ -299,9 +299,9 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Inputs */}
-        <div className="space-y-6">
+      <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+        {/* Left Column: Inputs */}
+        <div className="lg:col-span-7 space-y-6">
           {regime === "US" ? (
             <>
               <div>
@@ -446,8 +446,92 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
               />
             </>
           )}
+        </div>
+        {/* End Left Column */}
 
-          <div className="pt-2 flex flex-wrap gap-3">
+        {/* Right Column: Sticky Results & Actions */}
+        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-20">
+          {regime === "US" ? (
+            <CalcResult
+              title="Paycheck & Take-Home Summary"
+              primaryLabel="Net Monthly Take-Home"
+              primaryValue={`$${usResult.netMonthlyTakeHome.toLocaleString()}`}
+              primarySubtext={`Bi-Weekly: $${usResult.netBiWeeklyTakeHome.toLocaleString()} (26 paychecks) • Annual: $${usResult.netAnnualTakeHome.toLocaleString()}`}
+              copyValue={`US Take-Home Pay: $${usResult.netMonthlyTakeHome.toLocaleString()}/mo ($${usResult.netBiWeeklyTakeHome.toLocaleString()} bi-weekly, $${usResult.netAnnualTakeHome.toLocaleString()}/yr) | Gross: $${grossSalary.toLocaleString()} | Effective Tax: ${usResult.effectiveTaxRate}%`}
+              columns={2}
+              items={[
+                {
+                  label: "Bi-Weekly Take-Home",
+                  value: `$${usResult.netBiWeeklyTakeHome.toLocaleString()}`,
+                  subtext: "Every 2 weeks (26 periods)",
+                  highlight: true,
+                },
+                {
+                  label: "Federal Income Tax",
+                  value: `$${usResult.federalIncomeTax.toLocaleString()}`,
+                  subtext: `Taxable: $${usResult.federalTaxableIncome.toLocaleString()}`,
+                },
+                {
+                  label: "FICA: Social Security",
+                  value: `$${usResult.socialSecurityTax.toLocaleString()}`,
+                  subtext: "6.2% up to $168,600 cap",
+                },
+                {
+                  label: "FICA: Medicare",
+                  value: `$${usResult.medicareTax.toLocaleString()}`,
+                  subtext: "1.45% base + 0.9% surtax",
+                },
+                {
+                  label: "State Income Tax",
+                  value: `$${usResult.stateIncomeTax.toLocaleString()}`,
+                  subtext: `${stateTaxPercent}% estimated`,
+                },
+                {
+                  label: "401(k) Retirement",
+                  value: `$${usResult.k401Deduction.toLocaleString()}`,
+                  subtext: `${k401Percent}% pre-tax savings`,
+                },
+                {
+                  label: "Effective Tax Rate",
+                  value: `${usResult.effectiveTaxRate}%`,
+                  subtext: "Taxes / Gross Salary",
+                },
+              ]}
+            />
+          ) : (
+            <CalcResult
+              title="Monthly Take-Home Summary"
+              primaryLabel="Net In-Hand Paycheck"
+              primaryValue={`₹${inResult.monthlyTakeHome.toLocaleString()}`}
+              primarySubtext={`Annual In-Hand: ₹${inResult.annualTakeHome.toLocaleString()}`}
+              copyValue={`India In-Hand Salary: ₹${inResult.monthlyTakeHome.toLocaleString()}/mo (₹${inResult.annualTakeHome.toLocaleString()}/yr) | Gross CTC: ₹${annualCtc.toLocaleString()} | Monthly EPF: ₹${inResult.monthlyEpf.toLocaleString()} | Monthly Tax: ₹${inResult.monthlyTax.toLocaleString()}`}
+              columns={2}
+              items={[
+                {
+                  label: "Monthly EPF",
+                  value: `₹${inResult.monthlyEpf.toLocaleString()}`,
+                  subtext: "Retirement savings",
+                  highlight: true,
+                },
+                {
+                  label: "Monthly Tax TDS",
+                  value: `₹${inResult.monthlyTax.toLocaleString()}`,
+                  subtext: "Estimated income tax",
+                },
+                {
+                  label: "Monthly Gross",
+                  value: `₹${inResult.monthlyGross.toLocaleString()}`,
+                },
+                {
+                  label: "Annual Deductions",
+                  value: `₹${inResult.annualDeductions.toLocaleString()}`,
+                },
+              ]}
+            />
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
             <CalcSaveButton
               toolSlug="salary-calculator"
               toolName="Salary & Take-Home Calculator"
@@ -533,88 +617,7 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
             />
           </div>
         </div>
-
-        {/* Right Results */}
-        <div className="space-y-4">
-          {regime === "US" ? (
-            <CalcResult
-              title="Paycheck & Take-Home Summary"
-              primaryLabel="Net Monthly Take-Home"
-              primaryValue={`$${usResult.netMonthlyTakeHome.toLocaleString()}`}
-              primarySubtext={`Bi-Weekly: $${usResult.netBiWeeklyTakeHome.toLocaleString()} (26 paychecks) • Annual: $${usResult.netAnnualTakeHome.toLocaleString()}`}
-              copyValue={`US Take-Home Pay: $${usResult.netMonthlyTakeHome.toLocaleString()}/mo ($${usResult.netBiWeeklyTakeHome.toLocaleString()} bi-weekly, $${usResult.netAnnualTakeHome.toLocaleString()}/yr) | Gross: $${grossSalary.toLocaleString()} | Effective Tax: ${usResult.effectiveTaxRate}%`}
-              columns={2}
-              items={[
-                {
-                  label: "Bi-Weekly Take-Home",
-                  value: `$${usResult.netBiWeeklyTakeHome.toLocaleString()}`,
-                  subtext: "Every 2 weeks (26 periods)",
-                  highlight: true,
-                },
-                {
-                  label: "Federal Income Tax",
-                  value: `$${usResult.federalIncomeTax.toLocaleString()}`,
-                  subtext: `Taxable: $${usResult.federalTaxableIncome.toLocaleString()}`,
-                },
-                {
-                  label: "FICA: Social Security",
-                  value: `$${usResult.socialSecurityTax.toLocaleString()}`,
-                  subtext: "6.2% up to $168,600 cap",
-                },
-                {
-                  label: "FICA: Medicare",
-                  value: `$${usResult.medicareTax.toLocaleString()}`,
-                  subtext: "1.45% base + 0.9% surtax",
-                },
-                {
-                  label: "State Income Tax",
-                  value: `$${usResult.stateIncomeTax.toLocaleString()}`,
-                  subtext: `${stateTaxPercent}% estimated`,
-                },
-                {
-                  label: "401(k) Retirement",
-                  value: `$${usResult.k401Deduction.toLocaleString()}`,
-                  subtext: `${k401Percent}% pre-tax savings`,
-                },
-                {
-                  label: "Effective Tax Rate",
-                  value: `${usResult.effectiveTaxRate}%`,
-                  subtext: "Taxes / Gross Salary",
-                },
-              ]}
-            />
-          ) : (
-            <CalcResult
-              title="Monthly Take-Home Summary"
-              primaryLabel="Net In-Hand Paycheck"
-              primaryValue={`₹${inResult.monthlyTakeHome.toLocaleString()}`}
-              primarySubtext={`Annual In-Hand: ₹${inResult.annualTakeHome.toLocaleString()}`}
-              copyValue={`India In-Hand Salary: ₹${inResult.monthlyTakeHome.toLocaleString()}/mo (₹${inResult.annualTakeHome.toLocaleString()}/yr) | Gross CTC: ₹${annualCtc.toLocaleString()} | Monthly EPF: ₹${inResult.monthlyEpf.toLocaleString()} | Monthly Tax: ₹${inResult.monthlyTax.toLocaleString()}`}
-              columns={2}
-              items={[
-                {
-                  label: "Monthly EPF",
-                  value: `₹${inResult.monthlyEpf.toLocaleString()}`,
-                  subtext: "Retirement savings",
-                  highlight: true,
-                },
-                {
-                  label: "Monthly Tax TDS",
-                  value: `₹${inResult.monthlyTax.toLocaleString()}`,
-                  subtext: "Estimated income tax",
-                },
-                {
-                  label: "Monthly Gross",
-                  value: `₹${inResult.monthlyGross.toLocaleString()}`,
-                },
-                {
-                  label: "Annual Deductions",
-                  value: `₹${inResult.annualDeductions.toLocaleString()}`,
-                },
-              ]}
-            />
-          )}
-        </div>
+        {/* End Right Column */}
       </div>
 
       <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">

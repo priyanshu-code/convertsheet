@@ -14,6 +14,7 @@ import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 import { HowToGuide, FAQAccordion } from "@/components/seo";
 import { AdBanner } from "@/components/layout";
 import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
+import { EmbedBanner } from "@/components/calculator/EmbedBanner";
 import { PresetPillsBar } from "@/components/calculator/PresetPillsBar";
 import { getProgrammaticPresetsByTool } from "@/lib/programmatic-presets";
 import { getAllBlogPosts } from "@/lib/blog-registry";
@@ -504,6 +505,11 @@ export default function ToolPage({ params }: ToolPageProps) {
             title={`Frequently Asked Questions: ${tool.name}`}
             description="Answers to common questions regarding inputs, calculations, and mathematical methodology."
           />
+        </div>
+
+        {/* Embed Widget Callout Banner */}
+        <div className="max-w-4xl mx-auto">
+          <EmbedBanner tool={tool} />
         </div>
 
         {/* Contextual Converter Bridge */}

@@ -182,9 +182,11 @@ Provide financial advice on whether refinancing or making extra principal paymen
       icon={Home}
       badge="SheetJS Export"
     >
-      <div className="space-y-6">
-        {/* Top Controls Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+        {/* Left Column: Inputs, Sliders, Terms, Taxes & Insurance */}
+        <div className="lg:col-span-7 space-y-6">
+          {/* Top Controls Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <CalcInput
             id="home-price"
             label="Home Purchase Price"
@@ -321,47 +323,79 @@ Provide financial advice on whether refinancing or making extra principal paymen
           </div>
         </div>
 
-        {/* Results Summary */}
-        <CalcResult
-          title="Monthly Payment Breakdown"
-          primaryLabel="Total Monthly Payment"
-          primaryValue={formatCurrency(mortgage.totalMonthlyPayment)}
-          primarySubtext={`Principal & Interest: ${formatCurrency(mortgage.monthlyPrincipalAndInterest)} • Taxes: ${formatCurrency(mortgage.monthlyPropertyTax)} • Insurance: ${formatCurrency(mortgage.monthlyInsurance)}${mortgage.monthlyPmi > 0 ? ` • PMI: ${formatCurrency(mortgage.monthlyPmi)}` : ""}`}
-          copyValue={`Monthly Payment: ${formatCurrency(mortgage.totalMonthlyPayment)}/mo | Loan: ${formatCurrency(mortgage.loanAmount)} | Total Interest: ${formatCurrency(mortgage.totalInterest)} (${loanTermYears}yr fixed @ ${interestRate}%)`}
-          items={[
-            {
-              label: "Loan Amount Financed",
-              value: formatCurrency(mortgage.loanAmount),
-            },
-            {
-              label: "Total Interest Paid",
-              value: formatCurrency(mortgage.totalInterest),
-              highlight: true,
-            },
-            {
-              label: "Total Loan Cost (P+I)",
-              value: formatCurrency(mortgage.totalPayment),
-            },
-            {
-              label: "Payoff Time",
-              value: `${mortgage.payoffYears} Years (${mortgage.payoffMonths} mos)`,
-            },
-            ...(extraPayment > 0
-              ? [
-                  {
-                    label: "Interest Saved by Extra Payment",
-                    value: formatCurrency(mortgage.interestSavedWithExtra),
-                    highlight: true,
-                    badge: `${Math.round(mortgage.monthsSavedWithExtra / 12)} yrs early`,
-                  },
-                ]
-              : []),
-          ]}
-        />
+        </div>
+        {/* End Left Column */}
 
-        {/* Actions bar: Excel Export + PDF Dossier + ChatGPT Copilot */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          <div className="flex flex-wrap items-center gap-2">
+        {/* Right Column: Sticky Results Summary, Chart & Actions */}
+        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-20">
+          {/* Results Summary */}
+          <CalcResult
+            title="Monthly Payment Breakdown"
+            primaryLabel="Total Monthly Payment"
+            primaryValue={formatCurrency(mortgage.totalMonthlyPayment)}
+            primarySubtext={`Principal & Interest: ${formatCurrency(mortgage.monthlyPrincipalAndInterest)} • Taxes: ${formatCurrency(mortgage.monthlyPropertyTax)} • Insurance: ${formatCurrency(mortgage.monthlyInsurance)}${mortgage.monthlyPmi > 0 ? ` • PMI: ${formatCurrency(mortgage.monthlyPmi)}` : ""}`}
+            copyValue={`Monthly Payment: ${formatCurrency(mortgage.totalMonthlyPayment)}/mo | Loan: ${formatCurrency(mortgage.loanAmount)} | Total Interest: ${formatCurrency(mortgage.totalInterest)} (${loanTermYears}yr fixed @ ${interestRate}%)`}
+            items={[
+              {
+                label: "Loan Amount Financed",
+                value: formatCurrency(mortgage.loanAmount),
+              },
+              {
+                label: "Total Interest Paid",
+                value: formatCurrency(mortgage.totalInterest),
+                highlight: true,
+              },
+              {
+                label: "Total Loan Cost (P+I)",
+                value: formatCurrency(mortgage.totalPayment),
+              },
+              {
+                label: "Payoff Time",
+                value: `${mortgage.payoffYears} Years (${mortgage.payoffMonths} mos)`,
+              },
+              ...(extraPayment > 0
+                ? [
+                    {
+                      label: "Interest Saved by Extra Payment",
+                      value: formatCurrency(mortgage.interestSavedWithExtra),
+                      highlight: true,
+                      badge: `${Math.round(mortgage.monthsSavedWithExtra / 12)} yrs early`,
+                    },
+                  ]
+                : []),
+            ]}
+          />
+
+          {/* Visual Balance Curve */}
+          <CalcChart
+            title="Balance Payoff & Equity Projection"
+            data={chartData}
+            series={[
+              {
+                key: "balance",
+                name: "Remaining Principal",
+                color: "#EF4444",
+                gradientId: "mortBalanceGrad",
+              },
+              {
+                key: "principalPaid",
+                name: "Cumulative Equity Paid",
+                color: "#10B981",
+                gradientId: "mortPrincGrad",
+              },
+              {
+                key: "interestPaid",
+                name: "Cumulative Interest Paid",
+                color: "#F59E0B",
+                gradientId: "mortIntGrad",
+              },
+            ]}
+            height={200}
+            valuePrefix="$"
+          />
+
+          {/* Actions bar: Excel Export + PDF Dossier + ChatGPT Copilot */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
             <CalcExportButton
               data={exportData}
               filename={`mortgage_amortization_${homePrice}`}
@@ -416,100 +450,78 @@ Provide financial advice on whether refinancing or making extra principal paymen
             />
             <CalcPromptButton prompt={aiPrompt} toolName="Mortgage Analysis" />
           </div>
-
-          <div className="flex items-center gap-1 bg-zinc-200/60 dark:bg-zinc-800 p-1 rounded-xl text-xs font-semibold">
-            <button
-              type="button"
-              onClick={() => setScheduleView("yearly")}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                scheduleView === "yearly"
-                  ? "bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-xs"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              Yearly Breakdown
-            </button>
-            <button
-              type="button"
-              onClick={() => setScheduleView("monthly")}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                scheduleView === "monthly"
-                  ? "bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-xs"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
-              }`}
-            >
-              Monthly Breakdown
-            </button>
-          </div>
         </div>
+        {/* End Right Column */}
+      </div>
+      {/* End 12-Column Grid */}
 
-        {/* Visual Balance Curve */}
-        <CalcChart
-          title="Mortgage Balance Payoff & Equity Accumulation"
-          data={chartData}
-          series={[
-            {
-              key: "balance",
-              name: "Remaining Principal",
-              color: "#EF4444",
-              gradientId: "mortBalanceGrad",
-            },
-            {
-              key: "principalPaid",
-              name: "Cumulative Equity Paid",
-              color: "#10B981",
-              gradientId: "mortPrincGrad",
-            },
-            {
-              key: "interestPaid",
-              name: "Cumulative Interest Paid",
-              color: "#F59E0B",
-              gradientId: "mortIntGrad",
-            },
-          ]}
-        />
-
-        {/* Amortization Table */}
-        <div className="space-y-3 pt-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <TableIcon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                Amortization Schedule ({scheduleView === "yearly" ? `${mortgage.yearlySchedule.length} Years` : `${mortgage.monthlySchedule.length} Months`})
-              </span>
-            </div>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400">
-              Showing first {Math.min(60, exportData.length)} rows
+      {/* Full-Width Amortization Schedule */}
+      <div className="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-2">
+            <TableIcon className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Amortization Schedule ({scheduleView === "yearly" ? `${mortgage.yearlySchedule.length} Years` : `${mortgage.monthlySchedule.length} Months`})
             </span>
           </div>
 
-          <div className="border border-zinc-200 dark:border-zinc-700/60 rounded-2xl overflow-hidden shadow-sm">
-            <div className="max-h-80 overflow-auto">
-              <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700/60 text-xs">
-                <thead className="bg-zinc-50 dark:bg-zinc-800/80 sticky top-0">
-                  <tr>
-                    <th className="px-4 py-2.5 text-left font-semibold text-zinc-700 dark:text-zinc-300">Period</th>
-                    <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Payment</th>
-                    <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Principal</th>
-                    <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Interest</th>
-                    <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Total Interest</th>
-                    <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Balance</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 bg-white dark:bg-zinc-900 font-mono">
-                  {exportData.slice(0, 60).map((row, idx) => (
-                    <tr key={idx} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
-                      <td className="px-4 py-2 text-zinc-800 dark:text-zinc-200 whitespace-nowrap font-sans">{row.Period}</td>
-                      <td className="px-4 py-2 text-right text-zinc-800 dark:text-zinc-200 whitespace-nowrap">${Number(row.Payment).toLocaleString()}</td>
-                      <td className="px-4 py-2 text-right text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${Number(row.Principal).toLocaleString()}</td>
-                      <td className="px-4 py-2 text-right text-amber-600 dark:text-amber-400 whitespace-nowrap">${Number(row.Interest).toLocaleString()}</td>
-                      <td className="px-4 py-2 text-right text-zinc-500 whitespace-nowrap">${Number(row["Total Interest"]).toLocaleString()}</td>
-                      <td className="px-4 py-2 text-right font-bold text-zinc-900 dark:text-zinc-100 whitespace-nowrap">${Number(row["Remaining Balance"]).toLocaleString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              Showing first {Math.min(60, exportData.length)} rows
+            </span>
+            <div className="flex items-center gap-1 bg-zinc-200/60 dark:bg-zinc-800 p-1 rounded-xl text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setScheduleView("yearly")}
+                className={`px-3 py-1 rounded-lg transition-colors ${
+                  scheduleView === "yearly"
+                    ? "bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-xs"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                }`}
+              >
+                Yearly Breakdown
+              </button>
+              <button
+                type="button"
+                onClick={() => setScheduleView("monthly")}
+                className={`px-3 py-1 rounded-lg transition-colors ${
+                  scheduleView === "monthly"
+                    ? "bg-white dark:bg-zinc-900 text-emerald-600 dark:text-emerald-400 shadow-xs"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                }`}
+              >
+                Monthly Breakdown
+              </button>
             </div>
+          </div>
+        </div>
+
+        <div className="border border-zinc-200 dark:border-zinc-700/60 rounded-2xl overflow-hidden shadow-sm">
+          <div className="max-h-80 overflow-auto">
+            <table className="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700/60 text-xs">
+              <thead className="bg-zinc-50 dark:bg-zinc-800/80 sticky top-0">
+                <tr>
+                  <th className="px-4 py-2.5 text-left font-semibold text-zinc-700 dark:text-zinc-300">Period</th>
+                  <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Payment</th>
+                  <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Principal</th>
+                  <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Interest</th>
+                  <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Total Interest</th>
+                  <th className="px-4 py-2.5 text-right font-semibold text-zinc-700 dark:text-zinc-300">Balance</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 bg-white dark:bg-zinc-900 font-mono">
+                {exportData.slice(0, 60).map((row, idx) => (
+                  <tr key={idx} className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
+                    <td className="px-4 py-2 text-zinc-800 dark:text-zinc-200 whitespace-nowrap font-sans">{row.Period}</td>
+                    <td className="px-4 py-2 text-right text-zinc-800 dark:text-zinc-200 whitespace-nowrap">${Number(row.Payment).toLocaleString()}</td>
+                    <td className="px-4 py-2 text-right text-emerald-600 dark:text-emerald-400 whitespace-nowrap">${Number(row.Principal).toLocaleString()}</td>
+                    <td className="px-4 py-2 text-right text-amber-600 dark:text-amber-400 whitespace-nowrap">${Number(row.Interest).toLocaleString()}</td>
+                    <td className="px-4 py-2 text-right text-zinc-500 whitespace-nowrap">${Number(row["Total Interest"]).toLocaleString()}</td>
+                    <td className="px-4 py-2 text-right font-bold text-zinc-900 dark:text-zinc-100 whitespace-nowrap">${Number(row["Remaining Balance"]).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

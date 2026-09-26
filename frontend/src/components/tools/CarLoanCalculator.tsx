@@ -165,162 +165,194 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
       icon={Car}
       badge="SheetJS Export"
     >
-      <div className="space-y-6">
-        {/* Input Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <CalcInput
-            id="car-price"
-            label="Vehicle Purchase Price"
-            value={vehiclePrice}
-            onChange={(val) => setVehiclePrice(Number(val) || 0)}
-            type="number"
-            min={1000}
-            step={500}
-            prefix="$"
-          />
-
-          <div className="space-y-1">
+      <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+        {/* Left Column: Input Fields */}
+        <div className="lg:col-span-7 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <CalcInput
-              id="car-down-payment"
-              label="Cash Down Payment"
-              value={downPayment}
-              onChange={(val) => setDownPayment(Number(val) || 0)}
+              id="car-price"
+              label="Vehicle Purchase Price"
+              value={vehiclePrice}
+              onChange={(val) => setVehiclePrice(Number(val) || 0)}
+              type="number"
+              min={1000}
+              step={500}
+              prefix="$"
+            />
+
+            <div className="space-y-1">
+              <CalcInput
+                id="car-down-payment"
+                label="Cash Down Payment"
+                value={downPayment}
+                onChange={(val) => setDownPayment(Number(val) || 0)}
+                type="number"
+                min={0}
+                step={500}
+                prefix="$"
+              />
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                {[0, 2500, 5000, 10000].map((amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    onClick={() => setDownPayment(amt)}
+                    className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                      downPayment === amt
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                    }`}
+                  >
+                    ${amt.toLocaleString()}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <CalcInput
+              id="car-trade-in"
+              label="Trade-in Value / Allowance"
+              value={tradeInValue}
+              onChange={(val) => setTradeInValue(Number(val) || 0)}
               type="number"
               min={0}
               step={500}
               prefix="$"
+              helpText="Subtracted from taxable price"
             />
-            <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              {[0, 2500, 5000, 10000].map((amt) => (
-                <button
-                  key={amt}
-                  type="button"
-                  onClick={() => setDownPayment(amt)}
-                  className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
-                    downPayment === amt
-                      ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                  }`}
-                >
-                  ${amt.toLocaleString()}
-                </button>
-              ))}
-            </div>
-          </div>
 
-          <CalcInput
-            id="car-trade-in"
-            label="Trade-in Value / Allowance"
-            value={tradeInValue}
-            onChange={(val) => setTradeInValue(Number(val) || 0)}
-            type="number"
-            min={0}
-            step={500}
-            prefix="$"
-            helpText="Subtracted from taxable price"
-          />
-
-          <CalcInput
-            id="car-apr"
-            label="Interest Rate (APR %)"
-            value={interestRate}
-            onChange={(val) => setInterestRate(Number(val) || 0)}
-            type="number"
-            min={0}
-            max={30}
-            step={0.1}
-            suffix="%"
-          />
-
-          <div className="space-y-1">
-            <CalcSelect
-              id="car-term"
-              label="Loan Term"
-              value={loanTermMonths.toString()}
-              onChange={(val) => setLoanTermMonths(Number(val))}
-              options={[
-                { label: "36 Months (3 Years)", value: "36" },
-                { label: "48 Months (4 Years)", value: "48" },
-                { label: "60 Months (5 Years - Standard)", value: "60" },
-                { label: "72 Months (6 Years)", value: "72" },
-                { label: "84 Months (7 Years)", value: "84" },
-              ]}
-            />
-            <div className="flex flex-wrap items-center gap-1.5 pt-1">
-              {[36, 48, 60, 72].map((m) => (
-                <button
-                  key={m}
-                  type="button"
-                  onClick={() => setLoanTermMonths(m)}
-                  className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
-                    loanTermMonths === m
-                      ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                  }`}
-                >
-                  {m} mos
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
             <CalcInput
-              id="car-tax-rate"
-              label="Sales Tax Rate"
-              value={salesTaxPercent}
-              onChange={(val) => setSalesTaxPercent(Number(val) || 0)}
+              id="car-apr"
+              label="Interest Rate (APR %)"
+              value={interestRate}
+              onChange={(val) => setInterestRate(Number(val) || 0)}
               type="number"
               min={0}
-              max={20}
+              max={30}
               step={0.1}
               suffix="%"
             />
 
-            <CalcInput
-              id="car-dealer-fees"
-              label="Dealer & Doc Fees"
-              value={dealerFees}
-              onChange={(val) => setDealerFees(Number(val) || 0)}
-              type="number"
-              min={0}
-              step={50}
-              prefix="$"
-            />
+            <div className="space-y-1">
+              <CalcSelect
+                id="car-term"
+                label="Loan Term"
+                value={loanTermMonths.toString()}
+                onChange={(val) => setLoanTermMonths(Number(val))}
+                options={[
+                  { label: "36 Months (3 Years)", value: "36" },
+                  { label: "48 Months (4 Years)", value: "48" },
+                  { label: "60 Months (5 Years - Standard)", value: "60" },
+                  { label: "72 Months (6 Years)", value: "72" },
+                  { label: "84 Months (7 Years)", value: "84" },
+                ]}
+              />
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                {[36, 48, 60, 72].map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => setLoanTermMonths(m)}
+                    className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                      loanTermMonths === m
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                    }`}
+                  >
+                    {m} mos
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <CalcInput
+                id="car-tax-rate"
+                label="Sales Tax Rate"
+                value={salesTaxPercent}
+                onChange={(val) => setSalesTaxPercent(Number(val) || 0)}
+                type="number"
+                min={0}
+                max={20}
+                step={0.1}
+                suffix="%"
+              />
+
+              <CalcInput
+                id="car-dealer-fees"
+                label="Dealer & Doc Fees"
+                value={dealerFees}
+                onChange={(val) => setDealerFees(Number(val) || 0)}
+                type="number"
+                min={0}
+                step={50}
+                prefix="$"
+              />
+            </div>
           </div>
         </div>
+        {/* End Left Column */}
 
-        {/* Results */}
-        <CalcResult
-          title="Financing Summary"
-          primaryLabel="Monthly Auto Loan Payment"
-          primaryValue={`$${carLoan.monthlyPayment.toLocaleString()}`}
-          primarySubtext={`Based on $${carLoan.netLoanAmount.toLocaleString()} financed over ${loanTermMonths} months at ${interestRate}% APR.`}
-          copyValue={`Monthly Payment: $${carLoan.monthlyPayment.toLocaleString()}/mo | Net Loan Financed: $${carLoan.netLoanAmount.toLocaleString()} | Total Interest: $${carLoan.totalInterest.toLocaleString()} (${loanTermMonths} months @ ${interestRate}% APR)`}
-          items={[
-            {
-              label: "Net Loan Financed",
-              value: `$${carLoan.netLoanAmount.toLocaleString()}`,
-            },
-            {
-              label: "Total Interest Paid",
-              value: `$${carLoan.totalInterest.toLocaleString()}`,
-              highlight: true,
-            },
-            {
-              label: "Sales Taxes & Fees",
-              value: `$${carLoan.totalTaxesAndFees.toLocaleString()}`,
-            },
-            {
-              label: "Total Out-of-Pocket Cost",
-              value: `$${carLoan.totalCost.toLocaleString()}`,
-            },
-          ]}
-        />
+        {/* Right Column: Sticky Results Summary, Chart & Actions */}
+        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-20">
+          {/* Results */}
+          <CalcResult
+            title="Financing Summary"
+            primaryLabel="Monthly Auto Loan Payment"
+            primaryValue={`$${carLoan.monthlyPayment.toLocaleString()}`}
+            primarySubtext={`Based on $${carLoan.netLoanAmount.toLocaleString()} financed over ${loanTermMonths} months at ${interestRate}% APR.`}
+            copyValue={`Monthly Payment: $${carLoan.monthlyPayment.toLocaleString()}/mo | Net Loan Financed: $${carLoan.netLoanAmount.toLocaleString()} | Total Interest: $${carLoan.totalInterest.toLocaleString()} (${loanTermMonths} months @ ${interestRate}% APR)`}
+            items={[
+              {
+                label: "Net Loan Financed",
+                value: `$${carLoan.netLoanAmount.toLocaleString()}`,
+              },
+              {
+                label: "Total Interest Paid",
+                value: `$${carLoan.totalInterest.toLocaleString()}`,
+                highlight: true,
+              },
+              {
+                label: "Sales Taxes & Fees",
+                value: `$${carLoan.totalTaxesAndFees.toLocaleString()}`,
+              },
+              {
+                label: "Total Out-of-Pocket Cost",
+                value: `$${carLoan.totalCost.toLocaleString()}`,
+              },
+            ]}
+          />
 
-        {/* Action Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Amortization Chart */}
+          <CalcChart
+            title="Payoff & Principal Balance Reduction"
+            data={chartData}
+            series={[
+              {
+                key: "balance",
+                name: "Remaining Loan Balance",
+                color: "#EF4444",
+                gradientId: "carBalanceGrad",
+              },
+              {
+                key: "principalPaid",
+                name: "Principal Paid",
+                color: "#10B981",
+                gradientId: "carPrincGrad",
+              },
+              {
+                key: "interestPaid",
+                name: "Interest Paid",
+                color: "#F59E0B",
+                gradientId: "carIntGrad",
+              },
+            ]}
+            height={200}
+            valuePrefix="$"
+          />
+
+          {/* Action Toolbar */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
             <CalcExportButton
               data={exportData}
               filename={`car_loan_schedule_${vehiclePrice}`}
@@ -375,32 +407,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
             />
           </div>
         </div>
-
-        {/* Amortization Chart */}
-        <CalcChart
-          title="Auto Loan Payoff & Principal Balance Reduction"
-          data={chartData}
-          series={[
-            {
-              key: "balance",
-              name: "Remaining Loan Balance",
-              color: "#EF4444",
-              gradientId: "carBalanceGrad",
-            },
-            {
-              key: "principalPaid",
-              name: "Principal Paid",
-              color: "#10B981",
-              gradientId: "carPrincGrad",
-            },
-            {
-              key: "interestPaid",
-              name: "Interest Paid",
-              color: "#F59E0B",
-              gradientId: "carIntGrad",
-            },
-          ]}
-        />
+        {/* End Right Column */}
       </div>
     </CalcCard>
 

@@ -314,8 +314,15 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 21 Converters + 51 On-Brand Tools + 176 Presets (157 programmatic) + 6 Blog Posts + 5 Comparisons = 269 entries
-      expect(entries).toHaveLength(269);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 21 Converters + 51 On-Brand Tools + 176 Presets + 6 Blog Posts + 5 Comparisons = 270 entries
+      expect(entries).toHaveLength(270);
+
+      // Embed directory entry
+      const embedEntry = entries.find(
+        (e) => e.url === "https://www.convertsheet.com/embed"
+      );
+      expect(embedEntry).toBeDefined();
+      expect(embedEntry?.priority).toBe(0.9);
 
       // Home entry
       const homeEntry = entries.find(

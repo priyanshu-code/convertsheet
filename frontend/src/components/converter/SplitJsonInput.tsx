@@ -32,7 +32,8 @@ const SAMPLE_JSON_RECORDS = [
     name: "Sarah Chen",
     email: "sarah.chen@example.ai",
     role: "ML Engineer",
-    skills: ["Python", "PyTorch", "VectorDB"],
+    department: "AI Research",
+    salary: 145000,
     active: true,
   },
   {
@@ -40,7 +41,8 @@ const SAMPLE_JSON_RECORDS = [
     name: "Alex Rivera",
     email: "alex.rivera@example.ai",
     role: "Data Architect",
-    skills: ["PostgreSQL", "DuckDB", "Kafka"],
+    department: "Platform Engineering",
+    salary: 160000,
     active: true,
   },
   {
@@ -48,7 +50,8 @@ const SAMPLE_JSON_RECORDS = [
     name: "Maya Lin",
     email: "maya.lin@example.ai",
     role: "Prompt Engineer",
-    skills: ["LangChain", "Evaluation", "Embeddings"],
+    department: "Product AI",
+    salary: 135000,
     active: false,
   },
 ];

@@ -13,6 +13,7 @@ import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 import { FAQAccordion } from "@/components/seo";
 import { AdBanner } from "@/components/layout";
 import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
+import { EmbedBanner } from "@/components/calculator/EmbedBanner";
 import { PresetPillsBar } from "@/components/calculator/PresetPillsBar";
 import { getAllBlogPosts } from "@/lib/blog-registry";
 
@@ -35,6 +36,7 @@ import { WageConversionMatrix } from "@/components/calculator/WageConversionMatr
 import { InflationErosionMatrix } from "@/components/calculator/InflationErosionMatrix";
 import { ApyCompoundingMatrix } from "@/components/calculator/ApyCompoundingMatrix";
 import { CarLoanTermMatrix } from "@/components/calculator/CarLoanTermMatrix";
+import { PresetComparisonTable } from "@/components/calculator/PresetComparisonTable";
 
 export interface ProgrammaticPresetPageProps {
   params: {
@@ -238,6 +240,16 @@ export default function ProgrammaticPresetPage({
           </div>
         </div>
 
+        {/* Pre-Rendered Comparison Table for Google AI Overviews and SERP Rich Cards */}
+        <div className="max-w-5xl mx-auto w-full">
+          <PresetComparisonTable
+            toolSlug={tool.slug}
+            presetSlug={preset.presetSlug}
+            presetName={preset.name}
+            initialValues={preset.initialValues}
+          />
+        </div>
+
         {/* Specialized High-Intent Preset Add-ons */}
         {(tool.slug === "hourly-to-salary-calculator" || preset.presetSlug.includes("-an-hour-salary")) && (
           <div className="max-w-5xl mx-auto w-full">
@@ -421,6 +433,11 @@ export default function ProgrammaticPresetPage({
             />
           </div>
         )}
+
+        {/* Free Embeddable Calculator Callout */}
+        <div className="max-w-4xl mx-auto">
+          <EmbedBanner tool={tool} />
+        </div>
       </div>
     </>
   );
