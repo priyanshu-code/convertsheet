@@ -15,11 +15,11 @@ test.describe("SQLite to Excel Converter & Embed Flow", () => {
     await expect(h1).toBeVisible();
     await expect(h1).toContainText("Convert SQLite (.db, .sqlite) to Excel");
 
-    // Check canonical URL is https://convertsheet.com/convert/sqlite-to-excel
+    // Check canonical URL is https://www.convertsheet.com/convert/sqlite-to-excel
     const canonical = await page.$eval('link[rel="canonical"]', (el) =>
       el.getAttribute("href")
     );
-    expect(canonical).toBe("https://convertsheet.com/convert/sqlite-to-excel");
+    expect(canonical).toBe("https://www.convertsheet.com/convert/sqlite-to-excel");
 
     // Check FAQs accordion is present and expandable
     const faqSection = page.locator('[data-testid="faq-accordion"]');
@@ -128,7 +128,7 @@ test.describe("SQLite to Excel Converter & Embed Flow", () => {
     await expect(attributionLink).toBeVisible();
     await expect(attributionLink).toHaveAttribute(
       "href",
-      "https://convertsheet.com/convert/sqlite-to-excel"
+      "https://www.convertsheet.com/convert/sqlite-to-excel"
     );
 
     // Confirm DropZone is present and interactive in embed mode

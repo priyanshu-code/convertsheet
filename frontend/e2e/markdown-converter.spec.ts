@@ -18,7 +18,7 @@ test.describe("Markdown to Excel Converter & Embed Flow", () => {
     const canonical = await page.$eval('link[rel="canonical"]', (el) =>
       el.getAttribute("href")
     );
-    expect(canonical).toBe("https://convertsheet.com/convert/markdown-to-excel");
+    expect(canonical).toBe("https://www.convertsheet.com/convert/markdown-to-excel");
   });
 
   test("Test 2: Split input interactive flow", async ({ page }) => {
@@ -75,7 +75,7 @@ test.describe("Markdown to Excel Converter & Embed Flow", () => {
     await expect(attributionLink).toBeVisible();
     await expect(attributionLink).toHaveAttribute(
       "href",
-      "https://convertsheet.com/convert/markdown-to-excel"
+      "https://www.convertsheet.com/convert/markdown-to-excel"
     );
   });
 });

@@ -452,8 +452,8 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15-Year vs 30-Year Mortgage Calculator & Comparison | ConvertSheet",
-    "metaDescription": "Compare 15-year vs 30-year mortgages side by side. See how much total interest you save and export the amortization comparison to Excel.",
+    "title": "15 vs 30 Year Mortgage Calculator (2026) — Side-by-Side Savings & Payment Chart",
+    "metaDescription": "Compare 15 vs 30-year mortgages side by side. On a $320k loan, save $248,282 in interest with a 15-yr term. Calculate monthly payments & export amortization to Excel.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {
@@ -467,11 +467,23 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "faqs": [
       {
         "question": "Should I get a 15-year mortgage or take a 30-year and pay extra?",
-        "answer": "A 30-year mortgage provides financial safety: if your income drops, you are only committed to the lower monthly payment. You can voluntarily make extra principal payments to pay it off in 15 years with complete flexibility."
+        "answer": "A 30-year mortgage provides financial safety: if your income drops or unexpected expenses arise, you are only committed to the lower monthly payment. You can voluntarily make extra principal payments to pay it off in 15 years with complete flexibility and without contractual risk."
       },
       {
         "question": "How much interest do you save on a 15-year fixed mortgage?",
-        "answer": "On a $320,000 loan balance, choosing a 15-year term at 5.8% instead of a 30-year term at 6.5% saves approximately $248,282 in total lifetime interest charges."
+        "answer": "On a $320,000 loan balance, choosing a 15-year term at 5.8% instead of a 30-year term at 6.5% saves approximately $248,282 in total lifetime interest charges while eliminating 180 months of mortgage debt."
+      },
+      {
+        "question": "What is the monthly payment difference between a 15-year and 30-year loan?",
+        "answer": "For a $320,000 mortgage, the 15-year payment is approximately $2,666/month (principal & interest) compared to $2,023/month for a 30-year loan—a difference of roughly $643 more per month."
+      },
+      {
+        "question": "Is it better to invest the extra cash in index funds or choose a 15-year mortgage?",
+        "answer": "If your mortgage rate is 6% or higher, the guaranteed 6% risk-free return of paying down mortgage debt is highly competitive with stock market returns (historic 7-10% nominal before capital gains taxes and volatility). In lower rate environments (<4%), investing the monthly difference in index funds often produces higher net wealth."
+      },
+      {
+        "question": "Can I refinance from a 30-year mortgage into a 15-year mortgage later?",
+        "answer": "Yes. Homeowners frequently start with a 30-year mortgage for cash flow flexibility and refinance into a 15-year fixed term once their household income increases or when interest rates drop."
       }
     ]
   },
@@ -776,8 +788,8 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "toolSlug": "car-loan-calculator",
     "presetSlug": "15k-car-loan",
     "name": "$15,000 Auto Loan Payment Calculator",
-    "title": "$15,000 Car Loan Calculator — Monthly Payment & Interest Schedule",
-    "metaDescription": "Calculate payments on a $15,000 used car loan. At 6.5% APR over 48 months with $1.5k down, pay ~$356/mo ($2,075 total interest). Free Excel export.",
+    "title": "$15,000 Car Loan Calculator (2026) — Monthly Payment & Interest Schedule",
+    "metaDescription": "Calculate monthly payments on a $15,000 car loan. At 6.5% APR over 48 months with $1.5k down, pay ~$356/mo ($2,075 total interest). Free Excel amortization export.",
     "answerSummary": "A $15,000 vehicle with $1,500 down payment at 6.5% interest over a 48-month term costs approximately $356/month (net loan of $15,000 including 7% sales tax and fees). Total interest paid over 4 years is $2,075.",
     "about": "Financing an entry-level or reliable pre-owned vehicle at the $15,000 mark is a great way to minimize depreciation. Use this tool to compute monthly financing and compare 36 vs 48-month payoffs.",
     "initialValues": {
@@ -792,11 +804,23 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "faqs": [
       {
         "question": "How much is a monthly payment on a $15,000 car?",
-        "answer": "With 10% down ($1,500) at 6.5% interest over a 48-month term, your monthly payment is approximately $356/month."
+        "answer": "At 6.5% APR with 10% down ($1,500), monthly payments on a $15,000 car are: $457/mo for 36 months ($1,402 total interest), $356/mo for 48 months ($2,075 total interest), $293/mo for 60 months ($2,580 total interest), and $252/mo for 72 months ($3,144 total interest)."
       },
       {
         "question": "Is a 48-month loan good for a used $15,000 car?",
-        "answer": "Yes, a 48-month loan keeps payments affordable while ensuring you do not stay underwater on a vehicle that depreciates over time."
+        "answer": "Yes. A 48-month loan is generally considered the optimal financing term for a $15,000 used car because it balances affordable monthly payments (~$356/mo) with paying off the vehicle before major maintenance cycles occur."
+      },
+      {
+        "question": "How much down payment do I need for a $15,000 auto loan?",
+        "answer": "Financial advisors recommend putting down at least 10% to 20% ($1,500 to $3,000) on a $15,000 car. Putting down at least 10% immediately covers state sales tax and dealer registration fees, protecting you from being underwater on your loan."
+      },
+      {
+        "question": "What credit score is needed for a 6.5% APR car loan?",
+        "answer": "A 6.5% APR on a used vehicle is typically offered to borrowers with prime to super-prime credit scores (700 to 750+). Credit scores below 660 typically receive rates between 9% and 14%."
+      },
+      {
+        "question": "Can I export the full amortization payment schedule to Excel?",
+        "answer": "Yes. ConvertSheet allows you to export your month-by-month principal, interest, and remaining balance schedule directly to a Microsoft Excel (.xlsx) spreadsheet or CSV with one click."
       }
     ]
   },
@@ -2925,8 +2949,8 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     toolSlug: "salary-calculator",
     presetSlug: "us-take-home-100k",
     name: "$100k Salary Take-Home Pay Calculator (US)",
-    title: "$100k Salary Take-Home Pay Calculator - Net Monthly & Bi-Weekly Paycheck",
-    metaDescription: "Calculate take-home pay on a $100,000 annual salary. Exact breakdown of federal tax, FICA (Social Security & Medicare), state tax, and net paycheck.",
+    title: "$100k Salary to Hourly & Monthly Take-Home Pay Calculator (2026)",
+    metaDescription: "Calculate take-home pay on a $100,000 annual salary ($8,333/mo gross, ~$6,233/mo net). Breakdown of federal tax, FICA, state taxes, and bi-weekly paychecks.",
     answerSummary: "On a $100,000 gross salary in the US for a single filer, your estimated net take-home pay is approximately $74,800 per year ($6,233 monthly or $2,877 bi-weekly). Total deductions include roughly $13,610 in federal income tax, $7,650 in FICA (Social Security and Medicare), and state tax depending on your location.",
     about: "Calculate your net take-home pay on a six-figure $100,000 base salary. This preset models 2024 IRS tax brackets for single filers, mandatory FICA payroll deductions (6.2% Social Security and 1.45% Medicare), and estimated state income tax withholding so you can budget your monthly cash flow with precision.",
     initialValues: {
@@ -2937,17 +2961,25 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     },
     faqs: [
       {
+        question: "How much is a $100k annual salary converted to monthly?",
+        answer: "A $100,000 annual salary equals $8,333.33 in gross monthly earnings before taxes. After federal tax ($1,134/mo), FICA ($637.50/mo), and average state income taxes ($417/mo), estimated net monthly take-home pay is approximately $6,145 to $6,560."
+      },
+      {
         question: "What is the take-home pay on a $100k salary in the US?",
-        answer: "For a single filer with standard deductions and an average 5% state income tax, take-home pay on $100,000 is approximately $74,800 annually, or about $6,233 per month ($2,877 bi-weekly).",
+        answer: "For a single filer with standard deductions and an average 5% state income tax, take-home pay on $100,000 is approximately $74,800 annually, or about $6,233 per month ($2,877 bi-weekly)."
       },
       {
         question: "How much tax is deducted from a $100,000 paycheck?",
-        answer: "A $100,000 salary typically incurs about $13,610 in federal income tax, $6,200 in Social Security tax (6.2%), $1,450 in Medicare tax (1.45%), and approximately $5,000 in state income tax, totaling roughly $26,260 in total deductions.",
+        answer: "A $100,000 salary typically incurs about $13,610 in federal income tax, $6,200 in Social Security tax (6.2%), $1,450 in Medicare tax (1.45%), and approximately $5,000 in state income tax, totaling roughly $26,260 in total deductions."
       },
       {
         question: "What is the bi-weekly paycheck for $100,000 a year?",
-        answer: "Assuming 26 pay periods per year, a $100,000 salary yields a gross bi-weekly paycheck of $3,846 and an estimated net take-home paycheck of approximately $2,877.",
+        answer: "Assuming 26 pay periods per year, a $100,000 salary yields a gross bi-weekly paycheck of $3,846 and an estimated net take-home paycheck of approximately $2,877."
       },
+      {
+        question: "What states have the highest take-home pay on a $100,000 salary?",
+        answer: "States with no state personal income tax (such as Texas, Florida, Washington, Nevada, Tennessee, Wyoming, and Alaska) allow you to take home approximately $78,740 per year ($6,561/month), retaining up to $4,000-$8,000 more annually than residents in California or New York."
+      }
     ],
   },
   {

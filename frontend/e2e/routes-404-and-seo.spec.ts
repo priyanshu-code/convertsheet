@@ -38,7 +38,7 @@ test.describe("Critical Route Availability & 404 Guard", () => {
       const canonical = await page.$eval('link[rel="canonical"]', (el) =>
         el.getAttribute("href")
       );
-      expect(canonical).toBe(`https://convertsheet.com/convert/${slug}`);
+      expect(canonical).toBe(`https://www.convertsheet.com/convert/${slug}`);
     }
   });
 

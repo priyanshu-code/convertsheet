@@ -17,7 +17,7 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     // Valid canonical URL
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      "https://convertsheet.com/convert/json-to-ndjson"
+      "https://www.convertsheet.com/convert/json-to-ndjson"
     );
 
     // Split input is visible with textarea and "Load Sample JSON" button
@@ -71,7 +71,7 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     // Valid canonical URL
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
-      "https://convertsheet.com/convert/json-to-schema"
+      "https://www.convertsheet.com/convert/json-to-schema"
     );
 
     // Split input is visible
@@ -127,7 +127,7 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     await expect(attributionNdjson).toBeVisible();
     await expect(attributionNdjson).toHaveAttribute(
       "href",
-      "https://convertsheet.com/convert/json-to-ndjson"
+      "https://www.convertsheet.com/convert/json-to-ndjson"
     );
 
     // Check /embed/json-to-schema
@@ -147,7 +147,7 @@ test.describe("JSON to NDJSON & JSON to Schema E2E Flow", () => {
     await expect(attributionSchema).toBeVisible();
     await expect(attributionSchema).toHaveAttribute(
       "href",
-      "https://convertsheet.com/convert/json-to-schema"
+      "https://www.convertsheet.com/convert/json-to-schema"
     );
   });
 });
