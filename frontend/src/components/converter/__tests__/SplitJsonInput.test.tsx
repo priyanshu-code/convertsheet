@@ -218,33 +218,30 @@ describe("SplitJsonInput", () => {
     expect(await screen.findByText(/Copied!/i)).toBeInTheDocument();
   });
 
-  it("'Open in Google Sheets' converts JSON to TSV, writes to clipboard and opens sheets.new", async () => {
-    const writeTextMock = vi.fn().mockResolvedValue(undefined);
-    Object.assign(navigator, {
-      clipboard: {
-        writeText: writeTextMock,
-      },
-    });
-    const openMock = vi.spyOn(window, "open").mockImplementation(() => null);
+  it("supports JSONL converters: loads JSONL sample and generates input.jsonl File", async () => {
+    const jsonlConfig = CONVERTER_REGISTRY["jsonl-to-excel"];
+    const handleFileSelect = vi.fn();
+    render(<SplitJsonInput config={jsonlConfig} onFileSelect={handleFileSelect} />);
 
-    render(<SplitJsonInput config={jsonToNdjsonConfig} onFileSelect={() => {}} />);
+    expect(screen.getByText("Paste JSONL Data")).toBeInTheDocument();
 
-    const textarea = screen.getByLabelText(/Paste JSON data/i);
-    const sample = JSON.stringify([
-      { name: "Alice", role: "Engineer" },
-      { name: "Bob", role: "Designer" },
-    ]);
-    fireEvent.change(textarea, { target: { value: sample } });
+    const loadSampleBtn = screen.getByRole("button", { name: /Load Sample JSONL/i });
+    fireEvent.click(loadSampleBtn);
 
-    const openSheetsBtn = screen.getByRole("button", { name: /Open in Google Sheets/i });
-    expect(openSheetsBtn).not.toBeDisabled();
-    fireEvent.click(openSheetsBtn);
+    const textarea = screen.getByLabelText(/Paste JSONL data/i) as HTMLTextAreaElement;
+    expect(textarea.value).toContain('{"id":"usr_101"');
+    // Verify it is newline-delimited, not wrapped in a single array
+    expect(textarea.value.trim().startsWith("[")).toBe(false);
 
-    expect(writeTextMock).toHaveBeenCalledWith("name\trole\nAlice\tEngineer\nBob\tDesigner");
-    await waitFor(() => {
-      expect(openMock).toHaveBeenCalledWith("https://sheets.new", "_blank", "noopener,noreferrer");
-      expect(screen.getByText(/Paste in Sheets/i)).toBeInTheDocument();
-    });
+    const parseBtn = screen.getByRole("button", { name: /Parse JSONL & Preview/i });
+    expect(parseBtn).not.toBeDisabled();
+    fireEvent.click(parseBtn);
+
+    expect(handleFileSelect).toHaveBeenCalledTimes(1);
+    const fileArg = handleFileSelect.mock.calls[0][0] as File;
+    expect(fileArg).toBeInstanceOf(File);
+    expect(fileArg.name).toBe("input.jsonl");
+    expect(fileArg.type).toBe("application/x-ndjson");
   });
 
   describe("Integration with ConverterCard", () => {

@@ -5,7 +5,6 @@ import {
   FileSpreadsheet,
   UploadCloud,
   CheckCircle2,
-  AlertCircle,
   Copy,
   Check,
   RotateCcw,
@@ -14,39 +13,10 @@ import {
   AlignLeft,
   Minimize2,
   ArrowRight,
-  ExternalLink,
+  FolderOpen,
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { cn } from "@/lib/utils";
-
-function csvToTsv(csvText: string): string {
-  const lines = csvText.split(/\r?\n/);
-  return lines
-    .map((line) => {
-      const fields: string[] = [];
-      let field = "";
-      let inQuotes = false;
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-          if (inQuotes && line[i + 1] === '"') {
-            field += '"';
-            i++;
-          } else {
-            inQuotes = !inQuotes;
-          }
-        } else if (char === "," && !inQuotes) {
-          fields.push(field.trim());
-          field = "";
-        } else {
-          field += char;
-        }
-      }
-      fields.push(field.trim());
-      return fields.join("\t");
-    })
-    .join("\n");
-}
 
 export interface SplitCsvInputProps {
   config: ConverterConfig;
@@ -78,7 +48,6 @@ export function SplitCsvInput({
   const [text, setText] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [openedSheets, setOpenedSheets] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isTsv = config.sourceFormat === "TSV" || config.sourceExtension === ".tsv";
@@ -117,12 +86,14 @@ export function SplitCsvInput({
       const trimmed = raw.trim();
       if (!trimmed || disabled) return;
 
-      const fileName = isTsv ? "input.tsv" : "input.csv";
+      const ext = config.sourceExtension || (isTsv ? ".tsv" : ".csv");
+      const cleanExt = ext.startsWith(".") ? ext : `.${ext}`;
+      const fileName = `input${cleanExt}`;
       const mimeType = isTsv ? "text/tab-separated-values" : "text/csv";
       const file = new File([trimmed], fileName, { type: mimeType });
       onFileSelect(file);
     },
-    [text, disabled, isTsv, onFileSelect]
+    [text, disabled, isTsv, config.sourceExtension, onFileSelect]
   );
 
   const handlePasteFromClipboard = useCallback(async () => {
@@ -184,23 +155,6 @@ export function SplitCsvInput({
     if (disabled) return;
     setText("");
   }, [disabled]);
-
-  const handleOpenGoogleSheets = useCallback(async () => {
-    if (disabled || !text.trim()) return;
-    const tsvContent = isTsv ? text.trim() : csvToTsv(text.trim());
-    try {
-      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(tsvContent);
-      }
-    } catch {
-      // Fallback if clipboard API is restricted
-    }
-    if (typeof window !== "undefined") {
-      window.open("https://sheets.new", "_blank", "noopener,noreferrer");
-    }
-    setOpenedSheets(true);
-    setTimeout(() => setOpenedSheets(false), 3500);
-  }, [disabled, text, isTsv]);
 
   const handleDragOver = useCallback(
     (e: React.DragEvent) => {
@@ -268,20 +222,20 @@ export function SplitCsvInput({
     <div
       data-testid="split-csv-input"
       className={cn(
-        "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-stretch",
+        "grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch",
         disabled && "opacity-60 pointer-events-none",
         className
       )}
     >
-      {/* Left Panel: Monospace Textarea with Quick Actions */}
-      <div className="flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 p-4 sm:p-5 transition-all">
+      {/* Left Panel: Spacious Textarea with Quick Actions */}
+      <div className="flex flex-col rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/50 p-4 sm:p-5 transition-all min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
         {/* Header with Title */}
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
               <FileSpreadsheet className="h-3.5 w-3.5" />
             </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+            <span className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
               Paste {formatName} Data
             </span>
 
@@ -294,9 +248,9 @@ export function SplitCsvInput({
           </div>
         </div>
 
-        {/* Action Toolbar */}
+        {/* Action Toolbar: Single clean row */}
         <div className="flex flex-wrap items-center justify-between gap-1.5 py-1.5 px-2 mb-2.5 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
-          <div className="flex items-center flex-wrap gap-1">
+          <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={handlePasteFromClipboard}
@@ -348,7 +302,7 @@ export function SplitCsvInput({
               className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <Minimize2 className="w-3.5 h-3.5" />
-              <span>Remove white space</span>
+              <span>Trim</span>
             </button>
             <button
               type="button"
@@ -361,17 +315,6 @@ export function SplitCsvInput({
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Clear</span>
             </button>
-            <button
-              type="button"
-              onClick={handleOpenGoogleSheets}
-              disabled={disabled || !text.trim()}
-              aria-label="Open in Google Sheets"
-              title="Copy as table and open in Google Sheets (sheets.new) to paste"
-              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors disabled:opacity-40 cursor-pointer"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>{openedSheets ? "Paste in Sheets (Ctrl+V)!" : "Open in Sheets"}</span>
-            </button>
           </div>
 
           <button
@@ -380,15 +323,15 @@ export function SplitCsvInput({
             disabled={disabled}
             aria-label={`Load Sample ${formatName}`}
             title={`Load Sample ${formatName}`}
-            className="inline-flex items-center gap-1 px-2.5 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 bg-emerald-50/80 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/60 dark:border-emerald-800/60 transition-colors disabled:opacity-40 cursor-pointer"
+            className="inline-flex items-center gap-1 px-2.5 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/70 dark:border-emerald-800/70 transition-colors disabled:opacity-40 cursor-pointer shrink-0"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Load sample {formatName}</span>
           </button>
         </div>
 
-        {/* Monospace Textarea */}
-        <div className="relative flex-1 min-h-[240px] sm:min-h-[280px]">
+        {/* Spacious Monospace Textarea */}
+        <div className="relative flex-1 min-h-[300px] sm:min-h-[360px] lg:min-h-[400px]">
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -406,7 +349,7 @@ export function SplitCsvInput({
                 : `id,name,email,department\n1,Alice,alice@example.com,Engineering\n2,Bob,bob@example.com,Marketing`
             }
             className={cn(
-              "w-full h-full min-h-[240px] sm:min-h-[280px] resize-none rounded-xl border bg-white dark:bg-zinc-950 p-3.5 font-mono text-xs leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2",
+              "w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-[400px] resize-none rounded-xl border bg-white dark:bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2",
               "border-zinc-200 dark:border-zinc-800 focus:border-emerald-500 focus:ring-emerald-500/20"
             )}
             spellCheck={false}
@@ -417,14 +360,14 @@ export function SplitCsvInput({
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-zinc-200/60 dark:border-zinc-800/60">
           <div className="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             {stats.isEmpty ? (
-              <span>Just paste the {formatName} or upload your file</span>
+              <span>Just paste the {formatName} or upload your file on the right</span>
             ) : (
               <span className="flex items-center gap-1.5 font-mono">
                 <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
                   {stats.rowCount} rows detected
                 </span>
                 <span>•</span>
-                <span>{stats.charCount} chars</span>
+                <span>{stats.charCount.toLocaleString()} chars</span>
               </span>
             )}
           </div>
@@ -441,8 +384,8 @@ export function SplitCsvInput({
         </div>
       </div>
 
-      {/* Right Panel: File Upload DropZone */}
-      <div className="flex flex-col">
+      {/* Right Panel: Integrated File Dropzone with Matching Spacious Layout */}
+      <div className="flex flex-col h-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
         <input
           ref={fileInputRef}
           type="file"
@@ -468,7 +411,7 @@ export function SplitCsvInput({
           onDrop={handleDrop}
           className={cn(
             "group relative flex-1 flex flex-col items-center justify-center text-center",
-            "border-2 border-dashed rounded-2xl p-6 sm:p-8 transition-all duration-200 cursor-pointer select-none outline-none min-h-[280px] sm:min-h-[340px]",
+            "border-2 border-dashed rounded-2xl p-6 sm:p-10 transition-all duration-200 cursor-pointer select-none outline-none min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
             isDragOver
               ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 ring-4 ring-emerald-500/10 scale-[1.005]"
               : "border-zinc-300 dark:border-zinc-700/80 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-emerald-500/60 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/10",
@@ -478,32 +421,34 @@ export function SplitCsvInput({
           {/* Upload icon circle */}
           <div
             className={cn(
-              "w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-transform duration-200",
+              "w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-200 shadow-xs",
               isDragOver
                 ? "scale-110 bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
                 : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-105"
             )}
           >
-            <UploadCloud className="w-6 h-6" />
+            <UploadCloud className="w-7 h-7" />
           </div>
 
-          <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+          <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-1.5">
             Or upload your {config.sourceFormat} file
           </h2>
 
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4 max-w-xs">
-            Drag and drop a {config.sourceFormat} file here, or{" "}
-            <span className="text-emerald-600 dark:text-emerald-400 font-medium underline underline-offset-4 group-hover:text-emerald-500">
-              browse
-            </span>
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mb-5 max-w-sm leading-normal">
+            Drag and drop your file here, or click anywhere to select from your device
           </p>
 
+          <div className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 group-hover:bg-emerald-600 dark:group-hover:bg-emerald-500 dark:group-hover:text-white transition-colors shadow-xs mb-5">
+            <FolderOpen className="w-3.5 h-3.5" />
+            <span>Browse {config.sourceFormat} file</span>
+          </div>
+
           {/* Accepted formats pills */}
-          <div className="flex flex-wrap items-center justify-center gap-1 mb-4">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 mb-4">
             {acceptedExtensions.map((ext) => (
               <span
                 key={ext}
-                className="px-2 py-0.5 text-[10px] font-mono font-medium rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                className="px-2.5 py-1 text-[11px] font-mono font-medium rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
               >
                 {ext}
               </span>
@@ -511,7 +456,7 @@ export function SplitCsvInput({
           </div>
 
           <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
-            Processed 100% locally in your browser
+            Processed 100% locally in your browser • Zero server uploads
           </p>
         </div>
       </div>

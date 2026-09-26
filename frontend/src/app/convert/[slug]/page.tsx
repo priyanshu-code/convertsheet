@@ -90,7 +90,7 @@ export default function ConverterPage({ params }: ConverterPageProps) {
   const featuredTools = getAllTools().slice(0, 3);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-6 sm:space-y-8">
+    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-6 sm:space-y-8">
       {/* Hero Section */}
       <div className="text-center max-w-4xl mx-auto space-y-1.5 sm:space-y-2">
         {/* Breadcrumb Navigation & Privacy Badge in one compact line */}
@@ -150,7 +150,7 @@ export default function ConverterPage({ params }: ConverterPageProps) {
       </div>
 
       {/* Converter Card - Spacious, pro-grade desktop width */}
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full mx-auto">
         <ConverterCard config={config} />
       </div>
 

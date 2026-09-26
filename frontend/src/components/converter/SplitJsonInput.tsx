@@ -14,49 +14,10 @@ import {
   Check,
   AlignLeft,
   Minimize2,
-  ExternalLink,
+  FolderOpen,
 } from "lucide-react";
 import { ConverterConfig } from "@/types/registry";
 import { cn } from "@/lib/utils";
-
-function jsonToTsv(jsonText: string): string {
-  try {
-    const data = JSON.parse(jsonText);
-    const rows: Record<string, unknown>[] = Array.isArray(data)
-      ? data
-      : typeof data === "object" && data !== null
-      ? [data]
-      : [];
-    if (rows.length === 0) return "";
-
-    const keys: string[] = [];
-    for (const row of rows) {
-      if (typeof row === "object" && row !== null) {
-        for (const k of Object.keys(row)) {
-          if (!keys.includes(k)) keys.push(k);
-        }
-      }
-    }
-    if (keys.length === 0) return "";
-
-    const headerRow = keys.join("\t");
-    const dataRows = rows.map((row) => {
-      if (typeof row !== "object" || row === null) return String(row);
-      return keys
-        .map((k) => {
-          const val = (row as Record<string, unknown>)[k];
-          if (val === undefined || val === null) return "";
-          if (typeof val === "object") return JSON.stringify(val).replace(/[\t\n\r]/g, " ");
-          return String(val).replace(/[\t\n\r]/g, " ");
-        })
-        .join("\t");
-    });
-
-    return [headerRow, ...dataRows].join("\n");
-  } catch {
-    return "";
-  }
-}
 
 export interface SplitJsonInputProps {
   config: ConverterConfig;
@@ -93,6 +54,7 @@ const SAMPLE_JSON_RECORDS = [
 ];
 
 const SAMPLE_JSON_STRING = JSON.stringify(SAMPLE_JSON_RECORDS, null, 2);
+const SAMPLE_JSONL_STRING = SAMPLE_JSON_RECORDS.map((r) => JSON.stringify(r)).join("\n");
 
 export function SplitJsonInput({
   config,
@@ -102,7 +64,15 @@ export function SplitJsonInput({
 }: SplitJsonInputProps) {
   const [text, setText] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
+  const [copied, setCopied] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const isJsonl =
+    config.sourceFormat === "JSONL" ||
+    config.sourceFormat === "NDJSON" ||
+    config.sourceExtension === ".jsonl" ||
+    config.sourceExtension === ".ndjson";
+  const formatName = isJsonl ? "JSONL" : "JSON";
 
   const acceptedExtensions = [
     config.sourceExtension,
@@ -114,6 +84,8 @@ export function SplitJsonInput({
     ...(config.acceptedMimeTypes || [
       "application/json",
       "text/json",
+      "application/x-ndjson",
+      "application/jsonlines",
       "text/plain",
     ]),
   ].join(",");
@@ -123,6 +95,57 @@ export function SplitJsonInput({
     if (!trimmed) {
       return { isValid: false, isEmpty: true, error: null, recordCount: 0, isArray: false };
     }
+
+    if (isJsonl) {
+      // Check if user pasted a JSON array into JSONL tool (allow seamless conversion)
+      try {
+        const parsedArr = JSON.parse(trimmed);
+        if (Array.isArray(parsedArr)) {
+          return {
+            isValid: true,
+            isEmpty: false,
+            error: null,
+            recordCount: parsedArr.length,
+            isArray: true,
+          };
+        }
+      } catch {
+        // Not a JSON array; check line-by-line JSONL
+      }
+
+      const lines = trimmed.split("\n").map((l) => l.trim()).filter(Boolean);
+      let validCount = 0;
+      let syntaxError: string | null = null;
+      for (let i = 0; i < lines.length; i++) {
+        try {
+          JSON.parse(lines[i]);
+          validCount++;
+        } catch (err: unknown) {
+          syntaxError = `Line ${i + 1}: ${err instanceof Error ? err.message : "Syntax error"}`;
+          break;
+        }
+      }
+
+      if (syntaxError) {
+        return {
+          isValid: false,
+          isEmpty: false,
+          error: syntaxError,
+          recordCount: 0,
+          isArray: false,
+        };
+      }
+
+      return {
+        isValid: true,
+        isEmpty: false,
+        error: null,
+        recordCount: validCount,
+        isArray: false,
+      };
+    }
+
+    // Standard JSON validation
     try {
       const parsed = JSON.parse(trimmed);
       const isArr = Array.isArray(parsed);
@@ -137,7 +160,7 @@ export function SplitJsonInput({
         isArray: false,
       };
     }
-  }, [text]);
+  }, [text, isJsonl]);
 
   const handleParseText = useCallback(
     (contentToParse?: string) => {
@@ -145,18 +168,36 @@ export function SplitJsonInput({
       const trimmed = raw.trim();
       if (!trimmed || disabled) return;
 
-      try {
-        JSON.parse(trimmed);
-      } catch {
-        return;
+      let contentToSend = trimmed;
+      if (isJsonl) {
+        try {
+          const parsed = JSON.parse(trimmed);
+          if (Array.isArray(parsed)) {
+            // Auto-convert JSON array to clean newline-delimited JSONL lines
+            contentToSend = parsed.map((item) => JSON.stringify(item)).join("\n");
+          }
+        } catch {
+          // Already newline-delimited JSONL
+        }
+      } else {
+        try {
+          JSON.parse(trimmed);
+        } catch {
+          return;
+        }
       }
 
-      const file = new File([trimmed], "input.json", {
-        type: "application/json",
+      const ext = config.sourceExtension || (isJsonl ? ".jsonl" : ".json");
+      const cleanExt = ext.startsWith(".") ? ext : `.${ext}`;
+      const fileName = `input${cleanExt}`;
+      const mimeType = isJsonl ? "application/x-ndjson" : "application/json";
+
+      const file = new File([contentToSend], fileName, {
+        type: mimeType,
       });
       onFileSelect(file);
     },
-    [text, disabled, onFileSelect]
+    [text, disabled, isJsonl, config.sourceExtension, onFileSelect]
   );
 
   const handlePasteFromClipboard = useCallback(async () => {
@@ -176,34 +217,13 @@ export function SplitJsonInput({
 
   const handleLoadSample = useCallback(() => {
     if (disabled) return;
-    setText(SAMPLE_JSON_STRING);
-  }, [disabled]);
-
-  const [copied, setCopied] = useState(false);
-  const [openedSheets, setOpenedSheets] = useState(false);
+    setText(isJsonl ? SAMPLE_JSONL_STRING : SAMPLE_JSON_STRING);
+  }, [disabled, isJsonl]);
 
   const handleClear = useCallback(() => {
     if (disabled) return;
     setText("");
   }, [disabled]);
-
-  const handleOpenGoogleSheets = useCallback(async () => {
-    if (disabled || !text.trim() || !jsonValidation.isValid) return;
-    const tsvContent = jsonToTsv(text.trim());
-    if (!tsvContent) return;
-    try {
-      if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(tsvContent);
-      }
-    } catch {
-      // Fallback
-    }
-    if (typeof window !== "undefined") {
-      window.open("https://sheets.new", "_blank", "noopener,noreferrer");
-    }
-    setOpenedSheets(true);
-    setTimeout(() => setOpenedSheets(false), 3500);
-  }, [disabled, text, jsonValidation.isValid]);
 
   const handleCopy = useCallback(async () => {
     if (!text || disabled) return;
@@ -220,21 +240,59 @@ export function SplitJsonInput({
 
   const handleFormat = useCallback(() => {
     if (!text.trim() || disabled) return;
+    if (isJsonl) {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          setText(parsed.map((item) => JSON.stringify(item)).join("\n"));
+          return;
+        }
+      } catch {
+        // Line-by-line formatting
+      }
+      const lines = text.trim().split("\n").filter(Boolean);
+      const formatted = lines
+        .map((l) => {
+          try {
+            return JSON.stringify(JSON.parse(l.trim()));
+          } catch {
+            return l.trim();
+          }
+        })
+        .join("\n");
+      setText(formatted);
+      return;
+    }
+
     try {
       const parsed = JSON.parse(text);
       setText(JSON.stringify(parsed, null, 2));
     } catch {
       // Invalid JSON, keep as is
     }
-  }, [text, disabled]);
+  }, [text, disabled, isJsonl]);
 
   const handleRemoveWhitespace = useCallback(() => {
     if (!text.trim() || disabled) return;
+    if (isJsonl) {
+      const lines = text.trim().split("\n").filter(Boolean);
+      const minified = lines
+        .map((l) => {
+          try {
+            return JSON.stringify(JSON.parse(l.trim()));
+          } catch {
+            return l.trim();
+          }
+        })
+        .join("\n");
+      setText(minified);
+      return;
+    }
+
     try {
       const parsed = JSON.parse(text);
       setText(JSON.stringify(parsed));
     } catch {
-      // If parsing fails, collapse blank lines and trim lines
       const collapsed = text
         .split("\n")
         .map((l) => l.trim())
@@ -242,7 +300,7 @@ export function SplitJsonInput({
         .join("");
       setText(collapsed);
     }
-  }, [text, disabled]);
+  }, [text, disabled, isJsonl]);
 
   const handleDragOver = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
@@ -314,21 +372,21 @@ export function SplitJsonInput({
     <div
       data-testid="split-json-input"
       className={cn(
-        "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-stretch",
+        "grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch",
         disabled && "opacity-60 pointer-events-none",
         className
       )}
     >
-      {/* Left Panel: Monospace JSON Textarea with Validation & Quick Actions */}
-      <div className="flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 p-4 sm:p-5 transition-all">
+      {/* Left Panel: Monospace JSON/JSONL Textarea with Validation & Quick Actions */}
+      <div className="flex flex-col rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/50 p-4 sm:p-5 transition-all min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
         {/* Header with Title and Validation Badge */}
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
               <FileCode2 className="h-3.5 w-3.5" />
             </span>
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-              Paste JSON Data
+            <span className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+              Paste {formatName} Data
             </span>
 
             {/* Validation badge */}
@@ -336,21 +394,21 @@ export function SplitJsonInput({
               jsonValidation.isValid ? (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                   <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
-                  <span>Valid JSON</span>
+                  <span>Valid {formatName}</span>
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
                   <AlertCircle className="w-3 h-3 text-rose-600 dark:text-rose-400" />
-                  <span>Invalid JSON</span>
+                  <span>Invalid {formatName}</span>
                 </span>
               )
             )}
           </div>
         </div>
 
-        {/* Action Toolbar: Clean grouped layout without orphan pipe dividers */}
+        {/* Action Toolbar: Single clean row without wrapping */}
         <div className="flex flex-wrap items-center justify-between gap-1.5 py-1.5 px-2 mb-2.5 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
-          <div className="flex items-center flex-wrap gap-1">
+          <div className="flex items-center gap-1">
             <button
               type="button"
               onClick={handlePasteFromClipboard}
@@ -367,7 +425,7 @@ export function SplitJsonInput({
               onClick={handleCopy}
               disabled={disabled || !text}
               aria-label="Copy"
-              title="Copy JSON text"
+              title={`Copy ${formatName} text`}
               className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               {copied ? (
@@ -387,7 +445,7 @@ export function SplitJsonInput({
               onClick={handleFormat}
               disabled={disabled || !text}
               aria-label="Format"
-              title="Format / Prettify JSON with indentation"
+              title={isJsonl ? "Format lines" : "Prettify JSON with indentation"}
               className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <AlignLeft className="w-3.5 h-3.5" />
@@ -398,33 +456,22 @@ export function SplitJsonInput({
               onClick={handleRemoveWhitespace}
               disabled={disabled || !text}
               aria-label="Remove white space"
-              title="Remove white space / Minify JSON"
+              title={isJsonl ? "Compact line-by-line JSONL" : "Minify JSON into compact payload"}
               className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <Minimize2 className="w-3.5 h-3.5" />
-              <span>Remove white space</span>
+              <span>Minify</span>
             </button>
             <button
               type="button"
               onClick={handleClear}
               disabled={disabled || !text}
               aria-label="Clear"
-              title="Clear text editor"
+              title="Clear editor"
               className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Clear</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleOpenGoogleSheets}
-              disabled={disabled || !text.trim() || !jsonValidation.isValid}
-              aria-label="Open in Google Sheets"
-              title="Convert JSON to table and open in Google Sheets (sheets.new) to paste"
-              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors disabled:opacity-40 cursor-pointer"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>{openedSheets ? "Paste in Sheets (Ctrl+V)!" : "Open in Sheets"}</span>
             </button>
           </div>
 
@@ -432,17 +479,17 @@ export function SplitJsonInput({
             type="button"
             onClick={handleLoadSample}
             disabled={disabled}
-            aria-label="Load Sample JSON"
-            title="Load Sample JSON"
-            className="inline-flex items-center gap-1 px-2.5 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 bg-emerald-50/80 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/60 dark:border-emerald-800/60 transition-colors disabled:opacity-40 cursor-pointer"
+            aria-label={`Load Sample ${formatName}`}
+            title={`Load Sample ${formatName}`}
+            className="inline-flex items-center gap-1 px-2.5 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/70 dark:border-emerald-800/70 transition-colors disabled:opacity-40 cursor-pointer shrink-0"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>Load JSON data</span>
+            <span>Load sample {formatName}</span>
           </button>
         </div>
 
-        {/* Monospace JSON Textarea */}
-        <div className="relative flex-1 min-h-[240px] sm:min-h-[280px]">
+        {/* Spacious Monospace Textarea */}
+        <div className="relative flex-1 min-h-[300px] sm:min-h-[360px] lg:min-h-[400px]">
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -453,10 +500,14 @@ export function SplitJsonInput({
               }
             }}
             disabled={disabled}
-            aria-label="Paste JSON data or upload"
-            placeholder={`// Just paste the JSON here or upload a file on the right\n[\n  {\n    "id": 1,\n    "title": "Data Pipeline",\n    "active": true\n  }\n]`}
+            aria-label={`Paste ${formatName} data or upload`}
+            placeholder={
+              isJsonl
+                ? `{"id": 1, "title": "Data Pipeline", "active": true}\n{"id": 2, "title": "Model Training", "active": false}`
+                : `[\n  {\n    "id": 1,\n    "title": "Data Pipeline",\n    "active": true\n  }\n]`
+            }
             className={cn(
-              "w-full h-full min-h-[220px] resize-none rounded-xl border bg-white dark:bg-zinc-950 p-3.5 font-mono text-xs leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2",
+              "w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-[400px] resize-none rounded-xl border bg-white dark:bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2",
               !jsonValidation.isEmpty && !jsonValidation.isValid
                 ? "border-rose-300 dark:border-rose-800 focus:border-rose-500 focus:ring-rose-500/20"
                 : "border-zinc-200 dark:border-zinc-800 focus:border-emerald-500 focus:ring-emerald-500/20"
@@ -469,19 +520,21 @@ export function SplitJsonInput({
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-zinc-200/60 dark:border-zinc-800/60">
           <div className="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
             {jsonValidation.isEmpty ? (
-              <span>Just paste the JSON or upload your file</span>
+              <span>Paste {formatName} in the editor or drop a file on the right</span>
             ) : jsonValidation.isValid ? (
               <span className="flex items-center gap-1.5 font-mono">
                 <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
                   {jsonValidation.isArray
                     ? `${jsonValidation.recordCount} records detected`
+                    : isJsonl
+                    ? `${jsonValidation.recordCount} lines detected`
                     : "Single object"}
                 </span>
                 <span>•</span>
-                <span>{text.length} chars</span>
+                <span>{text.length.toLocaleString()} chars</span>
               </span>
             ) : (
-              <span className="text-rose-600 dark:text-rose-400 font-medium truncate max-w-xs">
+              <span className="text-rose-600 dark:text-rose-400 font-medium truncate max-w-xs sm:max-w-md">
                 Syntax error: {jsonValidation.error}
               </span>
             )}
@@ -491,16 +544,16 @@ export function SplitJsonInput({
             type="button"
             onClick={() => handleParseText()}
             disabled={disabled || !jsonValidation.isValid}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl text-white bg-emerald-600 hover:bg-emerald-500 shadow-xs active:scale-[0.99] transition-all disabled:opacity-40 disabled:pointer-events-none"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl text-white bg-emerald-600 hover:bg-emerald-500 shadow-xs active:scale-[0.99] transition-all disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
           >
-            <span>Parse JSON &amp; Preview</span>
+            <span>Parse {formatName} &amp; Preview</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      {/* Right Panel: Integrated File Dropzone */}
-      <div className="flex flex-col">
+      {/* Right Panel: Integrated File Dropzone with Matching Spacious Layout */}
+      <div className="flex flex-col h-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
         <input
           ref={fileInputRef}
           type="file"
@@ -526,7 +579,7 @@ export function SplitJsonInput({
           onDrop={handleDrop}
           className={cn(
             "group relative flex-1 flex flex-col items-center justify-center text-center",
-            "border-2 border-dashed rounded-2xl p-6 sm:p-8 transition-all duration-200 cursor-pointer select-none outline-none min-h-[280px]",
+            "border-2 border-dashed rounded-2xl p-6 sm:p-10 transition-all duration-200 cursor-pointer select-none outline-none min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
             isDragOver
               ? "border-emerald-500 bg-emerald-500/10 ring-4 ring-emerald-500/10 scale-[1.005]"
               : "border-zinc-300 dark:border-zinc-700/80 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-emerald-500/60 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/10",
@@ -536,32 +589,37 @@ export function SplitJsonInput({
           {/* Upload icon circle */}
           <div
             className={cn(
-              "w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-transform duration-200",
+              "w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-200 shadow-xs",
               isDragOver
                 ? "scale-110 bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
                 : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-105"
             )}
           >
-            <UploadCloud className="w-6 h-6" />
+            <UploadCloud className="w-7 h-7" />
           </div>
 
-          <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
-            Or upload your {config.sourceFormat} file
+          <h2 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-1.5">
+            Or upload your {formatName} file
           </h2>
 
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-4 max-w-xs">
-            Drag and drop a {config.sourceFormat} file here, or{" "}
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mb-5 max-w-sm leading-normal">
+            Drag and drop a {formatName} file here, or{" "}
             <span className="text-emerald-600 dark:text-emerald-400 font-medium underline underline-offset-4 group-hover:text-emerald-500">
               browse
             </span>
           </p>
 
+          <div className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 group-hover:bg-emerald-600 dark:group-hover:bg-emerald-500 dark:group-hover:text-white transition-colors shadow-xs mb-5">
+            <FolderOpen className="w-3.5 h-3.5" />
+            <span>Browse {formatName} file</span>
+          </div>
+
           {/* Accepted formats pills */}
-          <div className="flex flex-wrap items-center justify-center gap-1 mb-4">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 mb-4">
             {acceptedExtensions.map((ext) => (
               <span
                 key={ext}
-                className="px-2 py-0.5 text-[10px] font-mono font-medium rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                className="px-2.5 py-1 text-[11px] font-mono font-medium rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
               >
                 {ext}
               </span>
@@ -569,7 +627,7 @@ export function SplitJsonInput({
           </div>
 
           <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
-            Processed 100% locally in your browser
+            Processed 100% locally in your browser • Zero server uploads
           </p>
         </div>
       </div>
