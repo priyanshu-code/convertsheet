@@ -16,6 +16,7 @@ import { AdBanner } from "@/components/layout";
 import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
 import { PresetPillsBar } from "@/components/calculator/PresetPillsBar";
 import { getProgrammaticPresetsByTool } from "@/lib/programmatic-presets";
+import { getAllBlogPosts } from "@/lib/blog-registry";
 
 // Import all 18 tool components
 import { Base64Tool } from "@/components/tools/Base64Tool";
@@ -245,6 +246,15 @@ export default function ToolPage({ params }: ToolPageProps) {
 
   const toolPresets = getProgrammaticPresetsByTool(tool.slug);
 
+  // Retrieve relevant blog post for deep contextual authority
+  const blogPosts = getAllBlogPosts();
+  const relatedBlog = blogPosts.find(
+    (p) =>
+      p.attachedToolSlug === tool.slug ||
+      (tool.slug === "salary-calculator" && p.slug === "1099-vs-w2-true-hourly-rate-calculation") ||
+      (tool.slug === "income-tax-calculator" && p.slug === "uk-contractor-inside-vs-outside-ir35-calculator-guide")
+  );
+
   return (
     <>
       <ToolJsonLdSchema config={tool} />
@@ -392,6 +402,38 @@ export default function ToolPage({ params }: ToolPageProps) {
             })()}
           </div>
         </section>
+
+        {/* In-Depth Technical & Financial Guide Cross-Link */}
+        {relatedBlog && (
+          <aside
+            aria-label={`Recommended Guide: ${relatedBlog.title}`}
+            className="max-w-4xl mx-auto p-5 sm:p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+          >
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded">
+                  Expert Analytical Guide
+                </span>
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                  By {relatedBlog.author.name}
+                </span>
+              </div>
+              <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-50">
+                {relatedBlog.title}
+              </h3>
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-1 max-w-2xl">
+                {relatedBlog.description}
+              </p>
+            </div>
+            <Link
+              href={`/blog/${relatedBlog.slug}`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0"
+            >
+              <span>Read Full Guide</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </aside>
+        )}
 
         {/* Popular Scenarios & Calculations (Internal Link Equity Grid) */}
         {toolPresets.length > 0 && (

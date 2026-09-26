@@ -1,8 +1,21 @@
 export interface BlogAuthor {
   name: string;
   role: string;
+  bio: string;
   avatarUrl?: string;
+  linkedInUrl?: string;
+  twitterUrl?: string;
+  githubUrl?: string;
 }
+
+export const FOUNDER_AUTHOR: BlogAuthor = {
+  name: "Priyanshu Rawat",
+  role: "Founder & Lead Software Engineer",
+  bio: "Software engineer and founder of ConvertSheet. Specializes in client-side WebAssembly, high-throughput in-browser data engines, and zero-upload privacy architectures.",
+  linkedInUrl: "https://www.linkedin.com/in/priyanshu-rawat-570b7a19b/",
+  twitterUrl: "https://x.com/priyanshuz_code",
+  githubUrl: "https://github.com/priyanshu-code",
+};
 
 export interface BlogTocItem {
   id: string;
@@ -31,10 +44,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Data & Spreadsheets",
     readTimeMinutes: 5,
     publishedAt: "2026-09-17",
-    author: {
-      name: "ConvertSheet Engineering",
-      role: "Core Architecture Team"
-    },
+    author: FOUNDER_AUTHOR,
     attachedToolSlug: "json-to-excel",
     attachedToolTitle: "JSON to Excel Converter (In-Browser WASM)",
     tableOfContents: [
@@ -199,10 +209,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Financial Engineering",
     readTimeMinutes: 7,
     publishedAt: "2026-09-17",
-    author: {
-      name: "ConvertSheet Financial Research",
-      role: "Quantitative Analytics Team"
-    },
+    author: FOUNDER_AUTHOR,
     attachedToolSlug: "hourly-to-salary-calculator",
     attachedToolTitle: "Hourly to Salary & Paycheck Calculator",
     tableOfContents: [
@@ -321,10 +328,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Architecture & Security",
     readTimeMinutes: 6,
     publishedAt: "2026-09-17",
-    author: {
-      name: "ConvertSheet Engineering",
-      role: "Core Architecture Team"
-    },
+    author: FOUNDER_AUTHOR,
     attachedToolSlug: "sql-query-studio",
     attachedToolTitle: "SQL Query Studio (DuckDB WASM)",
     tableOfContents: [
@@ -431,10 +435,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Real Estate & Mortgages",
     readTimeMinutes: 6,
     publishedAt: "2026-09-17",
-    author: {
-      name: "ConvertSheet Financial Research",
-      role: "Mortgage Economics Desk"
-    },
+    author: FOUNDER_AUTHOR,
     attachedToolSlug: "mortgage-calculator",
     attachedToolTitle: "Mortgage & Amortization Calculator",
     tableOfContents: [
@@ -529,10 +530,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Data & Spreadsheets",
     readTimeMinutes: 7,
     publishedAt: "2026-09-17",
-    author: {
-      name: "ConvertSheet Architecture Team",
-      role: "WASM & Data Systems"
-    },
+    author: FOUNDER_AUTHOR,
     attachedToolSlug: "parquet-to-excel",
     attachedToolTitle: "Parquet to Excel Converter (In-Browser)",
     tableOfContents: [
@@ -613,10 +611,7 @@ const arrowResult = await conn.query(\`
     category: "Financial Math",
     readTimeMinutes: 8,
     publishedAt: "2026-09-17",
-    author: {
-      name: "ConvertSheet Financial Research",
-      role: "Tax & Remuneration Desk"
-    },
+    author: FOUNDER_AUTHOR,
     attachedToolSlug: "income-tax-calculator",
     attachedToolTitle: "Income Tax & Take-Home Calculator",
     tableOfContents: [

@@ -1104,11 +1104,11 @@ export const CONVERTER_REGISTRY = {
     isClientSide: true,
     featured: true,
     badge: "Client-Side WASM",
-    title: "Convert SQLite to Excel Online (2026) — Free, In-Browser & 100% Private",
+    title: "Convert SQLite to Excel Online Free (2026) — Export .db to Multi-Sheet XLSX",
     subtitle:
-      "Export tables from SQLite database files into formatted multi-sheet Excel spreadsheets directly in your browser with zero server uploads.",
+      "Export all tables from .sqlite, .db, and .sqlite3 database files into formatted multi-sheet Excel spreadsheets directly in your browser with zero server uploads.",
     metaDescription:
-      "Free private SQLite to Excel converter (2026). Load .sqlite and .db database files and export all tables to native multi-sheet XLSX spreadsheets locally via WebAssembly.",
+      "Free private SQLite to Excel converter (2026). Open .sqlite, .db, and .sqlite3 files and export all database tables to native multi-sheet XLSX spreadsheets locally via WebAssembly. 100% private, no software install.",
     howTo: [
       {
         step: 1,
@@ -1131,6 +1131,11 @@ export const CONVERTER_REGISTRY = {
     ],
     faqs: [
       {
+        question: "How do I open a .db or .sqlite file in Excel without Python or installing tools?",
+        answer:
+          "Simply drag and drop your .db or .sqlite file into ConvertSheet. Our in-browser WebAssembly engine instantly reads the SQLite binary catalog and compiles all tables into a standard Microsoft Excel (.xlsx) workbook ready to open in Excel, Numbers, or Google Sheets.",
+      },
+      {
         question: "Is my SQLite database file uploaded to any remote server?",
         answer:
           "No. The conversion runs 100% locally in your browser using an in-memory WebAssembly SQLite engine. Your database files, records, and proprietary data never leave your device.",
@@ -1139,6 +1144,11 @@ export const CONVERTER_REGISTRY = {
         question: "How are multiple database tables handled in the Excel export?",
         answer:
           "Each table in your SQLite database is automatically exported to its own dedicated worksheet tab within a single formatted Excel (.xlsx) workbook, with sanitized sheet names.",
+      },
+      {
+        question: "Can I convert SQLite to Excel on Mac, Windows, Linux, or Chromebook?",
+        answer:
+          "Yes. Because ConvertSheet runs entirely in modern WebAssembly supported by Chrome, Safari, Firefox, and Edge, it operates identically across all operating systems without any software or CLI dependencies.",
       },
       {
         question: "What file extensions are supported?",

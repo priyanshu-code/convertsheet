@@ -14,6 +14,7 @@ import { AdBanner } from "@/components/layout";
 import { HowToGuide, FAQAccordion, JsonLdSchema } from "@/components/seo";
 import { EmbedTrigger } from "@/components/calculator";
 import { getAllTools } from "@/lib/tool-registry";
+import { getAllBlogPosts } from "@/lib/blog-registry";
 import type { ToolConfig } from "@/types/tool";
 
 export interface ConverterPageProps {
@@ -86,8 +87,37 @@ export default function ConverterPage({ params }: ConverterPageProps) {
     Object.values(CONVERTER_REGISTRY) as ConverterConfig[]
   ).filter((c) => c.slug !== config.slug);
 
-  // Retrieve featured calculators & tools for bidirectional GEO/SEO cross-linking
-  const featuredTools = getAllTools().slice(0, 3);
+  // Retrieve contextual calculators & tools for bidirectional GEO/SEO cross-linking
+  const allTools = getAllTools();
+  const toolMap = new Map(allTools.map((t) => [t.slug, t]));
+  let preferredSlugs: string[] = [];
+
+  if (config.slug.includes("sqlite") || config.slug.includes("sql")) {
+    preferredSlugs = ["sql-query-studio", "data-anonymizer-cleaner", "sheet-diff-checker"];
+  } else if (config.slug.includes("json")) {
+    preferredSlugs = ["json-formatter-validator", "data-anonymizer-cleaner", "csv-to-jsonl-converter"];
+  } else if (config.slug.includes("csv") || config.slug.includes("excel")) {
+    preferredSlugs = ["percentage-calculator", "data-anonymizer-cleaner", "salary-calculator"];
+  } else if (config.slug.includes("pdf")) {
+    preferredSlugs = ["compress-pdf", "pdf-table-extractor", "merge-pdf"];
+  } else if (config.slug.includes("image") || config.slug.includes("png") || config.slug.includes("webp") || config.slug.includes("svg")) {
+    preferredSlugs = ["image-compressor", "compress-webp", "svg-to-png"];
+  }
+
+  const matchedTools = preferredSlugs.map((s) => toolMap.get(s)).filter(Boolean) as ToolConfig[];
+  const featuredTools = (matchedTools.length >= 3
+    ? matchedTools.slice(0, 3)
+    : [...matchedTools, ...allTools.filter((t) => !preferredSlugs.includes(t.slug))].slice(0, 3));
+
+  // Retrieve relevant blog post for deep contextual authority
+  const blogPosts = getAllBlogPosts();
+  const relatedBlog = blogPosts.find(
+    (p) =>
+      p.attachedToolSlug === config.slug ||
+      (config.slug === "sqlite-to-excel" && p.slug === "client-side-wasm-future-of-private-data") ||
+      (config.slug.includes("json") && p.slug === "convert-json-to-excel-privately") ||
+      (config.slug.includes("parquet") && p.slug === "convert-large-parquet-files-to-excel-in-browser")
+  );
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-6 sm:space-y-8">
@@ -267,6 +297,38 @@ export default function ConverterPage({ params }: ConverterPageProps) {
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
+
+      {/* In-Depth Technical Guide Cross-Link */}
+      {relatedBlog && (
+        <aside
+          aria-label={`Recommended Guide: ${relatedBlog.title}`}
+          className="max-w-5xl mx-auto p-5 sm:p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+        >
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-2 py-0.5 rounded">
+                In-Depth Technical Guide
+              </span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                By {relatedBlog.author.name}
+              </span>
+            </div>
+            <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-50">
+              {relatedBlog.title}
+            </h3>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-1 max-w-2xl">
+              {relatedBlog.description}
+            </p>
+          </div>
+          <Link
+            href={`/blog/${relatedBlog.slug}`}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0"
+          >
+            <span>Read Engineering Guide</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </aside>
+      )}
 
       {/* Related Free Calculators & Tools (Bidirectional GEO / AEO Cluster) */}
       <section

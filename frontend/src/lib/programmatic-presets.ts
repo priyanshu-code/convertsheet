@@ -1576,10 +1576,10 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     "toolSlug": "inflation-calculator",
     "presetSlug": "100k-in-20-years",
     "name": "What Will $100,000 Be Worth in 20 Years?",
-    "title": "What Will $100k Be Worth in 20 Years? Inflation Calculator | ConvertSheet",
-    "metaDescription": "In 20 years at 3.2% inflation, $100,000 loses 47% of its value, falling to $53,261 in real purchasing power. You will need $187,756 to equal $100k today. Free Excel export.",
-    "answerSummary": "At a 3.2% annual inflation rate over 20 years, $100,000 in uninvested cash suffers a 47% loss in real purchasing power, declining to just $53,261 in real terms. You would need $187,756 in 20 years to match today's standard of living.",
-    "about": "Two decades of compounding inflation cuts purchasing power almost in half. This calculator reveals the math behind long-term capital preservation.",
+    "title": "What Will $100k Be Worth in 20 Years? (2026 Inflation Calculation & Value Chart)",
+    "metaDescription": "In 20 years at 3.2% inflation, $100,000 loses 47% of its value, declining to $53,261 in real purchasing power. You will need $187,756 to equal $100k today. Free Excel amortization export.",
+    "answerSummary": "At a 3.2% annual inflation rate over 20 years, $100,000 in uninvested cash suffers a 46.7% loss in real purchasing power, declining to just $53,261 in today's dollars. To maintain your exact standard of living, you will need $187,756 in 20 years.",
+    "about": "Compounding inflation erodes uninvested cash exponentially. At a 3.2% historical benchmark inflation rate, $100,000 declines in real purchasing power to $85,417 after 5 years, $72,961 after 10 years, $62,321 after 15 years, and just $53,261 after 20 years. To maintain the exact same purchasing power, you must grow your capital to at least $187,756. This calculator projects nominal price drift, real purchasing power degradation, and allows instant export to formatted Excel workbooks.",
     "initialValues": {
       "amount": 100000,
       "inflationRate": 3.2,
@@ -1587,12 +1587,24 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     },
     "faqs": [
       {
-        "question": "How do I protect $100,000 from inflation for 20 years?",
-        "answer": "A diversified portfolio consisting of broad market equity index funds (e.g. S&P 500), Treasury Inflation-Protected Securities (TIPS), and real estate assets historically outpaces 3% inflation."
+        "question": "What will $100,000 be worth in 20 years at different inflation rates?",
+        "answer": "At 2.0% (Fed target rate), $100,000 will be worth $67,297 in real terms. At 3.0% (historical long-term average), it will be worth $55,368. At 3.2% (current projected rate), it will be worth $53,261. At an elevated 4.0% inflation rate, it drops to $45,639."
       },
       {
-        "question": "Why does inflation accelerate over 20 years?",
-        "answer": "Because inflation compounds exponentially: each year's price increase builds on top of the previous year's higher prices."
+        "question": "How much money in 20 years will equal $100,000 today?",
+        "answer": "At 3.2% annual inflation, you will need $187,756 in 20 years to purchase the exact basket of goods, services, and housing that $100,000 purchases today."
+      },
+      {
+        "question": "How do I protect $100,000 from inflation over 20 years?",
+        "answer": "To outpace a 3.2% annual loss, financial advisors recommend allocating capital across broad-market equity index funds (e.g. S&P 500 or total market ETFs historically returning 7-10% annually), Treasury Inflation-Protected Securities (TIPS), dividend growth equities, and real estate assets."
+      },
+      {
+        "question": "What was $100,000 worth 20 years ago?",
+        "answer": "Due to cumulative US CPI inflation between 2006 and 2026 (~65% total inflation), $100,000 in 2006 had equivalent purchasing power to approximately $165,000 today."
+      },
+      {
+        "question": "Why does inflation accelerate so aggressively over 20 years?",
+        "answer": "Inflation compounds multiplicatively using the formula FV = PV × (1 + r)^t. Because price increases compound on previously inflated price bases each year, the erosion in decade two is far more severe than in decade one."
       }
     ]
   },

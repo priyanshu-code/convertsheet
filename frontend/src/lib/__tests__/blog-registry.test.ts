@@ -63,8 +63,11 @@ describe("Blog Registry & Content Layer", () => {
     expect(post?.category).toBe("Data & Spreadsheets");
     expect(post?.readTimeMinutes).toBe(5);
     expect(post?.publishedAt).toBe("2026-09-17");
-    expect(post?.author.name).toBe("ConvertSheet Engineering");
-    expect(post?.author.role).toBe("Core Architecture Team");
+    expect(post?.author.name).toBe("Priyanshu Rawat");
+    expect(post?.author.role).toBe("Founder & Lead Software Engineer");
+    expect(post?.author.linkedInUrl).toContain("linkedin.com");
+    expect(post?.author.githubUrl).toContain("github.com");
+    expect(post?.author.twitterUrl).toContain("x.com");
     expect(post?.attachedToolSlug).toBe("json-to-excel");
     expect(post?.attachedToolTitle).toBe("JSON to Excel Converter (In-Browser WASM)");
     expect(post?.tableOfContents.length).toBeGreaterThanOrEqual(5);

@@ -280,25 +280,28 @@ export const TOOL_REGISTRY = {
     slug: "percentage-calculator",
     name: "Percentage Calculator",
     category: "financial",
-    title: "Percentage Calculator - 3-in-1 Online Math Tool",
-    subtitle: "Solve all percentage math instantly: calculate percentage of a number, percentage increase/decrease, and what percent X is of Y.",
-    metaDescription: "Free online percentage calculator. Calculate percentages, relative increases, decreases, and fractions instantly with step-by-step formulas.",
+    title: "Free Percentage Calculator Online (2026) — 3-in-1 Fast Math & Discount Solver",
+    subtitle: "Solve all percentage math instantly: calculate what is X% of Y, what percent X is of Y, percentage increase/decrease, discounts, and sales tax.",
+    metaDescription: "Free online percentage calculator (2026). Calculate percentage of numbers, percent change, markups, discounts, and VAT instantly with step-by-step formula breakdown and Excel export.",
     answerSummary: "Calculate what percentage one number is of another, percentage growth or decline, and exact percentage values in a single utility.",
     badge: "Essential",
     featured: false,
-    keywords: ["percentage calculator", "calculate percentage", "percentage increase", "percentage decrease", "percent of number", "math calculator"],
+    keywords: ["percentage calculator", "calculate percentage", "percentage increase", "percentage decrease", "percent of number", "math calculator", "discount calculator"],
     formulaDescription: "Percent = (Part / Whole) × 100; Percent Change = ([New - Old] / Old) × 100; Value = (Percent / 100) × Whole.",
-    about: "Percentages are fundamental to understanding financial reports, test scores, discount markups, and economic metrics. ConvertSheet's Multi-Mode Percentage Calculator combines the three most common percentage queries into a clean, lightning-fast dashboard.",
+    about: "Percentages are fundamental to understanding financial reports, test scores, discount markups, and economic metrics. ConvertSheet's Multi-Mode Percentage Calculator combines the six most common percentage queries—basic percentage, relative percent of total, percentage increase/decrease, retail discounts, sales tax, and profit margin/markup—into a clean, lightning-fast dashboard.",
     howTo: [
-      { step: 1, title: "Select Calculation Mode", description: "Choose whether you want 'X% of Y', 'X is what % of Y', or 'Percentage Increase/Decrease'." },
-      { step: 2, title: "Enter Numbers", description: "Input your primary values into the designated fields." },
-      { step: 3, title: "Instant Result", description: "View the computed percentage and formula breakdown in real-time." }
+      { step: 1, title: "Select Calculation Mode", description: "Choose whether you want 'X% of Y', 'X is what % of Y', 'Percentage Increase/Decrease', 'Discount', or 'Sales Tax'." },
+      { step: 2, title: "Enter Numbers", description: "Input your primary values into the designated numeric fields." },
+      { step: 3, title: "Instant Result & Formula", description: "View the computed percentage, step-by-step formula breakdown, and exportable reference matrix in real-time." }
     ],
     faqs: [
-      { question: "How do I calculate a percentage increase?", answer: "Subtract the original value from the new value, divide by the original value, and multiply by 100." },
-      { question: "What does percentage point difference mean?", answer: "Percentage points measure the arithmetic difference between two percentages (e.g. going from 10% to 12% is a 2 percentage point increase, but a 20% relative increase)." }
+      { question: "How do I calculate what is X percent of Y?", answer: "Multiply the percentage by the number and divide by 100. Formula: Value = (X / 100) × Y. For example, 20% of 150 is (20 / 100) × 150 = 30." },
+      { question: "How do I calculate what percent X is of Y?", answer: "Divide X by Y and multiply by 100. Formula: Percentage = (X / Y) × 100. For example, 25 out of 200 is (25 / 200) × 100 = 12.5%." },
+      { question: "How do I calculate a percentage increase or decrease?", answer: "Subtract the original value from the new value, divide by the original value, and multiply by 100. Formula: Percent Change = ((New - Old) / Old) × 100. A positive result is an increase; a negative result represents a decrease." },
+      { question: "What does percentage point difference mean?", answer: "Percentage points measure the arithmetic difference between two percentages (e.g. going from 10% to 12% is a 2 percentage point increase, but a 20% relative increase)." },
+      { question: "How do I calculate a percentage discount on a sale item?", answer: "Multiply the retail price by (1 - (Discount % / 100)). For example, 25% off an $80 item is $80 × 0.75 = $60, resulting in $20 savings." }
     ],
-    relatedConverters: ["excel-to-csv"],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
     relatedTools: ["gst-calculator", "discount-calculator"]
   },
 

@@ -3,7 +3,8 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { ToolEmbedBanner } from "../ToolEmbedBanner";
 import { BlogCard } from "../BlogCard";
-import { BLOG_POSTS } from "@/lib/blog-registry";
+import { AuthorBioCard } from "../AuthorBioCard";
+import { BLOG_POSTS, FOUNDER_AUTHOR } from "@/lib/blog-registry";
 
 describe("Blog UI Components", () => {
   it("renders ToolEmbedBanner with direct action link", () => {
@@ -41,5 +42,22 @@ describe("Blog UI Components", () => {
     expect(screen.getByText(post.category)).toBeInTheDocument();
     expect(screen.getByText(`${post.readTimeMinutes} min read`)).toBeInTheDocument();
     expect(screen.getByRole("link")).toHaveAttribute("href", `/blog/${post.slug}`);
+  });
+
+  it("renders AuthorBioCard with verified author, bio, and social profile links", () => {
+    render(<AuthorBioCard author={FOUNDER_AUTHOR} />);
+    expect(screen.getByText("Priyanshu Rawat")).toBeInTheDocument();
+    expect(screen.getByText("Founder & Lead Software Engineer")).toBeInTheDocument();
+    expect(screen.getByText(/Software engineer and founder of ConvertSheet/i)).toBeInTheDocument();
+    expect(screen.getByText("Verified Author")).toBeInTheDocument();
+
+    const linkedInLink = screen.getByRole("link", { name: /Priyanshu Rawat on LinkedIn/i });
+    expect(linkedInLink).toHaveAttribute("href", "https://www.linkedin.com/in/priyanshu-rawat-570b7a19b/");
+
+    const githubLink = screen.getByRole("link", { name: /Priyanshu Rawat on GitHub/i });
+    expect(githubLink).toHaveAttribute("href", "https://github.com/priyanshu-code");
+
+    const twitterLink = screen.getByRole("link", { name: /Priyanshu Rawat on X/i });
+    expect(twitterLink).toHaveAttribute("href", "https://x.com/priyanshuz_code");
   });
 });
