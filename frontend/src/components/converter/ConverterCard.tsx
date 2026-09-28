@@ -65,36 +65,45 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
   return (
     <div
       className={cn(
-        "w-full rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl shadow-zinc-200/40 dark:shadow-none p-5 sm:p-7 lg:p-8 space-y-6 transition-all",
+        "w-full rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl shadow-zinc-200/40 dark:shadow-none p-2.5 sm:p-6 lg:p-8 space-y-3 sm:space-y-6 transition-all",
         className
       )}
     >
-      {/* Mode Selector Tabs (Single File vs Batch ZIP) */}
-      <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 pb-3">
+      {/* Mode Selector Floating Pills (Single File vs Batch ZIP) */}
+      <div className="flex items-center justify-between pb-1 sm:pb-2">
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setMode("single")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={cn(
+              "px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full border transition-all cursor-pointer",
               mode === "single"
-                ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
-                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
-            }`}
+                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-900 dark:border-white shadow-xs"
+                : "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
+            )}
           >
             Single File
           </button>
           <button
             type="button"
             onClick={() => setMode("batch")}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={cn(
+              "inline-flex items-center gap-1.5 px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full border transition-all cursor-pointer",
               mode === "batch"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100"
-            }`}
+                ? "bg-emerald-600 text-white border-emerald-600 dark:border-emerald-500 shadow-xs"
+                : "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
+            )}
           >
             <Archive className="w-3.5 h-3.5" />
             <span>Batch ZIP Mode</span>
-            <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.2 rounded-full font-bold">
+            <span
+              className={cn(
+                "text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full font-bold",
+                mode === "batch"
+                  ? "bg-emerald-700/80 text-white"
+                  : "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60"
+              )}
+            >
               Multi-File
             </span>
           </button>

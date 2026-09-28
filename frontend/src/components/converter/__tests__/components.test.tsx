@@ -389,5 +389,24 @@ describe("Converter Components", () => {
       });
       expect(proButton).toBeInTheDocument();
     });
+
+    it("renders floating mode selector pills and switches to batch mode", () => {
+      const { container } = render(<ConverterCard config={jsonConfig} />);
+
+      // Minimal mobile padding on card container
+      const cardContainer = container.firstElementChild as HTMLElement;
+      expect(cardContainer).toHaveClass("p-2.5", "sm:p-6", "lg:p-8");
+
+      // Mode selector buttons rendered as floating bordered pills
+      const singleButton = screen.getByRole("button", { name: /^single file/i });
+      const batchButton = screen.getByRole("button", { name: /batch zip mode/i });
+
+      expect(singleButton).toHaveClass("rounded-full", "border");
+      expect(batchButton).toHaveClass("rounded-full", "border");
+
+      // Switching to Batch ZIP mode displays the batch converter view
+      fireEvent.click(batchButton);
+      expect(screen.getByText(/Drag & drop multiple JSON files here/i)).toBeInTheDocument();
+    });
   });
 });
