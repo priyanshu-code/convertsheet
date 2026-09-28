@@ -126,4 +126,17 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
     expect(taxTool?.keywords).toContain("federal tax calculator");
     expect(taxTool?.keywords).toContain("india tax calculator");
   });
+
+  it("verifies webp-to-png and png-to-webp have enriched AEO FAQs and competitor comparison matrix", () => {
+    const webpTool = getToolBySlug("webp-to-png");
+    expect(webpTool).toBeDefined();
+    expect(webpTool?.faqs.length).toBeGreaterThanOrEqual(8);
+    expect(webpTool?.about).toContain("CloudConvert");
+    expect(webpTool?.about).toContain("FreeConvert");
+    expect(webpTool?.about).toContain("ConvertSheet vs Other WebP Converters");
+
+    const pngTool = getToolBySlug("png-to-webp");
+    expect(pngTool).toBeDefined();
+    expect(pngTool?.faqs.length).toBeGreaterThanOrEqual(6);
+  });
 });

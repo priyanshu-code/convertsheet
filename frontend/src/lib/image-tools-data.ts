@@ -5,23 +5,53 @@ export const IMAGE_TOOLS: Record<string, ToolConfig> = {
     slug: "webp-to-png",
     name: "WebP to PNG Converter",
     category: "utility",
-    title: "Convert WebP to PNG Online - Free, Fast & Lossless",
-    subtitle: "Convert Google WebP images to high-definition transparent PNG files directly in your web browser with 100% privacy.",
-    metaDescription: "Free online WebP to PNG converter. Transform WebP photos and graphics into transparent PNG images in browser memory with zero server uploads.",
-    answerSummary: "Convert WebP images to PNG with full alpha channel transparency support directly in your web browser using HTML5 Canvas APIs.",
+    title: "Convert WebP to PNG Online Free (Batch & 100% Private)",
+    subtitle: "Batch convert Google WebP images to high-resolution transparent PNG files directly in your web browser with zero server uploads and zero cloud queues.",
+    metaDescription: "Free online WebP to PNG converter. Batch convert multiple WebP photos into lossless transparent PNGs with full alpha channel support in browser memory. 100% private.",
+    answerSummary: "Convert WebP images to PNG with full alpha channel transparency support directly in your web browser using client-side HTML5 Canvas. Zero files are uploaded to remote cloud servers, guaranteeing 100% data confidentiality and zero queue wait times.",
     badge: "100% Free",
     featured: true,
-    keywords: ["webp to png", "convert webp to png online", "webp converter", "transparent png from webp", "lossless webp conversion"],
-    formulaDescription: "Decodes WebP pixel buffers via native browser image decoders and re-encodes to PNG with RGBA 32-bit color accuracy.",
-    about: "WebP is an efficient format developed by Google for high-speed web loading, but many legacy desktop applications, image editors, and printing workflows still require PNG. ConvertSheet enables instant, lossless conversion from WebP to PNG entirely inside your browser memory.",
+    keywords: ["webp to png", "convert webp to png online", "webp converter", "transparent png from webp", "lossless webp conversion", "batch webp to png", "webp to png free"],
+    formulaDescription: "Decodes WebP container VP8/VP8L bitstreams into 32-bit RGBA8888 canvas pixel buffers and re-encodes as lossless Deflate PNG bitmaps with alpha preservation.",
+    about: "WebP is an efficient modern image format engineered by Google utilizing VP8 (lossy) or VP8L (lossless) compression within a RIFF container. While WebP achieves superior compression ratios for web loading speeds, legacy desktop applications, specialized image editors, printing workflows, and desktop OS utilities frequently fail to open or manipulate .webp files natively. ConvertSheet solves this by decoding WebP pixel buffers directly in your browser's execution thread via native HTML5 Canvas and OffscreenCanvas APIs into uncompressed 32-bit RGBA8888 bitmaps, then re-encoding them into standard lossless Portable Network Graphics (PNG) format with full 8-bit alpha channel transparency.\n\n### ConvertSheet vs Other WebP Converters\n\n| Feature | ConvertSheet | CloudConvert | FreeConvert | MS Paint / Mac Preview |\n| :--- | :--- | :--- | :--- | :--- |\n| **Cloud Server Uploads** | **Zero (100% In-Browser)** | Yes (Uploaded to cloud) | Yes (Uploaded to cloud) | No (Local Desktop App) |\n| **Data Privacy & NDAs** | **100% Confidential** | Third-party queue risks | Third-party queue risks | Safe locally |\n| **Alpha Transparency** | **Full 32-bit RGBA** | Preserved | Preserved | Often loses transparency |\n| **Batch Processing** | **Instant (Multi-file)** | Queue-limited (25 min/day) | Max 20 files (with ads) | One file at a time |\n| **Installation Required** | **None (Works everywhere)**| None | None | OS-dependent |\n| **Pricing / Paywall** | **100% Free Forever** | Daily conversion caps | Aggressive paywalls | Built-in |",
     howTo: [
       { step: 1, title: "Choose WebP Image", description: "Select or drop your .webp file into the secure dropzone." },
       { step: 2, title: "Preview Output", description: "Inspect the rendered PNG output and transparency channel." },
       { step: 3, title: "Download PNG", description: "Click Download to save the crystal clear PNG file to your device." }
     ],
     faqs: [
-      { question: "Does this preserve transparency?", answer: "Yes! Full alpha transparency is 100% preserved during conversion." },
-      { question: "Is my photo uploaded to your server?", answer: "No. The entire rendering and encoding pipeline executes locally in your browser memory." }
+      {
+        question: "Does this converter preserve transparent backgrounds (alpha channel)?",
+        answer: "Yes! Full alpha transparency is preserved with complete 32-bit RGBA fidelity. When a WebP image with an alpha mask or transparent layer is decoded, ConvertSheet extracts all 4 color channels (Red, Green, Blue, and Alpha at 8 bits per channel) into the canvas buffer and encodes a true 32-bit PNG file, ensuring transparent cutouts, logos, and UI elements stay crisp without jagged halos or black background artifacts."
+      },
+      {
+        question: "Why is ConvertSheet safer than CloudConvert or FreeConvert for confidential images?",
+        answer: "Cloud converters like CloudConvert, FreeConvert, or Zamzar transmit your raw image files across public networks to remote third-party processing clusters, storing them on temporary cloud disks where they may be vulnerable to data leaks or server retention. ConvertSheet executes 100% locally in your device's browser memory using WebAssembly and HTML5 Canvas. Your confidential graphics, NDA documents, customer photos, and proprietary assets never leave your computer."
+      },
+      {
+        question: "How do I convert WebP to PNG on Mac or Windows without downloading third-party software?",
+        answer: "On Windows, you can open the WebP file in MS Paint and select \"Save As\" > \"PNG picture\", though older versions may discard transparency. On macOS, you can double-click the file to open it in Preview, choose \"File\" > \"Export\", and select PNG. However, desktop utilities require opening and converting each image individually. ConvertSheet gives you the speed and privacy of local processing with seamless drag-and-drop batch conversion and ZIP download without installing any software."
+      },
+      {
+        question: "Why does Google Chrome download images as .webp instead of .png or .jpg?",
+        answer: "Websites serve WebP images to Google Chrome because WebP cuts file sizes by 25% to 35% compared to PNG and JPEG, significantly accelerating page load times and boosting Google PageSpeed and Core Web Vitals rankings. When you right-click \"Save image as\" in Chrome, the browser saves the exact file sent by the server (.webp). ConvertSheet allows you to instantly convert those WebP downloads back to standard PNG format for seamless compatibility with PowerPoint, Photoshop, Discord, and desktop software."
+      },
+      {
+        question: "Can I batch convert multiple WebP files to PNG simultaneously?",
+        answer: "Yes! You can drag and drop up to 30 WebP files into ConvertSheet simultaneously. Our multi-threaded browser engine processes conversions in parallel and provides one-click batch ZIP download so you can save all converted PNG images instantly without waiting in server queues."
+      },
+      {
+        question: "Can animated WebP files be converted to PNG?",
+        answer: "Standard PNG is a single-frame bitmap format. When you upload an animated WebP file, ConvertSheet decodes and extracts the high-resolution first keyframe as a crisp transparent PNG. If you require full multi-frame animation, you would need Animated Portable Network Graphics (APNG) or GIF, but for static graphical use, the first-frame PNG extraction is ideal."
+      },
+      {
+        question: "Is there any file size limit or daily conversion queue?",
+        answer: "ConvertSheet has zero artificial paywalls, no daily conversion quotas, and no queue wait times. You can convert unlimited images up to 50MB per file, constrained only by your device's available browser RAM."
+      },
+      {
+        question: "Will converting from WebP to PNG increase my file size?",
+        answer: "Yes, in most cases the resulting PNG will be larger in byte size than the original WebP file. WebP uses modern predictive lossy or lossless compression algorithms specifically designed to minimize web transmission bytes, whereas PNG uses Deflate (LZ77 + Huffman) encoding optimized for lossless fidelity and broad software compatibility rather than minimal payload size."
+      }
     ],
     relatedConverters: ["parquet-to-excel"],
     relatedTools: ["png-to-webp", "image-compressor"]
@@ -39,15 +69,41 @@ export const IMAGE_TOOLS: Record<string, ToolConfig> = {
     featured: true,
     keywords: ["png to webp", "convert png to webp", "compress png to webp", "next gen image format", "pagespeed image optimization"],
     formulaDescription: "Applies WebP predictive coding and entropy quantization to PNG pixel buffers, reducing asset payloads.",
-    about: "Web developers and SEO specialists convert bulky PNG assets to WebP to dramatically reduce website bandwidth and improve Core Web Vitals (LCP score). ConvertSheet lets you batch convert PNGs into sleek WebP images with adjustable quality sliders.",
+    about: "Web developers, performance engineers, and SEO specialists convert bulky PNG assets to modern WebP format to dramatically reduce website bandwidth, improve Google Core Web Vitals (specifically Largest Contentful Paint - LCP and Cumulative Layout Shift - CLS), and pass Google PageSpeed Insights audits (\"Serve images in next-gen formats\"). WebP combines predictive block coding from VP8 with arithmetic entropy coding to deliver 26% smaller file sizes than lossless PNGs and 70% to 85% smaller file sizes in lossy mode at equivalent perceptual clarity. ConvertSheet provides real-time client-side conversion directly in your browser memory with full alpha transparency preservation and adjustable quality controls.",
     howTo: [
       { step: 1, title: "Upload PNG", description: "Drop your transparent or solid PNG image into the workspace." },
       { step: 2, title: "Adjust Quality", description: "Use the quality slider to balance maximum compression with visual clarity." },
       { step: 3, title: "Download WebP", description: "Save your lightweight WebP asset ready for instant production deployment." }
     ],
     faqs: [
-      { question: "How much file size do I save by converting PNG to WebP?", answer: "WebP lossless images are typically 26% smaller than PNGs, and lossy WebP can be 70% to 85% smaller." },
-      { question: "Are WebP images supported across all browsers?", answer: "Yes, WebP is supported by Chrome, Safari, Firefox, Edge, and all modern mobile devices." }
+      {
+        question: "How much file size do I save by converting PNG to WebP?",
+        answer: "Lossless WebP images are typically 26% smaller than standard PNGs, while lossy WebP at 80%-85% quality can slash file sizes by 70% to 85% with zero perceptible loss in visual quality on high-density displays."
+      },
+      {
+        question: "How does converting PNG to WebP improve Google Core Web Vitals and SEO?",
+        answer: "Images account for over 60% of average web page weight. Heavy PNG files delay Largest Contentful Paint (LCP) and cause poor PageSpeed scores. Converting PNG to lightweight WebP drastically accelerates asset downloads over mobile networks, helping your pages satisfy Google's Core Web Vitals benchmarks and improve organic search rankings."
+      },
+      {
+        question: "Are WebP images supported across all modern browsers and devices?",
+        answer: "Yes! WebP has universal browser support across Google Chrome, Apple Safari (iOS 14+ and macOS Big Sur+), Mozilla Firefox, Microsoft Edge, and Opera, covering more than 97% of worldwide web users."
+      },
+      {
+        question: "Does converting PNG to WebP keep transparency intact?",
+        answer: "Yes. WebP provides complete support for 8-bit alpha transparency in both lossless and lossy compression modes, unlike JPEG which forces transparent areas onto solid white or black backgrounds."
+      },
+      {
+        question: "What is the recommended quality setting when converting PNG to WebP for websites?",
+        answer: "For photographs and complex illustrations, an 80% to 85% quality setting offers the optimal balance between dramatic file size reduction (often 75%+ smaller) and pristine visual quality. For UI icons, logos, and line art with sharp edges, using 90%-95% or lossless mode ensures zero compression artifacts."
+      },
+      {
+        question: "Can I batch convert multiple PNGs to WebP with ConvertSheet?",
+        answer: "Yes! You can upload and batch convert multiple PNG files simultaneously. ConvertSheet processes all files locally in parallel using client-side browser threads and lets you download the complete set as a single ZIP archive."
+      },
+      {
+        question: "Why is ConvertSheet preferred over cloud-based PNG to WebP converters?",
+        answer: "ConvertSheet executes 100% within your local browser memory using client-side APIs. Your images are never uploaded to remote cloud servers, ensuring strict compliance with data privacy regulations, eliminating upload latency, and removing daily conversion limits."
+      }
     ],
     relatedConverters: ["csv-to-excel"],
     relatedTools: ["webp-to-png", "image-compressor"]
