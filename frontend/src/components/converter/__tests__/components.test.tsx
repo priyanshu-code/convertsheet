@@ -227,7 +227,7 @@ describe("Converter Components", () => {
 
   describe("FormatSelector", () => {
     it("renders source and target format badges and options trigger", () => {
-      render(
+      const { container } = render(
         <FormatSelector
           config={jsonConfig}
           options={{ sheetName: "Sheet1", delimiter: ",", prettify: true }}
@@ -240,6 +240,21 @@ describe("Converter Components", () => {
       expect(screen.getByText("Excel")).toBeInTheDocument();
       expect(screen.getByText(".xlsx")).toBeInTheDocument();
       expect(screen.getByText("Conversion Options")).toBeInTheDocument();
+
+      // Outer container responsive padding
+      const outerContainer = container.firstElementChild as HTMLElement;
+      expect(outerContainer).toHaveClass("p-2", "sm:p-4");
+
+      // Badges micro-typography
+      const sourceBadge = screen.getByText("JSON").closest("div");
+      expect(sourceBadge).toHaveClass("text-[11px]", "sm:text-xs");
+
+      const targetBadge = screen.getByText("Excel").closest("div");
+      expect(targetBadge).toHaveClass("text-[11px]", "sm:text-xs");
+
+      // Options button micro-typography
+      const optionsBtn = screen.getByRole("button", { name: /conversion options/i });
+      expect(optionsBtn).toHaveClass("text-[11px]", "sm:text-xs");
     });
 
     it("sets aria-pressed correctly on delimiter buttons", () => {

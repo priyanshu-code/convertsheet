@@ -79,25 +79,25 @@ export function FormatSelector({
   return (
     <div
       className={cn(
-        "w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 p-4 shadow-xs",
+        "w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 p-2 sm:p-4 shadow-xs",
         className
       )}
     >
       {/* Visual Format Flow Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 sm:gap-3">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* Source badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-mono font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">
+          <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-mono font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">
             <span>{config.sourceFormat}</span>
             <span className="text-zinc-600 dark:text-zinc-400 font-medium">
               {config.sourceExtension}
             </span>
           </div>
 
-          <ArrowRight className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
 
           {/* Target badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-mono font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+          <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-mono font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
             <span>{config.targetFormat}</span>
             <span className="text-emerald-600/80 dark:text-emerald-400/80 font-normal">
               {config.targetExtension}
@@ -111,7 +111,7 @@ export function FormatSelector({
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
-            className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium px-2 py-1 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
           >
             <Settings2 className="w-3.5 h-3.5 text-zinc-500" />
             <span>Conversion Options</span>
