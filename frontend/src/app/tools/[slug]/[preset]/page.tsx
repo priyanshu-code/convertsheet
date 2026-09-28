@@ -10,6 +10,7 @@ import {
   getProgrammaticPresetsByTool,
 } from "@/lib/programmatic-presets";
 import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
+import { renderRichAbout } from "../page";
 import { FAQAccordion } from "@/components/seo";
 import { AdBanner } from "@/components/layout";
 import { EmbedTrigger } from "@/components/calculator/EmbedTrigger";
@@ -303,7 +304,7 @@ export default function ProgrammaticPresetPage({
           </div>
 
           <div className="prose prose-zinc dark:prose-invert max-w-none text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 space-y-3">
-            <p>{preset.about}</p>
+            {renderRichAbout(preset.about)}
             {tool.formulaDescription && (() => {
               const text = tool.formulaDescription;
               const hasWhere = text.toLowerCase().includes(", where ");

@@ -134,6 +134,151 @@ export async function generateMetadata({
   };
 }
 
+
+function renderFormattedInline(text: string): React.ReactNode {
+  if (!text.includes("**")) {
+    return text;
+  }
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      return (
+        <strong key={i} className="font-semibold text-zinc-900 dark:text-zinc-100">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
+export function renderRichAbout(content: string): React.ReactNode {
+  if (!content) return null;
+
+  const lines = content.split("\n");
+  const elements: React.ReactNode[] = [];
+  let currentParagraphLines: string[] = [];
+  let currentTableLines: string[] = [];
+
+  const flushParagraph = () => {
+    if (currentParagraphLines.length > 0) {
+      const text = currentParagraphLines.join(" ").trim();
+      if (text) {
+        elements.push(
+          <p key={`p-${elements.length}`} className="leading-relaxed">
+            {renderFormattedInline(text)}
+          </p>
+        );
+      }
+      currentParagraphLines = [];
+    }
+  };
+
+  const flushTable = () => {
+    if (currentTableLines.length >= 2) {
+      const headerLine = currentTableLines[0];
+      const rowsLines = currentTableLines
+        .slice(1)
+        .filter((line) => !/^[|\s:-]+$/.test(line.trim()));
+
+      const parseRow = (line: string) => {
+        const trimmed = line.trim();
+        const withoutEdges = trimmed.replace(/^\|/, "").replace(/\|$/, "");
+        return withoutEdges.split("|").map((c) => c.trim());
+      };
+
+      const headers = parseRow(headerLine);
+      const rows = rowsLines.map(parseRow);
+
+      elements.push(
+        <div
+          key={`table-${elements.length}`}
+          className="my-4 overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800"
+        >
+          <table className="w-full text-left text-xs sm:text-sm">
+            <thead className="bg-zinc-100 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 font-semibold">
+              <tr>
+                {headers.map((h, i) => (
+                  <th
+                    key={i}
+                    className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100"
+                  >
+                    {renderFormattedInline(h)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              {rows.map((row, rIdx) => (
+                <tr
+                  key={rIdx}
+                  className={
+                    rIdx % 2 === 0
+                      ? "bg-white dark:bg-zinc-900/40"
+                      : "bg-zinc-50/50 dark:bg-zinc-900/80"
+                  }
+                >
+                  {row.map((cell, cIdx) => (
+                    <td
+                      key={cIdx}
+                      className="px-4 py-3 text-zinc-700 dark:text-zinc-300"
+                    >
+                      {renderFormattedInline(cell)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    }
+    currentTableLines = [];
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const line = rawLine.trim();
+
+    if (!line) {
+      flushParagraph();
+      flushTable();
+      continue;
+    }
+
+    if (line.startsWith("### ")) {
+      flushParagraph();
+      flushTable();
+      const headingText = line.replace(/^###\s+/, "");
+      elements.push(
+        <h3
+          key={`h3-${elements.length}`}
+          className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mt-4 mb-2"
+        >
+          {renderFormattedInline(headingText)}
+        </h3>
+      );
+      continue;
+    }
+
+    if (line.startsWith("|") && line.endsWith("|")) {
+      flushParagraph();
+      currentTableLines.push(line);
+      continue;
+    }
+
+    if (currentTableLines.length > 0) {
+      flushTable();
+    }
+    currentParagraphLines.push(line);
+  }
+
+  flushParagraph();
+  flushTable();
+
+  return elements;
+}
+
 export default function ToolPage({ params }: ToolPageProps) {
   const tool = getToolBySlug(params.slug);
 
@@ -345,7 +490,7 @@ export default function ToolPage({ params }: ToolPageProps) {
           </div>
 
           <div className="prose prose-zinc dark:prose-invert max-w-none text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 space-y-3">
-            <p>{tool.about}</p>
+            {renderRichAbout(tool.about)}
             {tool.formulaDescription && (() => {
               const text = tool.formulaDescription;
               const hasWhere = text.toLowerCase().includes(", where ");

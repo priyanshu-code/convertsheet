@@ -105,4 +105,21 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
       "/tools/percentage-calculator/what-is-20-percent-of-100"
     );
   });
+
+  it("renders webp-to-png with semantic comparison table containing CloudConvert and FreeConvert", () => {
+    const { container } = render(<ToolPage params={{ slug: "webp-to-png" }} />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 3,
+        name: /ConvertSheet vs Other WebP Converters/i,
+      })
+    ).toBeInTheDocument();
+
+    const table = container.querySelector("table");
+    expect(table).not.toBeNull();
+    expect(table?.textContent).toContain("CloudConvert");
+    expect(table?.textContent).toContain("FreeConvert");
+    expect(table?.textContent).toContain("Zero (100% In-Browser)");
+  });
 });

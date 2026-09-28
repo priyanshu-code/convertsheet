@@ -53,7 +53,7 @@ export const IMAGE_TOOLS: Record<string, ToolConfig> = {
         answer: "Yes, in most cases the resulting PNG will be larger in byte size than the original WebP file. WebP uses modern predictive lossy or lossless compression algorithms specifically designed to minimize web transmission bytes, whereas PNG uses Deflate (LZ77 + Huffman) encoding optimized for lossless fidelity and broad software compatibility rather than minimal payload size."
       }
     ],
-    relatedConverters: ["parquet-to-excel"],
+    relatedConverters: [],
     relatedTools: ["png-to-webp", "image-compressor"]
   },
 
