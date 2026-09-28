@@ -376,19 +376,24 @@ export function SplitJsonInput({
     <div
       data-testid="split-json-input"
       className={cn(
-        "grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch",
+        "grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-6 items-stretch",
         disabled && "opacity-60 pointer-events-none",
         className
       )}
     >
       {/* Mobile Tab Switcher: Toggle between Paste/Editor and File Upload */}
-      <div className="flex lg:hidden items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 mb-1 border border-zinc-200/80 dark:border-zinc-700/80 col-span-1">
+      <div
+        role="group"
+        aria-label="Input mode selector"
+        className="flex lg:hidden items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 mb-1 border border-zinc-200/80 dark:border-zinc-700/80 col-span-1"
+      >
         <button
           type="button"
+          disabled={disabled}
           aria-pressed={mobileTab === "paste"}
           onClick={() => setMobileTab("paste")}
           className={cn(
-            "flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center",
+            "flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100",
             mobileTab === "paste"
               ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
               : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
@@ -398,10 +403,11 @@ export function SplitJsonInput({
         </button>
         <button
           type="button"
+          disabled={disabled}
           aria-pressed={mobileTab === "upload"}
           onClick={() => setMobileTab("upload")}
           className={cn(
-            "flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center",
+            "flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100",
             mobileTab === "upload"
               ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
               : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
@@ -414,7 +420,7 @@ export function SplitJsonInput({
       {/* Left Panel: Monospace JSON/JSONL Textarea with Validation & Quick Actions */}
       <div
         className={cn(
-          "flex flex-col rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/50 p-2.5 sm:p-5 transition-all min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
+          "flex flex-col rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/50 p-2.5 sm:p-5 transition-all min-h-[320px] sm:min-h-[460px] lg:min-h-[500px]",
           mobileTab === "upload" && "hidden lg:flex"
         )}
       >
@@ -594,7 +600,7 @@ export function SplitJsonInput({
       {/* Right Panel: Integrated File Dropzone with Matching Spacious Layout */}
       <div
         className={cn(
-          "flex flex-col h-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
+          "flex flex-col h-full min-h-[320px] sm:min-h-[460px] lg:min-h-[500px]",
           mobileTab === "paste" && "hidden lg:flex"
         )}
       >
@@ -623,7 +629,7 @@ export function SplitJsonInput({
           onDrop={handleDrop}
           className={cn(
             "group relative flex-1 flex flex-col items-center justify-center text-center",
-            "border-2 border-dashed rounded-2xl p-4 sm:p-10 transition-all duration-200 cursor-pointer select-none outline-none min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
+            "border-2 border-dashed rounded-2xl p-4 sm:p-10 transition-all duration-200 cursor-pointer select-none outline-none min-h-[320px] sm:min-h-[460px] lg:min-h-[500px]",
             isDragOver
               ? "border-emerald-500 bg-emerald-500/10 ring-4 ring-emerald-500/10 scale-[1.005]"
               : "border-zinc-300 dark:border-zinc-700/80 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-emerald-500/60 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/10",

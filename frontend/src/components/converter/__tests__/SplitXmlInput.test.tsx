@@ -65,6 +65,44 @@ describe("SplitXmlInput", () => {
     expect(passedFile.name).toContain(".xml");
   });
 
+  it("renders mobile segmented tabs with aria-pressed and toggles panel visibility", () => {
+    render(<SplitXmlInput config={xmlToExcelConfig} onFileSelect={() => {}} />);
+
+    const pasteTab = screen.getByRole("button", { name: /📝 Paste \/ Editor/i });
+    const uploadTab = screen.getByRole("button", { name: /📁 Upload File/i });
+
+    expect(pasteTab).toBeInTheDocument();
+    expect(uploadTab).toBeInTheDocument();
+
+    // Initial state: paste is active, upload is inactive
+    expect(pasteTab).toHaveAttribute("aria-pressed", "true");
+    expect(uploadTab).toHaveAttribute("aria-pressed", "false");
+
+    const textarea = screen.getByLabelText(/Paste XML data/i);
+    const leftPanel = textarea.closest("div.rounded-2xl");
+    const rightPanel = screen.getByTestId("split-xml-dropzone-area").parentElement;
+
+    expect(leftPanel).not.toHaveClass("hidden");
+    expect(rightPanel).toHaveClass("hidden");
+    expect(rightPanel).toHaveClass("lg:flex");
+
+    // Click upload tab
+    fireEvent.click(uploadTab);
+    expect(pasteTab).toHaveAttribute("aria-pressed", "false");
+    expect(uploadTab).toHaveAttribute("aria-pressed", "true");
+    expect(leftPanel).toHaveClass("hidden");
+    expect(leftPanel).toHaveClass("lg:flex");
+    expect(rightPanel).not.toHaveClass("hidden");
+
+    // Click paste tab
+    fireEvent.click(pasteTab);
+    expect(pasteTab).toHaveAttribute("aria-pressed", "true");
+    expect(uploadTab).toHaveAttribute("aria-pressed", "false");
+    expect(leftPanel).not.toHaveClass("hidden");
+    expect(rightPanel).toHaveClass("hidden");
+    expect(rightPanel).toHaveClass("lg:flex");
+  });
+
   it("ConverterCard renders SplitXmlInput for XML converters", () => {
     render(<ConverterCard config={xmlToExcelConfig} />);
     expect(screen.getByTestId("split-xml-input")).toBeInTheDocument();
