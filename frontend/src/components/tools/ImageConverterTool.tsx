@@ -110,8 +110,10 @@ export function ImageConverterTool({
             );
           }
         } finally {
-          inFlightRef.current.delete(item.id);
-          processPendingQueue();
+          if (settingsVersionRef.current === currentVersion) {
+            inFlightRef.current.delete(item.id);
+            processPendingQueue();
+          }
         }
       })();
     }
