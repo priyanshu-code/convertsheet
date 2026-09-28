@@ -14,7 +14,7 @@ describe("ConverterGrid Component", () => {
     expect(screen.getByRole("button", { name: /Spreadsheets/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /DuckDB/i })).toBeInTheDocument();
 
-    expect(screen.getByText("(21)")).toBeInTheDocument();
+    expect(screen.getByText("(23)")).toBeInTheDocument();
     expect(screen.getByText("(9)")).toBeInTheDocument();
     expect(screen.getByText("(12)")).toBeInTheDocument();
   });
@@ -31,7 +31,7 @@ describe("ConverterGrid Component", () => {
     expect(screen.queryByText("SQLite to Excel")).not.toBeInTheDocument();
 
     // Show All button is visible
-    const showAllBtn = screen.getByRole("button", { name: /Show All 21 Converters/i });
+    const showAllBtn = screen.getByRole("button", { name: /Show All 23 Converters/i });
     expect(showAllBtn).toBeInTheDocument();
 
     // Click Show All

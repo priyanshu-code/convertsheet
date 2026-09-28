@@ -1,7 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { CONVERTER_REGISTRY, getAllConverterSlugs } from "@/lib/registry";
+import {
+  CONVERTER_REGISTRY,
+  getAllConverterSlugs,
+  getConverterBySlug,
+} from "@/lib/registry";
 import ConverterPage, {
   generateStaticParams,
   generateMetadata,
@@ -35,10 +39,10 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
 
   describe("generateStaticParams", () => {
-    it("returns all 21 converter slugs for static pre-rendering", () => {
+    it("returns all 23 converter slugs for static pre-rendering", () => {
       const params = generateStaticParams();
 
-      expect(params).toHaveLength(21);
+      expect(params).toHaveLength(23);
       const slugs = params.map((p) => p.slug);
       expect(slugs).toEqual(
         expect.arrayContaining([
@@ -63,6 +67,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
           "sqlite-to-excel",
           "json-to-ndjson",
           "json-to-schema",
+          "webp-to-png",
+          "png-to-webp",
         ])
       );
     });
@@ -148,11 +154,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         )
       ).toBeInTheDocument();
 
-      // Other Popular Data Converters (should list the other 20)
+      // Other Popular Data Converters (should list the other 22)
       const otherSection = screen.getByTestId("other-converters-section");
       expect(otherSection).toBeInTheDocument();
       const otherLinks = otherSection.querySelectorAll("a");
-      expect(otherLinks).toHaveLength(20);
+      expect(otherLinks).toHaveLength(22);
 
       const linkedHrefs = Array.from(otherLinks).map((a) =>
         a.getAttribute("href")
@@ -184,6 +190,52 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       expect(privacyBadge).toHaveTextContent(
         "Secure End-to-End Processing • Zero Retention"
       );
+    });
+
+    it("retrieves valid converter configuration for webp-to-png", () => {
+      const config = getConverterBySlug("webp-to-png");
+      expect(config).toBeDefined();
+      expect(config?.slug).toBe("webp-to-png");
+      expect(config?.sourceFormat).toBe("WebP");
+      expect(config?.targetFormat).toBe("PNG");
+      expect(config?.engineId).toBe("image-converter");
+    });
+
+    it("retrieves valid converter configuration for png-to-webp", () => {
+      const config = getConverterBySlug("png-to-webp");
+      expect(config).toBeDefined();
+      expect(config?.slug).toBe("png-to-webp");
+      expect(config?.sourceFormat).toBe("PNG");
+      expect(config?.targetFormat).toBe("WebP");
+      expect(config?.engineId).toBe("image-converter");
+    });
+
+    it("renders ImageConverterTool for webp-to-png route", () => {
+      render(<ConverterPage params={{ slug: "webp-to-png" }} />);
+
+      expect(
+        screen.getByRole("heading", {
+          level: 1,
+          name: /Convert WebP to PNG Online/i,
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/Click to choose an image, drag & drop, or paste/i)
+      ).toBeInTheDocument();
+    });
+
+    it("renders ImageConverterTool for png-to-webp route", () => {
+      render(<ConverterPage params={{ slug: "png-to-webp" }} />);
+
+      expect(
+        screen.getByRole("heading", {
+          level: 1,
+          name: /Convert PNG to WebP Online/i,
+        })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/Click to choose an image, drag & drop, or paste/i)
+      ).toBeInTheDocument();
     });
 
     it("calls notFound when slug does not exist", () => {
@@ -314,8 +366,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 21 Converters + 51 On-Brand Tools + 176 Presets + 6 Blog Posts + 5 Comparisons = 270 entries
-      expect(entries).toHaveLength(270);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 23 Converters + 51 On-Brand Tools + 176 Presets + 6 Blog Posts + 5 Comparisons = 272 entries
+      expect(entries).toHaveLength(272);
 
       // Embed directory entry
       const embedEntry = entries.find(

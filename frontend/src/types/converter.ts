@@ -44,4 +44,5 @@ export type ConverterEngineId =
   | "markdown-to-excel"
   | "sqlite-to-excel"
   | "json-to-ndjson"
-  | "json-to-schema";
+  | "json-to-schema"
+  | "image-converter";

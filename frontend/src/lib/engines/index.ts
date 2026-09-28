@@ -100,6 +100,15 @@ export {
   JsonToSchemaEngine,
 };
 
+const imageStubEngine: IConverterEngine = {
+  async parsePreview() {
+    return { columns: [], rows: [], totalRows: 0 };
+  },
+  async convert() {
+    throw new Error("Image conversions are processed via ImageConverterTool.");
+  },
+};
+
 const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "csv-to-excel": csvToExcelEngine,
   "json-to-excel": jsonToExcelEngine,
@@ -121,6 +130,7 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "sqlite-to-excel": sqliteToExcelEngine,
   "json-to-ndjson": jsonToNdjsonEngine,
   "json-to-schema": jsonToSchemaEngine,
+  "image-converter": imageStubEngine,
 };
 
 export function getConverterEngine(engineId: ConverterEngineId): IConverterEngine {

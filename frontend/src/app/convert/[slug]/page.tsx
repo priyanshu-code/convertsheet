@@ -10,6 +10,7 @@ import {
 } from "@/lib/registry";
 import type { ConverterConfig } from "@/types/registry";
 import { ConverterCard } from "@/components/converter";
+import { ImageConverterTool } from "@/components/tools/ImageConverterTool";
 import { AdBanner } from "@/components/layout";
 import { HowToGuide, FAQAccordion, JsonLdSchema } from "@/components/seo";
 import { EmbedTrigger } from "@/components/calculator";
@@ -73,6 +74,28 @@ export async function generateMetadata({
       images: [ogImage],
     },
   };
+}
+
+function renderConverter(config: ConverterConfig) {
+  if (config.slug === "webp-to-png") {
+    return (
+      <ImageConverterTool
+        defaultTargetFormat="image/png"
+        title={config.title}
+        subtitle={config.subtitle}
+      />
+    );
+  }
+  if (config.slug === "png-to-webp") {
+    return (
+      <ImageConverterTool
+        defaultTargetFormat="image/webp"
+        title={config.title}
+        subtitle={config.subtitle}
+      />
+    );
+  }
+  return <ConverterCard config={config} />;
 }
 
 export default function ConverterPage({ params }: ConverterPageProps) {
@@ -181,7 +204,7 @@ export default function ConverterPage({ params }: ConverterPageProps) {
 
       {/* Converter Card - Spacious, pro-grade desktop width */}
       <div className="w-full mx-auto">
-        <ConverterCard config={config} />
+        {renderConverter(config)}
       </div>
 
       {/* Leaderboard Ad Slot */}

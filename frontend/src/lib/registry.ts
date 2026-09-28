@@ -1,4 +1,5 @@
 import { ConverterConfig } from "@/types/registry";
+import { IMAGE_TOOLS } from "./image-tools-data";
 
 export const CONVERTER_REGISTRY = {
   "json-to-excel": {
@@ -1311,6 +1312,46 @@ export const CONVERTER_REGISTRY = {
       },
     ],
   },
+
+  "webp-to-png": {
+    slug: "webp-to-png",
+    sourceFormat: "WebP",
+    targetFormat: "PNG",
+    sourceExtension: ".webp",
+    targetExtension: ".png",
+    acceptedMimeTypes: ["image/webp"],
+    category: "utility",
+    title: "Convert WebP to PNG Online - Free, Fast & Lossless",
+    subtitle:
+      "Batch convert Google WebP images to high-definition transparent PNG files directly in your web browser with 100% privacy.",
+    metaDescription:
+      "Free online WebP to PNG converter. Transform WebP photos and graphics into transparent PNG images in browser memory with zero server uploads.",
+    engineId: "image-converter",
+    isClientSide: true,
+    badge: "100% Private",
+    about: IMAGE_TOOLS["webp-to-png"].about,
+    howTo: IMAGE_TOOLS["webp-to-png"].howTo,
+    faqs: IMAGE_TOOLS["webp-to-png"].faqs,
+  },
+
+  "png-to-webp": {
+    slug: "png-to-webp",
+    sourceFormat: "PNG",
+    targetFormat: "WebP",
+    sourceExtension: ".png",
+    targetExtension: ".webp",
+    acceptedMimeTypes: ["image/png"],
+    category: "utility",
+    title: IMAGE_TOOLS["png-to-webp"].title,
+    subtitle: IMAGE_TOOLS["png-to-webp"].subtitle,
+    metaDescription: IMAGE_TOOLS["png-to-webp"].metaDescription,
+    engineId: "image-converter",
+    isClientSide: true,
+    badge: "PageSpeed Boost",
+    about: IMAGE_TOOLS["png-to-webp"].about,
+    howTo: IMAGE_TOOLS["png-to-webp"].howTo,
+    faqs: IMAGE_TOOLS["png-to-webp"].faqs,
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;
@@ -1345,7 +1386,7 @@ export function getFeaturedConverters(): ConverterConfig[] {
  * Retrieves converters by category.
  */
 export function getConvertersByCategory(
-  category: "spreadsheets" | "data-engineering"
+  category: "spreadsheets" | "data-engineering" | "utility"
 ): ConverterConfig[] {
   return (Object.values(CONVERTER_REGISTRY) as ConverterConfig[]).filter(
     (c) => c.category === category

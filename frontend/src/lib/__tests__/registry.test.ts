@@ -18,9 +18,11 @@ import {
 
 describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
-    it("returns all 21 registered converter slugs", () => {
+    it("returns all 23 registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(21);
+      expect(slugs).toHaveLength(23);
+      expect(slugs).toContain("webp-to-png");
+      expect(slugs).toContain("png-to-webp");
       expect(slugs).toContain("parquet-to-excel");
       expect(slugs).toContain("parquet-to-csv");
       expect(slugs).toContain("parquet-to-json");

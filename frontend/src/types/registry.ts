@@ -24,7 +24,7 @@ export interface BaseConverterConfig {
   metaDescription: string;
   featured?: boolean;
   badge?: string;
-  category?: "spreadsheets" | "data-engineering";
+  category?: "spreadsheets" | "data-engineering" | "utility";
   faqs: FAQItem[];
   howTo: HowToStep[];
   about?: string;
