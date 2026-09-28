@@ -230,9 +230,11 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
   };
 
   const ToolComponent = tool ? componentMap[tool.slug] : null;
-  const backlinkUrl = converter
+  const backlinkUrl = ToolComponent
+    ? `https://www.convertsheet.com/tools/${tool?.slug}`
+    : converter
     ? `https://www.convertsheet.com/convert/${converter.slug}`
-    : `https://www.convertsheet.com/tools/${tool?.slug}`;
+    : `https://www.convertsheet.com`;
 
   return (
     <div className="space-y-3">

@@ -383,8 +383,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 23 Converters + 51 On-Brand Tools + 176 Presets + 6 Blog Posts + 5 Comparisons = 272 entries
-      expect(entries).toHaveLength(272);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 21 Self-Canonical Converters + 51 On-Brand Tools + 176 Presets + 6 Blog Posts + 5 Comparisons = 270 entries
+      expect(entries).toHaveLength(270);
 
       // Embed directory entry
       const embedEntry = entries.find(
@@ -408,8 +408,9 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       );
       expect(pricingEntry).toBeUndefined();
 
-      // All 7 converter entries
-      for (const slug of allSlugs) {
+      // Self-canonical converter entries (excluding aliases webp-to-png and png-to-webp which canonicalize to /tools/)
+      const selfCanonicalSlugs = allSlugs.filter((s) => s !== "webp-to-png" && s !== "png-to-webp");
+      for (const slug of selfCanonicalSlugs) {
         const converterEntry = entries.find(
           (e) => e.url === `https://www.convertsheet.com/convert/${slug}`
         );

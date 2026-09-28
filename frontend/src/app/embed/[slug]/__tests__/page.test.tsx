@@ -60,6 +60,10 @@ describe("Embed Tool Page", () => {
 
     const poweredByLink = screen.getByRole("link", { name: /ConvertSheet/i });
     expect(poweredByLink).toBeInTheDocument();
+    expect(poweredByLink).toHaveAttribute(
+      "href",
+      "https://www.convertsheet.com/tools/webp-to-png"
+    );
   });
 
   it("renders the pdf compressor tool and attribution backlink for pdf compressor embed", () => {

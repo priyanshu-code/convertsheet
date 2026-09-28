@@ -9,14 +9,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.convertsheet.com";
   const currentDate = new Date();
 
-  const converterRoutes: MetadataRoute.Sitemap = getAllConverterSlugs().map(
-    (slug) => ({
+  const NON_CANONICAL_CONVERTER_SLUGS = new Set(["webp-to-png", "png-to-webp"]);
+
+  const converterRoutes: MetadataRoute.Sitemap = getAllConverterSlugs()
+    .filter((slug) => !NON_CANONICAL_CONVERTER_SLUGS.has(slug))
+    .map((slug) => ({
       url: `${baseUrl}/convert/${slug}`,
       lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.9,
-    })
-  );
+    }));
+
 
   const categorySiloRoutes: MetadataRoute.Sitemap = [
     "financial",
