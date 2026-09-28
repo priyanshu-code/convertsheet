@@ -85,7 +85,7 @@ export function FormatSelector({
     >
       {/* Visual Format Flow Header */}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5 sm:gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           {/* Source badge */}
           <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-mono font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">
             <span>{config.sourceFormat}</span>
@@ -99,7 +99,7 @@ export function FormatSelector({
           {/* Target badge */}
           <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-mono font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
             <span>{config.targetFormat}</span>
-            <span className="text-emerald-600/80 dark:text-emerald-400/80 font-normal">
+            <span className="text-emerald-700/90 dark:text-emerald-300/90 font-normal">
               {config.targetExtension}
             </span>
           </div>
@@ -111,14 +111,17 @@ export function FormatSelector({
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
+            aria-controls="conversion-options-panel"
             className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium px-2 py-1 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100"
           >
-            <Settings2 className="w-3.5 h-3.5 text-zinc-500" />
-            <span>Conversion Options</span>
+            <Settings2 className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+            <span className="whitespace-nowrap">
+              <span className="hidden sm:inline">Conversion </span>Options
+            </span>
             {isOpen ? (
-              <ChevronUp className="w-3.5 h-3.5 text-zinc-400" />
+              <ChevronUp className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
             ) : (
-              <ChevronDown className="w-3.5 h-3.5 text-zinc-400" />
+              <ChevronDown className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
             )}
           </button>
         )}
@@ -126,7 +129,7 @@ export function FormatSelector({
 
       {/* Settings Accordion Panel */}
       {hasSettings && isOpen && (
-        <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-4 text-sm">
+        <div id="conversion-options-panel" className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-4 text-sm">
           {/* Sheet Name (Excel Target) */}
           {isExcelTarget && (
             <div className="space-y-1.5">

@@ -239,7 +239,6 @@ describe("Converter Components", () => {
       expect(screen.getByText(".json")).toBeInTheDocument();
       expect(screen.getByText("Excel")).toBeInTheDocument();
       expect(screen.getByText(".xlsx")).toBeInTheDocument();
-      expect(screen.getByText("Conversion Options")).toBeInTheDocument();
 
       // Outer container responsive padding
       const outerContainer = container.firstElementChild as HTMLElement;
@@ -252,9 +251,18 @@ describe("Converter Components", () => {
       const targetBadge = screen.getByText("Excel").closest("div");
       expect(targetBadge).toHaveClass("text-[11px]", "sm:text-xs");
 
-      // Options button micro-typography
-      const optionsBtn = screen.getByRole("button", { name: /conversion options/i });
+      // Options button micro-typography, responsive text, and accordion aria-controls
+      const optionsBtn = screen.getByRole("button", { name: /options/i });
+      expect(optionsBtn).toBeInTheDocument();
       expect(optionsBtn).toHaveClass("text-[11px]", "sm:text-xs");
+      expect(optionsBtn).toHaveAttribute("aria-expanded", "false");
+      expect(optionsBtn).toHaveAttribute("aria-controls", "conversion-options-panel");
+
+      // Verify toggling reveals panel and updates aria-expanded
+      expect(container.querySelector("#conversion-options-panel")).toBeNull();
+      fireEvent.click(optionsBtn);
+      expect(optionsBtn).toHaveAttribute("aria-expanded", "true");
+      expect(container.querySelector("#conversion-options-panel")).toBeInTheDocument();
     });
 
     it("sets aria-pressed correctly on delimiter buttons", () => {
@@ -267,7 +275,7 @@ describe("Converter Components", () => {
       );
 
       // Open accordion
-      fireEvent.click(screen.getByText("Conversion Options"));
+      fireEvent.click(screen.getByRole("button", { name: /options/i }));
 
       const commaBtn = screen.getByRole("button", { name: "Comma (,)" });
       const semicolonBtn = screen.getByRole("button", { name: "Semicolon (;)" });
