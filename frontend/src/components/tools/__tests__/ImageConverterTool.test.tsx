@@ -263,4 +263,19 @@ describe("ImageConverterTool", () => {
       expect(screen.getByRole("alert")).toHaveTextContent("Zip compression failed");
     });
   });
+
+  it("accepts images with empty MIME types based on file extension and filters out non-images", async () => {
+    const { container } = render(<ImageConverterTool defaultTargetFormat="image/png" />);
+    const input = container.querySelector("input[type='file']") as HTMLInputElement;
+
+    const webpFileWithNoMime = new File(["dummyWebp"], "graphic.webp", { type: "" });
+    const textFile = new File(["dummyText"], "notes.txt", { type: "text/plain" });
+
+    fireEvent.change(input, { target: { files: [webpFileWithNoMime, textFile] } });
+
+    await waitFor(() => {
+      expect(screen.getByText("graphic.webp")).toBeInTheDocument();
+      expect(screen.queryByText("notes.txt")).not.toBeInTheDocument();
+    });
+  });
 });

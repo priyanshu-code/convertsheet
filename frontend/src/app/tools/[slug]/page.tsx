@@ -136,16 +136,26 @@ export async function generateMetadata({
 
 
 function renderFormattedInline(text: string): React.ReactNode {
-  if (!text.includes("**")) {
+  if (!text.includes("**") && !text.includes("`")) {
     return text;
   }
-  const parts = text.split(/(\*\*.*?\*\*)/g);
+  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
       return (
         <strong key={i} className="font-semibold text-zinc-900 dark:text-zinc-100">
           {part.slice(2, -2)}
         </strong>
+      );
+    }
+    if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
+      return (
+        <code
+          key={i}
+          className="px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-emerald-700 dark:text-emerald-300 font-mono text-xs sm:text-sm border border-zinc-200 dark:border-zinc-700/60"
+        >
+          {part.slice(1, -1)}
+        </code>
       );
     }
     return part;
@@ -159,6 +169,7 @@ export function renderRichAbout(content: string): React.ReactNode {
   const elements: React.ReactNode[] = [];
   let currentParagraphLines: string[] = [];
   let currentTableLines: string[] = [];
+  let currentListItems: string[] = [];
 
   const flushParagraph = () => {
     if (currentParagraphLines.length > 0) {
@@ -171,6 +182,25 @@ export function renderRichAbout(content: string): React.ReactNode {
         );
       }
       currentParagraphLines = [];
+    }
+  };
+
+  const flushList = () => {
+    if (currentListItems.length > 0) {
+      const items = [...currentListItems];
+      elements.push(
+        <ul
+          key={`ul-${elements.length}`}
+          className="list-disc pl-5 space-y-1.5 text-zinc-700 dark:text-zinc-300 my-3"
+        >
+          {items.map((item, idx) => (
+            <li key={idx} className="leading-relaxed">
+              {renderFormattedInline(item)}
+            </li>
+          ))}
+        </ul>
+      );
+      currentListItems = [];
     }
   };
 
@@ -242,12 +272,14 @@ export function renderRichAbout(content: string): React.ReactNode {
 
     if (!line) {
       flushParagraph();
+      flushList();
       flushTable();
       continue;
     }
 
     if (line.startsWith("### ")) {
       flushParagraph();
+      flushList();
       flushTable();
       const headingText = line.replace(/^###\s+/, "");
       elements.push(
@@ -261,10 +293,22 @@ export function renderRichAbout(content: string): React.ReactNode {
       continue;
     }
 
+    if (line.startsWith("- ") || line.startsWith("* ")) {
+      flushParagraph();
+      flushTable();
+      currentListItems.push(line.slice(2).trim());
+      continue;
+    }
+
     if (line.startsWith("|") && line.endsWith("|")) {
       flushParagraph();
+      flushList();
       currentTableLines.push(line);
       continue;
+    }
+
+    if (currentListItems.length > 0) {
+      flushList();
     }
 
     if (currentTableLines.length > 0) {
@@ -274,6 +318,7 @@ export function renderRichAbout(content: string): React.ReactNode {
   }
 
   flushParagraph();
+  flushList();
   flushTable();
 
   return elements;

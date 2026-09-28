@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import ToolPage, { generateStaticParams, generateMetadata } from "../page";
+import ToolPage, { generateStaticParams, generateMetadata, renderRichAbout } from "../page";
 import { getAllToolSlugs, getToolBySlug } from "@/lib/tool-registry";
 import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 
@@ -121,5 +121,38 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
     expect(table?.textContent).toContain("CloudConvert");
     expect(table?.textContent).toContain("FreeConvert");
     expect(table?.textContent).toContain("Zero (100% In-Browser)");
+  });
+
+  it("renderRichAbout formats headings, tables, bullet lists, bold text, and code backticks", () => {
+    const markdown = `
+### Advanced Calculations
+
+Here is a paragraph with **important** note and \`1024 / 8\` code snippet.
+
+- **Option A**: First bullet item with \`val1\`
+- **Option B**: Second bullet item with \`val2\`
+
+| Column 1 | Column 2 |
+| :--- | :--- |
+| Val A | Val B |
+`;
+    const { container } = render(<div>{renderRichAbout(markdown)}</div>);
+
+    expect(screen.getByRole("heading", { level: 3, name: "Advanced Calculations" })).toBeInTheDocument();
+    expect(screen.getByText("important")).toBeInTheDocument();
+
+    const codeElements = container.querySelectorAll("code");
+    expect(codeElements.length).toBeGreaterThanOrEqual(1);
+    expect(codeElements[0].textContent).toBe("1024 / 8");
+
+    const listItems = container.querySelectorAll("ul li");
+    expect(listItems.length).toBe(2);
+    expect(listItems[0].textContent).toContain("Option A");
+    expect(listItems[1].textContent).toContain("Option B");
+
+    const table = container.querySelector("table");
+    expect(table).not.toBeNull();
+    expect(table?.textContent).toContain("Column 1");
+    expect(table?.textContent).toContain("Val A");
   });
 });

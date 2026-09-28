@@ -268,6 +268,14 @@ describe("Calculator Primitives Design System", () => {
     expect(titleContainer?.className).toContain("hidden sm:flex");
     expect(screen.getByText("PRO")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Current Market/i })).toBeInTheDocument();
+
+    rerender(
+      <CalcCard title="Bare Header Test" hideTitleOnMobile={true}>
+        <div>Content</div>
+      </CalcCard>
+    );
+    const headerRow = container.querySelector(".items-start.justify-between");
+    expect(headerRow?.className).toContain("hidden sm:flex");
   });
 });
 

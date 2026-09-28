@@ -232,6 +232,8 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
   const ToolComponent = tool ? componentMap[tool.slug] : null;
   const backlinkUrl = ToolComponent
     ? `https://www.convertsheet.com/tools/${tool?.slug}`
+    : converter?.slug === "webp-to-png" || converter?.slug === "png-to-webp"
+    ? `https://www.convertsheet.com/tools/${converter.slug}`
     : converter
     ? `https://www.convertsheet.com/convert/${converter.slug}`
     : `https://www.convertsheet.com`;

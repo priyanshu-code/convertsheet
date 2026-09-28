@@ -119,11 +119,16 @@ export function ImageConverterTool({
     }
   }, [targetFormat, quality, maxWidth]);
 
+  const isImage = (f: File) =>
+    f.type.startsWith("image/") ||
+    /\.(webp|png|jpe?g|svg|gif|bmp|avif|tiff?|ico)$/i.test(f.name);
+
   // Handle files added (from drop, paste, or file input)
   const handleFiles = useCallback(
     (files: File[]) => {
-      if (!files.length) return;
-      const newItems: ConvertedItem[] = files.map((file) => ({
+      const validFiles = files.filter(isImage);
+      if (!validFiles.length) return;
+      const newItems: ConvertedItem[] = validFiles.map((file) => ({
         id: `${file.name}-${file.size}-${file.lastModified}-${Math.random().toString(36).slice(2, 7)}`,
         file,
         status: "pending",
@@ -140,9 +145,6 @@ export function ImageConverterTool({
     },
     [processPendingQueue]
   );
-
-  const isImage = (f: File) =>
-    f.type.startsWith("image/") || f.name.toLowerCase().endsWith(".svg");
 
   const { isDragOver, dragHandlers } = useFileDropAndPaste({
     multiple: true,
