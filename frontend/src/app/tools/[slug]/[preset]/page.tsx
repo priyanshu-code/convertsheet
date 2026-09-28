@@ -172,7 +172,7 @@ export default function ProgrammaticPresetPage({
         parentToolName={tool.name}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-5 sm:space-y-7">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-5 sm:space-y-7">
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">

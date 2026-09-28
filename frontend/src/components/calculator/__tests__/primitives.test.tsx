@@ -223,8 +223,15 @@ describe("Calculator Primitives Design System", () => {
         <div>Content</div>
       </CalcCard>
     );
-    expect(screen.getByText(/Zero financial data sent to servers/i)).toBeInTheDocument();
+    expect(screen.getByText(/Zero data or files sent to servers/i)).toBeInTheDocument();
     expect(screen.getByText(/100% computed in browser/i)).toBeInTheDocument();
+
+    rerender(
+      <CalcCard title="Financial Tool" privacyScope="financial">
+        <div>Content</div>
+      </CalcCard>
+    );
+    expect(screen.getByText(/Zero financial data sent to servers/i)).toBeInTheDocument();
 
     rerender(
       <CalcCard title="File Tool" privacyScope="file">
@@ -241,21 +248,26 @@ describe("Calculator Primitives Design System", () => {
     expect(screen.getByText(/Zero code or data sent to servers/i)).toBeInTheDocument();
   });
 
-  it("CalcCard hides header on mobile when hideTitleOnMobile is true", () => {
+  it("CalcCard hides title on mobile when hideTitleOnMobile is true while preserving controls", () => {
     const { container, rerender } = render(
-      <CalcCard title="Header Test">
+      <CalcCard title="Header Test" badge="PRO" showCurrencySelector>
         <div>Content</div>
       </CalcCard>
     );
-    const headerEl = container.querySelector(".flex.items-start.justify-between");
-    expect(headerEl?.className).not.toContain("hidden sm:flex");
+    const titleContainer = container.querySelector(".items-center.gap-3.min-w-0");
+    expect(titleContainer?.className).toContain("flex");
+    expect(titleContainer?.className).not.toContain("hidden sm:flex");
+    expect(screen.getByText("PRO")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Current Market/i })).toBeInTheDocument();
 
     rerender(
-      <CalcCard title="Header Test" hideTitleOnMobile={true}>
+      <CalcCard title="Header Test" badge="PRO" showCurrencySelector hideTitleOnMobile={true}>
         <div>Content</div>
       </CalcCard>
     );
-    expect(headerEl?.className).toContain("hidden sm:flex");
+    expect(titleContainer?.className).toContain("hidden sm:flex");
+    expect(screen.getByText("PRO")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Current Market/i })).toBeInTheDocument();
   });
 });
 

@@ -32,16 +32,16 @@ export const CalcCard = memo(function CalcCard({
       ? "Zero images or files sent to servers."
       : privacyScope === "data"
       ? "Zero code or data sent to servers."
-      : "Zero financial data sent to servers.";
+      : privacyScope === "financial"
+      ? "Zero financial data sent to servers."
+      : "Zero data or files sent to servers.";
 
   return (
     <div
       className={`rounded-2xl sm:rounded-3xl border border-zinc-200/90 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xl shadow-zinc-200/40 dark:shadow-none p-3.5 sm:p-6 lg:p-8 space-y-5 sm:space-y-6 transition-colors ${className}`}
     >
-      <div
-        className={`${hideTitleOnMobile ? "hidden sm:flex" : "flex"} items-start justify-between gap-4 pb-4 border-b border-zinc-100 dark:border-zinc-800/80 flex-wrap sm:flex-nowrap`}
-      >
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="flex items-start justify-between gap-4 pb-4 border-b border-zinc-100 dark:border-zinc-800/80 flex-wrap sm:flex-nowrap">
+        <div className={`items-center gap-3 min-w-0 ${hideTitleOnMobile ? "hidden sm:flex" : "flex"}`}>
           {Icon && (
             <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
               <Icon className="w-5 h-5" />
