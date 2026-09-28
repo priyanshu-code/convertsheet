@@ -319,11 +319,16 @@ export default function ToolPage({ params }: ToolPageProps) {
         </div>
 
         {/* AEO Speakable Direct Answer Box */}
-        <div className="max-w-4xl mx-auto w-full">
-          <div className="p-3 sm:p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium tool-answer-summary">
-            💡 <strong className="text-zinc-900 dark:text-zinc-100">Direct Answer:</strong> {tool.answerSummary}
+        {tool.answerSummary && (
+          <div className="max-w-4xl mx-auto w-full">
+            <div className="border-l-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 px-3.5 py-2.5 rounded-r-xl text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 tool-answer-summary">
+              <p>
+                <span className="font-semibold text-emerald-800 dark:text-emerald-300">Direct Answer:</span>{" "}
+                {tool.answerSummary}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Top Ad Slot */}
         <div className="flex justify-center w-full my-6">

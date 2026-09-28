@@ -114,6 +114,7 @@ export function ImageConverterTool({
       subtitle={subtitle}
       icon={ImageIcon}
       badge="100% Client-Side"
+      privacyScope="file"
     >
       <div className="space-y-6">
         {/* Upload Dropzone */}
@@ -122,9 +123,9 @@ export function ImageConverterTool({
             {...dragHandlers}
             onClick={() => fileInputRef.current?.click()}
             className={cn(
-              "border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all bg-zinc-50/50 dark:bg-zinc-800/30 group",
+              "border border-dashed rounded-xl p-4 sm:p-8 text-center cursor-pointer transition-all bg-zinc-50/60 dark:bg-zinc-800/30 group",
               isDragOver
-                ? "border-emerald-500 bg-emerald-500/10 ring-4 ring-emerald-500/10 scale-[1.01]"
+                ? "border-emerald-500 bg-emerald-500/10 ring-2 ring-emerald-500/20"
                 : "border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500"
             )}
           >
@@ -141,18 +142,18 @@ export function ImageConverterTool({
             />
             <div
               className={cn(
-                "w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-transform",
+                "w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-2.5 sm:mb-4 transition-transform",
                 isDragOver
                   ? "bg-emerald-600 text-white scale-110"
                   : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-110"
               )}
             >
-              <UploadCloud className="w-6 h-6" />
+              <UploadCloud className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+            <p className="text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200">
               Click to choose an image, drag &amp; drop, or paste
             </p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 flex items-center justify-center gap-1.5">
+            <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-1 flex items-center justify-center gap-1.5">
               <span>Supports WEBP, PNG, JPG, JPEG, and SVG up to 50MB</span>
               <span>•</span>
               <span className="inline-flex items-center gap-1">

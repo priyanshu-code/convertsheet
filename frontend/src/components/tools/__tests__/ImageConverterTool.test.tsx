@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { ImageConverterTool } from "../ImageConverterTool";
 import * as imageEngine from "@/lib/engines/image-engine";
-import { vi } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 
 describe("ImageConverterTool", () => {
   beforeEach(() => {
@@ -21,6 +21,7 @@ describe("ImageConverterTool", () => {
     render(<ImageConverterTool title="Test Image Converter" />);
     expect(screen.getByText("Test Image Converter")).toBeInTheDocument();
     expect(screen.getByText(/Click to choose an image/i)).toBeInTheDocument();
+    expect(screen.getByText(/Zero images or files sent to servers/i)).toBeInTheDocument();
   });
 
   it("processes image and updates preview and metrics automatically", async () => {

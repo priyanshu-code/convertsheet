@@ -77,7 +77,7 @@ export function AdBanner({
         /* Development & Preview Placeholder (Zero CLS) */
         <div
           data-testid="ad-placeholder"
-          className="w-full h-full flex flex-col items-center justify-center p-4 rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40 text-center"
+          className="w-full h-full flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 p-2.5 sm:p-4 bg-zinc-50/70 dark:bg-zinc-900/40 text-center"
         >
           <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600 dark:text-zinc-400">
             Advertisement / Sponsored
