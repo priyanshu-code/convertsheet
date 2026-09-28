@@ -202,5 +202,61 @@ describe("Calculator Primitives Design System", () => {
     expect(subtextEl.className).not.toContain("truncate");
     expect(subtextEl.className).toContain("line-clamp-2");
   });
+
+  it("CalcCard container has responsive padding and border radius classes", () => {
+    const { container } = render(
+      <CalcCard title="Test Card">
+        <div>Child Content</div>
+      </CalcCard>
+    );
+    const cardEl = container.firstChild as HTMLElement;
+    expect(cardEl.className).toContain("p-3.5");
+    expect(cardEl.className).toContain("sm:p-6");
+    expect(cardEl.className).toContain("lg:p-8");
+    expect(cardEl.className).toContain("rounded-2xl");
+    expect(cardEl.className).toContain("sm:rounded-3xl");
+  });
+
+  it("CalcCard contextualizes privacy copy based on privacyScope", () => {
+    const { rerender } = render(
+      <CalcCard title="Default Card">
+        <div>Content</div>
+      </CalcCard>
+    );
+    expect(screen.getByText(/Zero financial data sent to servers/i)).toBeInTheDocument();
+    expect(screen.getByText(/100% computed in browser/i)).toBeInTheDocument();
+
+    rerender(
+      <CalcCard title="File Tool" privacyScope="file">
+        <div>Content</div>
+      </CalcCard>
+    );
+    expect(screen.getByText(/Zero images or files sent to servers/i)).toBeInTheDocument();
+
+    rerender(
+      <CalcCard title="Data Tool" privacyScope="data">
+        <div>Content</div>
+      </CalcCard>
+    );
+    expect(screen.getByText(/Zero code or data sent to servers/i)).toBeInTheDocument();
+  });
+
+  it("CalcCard hides header on mobile when hideTitleOnMobile is true", () => {
+    const { container, rerender } = render(
+      <CalcCard title="Header Test">
+        <div>Content</div>
+      </CalcCard>
+    );
+    const headerEl = container.querySelector(".flex.items-start.justify-between");
+    expect(headerEl?.className).not.toContain("hidden sm:flex");
+
+    rerender(
+      <CalcCard title="Header Test" hideTitleOnMobile={true}>
+        <div>Content</div>
+      </CalcCard>
+    );
+    expect(headerEl?.className).toContain("hidden sm:flex");
+  });
 });
+
 
