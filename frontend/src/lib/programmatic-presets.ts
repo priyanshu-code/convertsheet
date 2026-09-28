@@ -5,8 +5,11 @@ export interface ProgrammaticPreset {
   presetSlug: string;
   name: string;
   title: string;
+  subtitle?: string;
   metaDescription: string;
   answerSummary: string;
+  badge?: string;
+  keywords?: string[];
   about: string;
   initialValues: Record<string, number | string | boolean>;
   faqs: FAQItem[];
@@ -4909,6 +4912,71 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         answer: "Financing $560,000 at 6.5% over 30 years accrues $714,272 in total interest, making the total amount paid $1,274,272.",
       },
     ],
+  },
+  {
+    toolSlug: "mortgage-calculator",
+    presetSlug: "15-vs-30-year-mortgage",
+    name: "15 vs 30 Year Mortgage Calculator",
+    title: "15 vs 30 Year Mortgage Calculator - Compare Monthly Payments & Interest",
+    subtitle: "Compare 15-year fixed and 30-year fixed home loans side-by-side to calculate monthly payments, lifetime interest savings, and payoff timelines.",
+    metaDescription: "Free 15 vs 30 year mortgage calculator. Compare monthly payments, total interest costs, and equity growth side-by-side. Calculate how much you save with a 15-year loan.",
+    answerSummary: "A 15-year fixed mortgage carries higher monthly payments but saves tens of thousands of dollars in lifetime interest and builds full home equity in half the time of a 30-year loan.",
+    badge: "High Savings",
+    keywords: [
+      "15 vs 30 year mortgage calculator",
+      "15 year vs 30 year mortgage calculator",
+      "compare 15 and 30 year mortgage",
+      "15 year fixed mortgage payment",
+      "30 year fixed mortgage payment"
+    ],
+    about: `### 15-Year vs 30-Year Fixed Mortgage Comparison ($400,000 Loan Example)
+
+| Loan Term | Interest Rate | Monthly Principal & Interest | Total Interest Paid | Total Cost of Loan |
+| :--- | :--- | :--- | :--- | :--- |
+| **15-Year Fixed** | 5.75% | $3,322 | $197,960 | $597,960 |
+| **30-Year Fixed** | 6.50% | $2,528 | $510,080 | $910,080 |
+| **Difference / Savings** | **-0.75%** | **+$794 / month** | **Save $312,120** | **Save $312,120** |
+
+Choosing between a 15-year and a 30-year fixed-rate mortgage is one of the most critical decisions when financing or refinancing a home. While a 30-year mortgage offers lower monthly payments that keep debt-to-income ratios manageable and free up immediate cash flow, a 15-year loan dramatically reduces lifetime interest expenses and allows you to own your property outright in half the time.
+
+#### Key Trade-Offs to Consider
+- **Monthly Cash Flow**: A 30-year loan lowers mandatory monthly outlays by approximately 24% to 30%, giving you breathing room for unexpected emergencies, child care, or retirement contributions.
+- **Lower Interest Rates**: 15-year loans typically carry interest rates 0.50% to 0.75% lower than 30-year mortgages because the shortened amortization period presents less duration risk to the lender.
+- **Speed of Equity Accumulation**: During the first 5 to 7 years of a 30-year loan, most of your payment goes towards interest. In a 15-year loan, substantial principal amortization begins immediately from payment number one.
+- **Prepayment Strategy**: Many borrowers choose a 30-year mortgage for payment safety but make optional extra principal payments every month, capturing interest savings while retaining downside protection.`,
+    initialValues: {
+      homePrice: 500000,
+      downPayment: 100000,
+      loanTermYears: 15,
+      interestRate: 5.75
+    },
+    faqs: [
+      {
+        question: "Is a 15-year mortgage better than a 30-year mortgage?",
+        answer: "A 15-year mortgage is better if your primary objective is eliminating debt and saving tens or hundreds of thousands of dollars in interest, provided your budget comfortably supports the higher payment. A 30-year mortgage is better if you value cash flow flexibility, lower mandatory obligations, or plan to invest extra funds in retirement accounts with higher historical returns."
+      },
+      {
+        question: "How much interest do I save on a 15-year mortgage vs a 30-year mortgage?",
+        answer: "On a $400,000 loan balance, opting for a 15-year fixed loan at 5.75% instead of a 30-year fixed loan at 6.50% saves approximately $312,120 in total lifetime interest charges. The total loan cost drops from $910,080 to $597,960."
+      },
+      {
+        question: "Can I pay off a 30-year mortgage in 15 years instead of getting a 15-year loan?",
+        answer: "Yes. You can take out a 30-year mortgage and make additional principal payments each month to pay it off in 15 years. This provides payment flexibility if financial circumstances change. However, because 15-year mortgages usually offer lower interest rates (typically 0.50% to 0.75% lower), an official 15-year loan will still save you more interest overall."
+      },
+      {
+        question: "Why are interest rates lower on 15-year mortgages?",
+        answer: "Lenders assume less risk on a 15-year loan. Because the loan is paid off in half the time, lenders face reduced exposure to long-term inflation, interest rate volatility, and borrower default. They pass these reduced risk costs to borrowers in the form of lower interest rates."
+      },
+      {
+        question: "What happens if I cannot make the higher monthly payment on a 15-year mortgage?",
+        answer: "Because 15-year monthly payments are substantially higher, missing payments can damage your credit score and eventually lead to foreclosure. If you are uncertain about long-term income stability, a 30-year mortgage offers lower contractual monthly obligations, allowing you to pay extra principal voluntarily when affordable."
+      },
+      {
+        question: "How does equity build differently between 15-year and 30-year loans?",
+        answer: "On a 30-year mortgage, the majority of your early payments go toward interest, meaning principal balance decreases slowly. On a 15-year mortgage, a much larger portion of every monthly payment goes directly toward paying down principal from day one, allowing homeowners to build 50% equity in roughly 7 to 8 years rather than 18 to 20 years."
+      }
+    ],
+    relatedPresetSlugs: ["400k-mortgage", "500k-mortgage-30-year", "700k-mortgage-30-year"]
   },
 ];
 

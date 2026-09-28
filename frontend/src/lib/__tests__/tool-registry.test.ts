@@ -139,4 +139,31 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
     expect(pngTool).toBeDefined();
     expect(pngTool?.faqs.length).toBeGreaterThanOrEqual(6);
   });
+
+  it("verifies byte-converter contains decimal/binary reference tables and developer query answers", () => {
+    const byteTool = getToolBySlug("byte-converter");
+    expect(byteTool).toBeDefined();
+    // Binary IEC units
+    expect(byteTool?.about).toContain("1 KiB");
+    expect(byteTool?.about).toContain("1,024 bytes");
+    expect(byteTool?.about).toContain("1 MiB");
+    expect(byteTool?.about).toContain("1,048,576 bytes");
+    expect(byteTool?.about).toContain("1 GiB");
+    expect(byteTool?.about).toContain("1,073,741,824 bytes");
+    // Decimal SI units
+    expect(byteTool?.about).toContain("1 KB");
+    expect(byteTool?.about).toContain("1,000 bytes");
+    expect(byteTool?.about).toContain("1 MB");
+    expect(byteTool?.about).toContain("1,000,000 bytes");
+    expect(byteTool?.about).toContain("1 GB");
+    expect(byteTool?.about).toContain("1,000,000,000 bytes");
+    // Target developer queries
+    expect(byteTool?.about).toContain("1048576 / 1024");
+    expect(byteTool?.about).toContain("1024 KiB = 1 MiB");
+    expect(byteTool?.about).toContain("100*1024*1024");
+    expect(byteTool?.about).toContain("104,857,600 bytes = 100 MiB");
+    // FAQs
+    expect(byteTool?.faqs.some((f) => f.question.includes("How many MB is 100000 bytes?"))).toBe(true);
+    expect(byteTool?.faqs.some((f) => f.question.includes("MB (1000^2) and MiB (1024^2)"))).toBe(true);
+  });
 });

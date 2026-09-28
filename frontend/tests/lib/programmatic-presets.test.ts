@@ -321,6 +321,25 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(mort700k?.name).toContain("$700,000 Mortgage");
   });
 
+  it("resolves 15-vs-30-year-mortgage preset for mortgage-calculator", () => {
+    const preset = getProgrammaticPreset("mortgage-calculator", "15-vs-30-year-mortgage");
+    expect(preset).toBeDefined();
+    expect(preset?.title).toContain("15 vs 30 Year Mortgage Calculator");
+    expect(preset?.presetSlug).toBe("15-vs-30-year-mortgage");
+    expect(preset?.toolSlug).toBe("mortgage-calculator");
+    expect(preset?.subtitle).toContain("Compare 15-year fixed and 30-year fixed home loans");
+    expect(preset?.badge).toBe("High Savings");
+    expect(preset?.keywords).toContain("15 vs 30 year mortgage calculator");
+    expect(preset?.initialValues.homePrice).toBe(500000);
+    expect(preset?.initialValues.downPayment).toBe(100000);
+    expect(preset?.initialValues.loanTermYears).toBe(15);
+    expect(preset?.initialValues.interestRate).toBe(5.75);
+    expect(preset?.faqs.length).toBeGreaterThanOrEqual(6);
+    expect(preset?.faqs.some((f) => f.question.includes("Is a 15-year mortgage better"))).toBe(true);
+    expect(preset?.faqs.some((f) => f.question.includes("How much interest do I save"))).toBe(true);
+    expect(preset?.about).toContain("15-Year vs 30-Year Fixed Mortgage Comparison");
+  });
+
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
     expect(params.length).toBeGreaterThanOrEqual(140);

@@ -474,7 +474,21 @@ export const TOOL_REGISTRY = {
     featured: true,
     keywords: ["byte converter", "data size converter", "mb to gb", "gb to tb", "kb to mb", "binary vs decimal storage"],
     formulaDescription: "Binary (JEDEC/IEC): 1 KiB = 1024 Bytes; Decimal (SI): 1 KB = 1000 Bytes.",
-    about: "Understanding data storage metrics is essential for database architects, cloud engineers, content creators, and backup administrators. Hard drive manufacturers quote storage using metric decimals (1000 bytes = 1 KB), while operating systems like Windows calculate capacity using binary (1024 bytes = 1 KiB). This tool bridges both worlds seamlessly.",
+    about: `Understanding data storage metrics is essential for software engineers, database architects, cloud DevOps teams, and system administrators. Storage calculations diverge between decimal SI standards (base 10, powers of 1,000) used by disk manufacturers and network hardware, and binary IEC standards (base 2, powers of 1,024) utilized by RAM, operating systems (Windows, Linux), and file systems.
+
+### Binary IEC Units vs Decimal SI Units Reference
+
+| Unit (Binary IEC) | Binary Calculation | Exact Bytes | Unit (Decimal SI) | Decimal Calculation | Exact Bytes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1 KiB** (Kibibyte) | 1,024 bytes | 1,024 bytes | **1 KB** (Kilobyte) | 1,000 bytes | 1,000 bytes |
+| **1 MiB** (Mebibyte) | 1,024 KiB = 1,024² | 1,048,576 bytes | **1 MB** (Megabyte) | 1,000 KB = 1,000² | 1,000,000 bytes |
+| **1 GiB** (Gibibyte) | 1,024 MiB = 1,024³ | 1,073,741,824 bytes | **1 GB** (Gigabyte) | 1,000 MB = 1,000³ | 1,000,000,000 bytes |
+| **1 TiB** (Tebibyte) | 1,024 GiB = 1,024⁴ | 1,099,511,627,776 bytes | **1 TB** (Terabyte) | 1,000 GB = 1,000⁴ | 1,000,000,000,000 bytes |
+
+### Common Developer Calculations & Formulas
+- **1048576 / 1024**: \`1048576 / 1024 = 1024 KiB = 1 MiB\` (or \`1,048,576 bytes ÷ 1,024 = 1,024 KiB\`, which equals exactly 1 Mebibyte).
+- **100*1024*1024**: \`100*1024*1024 = 104,857,600 bytes = 100 MiB\` (the exact byte count for a 100 MiB memory allocation, buffer limit, or upload cap).
+- **100,000 Bytes in MB**: In decimal SI (base 1000), \`100,000 bytes ÷ 1,000,000 = 0.1 MB\`. In binary IEC (base 1024), \`100,000 bytes ÷ 1,048,576 ≈ 0.09537 MiB\`.`,
     howTo: [
       { step: 1, title: "Enter File Size", description: "Type the numeric size of your file, database, or disk." },
       { step: 2, title: "Select Source Unit", description: "Choose whether your value is in Bytes, KB, MB, GB, TB, or PB." },
@@ -482,7 +496,9 @@ export const TOOL_REGISTRY = {
     ],
     faqs: [
       { question: "Why does my 1TB hard drive show as only 931 GB in Windows?", answer: "Drive manufacturers advertise 1TB as 1,000,000,000,000 bytes (decimal base 1000). Operating systems interpret 1 GiB as 1,073,741,824 bytes (binary base 1024), resulting in ~931.3 GiB." },
-      { question: "What is the difference between Megabit (Mb) and Megabyte (MB)?", answer: "1 Byte = 8 bits. Internet connection speeds are typically quoted in Megabits per second (Mbps), meaning an 80 Mbps connection downloads at 10 Megabytes per second (MB/s)." }
+      { question: "What is the difference between Megabit (Mb) and Megabyte (MB)?", answer: "1 Byte = 8 bits. Internet connection speeds are typically quoted in Megabits per second (Mbps), meaning an 80 Mbps connection downloads at 10 Megabytes per second (MB/s)." },
+      { question: "How many MB is 100000 bytes?", answer: "In decimal SI units (base 1000), 100,000 bytes equals exactly 0.1 MB (100,000 ÷ 1,000,000). In binary IEC units (base 1024), 100,000 bytes equals approximately 0.09537 MiB (100,000 ÷ 1,048,576 bytes)." },
+      { question: "What is the difference between MB (1000^2) and MiB (1024^2)?", answer: "MB (Megabyte) is based on the International System of Units (SI) decimal standard where 1 MB = 1,000 KB = 1000² = 1,000,000 bytes. MiB (Mebibyte) is based on the International Electrotechnical Commission (IEC) binary standard where 1 MiB = 1,024 KiB = 1024² = 1,048,576 bytes. Operating systems like Windows calculate disk and file space using 1024-based binary units, whereas storage drive manufacturers label capacity in 1000-based decimal units." }
     ],
     relatedConverters: ["parquet-to-excel", "csv-to-parquet"],
     relatedTools: ["base64-encoder-decoder", "unit-converter"]
