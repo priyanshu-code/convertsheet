@@ -39,6 +39,7 @@ export function SplitTableInput({
 }: SplitTableInputProps) {
   const [text, setText] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
+  const [mobileTab, setMobileTab] = useState<"paste" | "upload">("paste");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const acceptedExtensions = [
@@ -243,8 +244,43 @@ export function SplitTableInput({
         className
       )}
     >
+      {/* Mobile Tab Switcher: Toggle between Paste/Editor and File Upload */}
+      <div className="flex lg:hidden items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 mb-1 border border-zinc-200/80 dark:border-zinc-700/80 col-span-1">
+        <button
+          type="button"
+          aria-pressed={mobileTab === "paste"}
+          onClick={() => setMobileTab("paste")}
+          className={cn(
+            "flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center",
+            mobileTab === "paste"
+              ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+          )}
+        >
+          📝 Paste / Editor
+        </button>
+        <button
+          type="button"
+          aria-pressed={mobileTab === "upload"}
+          onClick={() => setMobileTab("upload")}
+          className={cn(
+            "flex-1 py-1.5 px-3 text-xs font-semibold rounded-lg transition-all cursor-pointer text-center",
+            mobileTab === "upload"
+              ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
+              : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+          )}
+        >
+          📁 Upload File
+        </button>
+      </div>
+
       {/* Left Panel: Monospace Textarea with Quick Actions */}
-      <div className="flex flex-col rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/50 p-4 sm:p-5 transition-all min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
+      <div
+        className={cn(
+          "flex flex-col rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/50 p-2.5 sm:p-5 transition-all min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
+          mobileTab === "upload" && "hidden lg:flex"
+        )}
+      >
         {/* Header with Title */}
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
           <div className="flex items-center gap-2">
@@ -258,7 +294,7 @@ export function SplitTableInput({
         </div>
 
         {/* Action Toolbar: Clean grouped layout */}
-        <div className="flex flex-wrap items-center justify-between gap-1.5 py-1.5 px-2 mb-2.5 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-xs text-zinc-600 dark:text-zinc-300 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-1 py-1 px-1.5 mb-2 rounded-xl bg-white dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 text-[11px] text-zinc-600 dark:text-zinc-300 shadow-xs">
           <div className="flex items-center gap-1">
             <button
               type="button"
@@ -266,7 +302,7 @@ export function SplitTableInput({
               disabled={disabled}
               aria-label="Paste from Clipboard"
               title="Paste from clipboard"
-              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+              className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <Clipboard className="w-3.5 h-3.5" />
               <span>Paste</span>
@@ -277,7 +313,7 @@ export function SplitTableInput({
               disabled={disabled || !text}
               aria-label="Copy"
               title="Copy table markup"
-              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+              className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               {copied ? (
                 <>
@@ -297,7 +333,7 @@ export function SplitTableInput({
               disabled={disabled || !text}
               aria-label="Format"
               title="Format and align markdown columns"
-              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+              className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <AlignLeft className="w-3.5 h-3.5" />
               <span>Format</span>
@@ -308,7 +344,7 @@ export function SplitTableInput({
               disabled={disabled || !text}
               aria-label="Remove white space"
               title="Remove blank lines"
-              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
+              className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <Minimize2 className="w-3.5 h-3.5" />
               <span>Trim</span>
@@ -319,7 +355,7 @@ export function SplitTableInput({
               disabled={disabled || !text}
               aria-label="Clear"
               title="Clear table editor"
-              className="inline-flex items-center gap-1 px-2 py-1 font-medium rounded-lg text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
+              className="inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg text-zinc-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors disabled:opacity-40 cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Clear</span>
@@ -332,7 +368,7 @@ export function SplitTableInput({
             disabled={disabled}
             aria-label="Load Sample Table"
             title="Load Sample Table"
-            className="inline-flex items-center gap-1 px-2.5 py-1 font-medium rounded-lg text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/70 dark:border-emerald-800/70 transition-colors disabled:opacity-40 cursor-pointer shrink-0"
+            className="inline-flex items-center gap-1 px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-md sm:rounded-lg text-emerald-700 dark:text-emerald-300 bg-emerald-50/90 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/70 dark:border-emerald-800/70 transition-colors disabled:opacity-40 cursor-pointer shrink-0"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Load sample table</span>
@@ -340,7 +376,7 @@ export function SplitTableInput({
         </div>
 
         {/* Spacious Monospace Textarea */}
-        <div className="relative flex-1 min-h-[300px] sm:min-h-[360px] lg:min-h-[400px]">
+        <div className="relative flex-1">
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -353,7 +389,7 @@ export function SplitTableInput({
             disabled={disabled}
             aria-label="Paste table text"
             placeholder={`| Product | Unit Price | Qty | Status |\n| :--- | :--- | :--- | :--- |\n| Widget Alpha | $24.99 | 120 | In Stock |\n| Widget Beta | $89.00 | 45 | Backorder |`}
-            className="w-full h-full min-h-[300px] sm:min-h-[360px] lg:min-h-[400px] resize-none rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 font-mono text-[13px] leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+            className="w-full h-48 sm:h-64 lg:h-80 resize-none rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-3 sm:p-4 font-mono text-xs sm:text-sm leading-relaxed text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
             spellCheck={false}
           />
         </div>
@@ -379,7 +415,12 @@ export function SplitTableInput({
       </div>
 
       {/* Right Panel: Integrated File Dropzone with Matching Spacious Layout */}
-      <div className="flex flex-col h-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]">
+      <div
+        className={cn(
+          "flex flex-col h-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
+          mobileTab === "paste" && "hidden lg:flex"
+        )}
+      >
         <input
           ref={fileInputRef}
           type="file"
@@ -405,7 +446,7 @@ export function SplitTableInput({
           onDrop={handleDrop}
           className={cn(
             "group relative flex-1 flex flex-col items-center justify-center text-center",
-            "border-2 border-dashed rounded-2xl p-6 sm:p-10 transition-all duration-200 cursor-pointer select-none outline-none min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
+            "border-2 border-dashed rounded-2xl p-4 sm:p-10 transition-all duration-200 cursor-pointer select-none outline-none min-h-[380px] sm:min-h-[460px] lg:min-h-[500px]",
             isDragOver
               ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 ring-4 ring-emerald-500/10 scale-[1.005]"
               : "border-zinc-300 dark:border-zinc-700/80 bg-zinc-50/50 dark:bg-zinc-900/30 hover:border-emerald-500/60 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/10",
