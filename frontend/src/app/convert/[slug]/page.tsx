@@ -147,11 +147,11 @@ export default function ConverterPage({ params }: ConverterPageProps) {
   );
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-6 sm:space-y-8">
+    <div className="max-w-[1440px] mx-auto px-2 sm:px-6 lg:px-8 xl:px-10 pt-1 pb-12 sm:pt-4 sm:pb-16 space-y-4 sm:space-y-8">
       {/* Hero Section */}
       <div className="text-center max-w-4xl mx-auto space-y-1.5 sm:space-y-2">
         {/* Breadcrumb Navigation & Privacy Badge in one compact line */}
-        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+        <div className="hidden sm:flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
           <nav
             aria-label="Breadcrumb"
             className="flex items-center gap-1.5"
@@ -196,12 +196,12 @@ export default function ConverterPage({ params }: ConverterPageProps) {
         </div>
 
         {/* Title */}
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-sm sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 my-1">
           {config.title}
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-normal">
+        <p className="hidden sm:block text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-normal">
           {config.subtitle}
         </p>
       </div>

@@ -95,7 +95,7 @@ export default function HomePage() {
   const allTools = getAllTools();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-12 sm:pt-4 sm:pb-16 space-y-6 sm:space-y-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 xl:px-10 pt-1 pb-12 sm:pt-4 sm:pb-16 space-y-4 sm:space-y-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -105,7 +105,7 @@ export default function HomePage() {
       {/* Streamlined Hero Header - Minimal vertical footprint so converter is front and center */}
       <div className="text-center max-w-4xl mx-auto space-y-1.5 sm:space-y-2">
         {/* Top Trust Badge */}
-        <div className="flex items-center justify-center">
+        <div className="hidden sm:flex items-center justify-center">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>100% In-Browser Privacy • Zero Server Uploads</span>
@@ -113,12 +113,12 @@ export default function HomePage() {
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-sm sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 my-1">
           Fast, Private Structured Data Converter
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-normal">
+        <p className="hidden sm:block text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-normal">
           Just paste the JSON, CSV, or XML, or upload your file to convert instantly in your browser — 100% private, zero cost, and zero server uploads.
         </p>
       </div>

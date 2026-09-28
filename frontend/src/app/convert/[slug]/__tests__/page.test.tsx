@@ -133,10 +133,14 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       );
 
       // Hero Title & Subtitle
-      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-        jsonConfig.title
-      );
+      const heading = screen.getByRole("heading", { level: 1 });
+      expect(heading).toHaveTextContent(jsonConfig.title);
+      expect(heading).toHaveClass("text-sm", "sm:text-2xl");
       expect(screen.getByText(jsonConfig.subtitle)).toBeInTheDocument();
+      expect(screen.getByText(jsonConfig.subtitle)).toHaveClass("hidden", "sm:block");
+
+      // Outer container responsive padding
+      expect(container.firstElementChild).toHaveClass("px-2", "sm:px-6");
 
       // Privacy Badge for client-side converter
       const privacyBadge = screen.getByTestId("privacy-badge");
