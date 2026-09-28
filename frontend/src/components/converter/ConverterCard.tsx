@@ -75,8 +75,9 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
           <button
             type="button"
             onClick={() => setMode("single")}
+            aria-pressed={mode === "single"}
             className={cn(
-              "px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full border transition-all cursor-pointer",
+              "px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900",
               mode === "single"
                 ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-900 dark:border-white shadow-xs"
                 : "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -87,18 +88,19 @@ export function ConverterCard({ config, className }: ConverterCardProps) {
           <button
             type="button"
             onClick={() => setMode("batch")}
+            aria-pressed={mode === "batch"}
             className={cn(
-              "inline-flex items-center gap-1.5 px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full border transition-all cursor-pointer",
+              "inline-flex items-center gap-1.5 px-3 py-1 text-[11px] sm:text-xs font-semibold rounded-full border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 dark:focus-visible:ring-zinc-100 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900",
               mode === "batch"
                 ? "bg-emerald-600 text-white border-emerald-600 dark:border-emerald-500 shadow-xs"
                 : "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
             )}
           >
-            <Archive className="w-3.5 h-3.5" />
+            <Archive className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Batch ZIP Mode</span>
             <span
               className={cn(
-                "text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full font-bold",
+                "text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-bold",
                 mode === "batch"
                   ? "bg-emerald-700/80 text-white"
                   : "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60"
