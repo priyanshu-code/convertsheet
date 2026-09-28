@@ -164,11 +164,11 @@ describe("ImageConverterTool", () => {
     });
 
     const rows = screen.getAllByRole("button", { name: /photo2.webp/i });
-    const row2 = rows.find((el) => el.getAttribute("aria-selected") !== null);
+    const row2 = rows.find((el) => el.getAttribute("aria-pressed") !== null);
     expect(row2).toBeDefined();
 
     fireEvent.keyDown(row2!, { key: "Enter" });
-    expect(row2).toHaveAttribute("aria-selected", "true");
+    expect(row2).toHaveAttribute("aria-pressed", "true");
   });
 
   it("does not abort in-flight conversions when new files are added", async () => {

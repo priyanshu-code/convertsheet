@@ -480,7 +480,7 @@ export function ImageConverterTool({
                     key={item.id}
                     role="button"
                     tabIndex={0}
-                    aria-selected={isSelected}
+                    aria-pressed={isSelected}
                     aria-label={`Select ${item.file.name}`}
                     onClick={() => setSelectedId(item.id)}
                     onKeyDown={(e) => {
