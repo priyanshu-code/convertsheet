@@ -9,6 +9,7 @@ import {
   Check,
   Trash2,
   X,
+  AlertCircle,
 } from "lucide-react";
 import {
   CalcCard,
@@ -46,90 +47,77 @@ export function ImageConverterTool({
   const [quality, setQuality] = useState<number>(85);
   const [maxWidth, setMaxWidth] = useState<number>(1920);
   const [isArchiving, setIsArchiving] = useState<boolean>(false);
+  const [zipError, setZipError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const batchTokenRef = useRef<number>(0);
+  const settingsVersionRef = useRef<number>(0);
+  const inFlightRef = useRef<Set<string>>(new Set());
   const itemsRef = useRef<ConvertedItem[]>(items);
   itemsRef.current = items;
 
   // Active preview item
   const activeItem = items.find((i) => i.id === selectedId) || items[0] || null;
 
-  // Process batch of items with concurrency limit = 4
-  const runBatch = useCallback(
-    async (
-      itemsToProcess: ConvertedItem[],
-      format: "image/webp" | "image/png" | "image/jpeg",
-      q: number,
-      w: number
-    ) => {
-      if (itemsToProcess.length === 0) return;
-      const currentToken = ++batchTokenRef.current;
+  // Worker queue processor - concurrency limit = 4
+  const processPendingQueue = useCallback(async () => {
+    const poolLimit = 4;
+    const currentVersion = settingsVersionRef.current;
 
+    const pendingItems = itemsRef.current.filter(
+      (item) => item.status === "pending" && !inFlightRef.current.has(item.id)
+    );
+
+    for (const item of pendingItems) {
+      if (inFlightRef.current.size >= poolLimit) {
+        break;
+      }
+
+      inFlightRef.current.add(item.id);
       setItems((prev) =>
-        prev.map((it) =>
-          itemsToProcess.some((p) => p.id === it.id)
-            ? { ...it, status: "pending" }
-            : it
-        )
+        prev.map((it) => (it.id === item.id ? { ...it, status: "processing" } : it))
       );
 
-      const poolLimit = 4;
-      const executing = new Set<Promise<void>>();
+      (async () => {
+        try {
+          const res = await convertImage(item.file, {
+            format: targetFormat,
+            quality: quality / 100,
+            maxWidth,
+          });
 
-      for (const item of itemsToProcess) {
-        if (currentToken !== batchTokenRef.current) break;
-
-        setItems((prev) =>
-          prev.map((it) => (it.id === item.id ? { ...it, status: "processing" } : it))
-        );
-
-        const task: Promise<void> = (async () => {
-          try {
-            const res = await convertImage(item.file, {
-              format,
-              quality: q / 100,
-              maxWidth: w,
-            });
-            if (currentToken === batchTokenRef.current) {
-              setItems((prev) =>
-                prev.map((it) =>
-                  it.id === item.id
-                    ? { ...it, status: "done", result: res, error: undefined }
-                    : it
-                )
-              );
-            }
-          } catch (err: any) {
-            if (currentToken === batchTokenRef.current) {
-              setItems((prev) =>
-                prev.map((it) =>
-                  it.id === item.id
-                    ? {
-                        ...it,
-                        status: "error",
-                        error: err?.message || "Failed to process image",
-                      }
-                    : it
-                )
-              );
-            }
+          if (settingsVersionRef.current === currentVersion) {
+            setItems((prev) =>
+              prev.map((it) =>
+                it.id === item.id
+                  ? { ...it, status: "done", result: res, error: undefined }
+                  : it
+              )
+            );
           }
-        })();
-
-        executing.add(task);
-        task.finally(() => executing.delete(task));
-
-        if (executing.size >= poolLimit) {
-          await Promise.race(executing);
+        } catch (err: any) {
+          if (settingsVersionRef.current === currentVersion) {
+            setItems((prev) =>
+              prev.map((it) =>
+                it.id === item.id
+                  ? {
+                      ...it,
+                      status: "error",
+                      error: err?.message || "Failed to process image",
+                    }
+                  : it
+              )
+            );
+          }
+        } finally {
+          inFlightRef.current.delete(item.id);
+          processPendingQueue();
         }
-      }
-      await Promise.all(executing);
-    },
-    []
-  );
+      })();
+    }
+  }, [targetFormat, quality, maxWidth]);
 
+  // Handle files added (from drop, paste, or file input)
   const handleFiles = useCallback(
     (files: File[]) => {
       if (!files.length) return;
@@ -139,10 +127,16 @@ export function ImageConverterTool({
         status: "pending",
       }));
 
-      setItems((prev) => [...prev, ...newItems]);
-      runBatch(newItems, targetFormat, quality, maxWidth);
+      // Append new items to list and update ref immediately for the queue
+      const updated = [...itemsRef.current, ...newItems];
+      itemsRef.current = updated;
+      setItems(updated);
+
+      setTimeout(() => {
+        processPendingQueue();
+      }, 0);
     },
-    [targetFormat, quality, maxWidth, runBatch]
+    [processPendingQueue]
   );
 
   const isImage = (f: File) =>
@@ -156,7 +150,7 @@ export function ImageConverterTool({
     },
   });
 
-  // Live auto-update when settings change
+  // Re-run conversions when settings change with debouncing
   const isFirstMount = useRef(true);
   useEffect(() => {
     if (isFirstMount.current) {
@@ -170,7 +164,14 @@ export function ImageConverterTool({
     }
 
     debounceTimerRef.current = setTimeout(() => {
-      runBatch(itemsRef.current, targetFormat, quality, maxWidth);
+      settingsVersionRef.current += 1;
+      inFlightRef.current.clear();
+      setItems((prev) => {
+        const next = prev.map((it) => ({ ...it, status: "pending" as const }));
+        itemsRef.current = next;
+        return next;
+      });
+      processPendingQueue();
     }, 150);
 
     return () => {
@@ -178,7 +179,7 @@ export function ImageConverterTool({
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [targetFormat, quality, maxWidth, runBatch]);
+  }, [targetFormat, quality, maxWidth, processPendingQueue]);
 
   const handleDownloadItem = (item: ConvertedItem) => {
     if (!item.result) return;
@@ -193,34 +194,56 @@ export function ImageConverterTool({
   const handleDownloadZip = async () => {
     if (completedItems.length === 0) return;
     setIsArchiving(true);
+    setZipError(null);
     try {
-      const entries = completedItems.map((item) => ({
-        name: item.result.filename,
-        data: item.result.blob,
-      }));
-      const zipBlob = await createZipArchive(entries);
+      const seenNames = new Map<string, number>();
+      const zipEntries = completedItems.map((item) => {
+        let name = item.result!.filename;
+        if (seenNames.has(name)) {
+          const count = seenNames.get(name)! + 1;
+          seenNames.set(name, count);
+          const extIdx = name.lastIndexOf(".");
+          name =
+            extIdx !== -1
+              ? `${name.slice(0, extIdx)} (${count})${name.slice(extIdx)}`
+              : `${name} (${count})`;
+        } else {
+          seenNames.set(name, 0);
+        }
+        return { name, data: item.result!.blob };
+      });
+
+      const zipBlob = await createZipArchive(zipEntries);
       downloadBlob(zipBlob, "converted-images.zip");
     } catch (err: any) {
       console.error("ZIP creation failed:", err);
+      setZipError(err?.message || "Failed to create ZIP archive. Please try again.");
     } finally {
       setIsArchiving(false);
     }
   };
 
   const handleClearAll = () => {
-    batchTokenRef.current++;
+    settingsVersionRef.current += 1;
+    inFlightRef.current.clear();
     setItems([]);
+    itemsRef.current = [];
     setSelectedId(null);
+    setZipError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
   const handleRemoveItem = (id: string) => {
-    setItems((prev) => prev.filter((it) => it.id !== id));
+    inFlightRef.current.delete(id);
+    const updated = itemsRef.current.filter((it) => it.id !== id);
+    itemsRef.current = updated;
+    setItems(updated);
     if (selectedId === id) {
       setSelectedId(null);
     }
+    processPendingQueue();
   };
 
   const totalOriginalSize = items.reduce((acc, it) => acc + it.file.size, 0);
@@ -251,7 +274,7 @@ export function ImageConverterTool({
       privacyScope="file"
     >
       <div className="space-y-6">
-        {/* Hidden File Input for dropzone and "Add More Images" */}
+        {/* Hidden File Input for dropzone and Add More Images */}
         <input
           ref={fileInputRef}
           type="file"
@@ -415,12 +438,36 @@ export function ImageConverterTool({
               </div>
 
               {isAnyProcessing && (
-                <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                <span
+                  role="status"
+                  aria-live="polite"
+                  className="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium"
+                >
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                   Processing conversions...
                 </span>
               )}
             </div>
+
+            {/* Error Message for ZIP */}
+            {zipError && (
+              <div
+                role="alert"
+                className="text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 p-2.5 rounded-lg flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                  <span>{zipError}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setZipError(null)}
+                  className="text-red-500 hover:text-red-700 text-xs font-semibold ml-2"
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
 
             {/* Compact File List */}
             <div className="space-y-2 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 bg-zinc-50/50 dark:bg-zinc-900/40 divide-y divide-zinc-200/60 dark:divide-zinc-800/60">
@@ -429,9 +476,19 @@ export function ImageConverterTool({
                 return (
                   <div
                     key={item.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-selected={isSelected}
+                    aria-label={`Select ${item.file.name}`}
                     onClick={() => setSelectedId(item.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelectedId(item.id);
+                      }
+                    }}
                     className={cn(
-                      "flex items-center justify-between gap-3 py-2.5 px-2 rounded-lg cursor-pointer transition-colors",
+                      "flex items-center justify-between gap-3 py-2.5 px-2 rounded-lg cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500",
                       isSelected
                         ? "bg-emerald-50/60 dark:bg-emerald-950/20"
                         : "hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40"
@@ -478,7 +535,11 @@ export function ImageConverterTool({
                     {/* Status & Actions */}
                     <div className="flex items-center gap-2 shrink-0">
                       {item.status === "processing" && (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                        <span
+                          role="status"
+                          aria-live="polite"
+                          className="inline-flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium"
+                        >
                           <RefreshCw className="w-3.5 h-3.5 animate-spin" />
                           <span className="hidden sm:inline">Converting</span>
                         </span>
