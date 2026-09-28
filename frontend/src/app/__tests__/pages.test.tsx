@@ -24,12 +24,12 @@ describe("Pages (Home)", () => {
       render(<HomePage />);
 
       // Headline
-      expect(
-        screen.getByRole("heading", {
-          level: 1,
-          name: "Fast, Private Structured Data Converter",
-        })
-      ).toBeInTheDocument();
+      const heading = screen.getByRole("heading", {
+        level: 1,
+        name: "Fast, Private Structured Data Converter",
+      });
+      expect(heading).toBeInTheDocument();
+      expect(heading).toHaveClass("text-sm", "sm:text-2xl");
 
       // Privacy Badge
       expect(
