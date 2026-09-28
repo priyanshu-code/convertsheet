@@ -236,10 +236,10 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
 
   return (
     <div className="space-y-3">
-      {converter ? (
-        <ConverterCard config={converter} />
-      ) : ToolComponent ? (
+      {ToolComponent ? (
         <ToolComponent />
+      ) : converter ? (
+        <ConverterCard config={converter} />
       ) : null}
 
       {/* Powered by ConvertSheet Attribution Bar (SEO Backlink Engine) */}

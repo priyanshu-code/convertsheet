@@ -104,6 +104,18 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       );
     });
 
+    it("returns tools canonical URL for webp-to-png and png-to-webp to avoid cannibalization", async () => {
+      const webpMeta = await generateMetadata({ params: { slug: "webp-to-png" } });
+      expect(webpMeta.alternates?.canonical).toBe(
+        "https://www.convertsheet.com/tools/webp-to-png"
+      );
+
+      const pngMeta = await generateMetadata({ params: { slug: "png-to-webp" } });
+      expect(pngMeta.alternates?.canonical).toBe(
+        "https://www.convertsheet.com/tools/png-to-webp"
+      );
+    });
+
     it("returns fallback metadata when slug is not found", async () => {
       const meta = await generateMetadata({
         params: { slug: "non-existent-converter" },
@@ -222,6 +234,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       expect(
         screen.getByText(/Click to choose an image, drag & drop, or paste/i)
       ).toBeInTheDocument();
+
+      // Verify competitor comparison table is rendered in About section
+      const aboutSection = screen.getByTestId("converter-about-section");
+      expect(aboutSection.querySelector("table")).toBeInTheDocument();
+      expect(screen.getByText("ConvertSheet vs Other WebP Converters")).toBeInTheDocument();
     });
 
     it("renders ImageConverterTool for png-to-webp route", () => {

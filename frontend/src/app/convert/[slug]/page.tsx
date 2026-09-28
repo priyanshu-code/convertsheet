@@ -10,6 +10,7 @@ import {
 } from "@/lib/registry";
 import type { ConverterConfig } from "@/types/registry";
 import { ConverterCard } from "@/components/converter";
+import { renderRichAbout } from "@/app/tools/[slug]/page";
 import { ImageConverterTool } from "@/components/tools/ImageConverterTool";
 import { AdBanner } from "@/components/layout";
 import { HowToGuide, FAQAccordion, JsonLdSchema } from "@/components/seo";
@@ -44,7 +45,10 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalUrl = `https://www.convertsheet.com/convert/${config.slug}`;
+  const canonicalUrl =
+    config.slug === "webp-to-png" || config.slug === "png-to-webp"
+      ? `https://www.convertsheet.com/tools/${config.slug}`
+      : `https://www.convertsheet.com/convert/${config.slug}`;
   const ogImage = `https://www.convertsheet.com/convert/${config.slug}/opengraph-image`;
 
   return {
@@ -234,9 +238,7 @@ export default function ConverterPage({ params }: ConverterPageProps) {
             </h2>
           </div>
           <div className="prose prose-zinc dark:prose-invert max-w-none text-sm sm:text-base leading-relaxed text-zinc-600 dark:text-zinc-300 space-y-3">
-            {config.about.split("\n\n").map((paragraph, idx) => (
-              <p key={idx}>{paragraph}</p>
-            ))}
+            {renderRichAbout(config.about)}
           </div>
         </section>
       )}

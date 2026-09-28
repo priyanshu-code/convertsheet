@@ -49,6 +49,19 @@ describe("Embed Tool Page", () => {
     );
   });
 
+  it("renders ImageConverterTool for webp-to-png embed without falling back to ConverterCard", () => {
+    render(<EmbedToolPage params={{ slug: "webp-to-png" }} />);
+
+    expect(
+      screen.getByText(/Click to choose an image, drag & drop, or paste/i)
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Single File")).not.toBeInTheDocument();
+    expect(screen.queryByText("Batch ZIP Mode")).not.toBeInTheDocument();
+
+    const poweredByLink = screen.getByRole("link", { name: /ConvertSheet/i });
+    expect(poweredByLink).toBeInTheDocument();
+  });
+
   it("renders the pdf compressor tool and attribution backlink for pdf compressor embed", () => {
     render(<EmbedToolPage params={{ slug: "compress-pdf" }} />);
 
