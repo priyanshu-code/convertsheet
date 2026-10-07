@@ -45,6 +45,16 @@ describe("Blog UI Components", () => {
     expect(screen.getByRole("link")).toHaveAttribute("href", `/blog/${post.slug}`);
   });
 
+  it("renders BlogCard with tag badge and tooltip when post.tag is present", () => {
+    const postWithTag = BLOG_POSTS.find((p) => p.tag);
+    expect(postWithTag).toBeDefined();
+    render(<BlogCard post={postWithTag!} />);
+    expect(screen.getByText(postWithTag!.tag!)).toBeInTheDocument();
+    if (postWithTag!.tagTooltip) {
+      expect(screen.getByText(postWithTag!.tagTooltip!)).toBeInTheDocument();
+    }
+  });
+
   it("renders AuthorBioCard with verified author, bio, and social profile links", () => {
     render(<AuthorBioCard author={FOUNDER_AUTHOR} />);
     expect(screen.getByText("Priyanshu Rawat")).toBeInTheDocument();

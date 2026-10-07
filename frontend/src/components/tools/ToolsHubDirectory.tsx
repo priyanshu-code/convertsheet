@@ -137,9 +137,25 @@ export function ToolsHubDirectory({ tools }: ToolsHubDirectoryProps) {
                     {tool.category.replace("-", " ")}
                   </span>
                   {tool.badge && (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
-                      <Sparkles className="w-2.5 h-2.5" />
-                      {tool.badge}
+                    <span
+                      title={tool.badgeTooltip || tool.badge}
+                      aria-label={tool.badgeTooltip || tool.badge}
+                      className="group/tooltag relative inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 cursor-help"
+                    >
+                      {tool.isNew ? (
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                        </span>
+                      ) : (
+                        <Sparkles className="w-2.5 h-2.5" />
+                      )}
+                      <span>{tool.badge}</span>
+                      {tool.badgeTooltip && (
+                        <span className="pointer-events-none absolute bottom-full right-0 mb-1.5 hidden w-max max-w-xs rounded-md bg-zinc-900 px-2 py-1 text-[11px] font-normal text-white shadow-lg group-hover/tooltag:block dark:bg-zinc-800 z-20">
+                          {tool.badgeTooltip}
+                        </span>
+                      )}
                     </span>
                   )}
                 </div>

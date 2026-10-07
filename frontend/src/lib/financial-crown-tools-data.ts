@@ -460,7 +460,9 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
     subtitle: "Compare liquid High-Yield Savings Accounts (HYSA) against Certificate of Deposit (CD) fixed rates. Model daily vs monthly compounding and export growth schedules to Excel.",
     metaDescription: "Free High-Yield Savings (HYSA) and CD calculator. Calculate APY compounding growth, test early withdrawal penalties, and export amortization schedules to Excel (.xlsx).",
     answerSummary: "Model compounding interest for High-Yield Savings Accounts and CDs with daily or monthly compounding. Simulate monthly deposits, APY vs APR yields, and early withdrawal penalties with Excel export.",
-    badge: "Wealth Growth Engine",
+    badge: "Trending Rates",
+    badgeTooltip: "Benchmark high-yield cash and fixed deposits against latest 2026 central bank policy yields",
+    isNew: true,
     featured: true,
     keywords: [
       "high yield savings calculator",

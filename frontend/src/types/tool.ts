@@ -20,6 +20,8 @@ export interface ToolConfig {
   metaDescription: string;
   answerSummary: string; // AEO extractable direct answer sentence
   badge?: string;
+  badgeTooltip?: string;
+  isNew?: boolean;
   featured?: boolean;
   keywords: string[];
   formulaDescription?: string; // Mathematical formula explanation

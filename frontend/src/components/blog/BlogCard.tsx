@@ -16,6 +16,24 @@ export function BlogCard({ post }: BlogCardProps) {
             <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
               {post.category}
             </span>
+            {post.tag && (
+              <span
+                title={post.tagTooltip || post.tag}
+                aria-label={post.tagTooltip || post.tag}
+                className="group/tag relative inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-amber-700 border border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-300 dark:border-amber-400/30 cursor-help"
+              >
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
+                </span>
+                {post.tag}
+                {post.tagTooltip && (
+                  <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden w-max max-w-xs rounded-md bg-zinc-900 px-2 py-1 text-[11px] font-normal text-white shadow-lg group-hover/tag:block dark:bg-zinc-800 z-20">
+                    {post.tagTooltip}
+                  </span>
+                )}
+              </span>
+            )}
             {post.role === "pillar" && (
               <span className="inline-flex items-center rounded-full bg-zinc-900 px-2 py-0.5 text-[10px] font-bold text-white dark:bg-white dark:text-zinc-900">
                 Pillar Guide
