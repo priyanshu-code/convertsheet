@@ -3473,6 +3473,80 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     ],
   },
   {
+    toolSlug: "emi-calculator",
+    presetSlug: "50-lakh-home-loan-emi-after-repo-rate-hike",
+    name: "₹50 Lakh Home Loan EMI After RBI 25 BPS Hike",
+    title: "₹50 Lakh Home Loan EMI After RBI Repo Rate Hike (25 bps) | ConvertSheet",
+    subtitle: "Calculate your new monthly EMI and additional interest on a ₹50 Lakh home loan after the Reserve Bank of India increases the repo rate by 0.25% (25 basis points).",
+    metaDescription: "Calculate ₹50 Lakh home loan EMI increase after RBI 25 bps repo rate hike. Compare 8.50% vs 8.75% interest rates, monthly EMI increase (₹792/mo), and loan tenure extension.",
+    answerSummary: "On a ₹50 Lakh home loan for 20 years, a 25 basis point (0.25%) repo rate hike from 8.50% to 8.75% increases your monthly EMI by ₹792 from ₹43,391 to ₹44,186. Over 20 years, this adds ₹1,89,970 in extra interest.",
+    badge: "RBI Rate Impact",
+    keywords: [
+      "50 lakh home loan emi after repo rate hike",
+      "rbi repo rate hike emi impact 50 lakh",
+      "25 bps hike home loan emi",
+      "50 lakh home loan 20 years emi",
+      "rbi repo rate 25 basis points impact"
+    ],
+    about: "### Impact of a 25 BPS RBI Repo Rate Hike on a ₹50 Lakh Home Loan\n\nWhen the Reserve Bank of India (RBI) Monetary Policy Committee (MPC) hikes the benchmark repo rate by 25 basis points (0.25%), commercial banks (SBI, HDFC, ICICI, Axis, PNB) automatically pass on the increase to borrowers with External Benchmark Lending Rate (EBLR) linked floating home loans.\n\n#### ₹50 Lakh Loan Comparison (20-Year Tenure / 240 Months)\n\n| Parameter | Before Rate Hike (8.50%) | After 25 bps Hike (8.75%) | Net Impact / Increase |\n| :--- | :--- | :--- | :--- |\n| **Monthly EMI** | **₹43,391 / month** | **₹44,186 / month** | **+₹792 / month (+1.8%)** |\n| **Annual EMI Cost** | ₹5,20,692 / year | ₹5,30,232 / year | +₹9,540 / year |\n| **Total Interest Paid** | ₹54,13,879 | ₹56,04,577 | **+₹1,90,698 extra interest** |\n| **Total Repayment (P + I)** | ₹1,04,13,879 | ₹1,06,04,577 | +₹1,90,698 total outflow |\n\n#### Borrower Action Plan:\n1. **Prepay 1 Extra EMI per Year**: Prepaying just ₹44,000 once a year neutralizes the 25 bps hike and cuts your loan tenure by nearly 2.5 years.\n2. **Absorb via Tenure vs Higher EMI**: If you do not request an EMI increase, banks will automatically extend your tenure from 20 years to ~21 years and 4 months.",
+    initialValues: {
+      loanAmount: 5000000,
+      interestRate: 8.75,
+      loanTenureYears: 20,
+    },
+    faqs: [
+      {
+        question: "How much will my EMI increase on a ₹50 Lakh loan with a 25 bps hike?",
+        answer: "On a 20-year ₹50 Lakh loan, an increase from 8.50% to 8.75% raises your monthly EMI by approximately ₹792 per month (from ₹43,391 to ₹44,186)."
+      },
+      {
+        question: "Will the bank increase my EMI or increase my tenure?",
+        answer: "By default, Indian banks increase the repayment tenure to avoid burdening the borrower's monthly cash flow. However, under RBI guidelines, you can instruct your lender to keep the tenure fixed and increase the EMI instead."
+      },
+      {
+        question: "How can I avoid paying extra interest after the repo rate hike?",
+        answer: "Make small partial prepayments toward the principal. Paying an extra 5% of your principal annually or making 1 extra EMI payment per calendar year can save over ₹5 Lakh in cumulative interest."
+      }
+    ],
+  },
+  {
+    toolSlug: "emi-calculator",
+    presetSlug: "1-crore-home-loan-emi-after-repo-rate-hike",
+    name: "₹1 Crore Home Loan EMI After RBI 25 BPS Hike",
+    title: "₹1 Crore Home Loan EMI After RBI Repo Rate Hike (25 bps) | ConvertSheet",
+    subtitle: "Calculate your new monthly EMI and lifetime interest impact on a ₹1 Crore home loan following a 25 bps (0.25%) repo rate increase.",
+    metaDescription: "Calculate ₹1 Crore home loan EMI increase after RBI 25 bps repo rate hike. Compare 8.50% vs 8.75% interest rates, monthly EMI jump (+₹1,585/mo), and repayment strategy.",
+    answerSummary: "On a ₹1 Crore home loan for 20 years, a 25 basis point (0.25%) rate increase from 8.50% to 8.75% increases your monthly EMI by ₹1,585 from ₹86,782 to ₹88,367. Over the full loan tenure, this adds ₹3,81,396 in cumulative interest.",
+    badge: "RBI Rate Impact",
+    keywords: [
+      "1 crore home loan emi after repo rate hike",
+      "rbi repo rate hike emi impact 1 crore",
+      "25 bps hike home loan emi 1 crore",
+      "1 crore home loan 20 years emi",
+      "1 crore home loan interest rate increase"
+    ],
+    about: "### Impact of a 25 BPS RBI Repo Rate Hike on a ₹1 Crore Home Loan\n\nA 25 basis point hike significantly impacts high-ticket home loans. For a ₹1 Crore borrowing, compounding across 240 monthly payments magnifies even fractional rate changes.\n\n#### ₹1 Crore Loan Comparison (20-Year Tenure / 240 Months)\n\n| Parameter | Before Rate Hike (8.50%) | After 25 bps Hike (8.75%) | Net Impact / Increase |\n| :--- | :--- | :--- | :--- |\n| **Monthly EMI** | **₹86,782 / month** | **₹88,371 / month** | **+₹1,589 / month** |\n| **Annual EMI Cost** | ₹10,41,384 / year | ₹10,60,452 / year | +₹19,068 / year |\n| **Total Interest Paid** | ₹1,08,27,758 | ₹1,12,09,154 | **+₹3,81,396 extra interest** |\n| **Total Repayment (P + I)** | ₹2,08,27,758 | ₹2,12,09,154 | +₹3,81,396 total outflow |\n\n#### Strategic Optimization for High-Ticket Borrowers:\n- **Home Loan Balance Transfer**: If your current lending spread is higher than benchmark market rates, consider transferring your balance to a lower-spread bank.\n- **Annual Bonus Prepayment**: Allocating ₹1,00,000 from an annual bonus directly into principal reduction saves over ₹12 Lakh across the life of the loan.",
+    initialValues: {
+      loanAmount: 10000000,
+      interestRate: 8.75,
+      loanTenureYears: 20,
+    },
+    faqs: [
+      {
+        question: "How much will EMI increase on a ₹1 Crore loan after a 25 bps rate hike?",
+        answer: "On a 20-year ₹1 Crore home loan, a 25 bps increase from 8.50% to 8.75% raises monthly EMI by roughly ₹1,585 to ₹1,589 per month."
+      },
+      {
+        question: "What is the total extra interest paid on a ₹1 Crore loan over 20 years?",
+        answer: "The 25 bps rate increase adds approximately ₹3.81 Lakh in lifetime interest expenses if the tenure and repayment terms remain unchanged."
+      },
+      {
+        question: "Does the RBI repo rate hike affect fixed rate loans?",
+        answer: "No. Fixed-rate loans are insulated from repo rate changes. However, over 95% of retail home loans in India are floating-rate loans tied to EBLR (External Benchmark Lending Rate) or MCLR."
+      }
+    ],
+  },
+  {
     toolSlug: "percentage-calculator",
     presetSlug: "0-20-x-100",
     name: "0.20 * 100 (0.20 × 100 = 20)",

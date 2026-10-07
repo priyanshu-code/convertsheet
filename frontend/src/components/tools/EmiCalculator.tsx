@@ -11,11 +11,21 @@ import {
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 
-export function EmiCalculator() {
+export interface EmiCalculatorProps {
+  initialValues?: Record<string, unknown>;
+}
+
+export function EmiCalculator({ initialValues }: EmiCalculatorProps = {}) {
   const { currencySymbol, formatCurrency } = useCurrency();
-  const [loanAmount, setLoanAmount] = useState<number>(1000000);
-  const [interestRate, setInterestRate] = useState<number>(8.5);
-  const [loanTenureYears, setLoanTenureYears] = useState<number>(15);
+  const [loanAmount, setLoanAmount] = useState<number>(
+    () => Number(initialValues?.loanAmount) || 1000000
+  );
+  const [interestRate, setInterestRate] = useState<number>(
+    () => Number(initialValues?.interestRate) || 8.5
+  );
+  const [loanTenureYears, setLoanTenureYears] = useState<number>(
+    () => Number(initialValues?.loanTenureYears) || 15
+  );
 
   const { monthlyEmi, totalInterest, totalPayment } = useMemo(() => {
     const P = Math.max(0, loanAmount);

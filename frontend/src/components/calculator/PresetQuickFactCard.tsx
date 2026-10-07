@@ -447,5 +447,79 @@ export function PresetQuickFactCard({
     );
   }
 
+  // 7. EMI Calculator & Repo Rate Hike Facts
+  if (toolSlug === "emi-calculator") {
+    const loanAmount = Number(initialValues.loanAmount) || 5000000;
+    const rate = Number(initialValues.interestRate) || 8.75;
+    const years = Number(initialValues.loanTenureYears) || 20;
+
+    const r = rate / 100 / 12;
+    const n = years * 12;
+    const emi = Math.round((loanAmount * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+    const totalPayment = emi * n;
+    const totalInterest = totalPayment - loanAmount;
+
+    // Base calculation before 25 bps hike (rate - 0.25)
+    const baseR = Math.max(0.01, (rate - 0.25)) / 100 / 12;
+    const baseEmi = Math.round((loanAmount * baseR * Math.pow(1 + baseR, n)) / (Math.pow(1 + baseR, n) - 1));
+    const emiDelta = Math.max(0, emi - baseEmi);
+
+    return (
+      <div className="w-full bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent dark:from-emerald-950/40 dark:via-zinc-900 border border-emerald-200/80 dark:border-emerald-800/80 rounded-2xl p-4 sm:p-6 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-emerald-100 dark:border-emerald-900/60">
+          <div className="flex items-center gap-2">
+            <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+              Loan Repayment &amp; Repo Rate Impact Facts
+            </span>
+          </div>
+          {badge && (
+            <span className="text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700/60">
+              {badge}
+            </span>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-left">
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Monthly EMI Payable
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-zinc-50 font-mono">
+              ₹{emi.toLocaleString("en-IN")}/mo
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              +25 bps Monthly Hike
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-rose-600 dark:text-rose-400 font-mono">
+              +₹{emiDelta.toLocaleString("en-IN")}/mo
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Total Interest Accrued
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-amber-600 dark:text-amber-400 font-mono">
+              ₹{totalInterest.toLocaleString("en-IN")}
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Total Loan Outflow
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-zinc-50 font-mono">
+              ₹{totalPayment.toLocaleString("en-IN")}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 }

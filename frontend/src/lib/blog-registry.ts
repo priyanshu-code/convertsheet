@@ -707,6 +707,141 @@ const arrowResult = await conn.query(\`
         </p>
       </section>
     `.trim()
+  },
+  {
+    slug: "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+    title: "RBI Increases Repo Rate by 25 BPS: How Much Will Your Home Loan EMI Increase?",
+    description: "Deep research and mathematical breakdown of the RBI 25 basis point (0.25%) repo rate hike. See exact EMI jumps on ₹30L, ₹50L, and ₹1Cr loans, tenure extensions, and how to neutralize the increase.",
+    category: "Financial Planning",
+    readTimeMinutes: 6,
+    publishedAt: "2026-10-07",
+    author: FOUNDER_AUTHOR,
+    attachedToolSlug: "emi-calculator",
+    attachedToolTitle: "Home Loan EMI Calculator & Amortization Schedule",
+    tableOfContents: [
+      { id: "what-is-the-rbi-25-bps-repo-rate-hike", title: "1. What is the RBI 25 BPS Repo Rate Hike?" },
+      { id: "mathematical-formula-for-emi-calculations", title: "2. The Mathematical Formula Behind EMI Resets" },
+      { id: "side-by-side-emi-impact-table", title: "3. Loan Impact Table: ₹30L, ₹50L, and ₹1 Crore Loans" },
+      { id: "higher-emi-vs-longer-tenure", title: "4. The Silent Trap: Higher EMI vs. Tenure Extension" },
+      { id: "3-proven-strategies-to-neutralize-the-hike", title: "5. 3 Proven Strategies to Neutralize the Rate Increase" }
+    ],
+    content: `
+      <section id="what-is-the-rbi-25-bps-repo-rate-hike" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          1. What is the RBI 25 BPS Repo Rate Hike?
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          When the Reserve Bank of India's (RBI) Monetary Policy Committee (MPC) votes to increase the policy <strong>repo rate by 25 basis points (0.25%)</strong>, it directly impacts the cost of funds across the entire banking ecosystem. The repo rate is the benchmark interest rate at which commercial banks borrow short-term funds from the central bank.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Under RBI regulations introduced in October 2019, all retail floating-rate home loans, personal loans, and auto loans sanctioned by scheduled commercial banks (SBI, HDFC Bank, ICICI Bank, Axis Bank, Bank of Baroda, PNB) are pegged to an <strong>External Benchmark Lending Rate (EBLR)</strong>—most commonly the RBI Repo Rate. Consequently, a 0.25% hike translates to a near-instantaneous <strong>0.25% increase</strong> in your floating home loan interest rate on your next quarterly or monthly reset date.
+        </p>
+      </section>
+
+      <section id="mathematical-formula-for-emi-calculations" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          2. The Mathematical Formula Behind EMI Resets
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Equated Monthly Installments (EMIs) follow the standard reducing-balance amortization annuity formula:
+        </p>
+        <div class="rounded-2xl border border-zinc-200 bg-zinc-950 p-4 font-mono text-xs sm:text-sm text-zinc-200 dark:border-zinc-800 overflow-x-auto text-center py-4">
+          <code>EMI = [P × r × (1 + r)^n] / [(1 + r)^n - 1]</code>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Where:
+        </p>
+        <ul class="space-y-2 text-zinc-700 dark:text-zinc-300 pl-5 list-disc">
+          <li><strong>P (Principal):</strong> The outstanding loan balance remaining on your debt.</li>
+          <li><strong>r (Monthly Interest Rate):</strong> Annual Interest Rate ÷ 12 ÷ 100 (e.g. 8.75% becomes <code>0.0875 / 12 = 0.00729167</code>).</li>
+          <li><strong>n (Tenure in Months):</strong> Number of remaining months (20 years = 240 months).</li>
+        </ul>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Because home loan amortizations are back-loaded (interest constitutes 70%+ of the monthly payment in the first 7 years of a 20-year loan), even a small 0.25% shift causes hundreds of thousands of rupees in cumulative lifetime interest compounding.
+        </p>
+      </section>
+
+      <section id="side-by-side-emi-impact-table" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          3. Loan Impact Table: ₹30L, ₹50L, and ₹1 Crore Loans
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          The table below demonstrates the exact monetary consequences of a <strong>25 bps increase (from 8.50% to 8.75%)</strong> across standard 20-year (240-month) loan sizes:
+        </p>
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-zinc-100 dark:bg-zinc-800/60 font-semibold text-zinc-900 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
+              <tr>
+                <th class="p-3">Loan Amount</th>
+                <th class="p-3">Old EMI (8.50%)</th>
+                <th class="p-3">New EMI (8.75%)</th>
+                <th class="p-3">Monthly Hike</th>
+                <th class="p-3">Extra Lifetime Interest</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 font-mono">
+              <tr>
+                <td class="p-3 font-semibold">₹30 Lakh</td>
+                <td class="p-3">₹26,035/mo</td>
+                <td class="p-3 text-rose-600 font-bold">₹26,511/mo</td>
+                <td class="p-3 text-rose-500">+₹476/mo</td>
+                <td class="p-3 text-amber-600 font-semibold">+₹1,14,240</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">₹50 Lakh</td>
+                <td class="p-3">₹43,391/mo</td>
+                <td class="p-3 text-rose-600 font-bold">₹44,186/mo</td>
+                <td class="p-3 text-rose-500">+₹795/mo</td>
+                <td class="p-3 text-amber-600 font-semibold">+₹1,90,800</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">₹75 Lakh</td>
+                <td class="p-3">₹65,087/mo</td>
+                <td class="p-3 text-rose-600 font-bold">₹66,278/mo</td>
+                <td class="p-3 text-rose-500">+₹1,191/mo</td>
+                <td class="p-3 text-amber-600 font-semibold">+₹2,85,840</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">₹1 Crore</td>
+                <td class="p-3">₹86,782/mo</td>
+                <td class="p-3 text-rose-600 font-bold">₹88,371/mo</td>
+                <td class="p-3 text-rose-500">+₹1,589/mo</td>
+                <td class="p-3 text-rose-600 font-bold">+₹3,81,360</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="higher-emi-vs-longer-tenure" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          4. The Silent Trap: Higher EMI vs. Tenure Extension
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Unless you explicitly call or message your bank, <strong>most lenders will NOT raise your monthly EMI</strong>. Instead, to prevent debit bounces and customer disputes, banks silently extend your loan tenure.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          On a 20-year ₹50 Lakh loan at 8.50%, absorbing a 25 bps hike solely through tenure extension adds <strong>over 14 additional monthly installments (1 year and 2 months)</strong> to your loan. You end up paying ₹43,391 for an extra 14 months, costing you over <strong>₹6 Lakh</strong> in extended interest payments versus absorbing the modest ₹795/month EMI increase.
+        </p>
+      </section>
+
+      <section id="3-proven-strategies-to-neutralize-the-hike" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          5. 3 Proven Strategies to Neutralize the Rate Increase
+        </h2>
+        <ol class="space-y-4 text-zinc-700 dark:text-zinc-300 pl-5 list-decimal">
+          <li>
+            <strong>Instruct Your Bank to Increase EMI, Not Tenure:</strong> Contact your loan officer or log into your net-banking portal to select the "Keep Tenure Fixed / Revise EMI" option. Paying ₹795 extra per month on a ₹50L loan prevents years of compounding interest.
+          </li>
+          <li>
+            <strong>Prepay 1 Extra EMI Every Year:</strong> Making just one extra payment equal to your monthly EMI (e.g. ₹44,000 once a year using Diwali bonus or tax refund) reduces a 20-year tenure to roughly 17.5 years, saving over ₹6 Lakh in total interest.
+          </li>
+          <li>
+            <strong>Increase Your EMI by 5% Annually:</strong> Step up your EMI as your salary grows. A 5% annual step-up cuts a 20-year loan payoff down to just under 12 years.
+          </li>
+        </ol>
+      </section>
+    `.trim()
   }
 ];
 

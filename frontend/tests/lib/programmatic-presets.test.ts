@@ -38,6 +38,7 @@ describe("Programmatic SEO Presets Registry", () => {
       "australia-pay-calculator",
       "percentage-calculator",
       "image-resizer",
+      "emi-calculator",
     ]);
 
     PROGRAMMATIC_PRESETS.forEach((preset) => {
@@ -468,6 +469,19 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(divide20?.title).toContain("100%/20 = 5%");
     expect(divide20?.badge).toBe("Instant Math Answer");
     expect(divide20?.answerSummary).toContain("100% divided by 20 equals 5%");
+  });
+
+  it("resolves RBI 25 bps repo rate hike home loan EMI presets", () => {
+    const emi50L = getProgrammaticPreset("emi-calculator", "50-lakh-home-loan-emi-after-repo-rate-hike");
+    expect(emi50L).toBeDefined();
+    expect(emi50L?.title).toContain("₹50 Lakh Home Loan EMI After RBI Repo Rate Hike");
+    expect(emi50L?.badge).toBe("RBI Rate Impact");
+    expect(emi50L?.answerSummary).toContain("₹792");
+
+    const emi1Cr = getProgrammaticPreset("emi-calculator", "1-crore-home-loan-emi-after-repo-rate-hike");
+    expect(emi1Cr).toBeDefined();
+    expect(emi1Cr?.title).toContain("₹1 Crore Home Loan EMI After RBI Repo Rate Hike");
+    expect(emi1Cr?.answerSummary).toContain("₹1,585");
   });
 });
 
