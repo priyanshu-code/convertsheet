@@ -51,6 +51,40 @@ import {
   JsonToNdjsonEngine,
   JsonToSchemaEngine,
 } from "./ndjson-schema-engine";
+import {
+  tsvToCsvEngine,
+  csvToTsvEngine,
+  tsvToExcelEngine,
+  excelToTsvEngine,
+  TsvToCsvEngine,
+  CsvToTsvEngine,
+  TsvToExcelEngine,
+  ExcelToTsvEngine,
+} from "./tsv-engine";
+import {
+  sqlToCsvEngine,
+  csvToSqlEngine,
+  sqlToJsonEngine,
+  jsonToSqlEngine,
+  SqlToCsvEngine,
+  CsvToSqlEngine,
+  SqlToJsonEngine,
+  JsonToSqlEngine,
+} from "./sql-engine";
+import {
+  ndjsonToCsvEngine,
+  csvToNdjsonEngine,
+  ndjsonToExcelEngine,
+  NdjsonToCsvEngine,
+  CsvToNdjsonEngine,
+  NdjsonToExcelEngine,
+} from "./ndjson-engine";
+import {
+  yamlToExcelEngine,
+  excelToYamlEngine,
+  YamlToExcelEngine,
+  ExcelToYamlEngine,
+} from "./yaml-engine";
 
 export {
   csvToExcelEngine,
@@ -130,6 +164,19 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "sqlite-to-excel": sqliteToExcelEngine,
   "json-to-ndjson": jsonToNdjsonEngine,
   "json-to-schema": jsonToSchemaEngine,
+  "tsv-to-csv": tsvToCsvEngine,
+  "csv-to-tsv": csvToTsvEngine,
+  "tsv-to-excel": tsvToExcelEngine,
+  "excel-to-tsv": excelToTsvEngine,
+  "sql-to-csv": sqlToCsvEngine,
+  "csv-to-sql": csvToSqlEngine,
+  "sql-to-json": sqlToJsonEngine,
+  "json-to-sql": jsonToSqlEngine,
+  "ndjson-to-csv": ndjsonToCsvEngine,
+  "csv-to-ndjson": csvToNdjsonEngine,
+  "ndjson-to-excel": ndjsonToExcelEngine,
+  "yaml-to-excel": yamlToExcelEngine,
+  "excel-to-yaml": excelToYamlEngine,
   "image-converter": imageStubEngine,
 };
 

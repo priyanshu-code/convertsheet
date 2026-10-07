@@ -18,9 +18,9 @@ import {
 
 describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
-    it("returns all 23 registered converter slugs", () => {
+    it("returns all registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(23);
+      expect(slugs).toHaveLength(36);
       expect(slugs).toContain("webp-to-png");
       expect(slugs).toContain("png-to-webp");
       expect(slugs).toContain("parquet-to-excel");
@@ -37,6 +37,34 @@ describe("Converter Registry & Utilities", () => {
       expect(slugs).toContain("sqlite-to-excel");
       expect(slugs).toContain("json-to-ndjson");
       expect(slugs).toContain("json-to-schema");
+    });
+
+    it("registers high-volume tabular and structured data converters (Pillar 3)", () => {
+      const expectedSlugs = [
+        "tsv-to-csv",
+        "csv-to-tsv",
+        "tsv-to-excel",
+        "excel-to-tsv",
+        "sql-to-csv",
+        "csv-to-sql",
+        "sql-to-json",
+        "json-to-sql",
+        "ndjson-to-csv",
+        "csv-to-ndjson",
+        "ndjson-to-excel",
+        "yaml-to-excel",
+        "excel-to-yaml",
+        "parquet-to-json",
+      ];
+
+      for (const slug of expectedSlugs) {
+        const config = getConverterBySlug(slug);
+        expect(config, `Converter ${slug} should exist`).toBeDefined();
+        expect(config?.title).toBeTruthy();
+        expect(config?.metaDescription).toBeTruthy();
+        expect(config?.faqs.length).toBeGreaterThanOrEqual(3);
+        expect(config?.howTo).toHaveLength(3);
+      }
     });
   });
 

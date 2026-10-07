@@ -1352,6 +1352,365 @@ export const CONVERTER_REGISTRY = {
     howTo: IMAGE_TOOLS["png-to-webp"].howTo,
     faqs: IMAGE_TOOLS["png-to-webp"].faqs,
   },
+
+  "tsv-to-csv": {
+    slug: "tsv-to-csv",
+    sourceFormat: "TSV",
+    targetFormat: "CSV",
+    sourceExtension: ".tsv",
+    additionalExtensions: [".tab", ".txt"],
+    targetExtension: ".csv",
+    acceptedMimeTypes: ["text/tab-separated-values", "text/plain", "text/csv"],
+    category: "spreadsheets",
+    engineId: "tsv-to-csv",
+    isClientSide: true,
+    featured: true,
+    badge: "Instant",
+    title: "Convert TSV to CSV Online - Fast, Free & In-Browser",
+    subtitle: "Transform tab-separated values (.tsv) into standard comma-separated (.csv) files. Process large datasets locally in memory with zero data uploads.",
+    metaDescription: "Free online TSV to CSV converter. Convert tab-delimited files to standard CSV format in your browser. Clean comma formatting and complete data privacy.",
+    about: "Tab-separated values (TSV) are widely used in bioinformatics, database extracts, and research logs. ConvertSheet transforms your TSV files into RFC 4180 compliant CSV files with safe comma-escaping, double-quote wrapping, and leading-zero preservation—all directly in your browser memory.",
+    howTo: [
+      { step: 1, title: "Select or Paste TSV", description: "Drag and drop your .tsv file or paste raw tab-delimited text into the editor." },
+      { step: 2, title: "Preview Data Grid", description: "Inspect parsed tabular rows and confirm delimiter column alignment." },
+      { step: 3, title: "Download Clean CSV", description: "Click 'Convert & Download' to save your standard comma-delimited .csv file." }
+    ],
+    faqs: [
+      { question: "How does this tool handle fields containing commas?", answer: "ConvertSheet automatically encloses fields containing commas, line breaks, or quotes in double quotes per standard RFC 4180 CSV specifications." },
+      { question: "Are my TSV records uploaded to remote cloud servers?", answer: "No. The entire conversion executes client-side using JavaScript in your browser sandbox. Your data never leaves your computer." },
+      { question: "Can I convert large bioinformatics or log TSV files?", answer: "Yes, our client-side parsing engine handles large datasets with hundreds of thousands of rows smoothly without server timeouts." }
+    ]
+  },
+
+  "csv-to-tsv": {
+    slug: "csv-to-tsv",
+    sourceFormat: "CSV",
+    targetFormat: "TSV",
+    sourceExtension: ".csv",
+    targetExtension: ".tsv",
+    acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
+    category: "spreadsheets",
+    engineId: "csv-to-tsv",
+    isClientSide: true,
+    title: "Convert CSV to TSV Online - Tab-Separated Values Generator",
+    subtitle: "Convert comma-separated (.csv) spreadsheets into tab-separated (.tsv) data for command-line tools, grep, awk, and data pipelines.",
+    metaDescription: "Free online CSV to TSV converter. Transform CSV tables into clean tab-delimited text in your browser with zero server data retention.",
+    about: "Converting CSV to TSV is critical when feeding tabular data into UNIX command-line tools like cut, awk, and sort, or specialized scientific pipelines that require tab delimiters. ConvertSheet strips unnecessary comma-escaping and formats pristine tab-separated streams.",
+    howTo: [
+      { step: 1, title: "Upload CSV Spreadsheet", description: "Drop your .csv file into the upload zone or paste comma-separated values." },
+      { step: 2, title: "Verify Tabular Structure", description: "Inspect the parsed columns and verify all rows are detected accurately." },
+      { step: 3, title: "Download TSV File", description: "Click 'Convert & Download' to save your clean .tsv file instantly." }
+    ],
+    faqs: [
+      { question: "Why convert CSV to TSV?", answer: "TSV is easier to process with standard UNIX utilities (awk, cut, grep) because tabs rarely occur inside natural text fields, avoiding escaping issues." },
+      { question: "What happens if my CSV data contains tabs?", answer: "Our engine sanitizes interior tab characters to prevent column misalignment in the resulting output." },
+      { question: "Is this conversion 100% private?", answer: "Yes. All conversion logic runs locally in browser memory with zero server uploads." }
+    ]
+  },
+
+  "tsv-to-excel": {
+    slug: "tsv-to-excel",
+    sourceFormat: "TSV",
+    targetFormat: "Excel",
+    sourceExtension: ".tsv",
+    additionalExtensions: [".tab", ".txt"],
+    targetExtension: ".xlsx",
+    acceptedMimeTypes: ["text/tab-separated-values", "text/plain"],
+    category: "spreadsheets",
+    engineId: "tsv-to-excel",
+    isClientSide: true,
+    featured: true,
+    badge: "Popular",
+    title: "Convert TSV to Excel Online - Free In-Browser XLSX Converter",
+    subtitle: "Convert tab-separated values (.tsv) directly into formatted Microsoft Excel (.xlsx) workbooks without Excel import wizard warnings.",
+    metaDescription: "Free online TSV to Excel converter. Transform tab-separated files into formatted XLSX spreadsheets in your browser. Fast, private, and zero uploads.",
+    about: "Opening raw TSV files in Microsoft Excel often triggers encoding warnings or leads to messy multi-step text import wizards. ConvertSheet creates native, pre-formatted .xlsx workbooks directly in your browser memory so you can open your data in Excel with one click.",
+    howTo: [
+      { step: 1, title: "Provide TSV Data", description: "Upload your .tsv document or paste tab-separated rows directly into the workspace." },
+      { step: 2, title: "Preview Spreadsheet", description: "Check column headers, row counts, and configure custom worksheet names." },
+      { step: 3, title: "Download Excel Workbook", description: "Click 'Convert & Download' to receive a native .xlsx spreadsheet." }
+    ],
+    faqs: [
+      { question: "Does opening the converted file require the Excel Import Wizard?", answer: "No! ConvertSheet outputs a genuine, binary .xlsx workbook that opens directly in Microsoft Excel, Apple Numbers, and Google Sheets." },
+      { question: "Does it preserve leading zeros in codes and IDs?", answer: "Yes, numeric strings with leading zeros (e.g. postal codes, SKUs) are preserved to prevent Excel auto-truncation." },
+      { question: "Are my files uploaded to any third party?", answer: "Never. All data parsing and Excel generation happens 100% locally in your web browser." }
+    ]
+  },
+
+  "excel-to-tsv": {
+    slug: "excel-to-tsv",
+    sourceFormat: "Excel",
+    targetFormat: "TSV",
+    sourceExtension: ".xlsx",
+    additionalExtensions: [".xls"],
+    targetExtension: ".tsv",
+    acceptedMimeTypes: [
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel"
+    ],
+    category: "spreadsheets",
+    engineId: "excel-to-tsv",
+    isClientSide: true,
+    title: "Convert Excel to TSV Online - Export XLSX to Tab-Delimited",
+    subtitle: "Export Microsoft Excel (.xlsx, .xls) worksheets to clean tab-separated (.tsv) data for command-line tools and data analysis.",
+    metaDescription: "Convert Excel to TSV online for free. Export XLSX worksheets into clean tab-separated files in your browser with complete privacy.",
+    about: "Extract clean tab-separated data from Microsoft Excel (.xlsx and .xls) workbooks without needing an Excel license or cumbersome export dialogues. Perfect for developers preparing training data, database dumps, and Unix text processing.",
+    howTo: [
+      { step: 1, title: "Upload Excel File", description: "Select an .xlsx or .xls workbook from your computer or drag it into the box." },
+      { step: 2, title: "Select Sheet", description: "Preview the worksheet data and verify that columns and headers align." },
+      { step: 3, title: "Download TSV", description: "Download your clean, UTF-8 tab-delimited .tsv file immediately." }
+    ],
+    faqs: [
+      { question: "Can I convert legacy .xls Excel files?", answer: "Yes, ConvertSheet supports both modern .xlsx workbooks and legacy .xls spreadsheets." },
+      { question: "How does it handle multiple worksheets?", answer: "By default, the first worksheet is converted, or you can select any specific sheet name from the conversion options." },
+      { question: "Is my corporate spreadsheet data safe?", answer: "100% safe. Processing occurs entirely in client-side memory without transmitting any data over the internet." }
+    ]
+  },
+
+  "sql-to-csv": {
+    slug: "sql-to-csv",
+    sourceFormat: "SQL",
+    targetFormat: "CSV",
+    sourceExtension: ".sql",
+    targetExtension: ".csv",
+    acceptedMimeTypes: ["application/sql", "text/plain"],
+    category: "data-engineering",
+    engineId: "sql-to-csv",
+    isClientSide: true,
+    featured: true,
+    badge: "Database",
+    title: "Convert SQL to CSV Online - Extract Tables & INSERTs to CSV",
+    subtitle: "Extract tabular data and INSERT statements from SQL dump files into clean, downloadable CSV spreadsheets in your browser.",
+    metaDescription: "Free online SQL to CSV converter. Parse SQL INSERT statements and dump files into clean CSV tables locally in your browser with zero server uploads.",
+    about: "Database dump files (.sql) containing hundreds or thousands of SQL INSERT statements are cumbersome to inspect without booting up a full database server. ConvertSheet parses SQL table dumps in your browser and outputs clean comma-delimited spreadsheets instantly.",
+    howTo: [
+      { step: 1, title: "Upload SQL Dump", description: "Select your .sql dump file or paste raw SQL INSERT statements into the editor." },
+      { step: 2, title: "Inspect Table Preview", description: "Preview extracted database columns and rows before exporting." },
+      { step: 3, title: "Download CSV", description: "Click 'Convert & Download' to save your clean .csv data." }
+    ],
+    faqs: [
+      { question: "What SQL dialects are supported?", answer: "Our parser handles standard SQL, MySQL, PostgreSQL, and SQLite INSERT INTO statements with multiple row value tuples." },
+      { question: "Do I need to install or run a database server?", answer: "No database server or connection credentials are required. Parsing happens directly in your browser." },
+      { question: "Are confidential database dumps kept private?", answer: "Completely private. ConvertSheet runs client-side JavaScript in your browser sandbox with zero network transmission." }
+    ]
+  },
+
+  "csv-to-sql": {
+    slug: "csv-to-sql",
+    sourceFormat: "CSV",
+    targetFormat: "SQL",
+    sourceExtension: ".csv",
+    targetExtension: ".sql",
+    acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
+    category: "data-engineering",
+    engineId: "csv-to-sql",
+    isClientSide: true,
+    title: "Convert CSV to SQL Online - Generate INSERT Statements",
+    subtitle: "Generate clean SQL INSERT statements and table migration scripts from CSV spreadsheets directly in your browser.",
+    metaDescription: "Free online CSV to SQL converter. Convert CSV spreadsheets into executable SQL INSERT statements and table definitions with 100% client-side privacy.",
+    about: "Transforming spreadsheet rows into database migration scripts is a routine task for backend engineers and data analysts. ConvertSheet parses CSV files, escapes quotes, handles NULL values, and generates ready-to-run SQL INSERT statements.",
+    howTo: [
+      { step: 1, title: "Upload CSV Data", description: "Drop your .csv file into the converter or paste comma-separated values." },
+      { step: 2, title: "Configure Table Name", description: "Specify your destination database table name and review column headers." },
+      { step: 3, title: "Download SQL Script", description: "Download an executable .sql file ready for execution in MySQL, Postgres, or SQLite." }
+    ],
+    faqs: [
+      { question: "How does the converter handle quotes and special characters?", answer: "String literals are properly escaped using standard single-quote escaping ('') to prevent syntax errors and SQL injection issues." },
+      { question: "Can I customize the generated table name?", answer: "Yes, you can provide a custom table name in the conversion options, or it defaults to your filename." },
+      { question: "Does this require uploading client data to a server?", answer: "No. All SQL generation executes locally in client browser memory." }
+    ]
+  },
+
+  "sql-to-json": {
+    slug: "sql-to-json",
+    sourceFormat: "SQL",
+    targetFormat: "JSON",
+    sourceExtension: ".sql",
+    targetExtension: ".json",
+    acceptedMimeTypes: ["application/sql", "text/plain"],
+    category: "data-engineering",
+    engineId: "sql-to-json",
+    isClientSide: true,
+    title: "Convert SQL to JSON Online - Array of Objects Generator",
+    subtitle: "Extract SQL dump tables and INSERT statements into structured JSON arrays of objects for web APIs, frontend apps, and NoSQL databases.",
+    metaDescription: "Convert SQL to JSON online for free. Transform SQL INSERT dumps into clean JSON arrays directly in your browser with zero server uploads.",
+    about: "Migrating from relational databases to document stores like MongoDB, CouchDB, or web frontend mock states requires converting SQL INSERT dumps into clean JSON arrays. ConvertSheet parses SQL statements and outputs formatted JSON objects instantly.",
+    howTo: [
+      { step: 1, title: "Upload SQL File", description: "Select your .sql database dump or paste SQL statements into the workspace." },
+      { step: 2, title: "Inspect Inferred JSON", description: "Review extracted objects, fields, and optional indentation formatting." },
+      { step: 3, title: "Download JSON", description: "Save a clean, formatted .json file ready for your application." }
+    ],
+    faqs: [
+      { question: "Can I use the output with MongoDB or REST APIs?", answer: "Yes. The generated output is a standard array of JSON objects directly consumable by MongoDB mongoimport or REST endpoints." },
+      { question: "How are NULL and numeric values handled?", answer: "SQL NULLs are mapped to JSON null, while integers and floats are converted to native JSON numbers rather than strings." },
+      { question: "Is my database dump private?", answer: "100% private. All processing occurs in local browser memory with zero network uploads." }
+    ]
+  },
+
+  "json-to-sql": {
+    slug: "json-to-sql",
+    sourceFormat: "JSON",
+    targetFormat: "SQL",
+    sourceExtension: ".json",
+    targetExtension: ".sql",
+    acceptedMimeTypes: ["application/json", "text/json", "text/plain"],
+    category: "data-engineering",
+    engineId: "json-to-sql",
+    isClientSide: true,
+    title: "Convert JSON to SQL Online - Generate Database INSERTs",
+    subtitle: "Convert JSON arrays and API responses into executable SQL INSERT statements for PostgreSQL, MySQL, and SQLite.",
+    metaDescription: "Free online JSON to SQL converter. Convert JSON arrays of objects into clean SQL INSERT statements directly in your browser with complete privacy.",
+    about: "When you receive JSON payloads from external webhooks or third-party APIs and need to ingest them into a relational database, ConvertSheet generates safe, properly escaped SQL INSERT statements in seconds.",
+    howTo: [
+      { step: 1, title: "Paste JSON or Upload", description: "Paste your JSON array of objects or upload a .json file." },
+      { step: 2, title: "Configure Table Name", description: "Set your target SQL table name and inspect detected column names." },
+      { step: 3, title: "Download SQL Script", description: "Download your ready-to-run .sql file with formatted INSERT queries." }
+    ],
+    faqs: [
+      { question: "What JSON format is expected?", answer: "An array of objects (e.g. [{\"id\": 1, \"name\": \"Alice\"}]) or a single object. Each property becomes a database column." },
+      { question: "How does it handle nested objects?", answer: "Nested objects and arrays are safely serialized as JSON strings or formatted for relational columns." },
+      { question: "Are my JSON payloads kept confidential?", answer: "Always. All parsing and SQL statement generation runs entirely client-side." }
+    ]
+  },
+
+  "ndjson-to-csv": {
+    slug: "ndjson-to-csv",
+    sourceFormat: "NDJSON",
+    targetFormat: "CSV",
+    sourceExtension: ".ndjson",
+    additionalExtensions: [".jsonl"],
+    targetExtension: ".csv",
+    acceptedMimeTypes: ["application/x-ndjson", "text/plain"],
+    category: "data-engineering",
+    engineId: "ndjson-to-csv",
+    isClientSide: true,
+    title: "Convert NDJSON to CSV Online - Fast In-Browser Converter",
+    subtitle: "Convert Newline-Delimited JSON (.ndjson, .jsonl) logs and streaming datasets into standard comma-separated (.csv) spreadsheets.",
+    metaDescription: "Free online NDJSON to CSV converter. Transform newline-delimited JSON streams into clean CSV tables in your browser with zero data uploads.",
+    about: "Newline-Delimited JSON (NDJSON) is the industry standard for logging, streaming events, and cloud telemetry. ConvertSheet flattens NDJSON streams into clean, standard CSV tables for rapid analysis in Excel or Google Sheets.",
+    howTo: [
+      { step: 1, title: "Upload NDJSON File", description: "Select your .ndjson or .jsonl log file or drag it into the upload box." },
+      { step: 2, title: "Preview Data Grid", description: "Check parsed fields and verify row counts across your log stream." },
+      { step: 3, title: "Download CSV", description: "Click 'Convert & Download' to receive your spreadsheet-ready .csv file." }
+    ],
+    faqs: [
+      { question: "What is the difference between NDJSON and JSONL?", answer: "NDJSON (Newline-Delimited JSON) and JSONL (JSON Lines) are practically identical formats: each line contains a single valid JSON object." },
+      { question: "Can this handle multi-gigabyte log files?", answer: "Yes, our client-side streaming parser processes large line-delimited records smoothly in local memory." },
+      { question: "Is my server log data secure?", answer: "100% secure. Zero bytes leave your browser, ensuring confidential logs and customer PII remain private." }
+    ]
+  },
+
+  "csv-to-ndjson": {
+    slug: "csv-to-ndjson",
+    sourceFormat: "CSV",
+    targetFormat: "NDJSON",
+    sourceExtension: ".csv",
+    targetExtension: ".ndjson",
+    acceptedMimeTypes: ["text/csv", "application/csv", "text/plain"],
+    category: "data-engineering",
+    engineId: "csv-to-ndjson",
+    isClientSide: true,
+    title: "Convert CSV to NDJSON Online - Stream & Log Generator",
+    subtitle: "Convert CSV spreadsheets into Newline-Delimited JSON (.ndjson) for BigQuery, Elasticsearch, and high-throughput streaming pipelines.",
+    metaDescription: "Free online CSV to NDJSON converter. Convert CSV rows into newline-delimited JSON objects directly in your browser with complete privacy.",
+    about: "Transform static CSV tabular datasets into high-efficiency Newline-Delimited JSON (NDJSON) streams ready for bulk ingestion into Elasticsearch, BigQuery, Snowflake, and streaming message brokers.",
+    howTo: [
+      { step: 1, title: "Provide CSV File", description: "Upload your .csv document or paste comma-separated values into the editor." },
+      { step: 2, title: "Preview Extracted Objects", description: "Review detected keys and JSON line formatting in the preview panel." },
+      { step: 3, title: "Download NDJSON", description: "Click 'Convert & Download' to save your .ndjson stream immediately." }
+    ],
+    faqs: [
+      { question: "Can I load the output directly into BigQuery or Elasticsearch?", answer: "Yes! BigQuery and Elasticsearch bulk API specifically require line-delimited JSON objects without enclosing brackets." },
+      { question: "Are numeric values preserved as numbers?", answer: "Yes, integers and floating-point figures are properly typed rather than quoted as strings." },
+      { question: "Is data uploaded to any remote server?", answer: "No. The transformation runs 100% locally in your web browser." }
+    ]
+  },
+
+  "ndjson-to-excel": {
+    slug: "ndjson-to-excel",
+    sourceFormat: "NDJSON",
+    targetFormat: "Excel",
+    sourceExtension: ".ndjson",
+    additionalExtensions: [".jsonl"],
+    targetExtension: ".xlsx",
+    acceptedMimeTypes: ["application/x-ndjson", "text/plain"],
+    category: "spreadsheets",
+    engineId: "ndjson-to-excel",
+    isClientSide: true,
+    featured: true,
+    badge: "Big Data",
+    title: "Convert NDJSON to Excel Online - Free In-Browser XLSX Export",
+    subtitle: "Convert Newline-Delimited JSON (.ndjson, .jsonl) datasets directly into formatted Microsoft Excel (.xlsx) workbooks.",
+    metaDescription: "Convert NDJSON to Excel online for free. Transform newline-delimited JSON records into clean XLSX spreadsheets with zero server uploads.",
+    about: "Business analysts and non-technical stakeholders often struggle to inspect raw NDJSON telemetry logs. ConvertSheet parses line-delimited JSON records and converts them into native, beautifully formatted Microsoft Excel spreadsheets.",
+    howTo: [
+      { step: 1, title: "Select NDJSON File", description: "Drop your .ndjson or .jsonl file into the converter upload area." },
+      { step: 2, title: "Preview Worksheets", description: "Inspect detected columns, row counts, and customize worksheet titles." },
+      { step: 3, title: "Download Excel Workbook", description: "Receive a native .xlsx spreadsheet ready for Excel, Sheets, or Numbers." }
+    ],
+    faqs: [
+      { question: "Can I convert large NDJSON event files to Excel?", answer: "Yes, ConvertSheet efficiently constructs XLSX workbooks with tens of thousands of rows in client-side memory." },
+      { question: "How does it handle nested objects in NDJSON?", answer: "Nested JSON structures are either flattened or serialized cleanly to preserve data visibility in table cells." },
+      { question: "Does this require sending proprietary logs to external servers?", answer: "No. Everything runs locally in your browser memory without uploading any bytes." }
+    ]
+  },
+
+  "yaml-to-excel": {
+    slug: "yaml-to-excel",
+    sourceFormat: "YAML",
+    targetFormat: "Excel",
+    sourceExtension: ".yaml",
+    additionalExtensions: [".yml"],
+    targetExtension: ".xlsx",
+    acceptedMimeTypes: ["application/x-yaml", "text/yaml", "text/plain"],
+    category: "spreadsheets",
+    engineId: "yaml-to-excel",
+    isClientSide: true,
+    title: "Convert YAML to Excel Online - Fast, Free & Private",
+    subtitle: "Transform YAML configuration files, structured dictionaries, and lists into formatted Microsoft Excel (.xlsx) spreadsheets.",
+    metaDescription: "Free online YAML to Excel converter. Transform YAML documents and data arrays into clean XLSX spreadsheets in your browser with zero uploads.",
+    about: "YAML is the standard configuration language for Kubernetes, CI/CD pipelines, and application settings. When teams need to present infrastructure inventories or configuration matrixes to business stakeholders, ConvertSheet converts YAML records into clean Excel spreadsheets.",
+    howTo: [
+      { step: 1, title: "Paste YAML or Upload File", description: "Paste raw YAML text into the editor or upload a .yaml / .yml file." },
+      { step: 2, title: "Preview Table Layout", description: "Inspect extracted keys, tabular records, and sheet name options." },
+      { step: 3, title: "Download Excel File", description: "Save your native .xlsx spreadsheet with one click." }
+    ],
+    faqs: [
+      { question: "Does it support both .yaml and .yml file extensions?", answer: "Yes! Both .yaml and .yml files are accepted seamlessly." },
+      { question: "Can I convert lists of objects from Kubernetes or Ansible?", answer: "Yes, arrays of dictionaries in YAML are converted into structured spreadsheet rows and columns." },
+      { question: "Is my YAML configuration data uploaded to any server?", answer: "No. Parsing runs entirely in client-side browser memory, keeping your infrastructure configs strictly private." }
+    ]
+  },
+
+  "excel-to-yaml": {
+    slug: "excel-to-yaml",
+    sourceFormat: "Excel",
+    targetFormat: "YAML",
+    sourceExtension: ".xlsx",
+    additionalExtensions: [".xls"],
+    targetExtension: ".yaml",
+    acceptedMimeTypes: [
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel"
+    ],
+    category: "data-engineering",
+    engineId: "excel-to-yaml",
+    isClientSide: true,
+    title: "Convert Excel to YAML Online - Clean Structured YAML Export",
+    subtitle: "Export Microsoft Excel (.xlsx, .xls) spreadsheets to structured YAML documents for configuration management and CI/CD pipelines.",
+    metaDescription: "Convert Excel to YAML online for free. Transform XLSX tables into clean YAML lists and dictionaries directly in your browser with complete privacy.",
+    about: "Many non-technical product and operations teams manage configuration tables in Excel. ConvertSheet converts those spreadsheets into clean, human-readable YAML documents ready for ingestion into DevOps tooling, Kubernetes manifests, and application configurations.",
+    howTo: [
+      { step: 1, title: "Upload Excel Spreadsheet", description: "Select your .xlsx or .xls workbook to load it into the converter." },
+      { step: 2, title: "Review Records", description: "Verify that column names match your desired YAML keys." },
+      { step: 3, title: "Download YAML", description: "Click 'Convert & Download' to save your validated .yaml document." }
+    ],
+    faqs: [
+      { question: "How does the output structure look?", answer: "The converter outputs a clean list of YAML documents where each row is an object with column names as keys." },
+      { question: "Can I convert older .xls spreadsheets?", answer: "Yes, both modern .xlsx and legacy .xls files are supported." },
+      { question: "Are my spreadsheets uploaded to any cloud service?", answer: "Never. The conversion executes entirely in your browser using client-side JavaScript." }
+    ]
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;
