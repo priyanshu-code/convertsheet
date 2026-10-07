@@ -1659,3 +1659,145 @@ export function calculateAustraliaSalary(input: AustraliaSalaryInput): Australia
   };
 }
 
+// ==========================================
+// 27. INTEREST RATE HIKE & EMI IMPACT ENGINE
+// ==========================================
+
+export interface RateHikeInput {
+  loanAmount: number;
+  oldRate: number; // e.g. 8.5
+  newRate: number; // e.g. 8.75
+  tenureYears: number; // e.g. 20
+}
+
+export interface RateHikeBracketRow {
+  loanAmount: number;
+  oldEmi: number;
+  newEmi: number;
+  monthlyHike: number;
+  extraLifetimeInterest: number;
+}
+
+export interface RateHikeResult {
+  loanAmount: number;
+  oldRate: number;
+  newRate: number;
+  rateDelta: number; // e.g. 0.25
+  rateDeltaBps: number; // e.g. 25 bps
+  tenureYears: number;
+  totalMonths: number;
+  oldEmi: number;
+  newEmi: number;
+  monthlyHike: number;
+  oldTotalInterest: number;
+  newTotalInterest: number;
+  extraLifetimeInterest: number;
+  oldTotalPayment: number;
+  newTotalPayment: number;
+  // Silent tenure extension trap metrics
+  extendedTenureMonths: number;
+  addedMonthsToTenure: number;
+  extraInterestIfTenureExtended: number;
+  // Prepayment defense
+  monthlyPrepaymentToNeutralize: number;
+  // Pre-calculated brackets (e.g. ₹30L, ₹50L, ₹75L, ₹1Cr)
+  bracketRows: RateHikeBracketRow[];
+}
+
+export function calculateRateHikeImpact(input: RateHikeInput): RateHikeResult {
+  const P = Math.max(0, input.loanAmount || 0);
+  const oldRate = Math.max(0.01, input.oldRate || 0.01);
+  const newRate = Math.max(0.01, input.newRate || 0.01);
+  const tenureYears = Math.max(1, input.tenureYears || 1);
+  const totalMonths = tenureYears * 12;
+
+  const rOld = oldRate / 100 / 12;
+  const rNew = newRate / 100 / 12;
+
+  // Formula: EMI = [P * r * (1 + r)^n] / [(1 + r)^n - 1]
+  const computeEmi = (principal: number, rateMonthly: number, months: number): number => {
+    if (principal <= 0) return 0;
+    if (rateMonthly <= 0) return Math.round(principal / months);
+    const factor = Math.pow(1 + rateMonthly, months);
+    return Math.round((principal * rateMonthly * factor) / (factor - 1));
+  };
+
+  const oldEmi = computeEmi(P, rOld, totalMonths);
+  const newEmi = computeEmi(P, rNew, totalMonths);
+  const monthlyHike = Math.max(0, newEmi - oldEmi);
+
+  const oldTotalPayment = oldEmi * totalMonths;
+  const newTotalPayment = newEmi * totalMonths;
+  const oldTotalInterest = Math.max(0, oldTotalPayment - P);
+  const newTotalInterest = Math.max(0, newTotalPayment - P);
+  const extraLifetimeInterest = Math.max(0, newTotalInterest - oldTotalInterest);
+
+  const rateDelta = roundTo(newRate - oldRate, 2);
+  const rateDeltaBps = Math.round(rateDelta * 100);
+
+  // Calculate silent tenure trap: if monthly payment stays at oldEmi under newRate, how long to pay off?
+  // n = -ln(1 - (P * rNew) / oldEmi) / ln(1 + rNew)
+  let extendedTenureMonths = totalMonths;
+  let addedMonthsToTenure = 0;
+  let extraInterestIfTenureExtended = 0;
+
+  if (oldEmi > P * rNew) {
+    const monthsExact = -Math.log(1 - (P * rNew) / oldEmi) / Math.log(1 + rNew);
+    extendedTenureMonths = Math.ceil(monthsExact);
+    addedMonthsToTenure = Math.max(0, extendedTenureMonths - totalMonths);
+    const extendedTotalPayment = oldEmi * extendedTenureMonths;
+    extraInterestIfTenureExtended = Math.max(0, extendedTotalPayment - P - oldTotalInterest);
+  } else {
+    // If oldEmi <= monthly interest, loan amortizes infinitely
+    extendedTenureMonths = 999;
+    addedMonthsToTenure = 999 - totalMonths;
+    extraInterestIfTenureExtended = P;
+  }
+
+  // Monthly extra prepayment needed to finish in original tenure:
+  // Paying newEmi - oldEmi directly towards principal neutralizes the rate hike
+  const monthlyPrepaymentToNeutralize = monthlyHike;
+
+  // Generate standard benchmark brackets
+  const defaultBrackets = [3000000, 5000000, 7500000, 10000000];
+  const bracketRows: RateHikeBracketRow[] = defaultBrackets.map((bracketP) => {
+    const oEmi = computeEmi(bracketP, rOld, totalMonths);
+    const nEmi = computeEmi(bracketP, rNew, totalMonths);
+    const mHike = Math.max(0, nEmi - oEmi);
+    const oInt = oEmi * totalMonths - bracketP;
+    const nInt = nEmi * totalMonths - bracketP;
+    const exInt = Math.max(0, nInt - oInt);
+    return {
+      loanAmount: bracketP,
+      oldEmi: oEmi,
+      newEmi: nEmi,
+      monthlyHike: mHike,
+      extraLifetimeInterest: exInt,
+    };
+  });
+
+  return {
+    loanAmount: P,
+    oldRate,
+    newRate,
+    rateDelta,
+    rateDeltaBps,
+    tenureYears,
+    totalMonths,
+    oldEmi,
+    newEmi,
+    monthlyHike,
+    oldTotalInterest,
+    newTotalInterest,
+    extraLifetimeInterest,
+    oldTotalPayment,
+    newTotalPayment,
+    extendedTenureMonths,
+    addedMonthsToTenure,
+    extraInterestIfTenureExtended,
+    monthlyPrepaymentToNeutralize,
+    bracketRows,
+  };
+}
+
+

@@ -14,6 +14,7 @@ import {
   calculateUkSalary,
   calculateCanadaSalary,
   calculateAustraliaSalary,
+  calculateRateHikeImpact,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -531,6 +532,62 @@ describe("financial-engine", () => {
       expect(res.netFortnightlyTakeHome).toBeCloseTo(70412 / 26, 2);
       expect(res.netWeeklyTakeHome).toBeCloseTo(70412 / 52, 2);
       expect(res.effectiveTaxRate).toBeCloseTo((19588 / 90000) * 100, 2);
+    });
+  });
+
+  describe("calculateRateHikeImpact", () => {
+    it("matches exact figures from benchmark image for ₹50 Lakh loan with 25 bps hike", () => {
+      // Benchmark: ₹50 Lakh, 8.50% -> 8.75%, 20 years
+      const res = calculateRateHikeImpact({
+        loanAmount: 5000000,
+        oldRate: 8.50,
+        newRate: 8.75,
+        tenureYears: 20,
+      });
+
+      expect(res.loanAmount).toBe(5000000);
+      expect(res.oldRate).toBe(8.5);
+      expect(res.newRate).toBe(8.75);
+      expect(res.rateDelta).toBe(0.25);
+      expect(res.rateDeltaBps).toBe(25);
+      expect(res.tenureYears).toBe(20);
+      expect(res.totalMonths).toBe(240);
+
+      // Old EMI: ₹43,391/mo
+      expect(res.oldEmi).toBe(43391);
+      // New EMI: ₹44,186/mo
+      expect(res.newEmi).toBe(44186);
+      // Monthly Hike: +₹795/mo (+₹792 to +₹795 based on rounding)
+      expect(res.monthlyHike).toBe(795);
+      // Extra Lifetime Interest: ~₹1.90 Lakh
+      expect(res.extraLifetimeInterest).toBeGreaterThan(190000);
+      expect(res.extraLifetimeInterest).toBeLessThan(192000);
+
+      // Pre-calculated brackets contain ₹30L, ₹50L, ₹75L, and ₹1Cr
+      expect(res.bracketRows).toHaveLength(4);
+      const row30L = res.bracketRows.find((r) => r.loanAmount === 3000000);
+      expect(row30L?.oldEmi).toBe(26035);
+      expect(row30L?.newEmi).toBe(26511);
+      expect(row30L?.monthlyHike).toBe(476);
+
+      const row1Cr = res.bracketRows.find((r) => r.loanAmount === 10000000);
+      expect(row1Cr?.oldEmi).toBe(86782);
+      expect(row1Cr?.newEmi).toBe(88371);
+      expect(row1Cr?.monthlyHike).toBe(1589);
+    });
+
+    it("calculates silent tenure trap when borrower keeps EMI unchanged", () => {
+      const res = calculateRateHikeImpact({
+        loanAmount: 5000000,
+        oldRate: 8.50,
+        newRate: 8.75,
+        tenureYears: 20,
+      });
+
+      // Keeping EMI at 43,391 extends tenure beyond 240 months
+      expect(res.extendedTenureMonths).toBeGreaterThan(240);
+      expect(res.addedMonthsToTenure).toBeGreaterThan(12);
+      expect(res.extraInterestIfTenureExtended).toBeGreaterThan(res.extraLifetimeInterest);
     });
   });
 });

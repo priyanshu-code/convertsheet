@@ -724,4 +724,92 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
       "hourly-to-salary-calculator",
     ],
   },
+  "interest-rate-hike-calculator": {
+    slug: "interest-rate-hike-calculator",
+    name: "Interest Rate Hike EMI Calculator",
+    category: "financial",
+    title: "Interest Rate Hike EMI Calculator – Old vs New EMI & Tenure Trap (2026)",
+    subtitle: "Calculate your revised loan EMI, monthly cash increase, and cumulative lifetime interest penalty after central bank repo rate hikes. Compare higher EMI vs. tenure extension side-by-side.",
+    metaDescription: "Free Interest Rate Hike EMI Calculator. Compare Old vs New EMI after RBI or Fed rate hikes (25 bps, 50 bps). See exact monthly increase on ₹30L, ₹50L, and ₹1Cr loans, avoid the silent tenure extension trap, and export amortization.",
+    answerSummary: "When your lending rate increases by 25 bps (0.25%), your monthly EMI increases by approximately ₹15.80 to ₹16.00 per ₹1 Lakh borrowed over 20 years. On a ₹50 Lakh loan, an 8.50% to 8.75% hike increases your EMI by +₹795/month and adds over ₹1.90 Lakh in lifetime interest.",
+    badge: "RBI & Fed Ready",
+    badgeTooltip: "Calibrated for October 2026 central bank rate adjustments (+25 bps, +50 bps)",
+    featured: true,
+    isNew: true,
+    keywords: [
+      "rate hike emi calculator",
+      "interest rate hike calculator",
+      "old emi vs new emi calculator",
+      "rbi repo rate hike emi impact",
+      "25 bps hike emi calculator",
+      "mortgage rate increase calculator",
+      "loan tenure extension vs higher emi",
+      "home loan interest rate hike impact",
+    ],
+    formulaDescription:
+      "Old EMI = [P × r_old × (1 + r_old)^n] / [(1 + r_old)^n - 1]; New EMI = [P × r_new × (1 + r_new)^n] / [(1 + r_new)^n - 1]; Monthly Hike = New EMI - Old EMI.",
+    about: `### How an Interest Rate Hike Impacts Your Loan
+When central banks (such as the Reserve Bank of India or the US Federal Reserve) increase benchmark policy rates, commercial lenders automatically reset interest rates on floating-rate home loans, mortgages, and consumer debts.
+
+#### Loan Amount Hike Comparison Matrix (20-Year Loan Term at 8.50% vs 8.75%):
+
+| Loan Amount | Old EMI (8.50%) | New EMI (8.75%) | Monthly Hike | Extra Lifetime Interest |
+| :--- | :--- | :--- | :--- | :--- |
+| **₹30 Lakh** | ₹26,035 / mo | ₹26,511 / mo | **+₹476 / mo** | **+₹1,14,240** |
+| **₹50 Lakh** | ₹43,391 / mo | ₹44,186 / mo | **+₹795 / mo** | **+₹1,90,800** |
+| **₹75 Lakh** | ₹65,087 / mo | ₹66,278 / mo | **+₹1,191 / mo** | **+₹2,85,840** |
+| **₹1 Crore** | ₹86,782 / mo | ₹88,371 / mo | **+₹1,589 / mo** | **+₹3,81,360** |
+
+#### Why Banks Extend Your Tenure Silently:
+By default, commercial banks keep your monthly debit mandate unchanged and silently add extra months to your repayment timeline. On a ₹50 Lakh loan, letting the bank extend your tenure can add 16+ extra months and cost **over ₹3 Lakh in additional interest** compared to paying the ₹795/mo difference!`,
+    howTo: [
+      {
+        step: 1,
+        title: "Loan Amount & Rates",
+        description:
+          "Input your current outstanding loan principal, baseline interest rate, and the new revised rate (or select a quick +25 bps / +50 bps preset button).",
+      },
+      {
+        step: 2,
+        title: "Compare Old vs. New EMI",
+        description:
+          "Inspect your monthly hike in cash outflow and total cumulative interest cost over the remaining tenure.",
+      },
+      {
+        step: 3,
+        title: "Simulate Tenure Extension Trap",
+        description:
+          "Compare Option A (increasing monthly EMI) against Option B (silent tenure extension) to choose the highest-ROI repayment strategy.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How much will my EMI increase after a 25 bps (0.25%) repo rate hike?",
+        answer:
+          "On a 20-year floating rate home loan, a 25 bps rate increase adds approximately ₹15.90 per month for every ₹1 Lakh borrowed. For a ₹50 Lakh home loan, your EMI rises from ₹43,391 to ₹44,186 (+₹795/month).",
+      },
+      {
+        question: "Should I increase my EMI or let the bank extend my loan tenure?",
+        answer:
+          "Increasing your monthly EMI is overwhelmingly recommended by financial advisors. Letting the bank extend your loan tenure keeps the loan alive longer, resulting in compounding interest that can cost 2x to 3x more in extra lifetime penalties than paying the slight monthly increase.",
+      },
+      {
+        question: "Can I neutralize an interest rate hike without increasing my salary?",
+        answer:
+          "Yes. Making a small voluntary partial prepayment each year (such as paying 1 extra EMI annually or adding an extra ₹500 to ₹800/month directly toward principal) neutralizes the rate hike and can shorten your loan by 2 to 3 years.",
+      },
+      {
+        question: "Does the repo rate hike affect existing fixed-rate home loans?",
+        answer:
+          "No. Fixed-rate home loans remain locked at the contractual rate agreed upon during sanction. However, over 95% of retail home loans in India are floating-rate loans pegged to EBLR (External Benchmark Lending Rate) or MCLR.",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: [
+      "emi-calculator",
+      "mortgage-calculator",
+      "compound-interest-calculator",
+      "high-yield-savings-cd-calculator",
+    ],
+  },
 };

@@ -50,6 +50,7 @@ import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
 import { BulkImageCompressor } from "@/components/tools/BulkImageCompressor";
 import { PdfCompressorTool } from "@/components/tools/PdfCompressorTool";
 import { SavingsCdCalculator } from "@/components/tools/SavingsCdCalculator";
+import { RateHikeCalculator } from "@/components/tools/RateHikeCalculator";
 import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
 import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
@@ -221,6 +222,7 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
     "annual-to-hourly-calculator": AnnualToHourlyCalculator,
     "debt-payoff-calculator": DebtPayoffCalculator,
     "high-yield-savings-cd-calculator": SavingsCdCalculator,
+    "interest-rate-hike-calculator": RateHikeCalculator,
     "uk-salary-calculator": UkSalaryCalculator,
     "canada-paycheck-calculator": CanadaPaycheckCalculator,
     "australia-pay-calculator": AustraliaPayCalculator,
