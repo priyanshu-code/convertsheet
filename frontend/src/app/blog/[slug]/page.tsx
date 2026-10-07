@@ -7,9 +7,11 @@ import {
   getBlogPostBySlug,
   getPillarPost,
 } from "@/lib/blog-registry";
+import { getProgrammaticPresetsByTool } from "@/lib/programmatic-presets";
 import { ToolEmbedBanner } from "@/components/blog/ToolEmbedBanner";
 import { AuthorBioCard } from "@/components/blog/AuthorBioCard";
 import { TopicClusterNav } from "@/components/blog/TopicClusterNav";
+import { RelatedPresetsBanner } from "@/components/blog/RelatedPresetsBanner";
 import {
   Clock,
   Calendar,
@@ -53,11 +55,20 @@ export function generateMetadata({ params }: BlogPostPageProps): Metadata {
       publishedTime: post.publishedAt,
       authors: [post.author.name],
       url: `https://www.convertsheet.com/blog/${post.slug}`,
+      images: [
+        {
+          url: `https://www.convertsheet.com/blog/${post.slug}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: `${post.title} | ConvertSheet Blog`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
+      images: [`https://www.convertsheet.com/blog/${post.slug}/opengraph-image`],
     },
   };
 }
@@ -331,6 +342,18 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               className="prose prose-zinc max-w-none dark:prose-invert [&_section]:scroll-mt-24 prose-headings:scroll-mt-24 prose-headings:font-bold prose-headings:tracking-tight prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:rounded-2xl"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+
+            {/* Contextual Interactive Calculator Presets */}
+            {(() => {
+              const presets = getProgrammaticPresetsByTool(post.attachedToolSlug).slice(0, 4);
+              if (presets.length === 0) return null;
+              return (
+                <RelatedPresetsBanner
+                  presets={presets}
+                  className="mt-10"
+                />
+              );
+            })()}
 
             {/* Author Bio Box for E-E-A-T and Personal Authority */}
             <AuthorBioCard author={post.author} className="mt-12" />

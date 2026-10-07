@@ -3621,6 +3621,82 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     ],
   },
   {
+    toolSlug: "emi-calculator",
+    presetSlug: "50-lakh-home-loan-at-8-5-percent",
+    name: "₹50 Lakh Home Loan EMI at 8.5% Interest Rate",
+    title: "₹50 Lakh Home Loan EMI at 8.5% Calculator | ConvertSheet",
+    subtitle: "Calculate monthly EMI, interest breakdown, and 20-year amortization schedule for a ₹50,00,000 home loan at 8.50% interest rate.",
+    metaDescription: "Calculate ₹50 Lakh home loan EMI at 8.5% interest rate. Exact monthly EMI is ₹43,391. Total interest paid is ₹54.14 Lakh over 20 years. Export amortization schedule.",
+    answerSummary: "On a ₹50,00,000 home loan at 8.50% interest over a 20-year tenure (240 months), the monthly EMI is ₹43,391. Total interest paid equals ₹54,13,879, bringing the total repayment amount to ₹1,04,13,879.",
+    badge: "5.50% Repo Benchmark",
+    keywords: [
+      "50 lakh home loan emi at 8.5",
+      "50 lakh home loan emi 8.5 interest rate",
+      "emi for 50 lakh home loan 20 years at 8.5",
+      "home loan 50 lakh 8.5 interest",
+      "50 lakh loan emi calculator"
+    ],
+    about: "### ₹50 Lakh Home Loan at 8.50% Benchmark Rate\n\nFollowing the RBI's repo rate adjustment to 5.50%, standard commercial bank home loans (SBI, HDFC, ICICI) with an EBLR spread of 3.00% benchmark at **8.50% per annum** for prime borrowers with 750+ CIBIL scores.\n\n#### Repayment Summary (₹50 Lakh / 8.50% / 20 Years):\n- **Monthly EMI**: **₹43,391**\n- **Principal Amount**: ₹50,00,000 (48.0% of total outflow)\n- **Total Interest Amount**: ₹54,13,879 (52.0% of total outflow)\n- **Total Outflow (Principal + Interest)**: ₹1,04,13,879\n\n#### Acceleration Tip:\nPaying an extra ₹4,300 each month toward the principal slashes the loan payoff timeline from 20 years down to 15.5 years and saves over ₹14 Lakh in total interest.",
+    initialValues: {
+      loanAmount: 5000000,
+      interestRate: 8.5,
+      loanTenureYears: 20,
+    },
+    faqs: [
+      {
+        question: "What is the monthly EMI on a ₹50 Lakh home loan at 8.5% for 20 years?",
+        answer: "The monthly EMI is exactly ₹43,391. Over 240 months, you will repay ₹50 Lakh principal and ₹54.14 Lakh in interest charges."
+      },
+      {
+        question: "What is the minimum monthly salary needed for a ₹50 Lakh home loan at 8.5%?",
+        answer: "Under standard 50% FOIR (Fixed Obligation to Income Ratio) norms, lenders look for a net monthly household income of at least ₹87,000 to ₹90,000."
+      },
+      {
+        question: "How does the repo rate hike affect this loan?",
+        answer: "Every 25 bps change in the repo rate shifts the EMI by approximately ₹792/month on a ₹50 Lakh borrowing, which compounds to ~₹1.9 Lakh over 20 years."
+      }
+    ],
+  },
+  {
+    toolSlug: "high-yield-savings-cd-calculator",
+    presetSlug: "10-lakh-fixed-deposit-at-8-percent",
+    name: "₹10 Lakh Fixed Deposit at 8.0% Interest Calculator",
+    title: "₹10 Lakh Fixed Deposit at 8% Interest Rate Calculator | ConvertSheet",
+    subtitle: "Calculate guaranteed maturity balance, monthly interest payout, and compound return on a ₹10,00,000 fixed deposit at 8.00% interest rate.",
+    metaDescription: "Calculate returns on ₹10 Lakh FD at 8% interest rate. 1-year maturity is ₹10,82,432 (quarterly compounding). Monthly payout option provides ₹6,667/month.",
+    answerSummary: "A ₹10 Lakh fixed deposit at 8.00% interest compounded quarterly generates ₹82,432 in interest over 1 year (maturity value: ₹10,82,432). Over 3 years, it grows to ₹12,68,242. Under a non-cumulative monthly payout option, it yields ₹6,667 per month.",
+    badge: "8% FD Rate",
+    keywords: [
+      "10 lakh fixed deposit 8 percent interest",
+      "10 lakh fd interest per month at 8 percent",
+      "10 lakh fd for 1 year interest 8 percent",
+      "10 lakh fd maturity amount at 8",
+      "8 percent fd interest calculator"
+    ],
+    about: "### ₹10 Lakh Fixed Deposit at 8.00% Post-Hike Yield\n\nFollowing the RBI's repo rate hike to 5.50% and higher liquidity absorption benchmarks, leading public and private sector banks offer **7.75% to 8.25% fixed deposit rates** for special tenures (400 to 555 days), with senior citizens getting up to **8.75%**.\n\n#### ₹10 Lakh FD Compounding Returns Matrix (Quarterly Compounding at 8.00%):\n| Tenure | Invested Principal | Total Interest Earned | Final Maturity Amount |\n| :--- | :--- | :--- | :--- |\n| **1 Year** | ₹10,00,000 | ₹82,432 | **₹10,82,432** |\n| **2 Years** | ₹10,00,000 | ₹1,71,659 | **₹11,71,659** |\n| **3 Years** | ₹10,00,000 | ₹2,68,242 | **₹12,68,242** |\n| **5 Years** | ₹10,00,000 | ₹4,85,947 | **₹14,85,947** |\n\n#### Cumulative vs Non-Cumulative Options:\n- **Cumulative**: Interest compounds quarterly, maximizing the terminal maturity corpus.\n- **Monthly Payout**: Earns a consistent ₹6,667/month in passive income, ideal for retirees or conservative cash-flow investors.",
+    initialValues: {
+      initialDeposit: 1000000,
+      monthlyContribution: 0,
+      annualInterestRate: 8.0,
+      termMonths: 12,
+      compoundingFrequency: "monthly",
+    },
+    faqs: [
+      {
+        question: "How much monthly interest does a ₹10 Lakh FD yield at 8%?",
+        answer: "A ₹10 Lakh fixed deposit at 8.00% simple annual interest generates approximately ₹6,667 per month in non-cumulative interest payouts."
+      },
+      {
+        question: "What is the 1-year maturity value of a ₹10 Lakh FD at 8%?",
+        answer: "With standard quarterly compounding (Indian banking norm), the 1-year maturity value is approximately ₹10,82,432 (effective annual yield of 8.24%)."
+      },
+      {
+        question: "Are fixed deposits safe up to ₹10 Lakh in India?",
+        answer: "Under DICGC (Deposit Insurance and Credit Guarantee Corporation, an RBI subsidiary), bank deposits are insured up to ₹5 Lakh per depositor per bank (covering principal and interest). To insure ₹10 Lakh fully, depositors frequently split funds across two distinct scheduled banks."
+      }
+    ],
+  },
+  {
     toolSlug: "percentage-calculator",
     presetSlug: "0-20-x-100",
     name: "0.20 * 100 (0.20 × 100 = 20)",

@@ -5,6 +5,7 @@ import { ToolEmbedBanner } from "../ToolEmbedBanner";
 import { BlogCard } from "../BlogCard";
 import { AuthorBioCard } from "../AuthorBioCard";
 import { TopicClusterNav } from "../TopicClusterNav";
+import { RelatedPresetsBanner } from "../RelatedPresetsBanner";
 import { BLOG_POSTS, FOUNDER_AUTHOR } from "@/lib/blog-registry";
 
 describe("Blog UI Components", () => {
@@ -92,5 +93,29 @@ describe("Blog UI Components", () => {
     const pillarLinks = screen.getAllByRole("link", { name: /RBI Repo Rate Hike to 5.5%: Exact EMI Increase/i });
     expect(pillarLinks.length).toBeGreaterThanOrEqual(1);
     expect(pillarLinks[0]).toHaveAttribute("href", "/blog/rbi-repo-rate-hike-25-bps-home-loan-emi-impact");
+  });
+
+  it("renders RelatedPresetsBanner with scenarios and links to /tools/[slug]/[preset]", () => {
+    const mockPresets = [
+      {
+        toolSlug: "emi-calculator",
+        presetSlug: "50-lakh-home-loan-at-8-5-percent",
+        name: "₹50 Lakh Home Loan EMI at 8.5%",
+        title: "₹50 Lakh Home Loan EMI at 8.5% Calculator",
+        metaDescription: "Calculate ₹50 Lakh home loan EMI at 8.5% interest rate.",
+        answerSummary: "Monthly EMI is ₹43,391.",
+        badge: "5.50% Repo Benchmark",
+        about: "Detailed breakdown...",
+        initialValues: { loanAmount: 5000000, interestRate: 8.5, loanTenureYears: 20 },
+        faqs: [],
+      },
+    ];
+
+    render(<RelatedPresetsBanner presets={mockPresets} />);
+    expect(screen.getByText("Interactive Calculators & Scenarios")).toBeInTheDocument();
+    expect(screen.getByText("₹50 Lakh Home Loan EMI at 8.5%")).toBeInTheDocument();
+    expect(screen.getByText("5.50% Repo Benchmark")).toBeInTheDocument();
+    const scenarioLink = screen.getByRole("link", { name: /₹50 Lakh Home Loan EMI at 8.5%/i });
+    expect(scenarioLink).toHaveAttribute("href", "/tools/emi-calculator/50-lakh-home-loan-at-8-5-percent");
   });
 });
