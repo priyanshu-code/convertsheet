@@ -176,6 +176,19 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
     expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
   });
 
+  it("renders ImageResizerTool programmatic preset with QuickFactCard specifications", () => {
+    render(
+      <ProgrammaticPresetPage
+        params={{ slug: "image-resizer", preset: "resize-image-to-1080x1080" }}
+      />
+    );
+
+    expect(screen.getAllByText(/Resize Image to 1080×1080/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Preset Target Specifications/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/1:1 Square/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Click to select an image or drag & drop/i)).toBeInTheDocument();
+  });
+
   it("generates 4-tier breadcrumbs and exact canonical URL in preset JSON-LD", () => {
     const { container } = render(
       <ProgrammaticPresetPage

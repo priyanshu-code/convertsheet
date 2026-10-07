@@ -430,5 +430,30 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(car35k).toBeDefined();
     expect(car35k?.title).toContain("$35,000 Car Loan");
   });
+
+  it("resolves newly added 72-month car loan and image resizer resolution presets", () => {
+    const car72Mo = getProgrammaticPreset("car-loan-calculator", "25k-car-loan-72-months");
+    expect(car72Mo).toBeDefined();
+    expect(car72Mo?.title).toContain("$25,000 Car Loan Payment (72 Months)");
+    expect(car72Mo?.about).toContain("72-Month");
+
+    const car15k5Yr = getProgrammaticPreset("car-loan-calculator", "15k-car-loan-5-years");
+    expect(car15k5Yr).toBeDefined();
+    expect(car15k5Yr?.title).toContain("$15,000 Car Loan Over 5 Years");
+
+    const square1080 = getProgrammaticPreset("image-resizer", "resize-image-to-1080x1080");
+    expect(square1080).toBeDefined();
+    expect(square1080?.title).toContain("1080×1080");
+    expect(square1080?.initialValues).toEqual({
+      targetWidth: 1080,
+      targetHeight: 1080,
+      targetFormat: "image/png",
+    });
+
+    const passport = getProgrammaticPreset("image-resizer", "passport-photo-maker");
+    expect(passport).toBeDefined();
+    expect(passport?.title).toContain("Passport Photo Resizer");
+    expect(passport?.badge).toBe("Official 2×2\"");
+  });
 });
 
