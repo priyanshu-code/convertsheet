@@ -96,5 +96,25 @@ describe("HomeCommandHero", () => {
 
     // Should display search results matching mortgage
     expect(screen.getByText(/Mortgage Calculator/i)).toBeInTheDocument();
+
+    // Clear search with X button
+    const clearBtn = screen.getByLabelText(/Clear search/i);
+    fireEvent.click(clearBtn);
+    expect(searchInput).toHaveValue("");
+    expect(screen.queryByText(/Mortgage Calculator/i)).not.toBeInTheDocument();
+  });
+
+  it("selects converter when a converter search result is clicked", () => {
+    render(<HomeCommandHero />);
+
+    const searchInput = screen.getByPlaceholderText(/Search 100\+ converters/i);
+    fireEvent.change(searchInput, { target: { value: "parquet" } });
+
+    const parquetLink = screen.getByRole("link", { name: /Parquet to CSV/i });
+    fireEvent.click(parquetLink);
+
+    expect(screen.getByText(/Source: Parquet/i)).toBeInTheDocument();
+    expect(screen.getByText(/Target: CSV/i)).toBeInTheDocument();
+    expect(searchInput).toHaveValue("");
   });
 });

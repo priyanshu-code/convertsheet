@@ -69,9 +69,12 @@ export function HomeCommandHero({
       .map((c) => ({
         type: "converter" as const,
         title: c.title,
-        href: `/convert/${c.sourceFormat.toLowerCase()}-to-${c.targetFormat.toLowerCase()}`,
+        href:
+          c.slug === "webp-to-png" || c.slug === "png-to-webp"
+            ? `/tools/${c.slug}`
+            : `/convert/${c.slug}`,
         subtitle: `${c.sourceFormat} → ${c.targetFormat} converter`,
-        slug: `${c.sourceFormat.toLowerCase()}-to-${c.targetFormat.toLowerCase()}`,
+        slug: c.slug,
         config: c,
       }));
 
@@ -152,6 +155,7 @@ export function HomeCommandHero({
           <div className="flex items-center p-1 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/70 dark:border-zinc-800 w-full sm:w-auto shadow-xs">
             <button
               type="button"
+              aria-pressed={mode === "converter"}
               onClick={() => setMode("converter")}
               className={cn(
                 "flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer",
@@ -165,6 +169,7 @@ export function HomeCommandHero({
             </button>
             <button
               type="button"
+              aria-pressed={mode === "calculator"}
               onClick={() => setMode("calculator")}
               className={cn(
                 "flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer",
@@ -216,6 +221,7 @@ export function HomeCommandHero({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search 100+ converters, financial calculators, & developer utilities..."
+              aria-label="Search 100+ converters, financial calculators, & developer utilities"
               className="w-full pl-10 pr-10 py-2 sm:py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 shadow-xs transition-all"
             />
             {searchQuery && (

@@ -62,7 +62,7 @@ export function HomeCalculatorSpotlight() {
                 <span>{tab.label}</span>
                 <span
                   className={cn(
-                    "hidden sm:inline-block text-[9px] px-1.5 py-0.2 rounded-full font-bold border",
+                    "hidden sm:inline-block text-[9px] px-1.5 py-0.5 rounded-full font-bold border",
                     tab.badgeColor
                   )}
                 >
