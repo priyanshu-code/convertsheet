@@ -9,6 +9,13 @@ import {
   ArrowRight,
   Sparkles,
   CheckCircle2,
+  Cpu,
+  Layers,
+  FileSpreadsheet,
+  Binary,
+  Star,
+  Check,
+  TrendingUp,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
@@ -104,41 +111,78 @@ export default function HomePage() {
   const allTools = getAllTools();
 
   return (
-    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 xl:px-10 pt-1 pb-12 sm:pt-4 sm:pb-16 space-y-4 sm:space-y-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 xl:px-10 pt-1 pb-16 space-y-8 sm:space-y-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(homeJsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      {/* Streamlined Hero Header - Minimal vertical footprint so converter is front and center */}
-      <div className="text-center max-w-4xl mx-auto space-y-1.5 sm:space-y-2">
+
+      {/* Product Hero Header */}
+      <div className="text-center max-w-4xl mx-auto space-y-3 pt-2 sm:pt-4">
         {/* Top Trust Badge */}
-        <div className="hidden sm:flex items-center justify-center">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 shadow-xs">
+        <div className="flex items-center justify-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span>100% In-Browser Privacy • Zero Server Uploads</span>
           </div>
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-sm sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 my-1">
+        <h1 className="text-sm sm:text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 my-1">
           Fast, Private Structured Data Converter
         </h1>
 
         {/* Subtitle */}
-        <p className="hidden sm:block text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-normal">
-          Just paste the JSON, CSV, or XML, or upload your file to convert instantly in your browser — 100% private, zero cost, and zero server uploads.
+        <p className="text-xs sm:text-base text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          Transform nested JSON, massive CSVs, and Excel spreadsheets directly in your browser memory via DuckDB WASM — 100% free, zero lag, and zero cloud uploads.
         </p>
+
+        {/* Product Trust Highlights Bar */}
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-1 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+          <span className="inline-flex items-center gap-1.5">
+            <Check className="w-3.5 h-3.5 text-emerald-500" />
+            Zero Server Uploads
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Check className="w-3.5 h-3.5 text-emerald-500" />
+            DuckDB-WASM Engine
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Check className="w-3.5 h-3.5 text-emerald-500" />
+            100% Free &amp; Open Utilities
+          </span>
+        </div>
       </div>
 
       {/* Hero Universal Converter Card - Spacious, pro-grade desktop width */}
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto shadow-xl shadow-zinc-900/5 rounded-3xl">
         <DynamicConverterCard config={defaultConverter} />
       </div>
 
+      {/* Live Product Metrics Strip */}
+      <section aria-label="Product Benchmarks" className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 py-2">
+        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center space-y-1">
+          <div className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">0 ms</div>
+          <div className="text-[11px] sm:text-xs font-medium text-zinc-500 dark:text-zinc-400">Cloud Data Upload</div>
+        </div>
+        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center space-y-1">
+          <div className="text-xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">50,000+</div>
+          <div className="text-[11px] sm:text-xs font-medium text-zinc-500 dark:text-zinc-400">Rows Flattened / sec</div>
+        </div>
+        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center space-y-1">
+          <div className="text-xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">45+</div>
+          <div className="text-[11px] sm:text-xs font-medium text-zinc-500 dark:text-zinc-400">Format Converters</div>
+        </div>
+        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-center space-y-1">
+          <div className="text-xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">100%</div>
+          <div className="text-[11px] sm:text-xs font-medium text-zinc-500 dark:text-zinc-400">Client-Side Private</div>
+        </div>
+      </section>
+
       {/* Leaderboard Ad Slot */}
-      <div className="flex justify-center w-full my-4 sm:my-6">
+      <div className="flex justify-center w-full my-2">
         <AdBanner format="leaderboard" />
       </div>
 
@@ -196,7 +240,7 @@ export default function HomePage() {
             return (
               <div
                 key={idx}
-                className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 sm:space-y-4"
+                className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 sm:space-y-4 hover:border-emerald-500/40 transition-colors shadow-xs"
               >
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
