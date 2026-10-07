@@ -58,4 +58,10 @@ export type ConverterEngineId =
   | "ndjson-to-excel"
   | "yaml-to-excel"
   | "excel-to-yaml"
-  | "image-converter";
+  | "image-converter"
+  | "jpg-to-png"
+  | "png-to-jpg"
+  | "webp-to-jpg"
+  | "svg-to-png"
+  | "jpg-to-pdf"
+  | "png-to-pdf";

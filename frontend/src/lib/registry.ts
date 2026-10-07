@@ -1711,6 +1711,173 @@ export const CONVERTER_REGISTRY = {
       { question: "Are my spreadsheets uploaded to any cloud service?", answer: "Never. The conversion executes entirely in your browser using client-side JavaScript." }
     ]
   },
+
+  "jpg-to-png": {
+    slug: "jpg-to-png",
+    sourceFormat: "JPG",
+    targetFormat: "PNG",
+    sourceExtension: ".jpg",
+    additionalExtensions: [".jpeg"],
+    targetExtension: ".png",
+    acceptedMimeTypes: ["image/jpeg", "image/jpg"],
+    category: "utility",
+    engineId: "jpg-to-png",
+    isClientSide: true,
+    featured: true,
+    badge: "Popular",
+    title: "Convert JPG to PNG Online - Free, Fast & Lossless Transparency",
+    subtitle: "Convert JPEG and JPG pictures to crisp PNG images with lossless color accuracy. 100% private in-browser canvas conversion.",
+    metaDescription: "Convert JPG to PNG online for free. Fast, high-resolution JPEG to PNG converter running 100% in your browser. Zero server uploads and complete privacy.",
+    about: "Converting JPG photographs or graphics to PNG is vital for designers, web developers, and digital creators requiring lossless compression and sharp line reproduction without compression artifacts.\n\nConvertSheet runs 100% client-side in your browser using hardware-accelerated HTML5 Canvas APIs. Your private images are never sent over the wire or stored on remote servers.",
+    howTo: [
+      { step: 1, title: "Select or Drop JPG Files", description: "Upload or drag-and-drop your JPG/JPEG files directly into the converter." },
+      { step: 2, title: "Customize Quality & Scale", description: "Choose maximum resolution and export settings in the live preview." },
+      { step: 3, title: "Download Converted PNG", description: "Click download to instantly save your converted PNG file or batch ZIP archive." }
+    ],
+    faqs: [
+      { question: "Does converting JPG to PNG improve quality?", answer: "It prevents further generation loss and compression artifacts when editing or saving repeatedly, though it cannot recover details already discarded by JPEG compression." },
+      { question: "Are my images uploaded to any cloud servers?", answer: "No. Conversion uses native HTML5 Canvas rendering in your local browser memory with zero server uploads." },
+      { question: "Can I convert multiple JPG files at once?", answer: "Yes, you can upload multiple images in Batch mode and download them in a single convenient ZIP file." }
+    ]
+  },
+
+  "png-to-jpg": {
+    slug: "png-to-jpg",
+    sourceFormat: "PNG",
+    targetFormat: "JPG",
+    sourceExtension: ".png",
+    targetExtension: ".jpg",
+    acceptedMimeTypes: ["image/png"],
+    category: "utility",
+    engineId: "png-to-jpg",
+    isClientSide: true,
+    featured: true,
+    badge: "Fast",
+    title: "Convert PNG to JPG Online - Reduce Image File Size Instantly",
+    subtitle: "Convert PNG graphics and screenshots to compact, web-optimized JPEG images with customizable compression quality.",
+    metaDescription: "Convert PNG to JPG online for free. Compress large PNG screenshots and illustrations into small JPEG files directly in your browser with zero data uploads.",
+    about: "PNG files often consume unnecessary megabytes when high transparency is not required. Converting PNG to JPG drastically reduces file sizes for email attachments, website publishing, and upload limits.\n\nConvertSheet automatically handles alpha transparency by smoothly blending with a clean white background, producing optimized, high-fidelity JPEG exports.",
+    howTo: [
+      { step: 1, title: "Upload PNG Files", description: "Drag and drop your PNG images or screenshots into the tool." },
+      { step: 2, title: "Adjust Compression", description: "Fine-tune JPEG quality slider to achieve the optimal balance of clarity and file size." },
+      { step: 3, title: "Download JPG", description: "Download your compressed JPEG picture immediately." }
+    ],
+    faqs: [
+      { question: "What happens to transparent backgrounds in PNG?", answer: "Because JPEG does not support transparency, transparent pixels are cleanly blended into a solid white background." },
+      { question: "How much smaller will the JPG file be?", answer: "Typically between 50% to 80% smaller than an uncompressed 24-bit PNG screenshot." },
+      { question: "Is this tool safe for confidential screenshots?", answer: "Yes, 100% private. All rendering happens in your browser with zero server data retention." }
+    ]
+  },
+
+  "webp-to-jpg": {
+    slug: "webp-to-jpg",
+    sourceFormat: "WebP",
+    targetFormat: "JPG",
+    sourceExtension: ".webp",
+    targetExtension: ".jpg",
+    acceptedMimeTypes: ["image/webp"],
+    category: "utility",
+    engineId: "webp-to-jpg",
+    isClientSide: true,
+    featured: false,
+    title: "Convert WebP to JPG Online - Universal Compatibility",
+    subtitle: "Turn Google WebP images from web pages into universally compatible JPEG files that open in any legacy photo viewer or editor.",
+    metaDescription: "Convert WebP to JPG online for free. Open WebP files in older software by converting them to standard JPEG directly in your browser.",
+    about: "While WebP is the modern standard for web performance, many desktop image editors, older operating systems, and document upload portals do not support the WebP format. ConvertSheet converts WebP images to standard JPEG pictures in milliseconds right in your browser.",
+    howTo: [
+      { step: 1, title: "Upload WebP File", description: "Select the saved WebP image from your computer or phone." },
+      { step: 2, title: "Preview Image", description: "Inspect dimensions and choose target compression quality." },
+      { step: 3, title: "Download JPG", description: "Save the universally compatible JPEG file." }
+    ],
+    faqs: [
+      { question: "Why do downloaded web images save as WebP?", answer: "Modern websites serve WebP because it is smaller, but converting to JPG makes it easy to open in Photoshop, Word, or older photo viewers." },
+      { question: "Does this require installing any software?", answer: "No software or browser extensions needed. It works completely inside your modern web browser." },
+      { question: "Is there a limit on how many images I can convert?", answer: "No artificial limits. You can convert individual images or multiple files simultaneously." }
+    ]
+  },
+
+  "svg-to-png": {
+    slug: "svg-to-png",
+    sourceFormat: "SVG",
+    targetFormat: "PNG",
+    sourceExtension: ".svg",
+    targetExtension: ".png",
+    acceptedMimeTypes: ["image/svg+xml"],
+    category: "utility",
+    engineId: "svg-to-png",
+    isClientSide: true,
+    featured: false,
+    title: "Convert SVG to PNG Online - High-Resolution Rasterizer",
+    subtitle: "Render scalable vector graphics (SVG) into crisp, high-resolution PNG raster images with preserved transparency.",
+    metaDescription: "Convert SVG to PNG online for free. Rasterize vector icons and logos into crisp, high-DPI transparent PNG files with zero server uploads.",
+    about: "SVG vector files are perfect for responsive websites, but email clients, social media platforms, and office applications often require raster PNG images. ConvertSheet renders your SVG vectors into pixel-perfect PNG images at any desired resolution with alpha transparency preserved.",
+    howTo: [
+      { step: 1, title: "Upload SVG Graphic", description: "Drop your vector .svg file into the converter." },
+      { step: 2, title: "Set Output Resolution", description: "Choose the target width or let the engine preserve the vector's native viewBox dimensions." },
+      { step: 3, title: "Download PNG", description: "Save your sharp transparent PNG image." }
+    ],
+    faqs: [
+      { question: "Is background transparency maintained?", answer: "Yes, SVG transparency is completely preserved in the resulting PNG export." },
+      { question: "Does the output remain sharp at high resolutions?", answer: "Yes, because SVG is mathematical vector data, it can be rasterized at 2x, 3x, or 4x scale without pixelation." },
+      { question: "Is my proprietary SVG design uploaded anywhere?", answer: "Never. Vector parsing and canvas rasterization take place 100% on your local machine." }
+    ]
+  },
+
+  "jpg-to-pdf": {
+    slug: "jpg-to-pdf",
+    sourceFormat: "JPG",
+    targetFormat: "PDF",
+    sourceExtension: ".jpg",
+    additionalExtensions: [".jpeg"],
+    targetExtension: ".pdf",
+    acceptedMimeTypes: ["image/jpeg", "image/jpg"],
+    category: "utility",
+    engineId: "jpg-to-pdf",
+    isClientSide: true,
+    featured: true,
+    badge: "Popular",
+    title: "Convert JPG to PDF Online - Free Image to Document Converter",
+    subtitle: "Convert JPEG and JPG pictures, receipts, and scans into professional, shareable PDF documents. 100% private in your browser.",
+    metaDescription: "Convert JPG to PDF online for free. Package receipts, IDs, and photos into print-ready PDF files directly in your browser. Zero server uploads.",
+    about: "Packaging photos, receipts, or contracts into PDF format makes them standard, secure, and ready for official email attachments and portal submissions. ConvertSheet embeds your JPEG pictures into clean Adobe PDF documents locally using client-side WebAssembly.",
+    howTo: [
+      { step: 1, title: "Upload JPG Photo or Scan", description: "Select the JPG files you want to turn into a PDF." },
+      { step: 2, title: "Review Document Setup", description: "The converter scales the image to natural page dimensions." },
+      { step: 3, title: "Download PDF", description: "Click download to instantly receive your standardized .pdf file." }
+    ],
+    faqs: [
+      { question: "Is it safe to convert private IDs or tax receipts?", answer: "Yes, absolutely. Because ConvertSheet runs client-side with zero server retention, your sensitive documents never leave your device." },
+      { question: "Does it reduce image clarity?", answer: "No, the full original JPEG resolution is embedded directly inside the PDF container." },
+      { question: "Can I print the resulting PDF?", answer: "Yes, the generated PDF is 100% standard Adobe Acrobat format compatible with all home and office printers." }
+    ]
+  },
+
+  "png-to-pdf": {
+    slug: "png-to-pdf",
+    sourceFormat: "PNG",
+    targetFormat: "PDF",
+    sourceExtension: ".png",
+    targetExtension: ".pdf",
+    acceptedMimeTypes: ["image/png"],
+    category: "utility",
+    engineId: "png-to-pdf",
+    isClientSide: true,
+    featured: false,
+    title: "Convert PNG to PDF Online - High-Resolution Document Export",
+    subtitle: "Transform PNG graphics, screenshots, and diagrams into clean, print-ready PDF documents with zero data uploaded to external servers.",
+    metaDescription: "Convert PNG to PDF online for free. Turn screenshots, certificates, and illustrations into PDF documents privately in your browser.",
+    about: "When you need to send screenshots, designs, or certificates in an official document format, converting PNG to PDF ensures cross-platform readability without layout shifts. ConvertSheet packages PNG graphics into standardized PDF documents instantly in browser memory.",
+    howTo: [
+      { step: 1, title: "Select PNG Image", description: "Drag and drop your PNG image into the upload area." },
+      { step: 2, title: "Verify Dimensions", description: "Inspect the document layout and page sizing." },
+      { step: 3, title: "Download PDF", description: "Save your standardized PDF file to your computer." }
+    ],
+    faqs: [
+      { question: "Does this preserve transparency?", answer: "The PNG graphic is embedded faithfully within the PDF page canvas with clean white background handling." },
+      { question: "Will my screenshots be clear in the PDF?", answer: "Yes, 100% of the original pixel fidelity is preserved without lossy re-compression." },
+      { question: "Are my files uploaded to your servers?", answer: "No. Conversion executes strictly in your browser using client-side JavaScript." }
+    ]
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;

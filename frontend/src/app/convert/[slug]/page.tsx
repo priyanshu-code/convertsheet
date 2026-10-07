@@ -81,7 +81,7 @@ export async function generateMetadata({
 }
 
 function renderConverter(config: ConverterConfig) {
-  if (config.slug === "webp-to-png") {
+  if (config.slug === "webp-to-png" || config.slug === "jpg-to-png" || config.slug === "svg-to-png") {
     return (
       <ImageConverterTool
         defaultTargetFormat="image/png"
@@ -94,6 +94,15 @@ function renderConverter(config: ConverterConfig) {
     return (
       <ImageConverterTool
         defaultTargetFormat="image/webp"
+        title={config.title}
+        subtitle={config.subtitle}
+      />
+    );
+  }
+  if (config.slug === "png-to-jpg" || config.slug === "webp-to-jpg") {
+    return (
+      <ImageConverterTool
+        defaultTargetFormat="image/jpeg"
         title={config.title}
         subtitle={config.subtitle}
       />

@@ -39,10 +39,10 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
 
   describe("generateStaticParams", () => {
-    it("returns all 36 converter slugs for static pre-rendering", () => {
+    it("returns all 42 converter slugs for static pre-rendering", () => {
       const params = generateStaticParams();
 
-      expect(params).toHaveLength(36);
+      expect(params).toHaveLength(42);
       const slugs = params.map((p) => p.slug);
       expect(slugs).toEqual(
         expect.arrayContaining([
@@ -174,7 +174,7 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
       const otherSection = screen.getByTestId("other-converters-section");
       expect(otherSection).toBeInTheDocument();
       const otherLinks = otherSection.querySelectorAll("a");
-      expect(otherLinks).toHaveLength(35);
+      expect(otherLinks).toHaveLength(41);
 
       const linkedHrefs = Array.from(otherLinks).map((a) =>
         a.getAttribute("href")
@@ -387,8 +387,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 34 Self-Canonical Converters + 51 On-Brand Tools + 210 Presets + 6 Blog Posts + 5 Comparisons = 317 entries
-      expect(entries).toHaveLength(317);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 40 Self-Canonical Converters + 51 On-Brand Tools + 210 Presets + 6 Blog Posts + 5 Comparisons = 323 entries
+      expect(entries).toHaveLength(323);
 
       // Embed directory entry
       const embedEntry = entries.find(

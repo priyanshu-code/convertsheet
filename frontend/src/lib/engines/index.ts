@@ -143,6 +143,15 @@ const imageStubEngine: IConverterEngine = {
   },
 };
 
+import {
+  jpgToPngEngine,
+  pngToJpgEngine,
+  webpToJpgEngine,
+  svgToPngEngine,
+  jpgToPdfEngine,
+  pngToPdfEngine,
+} from "./consumer-media-engine";
+
 const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "csv-to-excel": csvToExcelEngine,
   "json-to-excel": jsonToExcelEngine,
@@ -178,6 +187,12 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "yaml-to-excel": yamlToExcelEngine,
   "excel-to-yaml": excelToYamlEngine,
   "image-converter": imageStubEngine,
+  "jpg-to-png": jpgToPngEngine,
+  "png-to-jpg": pngToJpgEngine,
+  "webp-to-jpg": webpToJpgEngine,
+  "svg-to-png": svgToPngEngine,
+  "jpg-to-pdf": jpgToPdfEngine,
+  "png-to-pdf": pngToPdfEngine,
 };
 
 export function getConverterEngine(engineId: ConverterEngineId): IConverterEngine {
