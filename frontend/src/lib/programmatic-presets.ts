@@ -996,60 +996,76 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     ]
   },
   {
-    "toolSlug": "car-loan-calculator",
-    "presetSlug": "36-month-car-loan",
-    "name": "36-Month Auto Loan Payment Calculator",
-    "title": "36-Month Car Loan Calculator: Low Interest Fast Payoff | ConvertSheet",
-    "metaDescription": "Calculate 3-year (36-month) car loan payments. Enjoy the lowest interest rates, build instant vehicle equity, and export schedule to Excel.",
-    "answerSummary": "On a $30,000 vehicle with $3,000 down at 5.5% interest, a 36-month loan requires a monthly payment of $892. Because the debt is retired in just 3 years, total interest paid is only $2,572.",
-    "about": "A 36-month auto loan carries the lowest interest rates and completely prevents negative equity. You pay off the vehicle while it still retains strong resale value.",
-    "initialValues": {
-      "vehiclePrice": 30000,
-      "downPayment": 3000,
-      "tradeInValue": 0,
-      "interestRate": 5.5,
-      "loanTermMonths": 36,
-      "salesTaxPercent": 7.0,
-      "dealerFees": 450
+    toolSlug: "car-loan-calculator",
+    presetSlug: "36-month-car-loan",
+    name: "36-Month (3-Year) Auto Loan Payment Calculator",
+    title: "36-Month Car Loan Calculator: 3-Year Financing & Maximum Interest Savings | ConvertSheet",
+    metaDescription: "Calculate payments on a 36-month (3-year) auto loan. Lowest interest rates and fastest equity payoff. View amortization schedule & Excel export.",
+    answerSummary: "On a $25,000 loan balance at 4.99% APR, a 36-month car loan costs $749/month. Total interest paid over the entire 3 years is just $1,964, minimizing financing costs.",
+    about: "A 36-month auto loan is the fastest path to owning your vehicle outright. Capture the lowest lender interest rates and eliminate auto debt in just 3 years.",
+    initialValues: {
+      vehiclePrice: 27777,
+      downPayment: 2777,
+      tradeInValue: 0,
+      interestRate: 4.99,
+      loanTermMonths: 36,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
     },
-    "faqs": [
+    faqs: [
       {
-        "question": "What are the benefits of a 36-month car loan?",
-        "answer": "You get the lowest available interest rates from lenders, pay thousands less in total interest, and gain clear vehicle ownership in just 3 years."
+        question: "What is the payment on a $25,000 loan for 36 months?",
+        answer: "At 4.99% APR, the monthly payment is approximately $749/month.",
       },
       {
-        "question": "What is the monthly payment for a 36-month $30k loan?",
-        "answer": "At 5.5% APR with 10% down, the payment is approximately $892/month with total interest capped at $2,572."
-      }
-    ]
+        question: "Is a 36-month car loan the cheapest option?",
+        answer: "Yes, shorter loans offer the lowest APRs and accumulate the least amount of total interest charges over the life of the loan.",
+      },
+      {
+        question: "Who should get a 36-month car loan?",
+        answer: "Borrowers with strong cash flow who prioritize debt-free ownership and want to avoid paying thousands of dollars in interest.",
+      },
+      {
+        question: "How much interest do you pay on a 36-month loan?",
+        answer: "On a $25,000 loan at 4.99%, total interest paid over 3 years is just $1,964.",
+      },
+    ],
   },
   {
-    "toolSlug": "car-loan-calculator",
-    "presetSlug": "48-month-car-loan",
-    "name": "48-Month Auto Loan Payment Calculator",
-    "title": "48-Month Car Loan Calculator: Balanced Payoff Model | ConvertSheet",
-    "metaDescription": "Calculate monthly payments on a 4-year (48-month) auto loan. See interest savings compared to 5-year loans and export to Excel.",
-    "answerSummary": "Financing a $30,000 car with $3,000 down at 5.9% interest over 48 months results in a monthly payment of $693. Total interest is $3,696\u2014saving $1,521 compared to a 60-month loan.",
-    "about": "The 48-month term aligns closely with standard manufacturer warranty periods, guaranteeing that your car is paid off before major mechanical out-of-pocket expenses arise.",
-    "initialValues": {
-      "vehiclePrice": 30000,
-      "downPayment": 3000,
-      "tradeInValue": 0,
-      "interestRate": 5.9,
-      "loanTermMonths": 48,
-      "salesTaxPercent": 7.0,
-      "dealerFees": 450
+    toolSlug: "car-loan-calculator",
+    presetSlug: "48-month-car-loan",
+    name: "48-Month (4-Year) Auto Loan Payment Calculator",
+    title: "48-Month Car Loan Calculator: 4-Year Financing & Interest Savings | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a 48-month car loan. See how a 4-year term saves thousands in interest compared to 60 or 72-month financing.",
+    answerSummary: "On a $30,000 loan balance at 5.49% APR, a 48-month auto loan requires a monthly payment of $698/month. Total interest paid is just $3,480—saving over $4,200 compared to a 72-month loan.",
+    about: "A 48-month auto loan strikes an ideal balance between monthly affordability and aggressive debt reduction, minimizing total interest paid and keeping you ahead of vehicle depreciation.",
+    initialValues: {
+      vehiclePrice: 33333,
+      downPayment: 3333,
+      tradeInValue: 0,
+      interestRate: 5.49,
+      loanTermMonths: 48,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
     },
-    "faqs": [
+    faqs: [
       {
-        "question": "Is a 48-month car loan better than 60 months?",
-        "answer": "Yes, you save hundreds to thousands in interest charges and eliminate your car payment a full year earlier while avoiding the negative equity trap."
+        question: "What is the monthly payment on a $30,000 loan for 48 months?",
+        answer: "At 5.49% APR, the monthly payment is approximately $698/month.",
       },
       {
-        "question": "What is the payment on a $30k car for 48 months?",
-        "answer": "At 5.9% APR with $3,000 down, monthly payment is $693/month."
-      }
-    ]
+        question: "How much interest do you save with a 48-month loan?",
+        answer: "Financing $30,000 for 48 months at 5.49% incurs $3,480 in interest, saving roughly $1,800 vs 60 months and $4,200 vs 72 months.",
+      },
+      {
+        question: "Why are interest rates lower on 48-month loans?",
+        answer: "Shorter terms reduce lender default risk and inflation exposure, allowing credit unions and banks to offer their lowest promotional rates.",
+      },
+      {
+        question: "Will I build positive equity faster on a 48-month loan?",
+        answer: "Yes, you will typically build positive equity within 12 to 18 months, protecting you from negative equity if you decide to trade in.",
+      },
+    ],
   },
   {
     "toolSlug": "car-loan-calculator",
@@ -1108,32 +1124,48 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     ]
   },
   {
-    "toolSlug": "car-loan-calculator",
-    "presetSlug": "84-month-car-loan",
-    "name": "84-Month (7-Year) Auto Loan Calculator",
-    "title": "84-Month Car Loan Calculator: True Long-Term Cost | ConvertSheet",
-    "metaDescription": "Calculate the real total cost and interest penalty of an 84-month (7-year) auto loan. Discover negative equity risks and export to Excel.",
-    "answerSummary": "Financing a $40,000 vehicle with $4,000 down at 7.5% APR over 84 months yields a monthly payment of $603. However, total interest paid reaches a staggering $11,335 on a $39,300 net financed amount\u2014meaning over 28% of your loan is pure interest.",
-    "about": "An 84-month (7-year) auto loan offers ultra-low monthly payments but often results in the borrower remaining underwater for 4 to 5 years. Understand the true lifetime cost before signing.",
-    "initialValues": {
-      "vehiclePrice": 40000,
-      "downPayment": 4000,
-      "tradeInValue": 0,
-      "interestRate": 7.5,
-      "loanTermMonths": 84,
-      "salesTaxPercent": 7.0,
-      "dealerFees": 500
+    toolSlug: "car-loan-calculator",
+    presetSlug: "84-month-car-loan",
+    name: "84-Month (7-Year) Auto Loan Payment Calculator",
+    title: "84-Month Car Loan Calculator: 7-Year Auto Financing & Lifetime Interest | ConvertSheet",
+    metaDescription: "Calculate monthly payments and total interest on an 84-month (7-year) car loan. See how 7-year loans lower monthly payments but increase total interest.",
+    answerSummary: "On a $35,000 loan balance at 7.49% APR, an 84-month car loan costs $537/month. While lowering payments by $148/mo compared to a 60-month loan, the 84-month term costs $10,108 in total interest—nearly $3,200 more in financing charges.",
+    about: `### 84-Month vs 60-Month Auto Loan Comparison ($35,000 Loan Balance)
+
+| Loan Term | APR Rate | Monthly Payment | Total Interest Paid | Total Cost of Financing |
+| :--- | :--- | :--- | :--- | :--- |
+| **60 Months (5 Yrs)** | 6.49% | $685 / mo | $6,076 | $41,076 |
+| **72 Months (6 Yrs)** | 6.99% | $596 / mo | $7,906 | $42,906 |
+| **84 Months (7 Yrs)** | 7.49% | $537 / mo | $10,108 | $45,108 |
+
+While 84-month loans offer the lowest contractual monthly payments, they carry significant risk of negative equity and substantially higher interest charges.`,
+    initialValues: {
+      vehiclePrice: 38888,
+      downPayment: 3888,
+      tradeInValue: 0,
+      interestRate: 7.49,
+      loanTermMonths: 84,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
     },
-    "faqs": [
+    faqs: [
       {
-        "question": "Why do financial experts advise against 84-month auto loans?",
-        "answer": "Vehicles depreciate rapidly in years 1 through 3. With an 84-month term, you owe more than the car is worth for almost the entire duration, and pay double the interest of a 48-month loan."
+        question: "Is an 84-month car loan a good idea?",
+        answer: "Generally no. While it reduces monthly payments, 84-month loans leave borrowers underwater for 3 to 4 years and cost thousands more in interest.",
       },
       {
-        "question": "Can you refinance an 84-month car loan later?",
-        "answer": "Only if you have built positive equity or can pay down the loan balance to match the vehicle's market value."
-      }
-    ]
+        question: "What is the monthly payment on a $35k loan for 84 months?",
+        answer: "At 7.49% APR, the monthly payment is approximately $537/month.",
+      },
+      {
+        question: "Do 84-month car loans have higher interest rates?",
+        answer: "Yes, lenders typically charge 0.50% to 1.50% higher interest rates on 84-month loans compared to standard 60-month loans due to increased default risk.",
+      },
+      {
+        question: "Do I need gap insurance for an 84-month car loan?",
+        answer: "Yes! Gap insurance is essential on an 84-month loan because your vehicle will depreciate significantly faster than your loan balance decreases.",
+      },
+    ],
   },
   {
     "toolSlug": "car-loan-calculator",
@@ -3878,28 +3910,36 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
   {
     toolSlug: "car-loan-calculator",
     presetSlug: "40k-car-loan",
-    name: "$40,000 Auto Loan Payment Calculator",
-    title: "$40,000 Car Loan Calculator — Monthly Payment & Interest Schedule",
-    metaDescription: "Calculate payments on a $40,000 car loan. At 6.5% APR over 60 months with $4k down, pay ~$767/mo ($6,793 total interest). Free amortization Excel export.",
-    answerSummary: "Financing a $40,000 vehicle with 10% down ($4,000) at 6.5% interest over 60 months results in a monthly payment of approximately $767/month (net financed amount of $39,250 including 7% sales tax and $450 dealer fees). Total interest paid over 5 years is $6,793.",
-    about: "$40,000 is near the national median transaction price for brand-new passenger vehicles in the United States. Use this calculator to model down payments, evaluate trade-in equity, and see full 60-month amortization schedules.",
+    name: "$40,000 Car Loan Payment Calculator",
+    title: "$40,000 Car Loan Calculator: Monthly Payment & Total Interest (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a $40,000 car loan. Compare 48, 60, and 72-month terms at 6.49% APR. Free Excel amortization schedule export.",
+    answerSummary: "On a $40,000 car loan at 6.49% APR, a 60-month term requires $782/month with $6,944 in total interest. Extending to 72 months lowers the payment to $672/month, with $8,384 in interest.",
+    about: "Model financing payments on a $40,000 vehicle. Understand the trade-offs between 48, 60, and 72-month terms and export your complete amortization schedule to Microsoft Excel.",
     initialValues: {
       vehiclePrice: 40000,
       downPayment: 4000,
       tradeInValue: 0,
-      interestRate: 6.5,
+      interestRate: 6.49,
       loanTermMonths: 60,
       salesTaxPercent: 7.0,
       dealerFees: 450,
     },
     faqs: [
       {
-        question: "What is the monthly payment on a $40,000 car?",
-        answer: "At 6.5% APR over 60 months with 10% down ($4,000), the monthly payment is roughly $767/month.",
+        question: "What is the monthly payment on a $40,000 car loan?",
+        answer: "At 6.49% APR with $0 down, payment is roughly $782/month for 60 months or $672/month for 72 months.",
       },
       {
-        question: "How much income do you need for a $40k car?",
-        answer: "Using the 20/4/10 rule (payment under 10% of gross income), a recommended annual household income is roughly $92,000 to afford a $40,000 car comfortably.",
+        question: "How much down payment should you put on a $40k car?",
+        answer: "A standard 10% to 20% down payment ($4,000 to $8,000) keeps monthly payments affordable and protects against depreciation.",
+      },
+      {
+        question: "How much interest do you pay on a $40,000 car loan?",
+        answer: "Over 5 years at 6.49%, total interest paid is roughly $6,944.",
+      },
+      {
+        question: "What salary do you need for a $40,000 car?",
+        answer: "Under the 10% monthly gross income guideline, an annual household income of approximately $90,000 to $100,000 is recommended.",
       },
     ],
   },
@@ -3992,30 +4032,40 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     presetSlug: "tesla-model-y-monthly-payment",
     name: "Tesla Model Y Monthly Payment Calculator",
     title: "Tesla Model Y Monthly Payment Calculator (2026 Rates) | ConvertSheet",
-    metaDescription: "Calculate Tesla Model Y monthly payments. At $44,990 base MSRP with $4.5k down at 6.2% APR over 60 months, pay ~$779/mo. Free Excel amortization schedule.",
-    answerSummary: "On a Tesla Model Y Long Range ($44,990 MSRP) with 10% down ($4,499) at 6.2% APR over a 60-month term, estimated monthly payment is approximately $779/month (net loan ~$40,491 after 7% sales tax and fees). Total interest paid over 5 years is roughly $6,740.",
-    about: "The Tesla Model Y is one of the best-selling passenger vehicles in the world. Calculate your true monthly financing commitment after accounting for state sales taxes, registration fees, potential EV tax credits, and loan term lengths from 36 to 72 months.",
+    metaDescription: "Calculate Tesla Model Y monthly payments. At $44,990 base MSRP with $4.5k down at 6.49% APR over 72 months, pay ~$679/mo. Free Excel amortization schedule.",
+    answerSummary: "On a Tesla Model Y ($44,990 MSRP) with 10% down ($4,500) at 6.49% APR over 72 months, the estimated monthly payment is approximately $679/month. Total interest paid over 6 years is approximately $8,898.",
+    about: `### Tesla Model Y Financing Summary ($44,990 MSRP Example)
+
+| Financing Term | Interest Rate (APR) | Monthly Payment | Total Interest Paid | Total Cost of Vehicle |
+| :--- | :--- | :--- | :--- | :--- |
+| **48 Months** | 5.49% | $943 / mo | $4,774 | $49,764 |
+| **60 Months** | 5.99% | $783 / mo | $6,490 | $51,480 |
+| **72 Months** | 6.49% | $679 / mo | $8,898 | $53,888 |`,
     initialValues: {
       vehiclePrice: 44990,
       downPayment: 4500,
       tradeInValue: 0,
-      interestRate: 6.2,
-      loanTermMonths: 60,
+      interestRate: 6.49,
+      loanTermMonths: 72,
       salesTaxPercent: 7.0,
       dealerFees: 250,
     },
     faqs: [
       {
         question: "What is the average monthly payment on a Tesla Model Y?",
-        answer: "With 10% down at current national average auto rates (~6.2% APR) over 60 months, monthly payment on a base Model Y is approximately $779/month.",
+        answer: "With 10% down ($4,500) at 6.49% APR over 72 months, monthly payment is roughly $679/month (or $783/month for a 60-month loan).",
       },
       {
         question: "How much does a Tesla Model Y cost per month with $0 down?",
-        answer: "Financing $44,990 with zero down payment at 6.2% for 60 months results in a monthly payment of roughly $865/month.",
+        answer: "Financing $44,990 with zero down payment at 6.49% for 72 months results in a monthly payment of roughly $755/month.",
       },
       {
         question: "Does the $7,500 federal EV tax credit lower the monthly payment?",
-        answer: "Yes! If you apply the $7,500 federal clean vehicle credit as a point-of-sale down payment, your financed balance drops by $7,500, reducing your monthly payment by roughly $145/month.",
+        answer: "Yes! If you apply the $7,500 federal clean vehicle credit as a point-of-sale down payment, your financed balance drops by $7,500, reducing your monthly payment by roughly $126/month.",
+      },
+      {
+        question: "How much total interest do you pay on a Tesla Model Y?",
+        answer: "Over a 72-month loan at 6.49% APR, total interest paid equals approximately $8,898.",
       },
     ],
   },
@@ -4049,6 +4099,52 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         question: "Is 72 months standard for a truck loan?",
         answer: "Yes, over 70% of new full-size pickup truck buyers choose 72-month or 84-month terms to keep monthly payments manageable on higher MSRPs.",
       },
+      {
+        question: "How much total interest will you pay on a Ford F-150 loan?",
+        answer: "On a $42,000 truck financed for 72 months at 6.5% interest, total interest charges equal approximately $8,680.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "chevy-silverado-monthly-payment",
+    name: "Chevy Silverado Monthly Payment Calculator",
+    title: "Chevy Silverado Monthly Payment Calculator (2026 Truck Rates) | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a Chevy Silverado 1500. At $48,000 MSRP with $5k down at 6.49% APR over 72 months, pay ~$723/mo. Free Excel amortization schedule.",
+    answerSummary: "Financing a Chevy Silverado 1500 ($48,000 MSRP) with $5,000 down at 6.49% APR for 72 months results in a monthly payment of roughly $723/month. Total interest paid over 6 years equals $9,458.",
+    about: `### Chevy Silverado 1500 Financing Breakdown ($48,000 MSRP Example)
+
+| Financing Term | Interest Rate | Monthly Payment | Total Interest Paid | Total Cost of Truck |
+| :--- | :--- | :--- | :--- | :--- |
+| **48 Months** | 5.49% | $1,000 / mo | $5,000 | $53,000 |
+| **60 Months** | 5.99% | $831 / mo | $6,860 | $54,860 |
+| **72 Months** | 6.49% | $723 / mo | $9,458 | $57,458 |`,
+    initialValues: {
+      vehiclePrice: 48000,
+      downPayment: 5000,
+      tradeInValue: 0,
+      interestRate: 6.49,
+      loanTermMonths: 72,
+      salesTaxPercent: 7.0,
+      dealerFees: 500,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a Chevy Silverado?",
+        answer: "With $5,000 down at 6.49% interest over 72 months, monthly payment on a $48,000 Silverado is roughly $723/month.",
+      },
+      {
+        question: "How much down payment do you need for a Silverado?",
+        answer: "Dealers typically recommend 10% to 20% down ($4,800 to $9,600) to avoid being underwater due to first-year truck depreciation.",
+      },
+      {
+        question: "What is the payment on a Silverado with zero down?",
+        answer: "Financing $48,000 with $0 down at 6.49% over 72 months results in a monthly payment of roughly $807/month.",
+      },
+      {
+        question: "How much interest do you pay on a 72-month Silverado loan?",
+        answer: "Total interest charges equal roughly $9,458 over the 6-year financing period.",
+      },
     ],
   },
   {
@@ -4056,14 +4152,14 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     presetSlug: "toyota-rav4-monthly-payment",
     name: "Toyota RAV4 Monthly Payment Calculator",
     title: "Toyota RAV4 Monthly Payment Calculator — Compact SUV Financing | ConvertSheet",
-    metaDescription: "Calculate Toyota RAV4 auto loan payments. At $31,500 MSRP with $3,150 down at 5.9% APR over 60 months, pay ~$585/mo ($4,720 interest). Free Excel export.",
-    answerSummary: "Financing a Toyota RAV4 ($31,500 MSRP) with 10% down ($3,150) at 5.9% interest over 60 months costs approximately $585/month (net loan ~$30,800 including 7% sales tax and dealer fees). Total interest paid over 5 years is roughly $4,720.",
+    metaDescription: "Calculate Toyota RAV4 auto loan payments. At $31,500 MSRP with $3,000 down at 5.99% APR over 60 months, pay ~$551/mo ($4,560 interest). Free Excel export.",
+    answerSummary: "Financing a Toyota RAV4 ($31,500 MSRP) with $3,000 down at 5.99% interest over 60 months costs approximately $551/month. Total interest paid over 5 years is roughly $4,560, making the total vehicle cost $36,060.",
     about: "As the top-selling non-pickup passenger vehicle in the US, the Toyota RAV4 offers exceptional resale value. Model monthly financing costs for LE, XLE, and Hybrid trims with customizable down payments and trade-in allowances.",
     initialValues: {
       vehiclePrice: 31500,
-      downPayment: 3150,
+      downPayment: 3000,
       tradeInValue: 0,
-      interestRate: 5.9,
+      interestRate: 5.99,
       loanTermMonths: 60,
       salesTaxPercent: 7.0,
       dealerFees: 450,
@@ -4071,15 +4167,163 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     faqs: [
       {
         question: "What is the monthly payment on a Toyota RAV4?",
-        answer: "On a $31,500 RAV4 with 10% down at 5.9% APR over 60 months, your payment is approximately $585/month.",
+        answer: "On a $31,500 RAV4 with $3,000 down at 5.99% APR over 60 months, your payment is approximately $551/month.",
       },
       {
         question: "How much interest do you pay on a Toyota RAV4 loan?",
-        answer: "Over a 5-year loan at 5.9% APR, total interest charges equal approximately $4,720.",
+        answer: "Over a 5-year loan at 5.99% APR, total interest charges equal approximately $4,560.",
       },
       {
         question: "Does the RAV4 Hybrid have lower total cost of ownership?",
         answer: "Yes! While the Hybrid MSRP is roughly $2,000 to $3,000 higher (adding ~$38/month to loan payments), fuel savings of 40 MPG vs 30 MPG typically save $50 to $75/month in gas.",
+      },
+      {
+        question: "What is the payment on a RAV4 over 72 months?",
+        answer: "Extending the loan term to 72 months lowers the monthly payment to roughly $478/month, but increases total interest to $5,920.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "honda-crv-monthly-payment",
+    name: "Honda CR-V Monthly Payment Calculator",
+    title: "Honda CR-V Monthly Payment Calculator (2026 SUV Rates) | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a Honda CR-V. At $30,800 MSRP with $3k down at 5.99% APR over 60 months, pay ~$538/mo. Free Excel amortization schedule.",
+    answerSummary: "Financing a Honda CR-V ($30,800 MSRP) with $3,000 down at 5.99% APR for 60 months costs approximately $538/month. Total financing interest paid is roughly $4,480.",
+    about: "Calculate monthly payments and interest for the Honda CR-V. Compare 48, 60, and 72-month financing options across EX, Sport, and Touring trims.",
+    initialValues: {
+      vehiclePrice: 30800,
+      downPayment: 3000,
+      tradeInValue: 0,
+      interestRate: 5.99,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a Honda CR-V?",
+        answer: "With $3,000 down at 5.99% APR over 60 months, monthly payment on a $30,800 CR-V is approximately $538/month.",
+      },
+      {
+        question: "What salary do you need for a Honda CR-V?",
+        answer: "Under the standard 10% car rule, an annual household salary of roughly $65,000 comfortably supports a $538/month payment.",
+      },
+      {
+        question: "How much is a CR-V payment with zero down?",
+        answer: "Financing the full $30,800 with zero down at 5.99% for 60 months results in roughly $596/month.",
+      },
+      {
+        question: "How much interest do you pay on a 5-year CR-V loan?",
+        answer: "Over 60 months at 5.99%, total interest paid equals approximately $4,480.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "ram-1500-monthly-payment",
+    name: "Ram 1500 Monthly Payment Calculator",
+    title: "Ram 1500 Monthly Payment Calculator — Truck Loan Payment & Interest | ConvertSheet",
+    metaDescription: "Calculate Ram 1500 monthly payments. At $42,000 MSRP with $4k down at 6.49% APR over 72 months, pay ~$639/mo. Free Excel schedule export.",
+    answerSummary: "Financing a Ram 1500 ($42,000 MSRP) with $4,000 down at 6.49% APR over 72 months costs roughly $639/month. Total interest paid equals $8,012.",
+    about: "Model financing payments for the Ram 1500 pickup truck. Evaluate trades, down payments, and compare 60-month vs 72-month terms to minimize interest.",
+    initialValues: {
+      vehiclePrice: 42000,
+      downPayment: 4000,
+      tradeInValue: 0,
+      interestRate: 6.49,
+      loanTermMonths: 72,
+      salesTaxPercent: 7.0,
+      dealerFees: 500,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a Ram 1500?",
+        answer: "With $4,000 down at 6.49% APR over 72 months, monthly payment on a $42,000 Ram 1500 is roughly $639/month.",
+      },
+      {
+        question: "How much down payment is recommended for a Ram truck?",
+        answer: "A minimum down payment of 10% to 15% ($4,200 to $6,300) helps prevent negative equity during the first two years of ownership.",
+      },
+      {
+        question: "What is the payment on a 60-month Ram 1500 loan?",
+        answer: "Shortening the term to 60 months raises the payment to $743/month but saves $1,400 in interest charges.",
+      },
+      {
+        question: "How much total interest will you pay on a Ram 1500?",
+        answer: "On a 72-month loan at 6.49%, total interest equals approximately $8,012.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "toyota-camry-monthly-payment",
+    name: "Toyota Camry Monthly Payment Calculator",
+    title: "Toyota Camry Monthly Payment Calculator (2026 Sedan Rates) | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a Toyota Camry. At $27,500 MSRP with $2.5k down at 5.99% APR over 60 months, pay ~$483/mo. Free Excel schedule export.",
+    answerSummary: "Financing a Toyota Camry ($27,500 MSRP) with $2,500 down at 5.99% APR for 60 months costs approximately $483/month. Total interest paid over 5 years is $3,980.",
+    about: "Calculate monthly payments for America's favorite midsize sedan. Compare financing options across LE, SE, and XLE trims with complete amortization schedules.",
+    initialValues: {
+      vehiclePrice: 27500,
+      downPayment: 2500,
+      tradeInValue: 0,
+      interestRate: 5.99,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a Toyota Camry?",
+        answer: "With $2,500 down at 5.99% APR over 60 months, monthly payment on a $27,500 Camry is roughly $483/month.",
+      },
+      {
+        question: "How much is a Camry monthly payment with zero down?",
+        answer: "Financing $27,500 with zero down at 5.99% for 60 months results in a payment of approximately $532/month.",
+      },
+      {
+        question: "What is the payment on a 72-month Camry loan?",
+        answer: "A 72-month term reduces monthly payments to roughly $419/month, while adding about $1,200 in total interest.",
+      },
+      {
+        question: "How much interest do you pay on a Toyota Camry?",
+        answer: "Over a 60-month financing period at 5.99% APR, total interest paid equals roughly $3,980.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "toyota-tacoma-monthly-payment",
+    name: "Toyota Tacoma Monthly Payment Calculator",
+    title: "Toyota Tacoma Monthly Payment Calculator — Midsize Truck Financing | ConvertSheet",
+    metaDescription: "Calculate Toyota Tacoma monthly payments. At $33,500 MSRP with $3.5k down at 5.99% APR over 60 months, pay ~$580/mo. Free Excel amortization schedule.",
+    answerSummary: "Financing a Toyota Tacoma ($33,500 MSRP) with $3,500 down at 5.99% APR over 60 months costs approximately $580/month. Total interest paid is roughly $4,800.",
+    about: "Calculate payments for the legendary Toyota Tacoma midsize truck. The Tacoma holds some of the highest resale values in the automotive industry.",
+    initialValues: {
+      vehiclePrice: 33500,
+      downPayment: 3500,
+      tradeInValue: 0,
+      interestRate: 5.99,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a Toyota Tacoma?",
+        answer: "With $3,500 down at 5.99% APR over 60 months, monthly payment on a $33,500 Tacoma is approximately $580/month.",
+      },
+      {
+        question: "Why does the Toyota Tacoma hold its value so well?",
+        answer: "High reliability ratings and strong enthusiast demand give the Tacoma the lowest 5-year depreciation rate among midsize trucks.",
+      },
+      {
+        question: "What is the monthly payment on a Tacoma TRD Off-Road?",
+        answer: "TRD Off-Road models typically cost ~$43,000, resulting in a payment of roughly $745/month with 10% down.",
+      },
+      {
+        question: "How much interest do you pay on a 5-year Tacoma loan?",
+        answer: "Total financing interest equals approximately $4,800 over 60 months at 5.99% APR.",
       },
     ],
   },
@@ -4088,26 +4332,112 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
     presetSlug: "honda-civic-monthly-payment",
     name: "Honda Civic Monthly Payment Calculator",
     title: "Honda Civic Monthly Payment Calculator — Compact Car Loan Schedule | ConvertSheet",
-    metaDescription: "Calculate monthly payments on a Honda Civic. At $25,500 MSRP with $2.5k down at 5.5% APR over 48 months, pay ~$545/mo. Free Excel amortization schedule.",
-    answerSummary: "A Honda Civic ($25,500 MSRP) with 10% down ($2,550) at 5.5% APR over a 48-month term costs approximately $545/month (net loan balance ~$24,960 with 7% sales tax and fees). Total interest paid over 4 years is just $2,870.",
+    metaDescription: "Calculate monthly payments on a Honda Civic. At $24,500 MSRP with $2k down at 5.99% APR over 60 months, pay ~$435/mo. Free Excel amortization schedule.",
+    answerSummary: "A Honda Civic ($24,500 MSRP) with $2,000 down at 5.99% APR over 60 months costs approximately $435/month. Total interest paid over 5 years is roughly $3,600.",
     about: "The Honda Civic is the gold standard for reliable, fuel-efficient daily commuting. Calculate your monthly commitment on 48, 60, or 72-month terms and export your complete amortization schedule to Microsoft Excel.",
     initialValues: {
-      vehiclePrice: 25500,
-      downPayment: 2550,
+      vehiclePrice: 24500,
+      downPayment: 2000,
       tradeInValue: 0,
-      interestRate: 5.5,
-      loanTermMonths: 48,
+      interestRate: 5.99,
+      loanTermMonths: 60,
       salesTaxPercent: 7.0,
       dealerFees: 450,
     },
     faqs: [
       {
         question: "What is the monthly payment on a new Honda Civic?",
-        answer: "With 10% down at 5.5% APR over 48 months, monthly payment is roughly $545/month (or $453/month if extended to 60 months).",
+        answer: "With $2,000 down at 5.99% APR over 60 months, monthly payment is roughly $435/month (or $525/month on a 48-month loan).",
       },
       {
         question: "How much income do you need for a Honda Civic?",
-        answer: "Following the 10% gross income rule, a household income of roughly $55,000 to $65,000 comfortably covers Civic financing, fuel, and insurance.",
+        answer: "Following the 10% gross income rule, a household income of roughly $52,000 to $60,000 comfortably covers Civic financing, fuel, and insurance.",
+      },
+      {
+        question: "How much interest do you pay on a Honda Civic loan?",
+        answer: "Total interest charges equal roughly $3,600 over a 5-year financing term at 5.99% APR.",
+      },
+      {
+        question: "What is the payment on a Civic with $0 down?",
+        answer: "Financing $24,500 with zero down payment at 5.99% for 60 months results in approximately $474/month.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "zero-down-car-loan",
+    name: "Zero Down Car Loan Calculator ($0 Down Payment)",
+    title: "Zero Down Car Loan Calculator: $0 Down Payment Auto Financing (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a car loan with $0 down payment. See how zero down increases monthly payments, interest, and depreciation risk.",
+    answerSummary: "Financing a $35,000 vehicle with $0 down payment at 6.49% APR for 60 months results in a monthly payment of $685/month. Total interest paid equals $6,076.",
+    about: `### Zero Down vs 20% Down Payment Comparison ($35,000 Vehicle)
+
+| Down Payment | Financed Balance | Monthly Payment (60 Mo @ 6.49%) | Total Interest Paid |
+| :--- | :--- | :--- | :--- |
+| **$0 Down (0%)** | $35,000 | $685 / mo | $6,076 |
+| **$3,500 Down (10%)** | $31,500 | $616 / mo | $5,468 |
+| **$7,000 Down (20%)** | $28,000 | $548 / mo | $4,860 |`,
+    initialValues: {
+      vehiclePrice: 35000,
+      downPayment: 0,
+      tradeInValue: 0,
+      interestRate: 6.49,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "Can you buy a car with zero down payment?",
+        answer: "Yes, borrowers with good to excellent credit (typically 670+ FICO) can qualify for 100% financing with $0 down.",
+      },
+      {
+        question: "What is the payment on a $35k car with zero down?",
+        answer: "At 6.49% APR over 60 months, the monthly payment is approximately $685/month.",
+      },
+      {
+        question: "What are the risks of a zero down car loan?",
+        answer: "The main risk is negative equity: driving off the lot, your car immediately depreciates 10% to 15%, meaning you owe more than the vehicle is worth.",
+      },
+      {
+        question: "Do you need gap insurance with zero down?",
+        answer: "Yes! Gap insurance is strongly advised with $0 down to cover the shortfall if the vehicle is totaled or stolen.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "50k-car-loan",
+    name: "$50,000 Car Loan Payment Calculator",
+    title: "$50,000 Car Loan Calculator: Monthly Payment & Total Interest (2026) | ConvertSheet",
+    metaDescription: "Calculate monthly payments on a $50,000 car loan. Compare 48, 60, and 72-month terms at 6.49% APR. View total interest and Excel schedule export.",
+    answerSummary: "On a $50,000 car loan at 6.49% APR, a 60-month term requires $978/month with $8,680 in total interest. Extending to 72 months reduces the payment to $840/month, but increases total interest to $10,480.",
+    about: "Calculate monthly payments and carrying costs on a $50,000 luxury or full-size truck purchase. Compare terms from 48 to 84 months and evaluate pre-payment interest savings.",
+    initialValues: {
+      vehiclePrice: 50000,
+      downPayment: 5000,
+      tradeInValue: 0,
+      interestRate: 6.49,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 500,
+    },
+    faqs: [
+      {
+        question: "What is the monthly payment on a $50,000 car loan?",
+        answer: "At 6.49% APR with $0 down, payment is roughly $978/month for 60 months or $840/month for 72 months.",
+      },
+      {
+        question: "What salary do you need for a $50,000 car loan?",
+        answer: "Following the 10% rule, a gross household income of roughly $115,000 to $130,000 is recommended to afford a $50,000 vehicle comfortably.",
+      },
+      {
+        question: "How much interest do you pay on a $50k car loan?",
+        answer: "Over 60 months at 6.49%, total interest equals $8,680; over 72 months, interest totals $10,480.",
+      },
+      {
+        question: "What is the payment on a $50k car for 84 months?",
+        answer: "At 7.49% APR, an 84-month term results in approximately $767/month with over $14,400 in total interest charges.",
       },
     ],
   },

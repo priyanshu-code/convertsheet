@@ -365,6 +365,29 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(alberta80k?.title).toContain("Alberta");
   });
 
+  it("resolves newly registered vehicle financing programmatic presets", () => {
+    const teslaModelY = getProgrammaticPreset("car-loan-calculator", "tesla-model-y-monthly-payment");
+    expect(teslaModelY).toBeDefined();
+    expect(teslaModelY?.title).toContain("Tesla Model Y");
+    expect(teslaModelY?.faqs.length).toBeGreaterThanOrEqual(4);
+
+    const silverado = getProgrammaticPreset("car-loan-calculator", "chevy-silverado-monthly-payment");
+    expect(silverado).toBeDefined();
+    expect(silverado?.title).toContain("Silverado");
+
+    const rav4 = getProgrammaticPreset("car-loan-calculator", "toyota-rav4-monthly-payment");
+    expect(rav4).toBeDefined();
+    expect(rav4?.title).toContain("RAV4");
+
+    const loan84Mo = getProgrammaticPreset("car-loan-calculator", "84-month-car-loan");
+    expect(loan84Mo).toBeDefined();
+    expect(loan84Mo?.title).toContain("84-Month");
+
+    const zeroDown = getProgrammaticPreset("car-loan-calculator", "zero-down-car-loan");
+    expect(zeroDown).toBeDefined();
+    expect(zeroDown?.title).toContain("Zero Down");
+  });
+
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
     expect(params.length).toBeGreaterThanOrEqual(140);
