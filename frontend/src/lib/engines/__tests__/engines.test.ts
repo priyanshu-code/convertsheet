@@ -521,6 +521,10 @@ describe("Conversion Engines", () => {
       expect(getConverterEngine("ndjson-to-excel")).toBeDefined();
       expect(getConverterEngine("yaml-to-excel")).toBeDefined();
       expect(getConverterEngine("excel-to-yaml")).toBeDefined();
+      expect(getConverterEngine("heic-to-jpg")).toBeDefined();
+      expect(getConverterEngine("heic-to-png")).toBeDefined();
+      expect(getConverterEngine("jpg-to-pdf")).toBeDefined();
+      expect(getConverterEngine("png-to-pdf")).toBeDefined();
     });
 
     it("verifies tsv-to-csv, sql-to-csv, ndjson-to-csv, and yaml-to-excel parsePreview and convert execution", async () => {
