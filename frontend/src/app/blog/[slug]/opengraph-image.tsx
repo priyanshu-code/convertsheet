@@ -14,8 +14,10 @@ export function generateStaticParams() {
 
 export default async function Image({ params }: { params: { slug: string } }) {
   const post = getBlogPostBySlug(params.slug);
-  const title = post ? post.title : "ConvertSheet Engineering Blog";
-  const category = post ? post.category : "Technical Guide";
+  const rawTitle = post ? post.title : "ConvertSheet Engineering Blog";
+  const title = rawTitle.replace(/₹/g, "Rs. ");
+  const rawCategory = post ? post.category : "Technical Guide";
+  const category = rawCategory.replace(/₹/g, "Rs. ");
 
   return new ImageResponse(
     (
