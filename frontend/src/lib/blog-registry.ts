@@ -771,7 +771,7 @@ const arrowResult = await conn.query(\`
       },
       {
         question: "How will the 25 bps repo rate hike affect my home loan EMI?",
-        answer: "On a ₹50 Lakh home loan with a 20-year tenure (8.50% to 8.75%), your monthly EMI increases by approximately ₹802/month, or ₹1.92 Lakh in total additional interest over the loan life."
+        answer: "On a ₹50 Lakh home loan with a 20-year tenure (8.50% to 8.75%), your monthly EMI increases by approximately ₹795/month (from ₹43,391 to ₹44,186), adding ₹1.91 Lakh in total additional interest over the loan life."
       },
       {
         question: "Why did RBI increase the repo rate in October 2026?",
@@ -803,7 +803,7 @@ const arrowResult = await conn.query(\`
           <li><strong>Marginal Standing Facility (MSF) &amp; Bank Rate:</strong> 5.75%</li>
           <li><strong>Standing Deposit Facility (SDF):</strong> 5.25%</li>
           <li><strong>Real GDP Growth:</strong> 7.1% | <strong>CPI Headline Inflation:</strong> 5.2%</li>
-          <li><strong>Direct Impact:</strong> Retail floating loan rates (EBLR) rise by 0.25%, adding ₹802/mo on a ₹50L home loan.</li>
+          <li><strong>Direct Impact:</strong> Retail floating loan rates (EBLR) rise by 0.25%, adding ₹795/mo on a ₹50L home loan.</li>
         </ul>
       </div>
 
@@ -902,7 +902,7 @@ const arrowResult = await conn.query(\`
           Unless you explicitly call or message your bank, <strong>most lenders will NOT raise your monthly EMI</strong>. Instead, to prevent debit bounces and customer disputes, banks silently extend your loan tenure.
         </p>
         <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
-          On a 20-year ₹50 Lakh loan at 8.50%, absorbing a 25 bps hike solely through tenure extension adds <strong>over 14 additional monthly installments (1 year and 2 months)</strong> to your loan. You end up paying ₹43,391 for an extra 14 months, costing you over <strong>₹6 Lakh</strong> in extended interest payments versus absorbing the modest ₹795/month EMI increase.
+          On a 20-year ₹50 Lakh loan at 8.50%, absorbing a 25 bps hike solely through tenure extension adds <strong>over 12 additional monthly installments (1 year)</strong> to your loan. You end up paying ₹43,391 for an extra 12.4 months, costing you approximately <strong>₹5.40 Lakh</strong> in extended interest payments versus absorbing the modest ₹795/month EMI increase.
         </p>
       </section>
 
@@ -954,7 +954,7 @@ const arrowResult = await conn.query(\`
       },
       {
         question: "How many extra months does a 0.25% repo rate hike add to a home loan?",
-        answer: "On a ₹50 Lakh, 20-year home loan at 8.5%, a 0.25% hike (to 8.75%) silently adds approximately 16 additional monthly installments (1 year and 4 months) if the EMI remains unchanged."
+        answer: "On a ₹50 Lakh, 20-year home loan at 8.5%, a 0.25% hike (to 8.75%) silently adds approximately 12.4 additional monthly installments (over 1 year) if the EMI remains unchanged, adding roughly ₹5.40 Lakh in extra interest."
       }
     ],
     tableOfContents: [
@@ -1540,7 +1540,7 @@ const arrowResult = await conn.query(\`
           The RBI increased the benchmark repo rate to <strong>5.50%</strong> (from 5.25%) to combat 5.2% inflation. Here is the bottom-line household impact:
         </p>
         <ul class="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 space-y-1.5 pl-4 list-disc">
-          <li>🏠 <strong>Higher Loan EMIs:</strong> Floating home &amp; auto loan rates rise by 0.25% (+₹802/mo on a ₹50L loan).</li>
+          <li>🏠 <strong>Higher Loan EMIs:</strong> Floating home &amp; auto loan rates rise by 0.25% (+₹795/mo on a ₹50L loan).</li>
           <li>💰 <strong>Better Deposit Returns:</strong> Fixed deposits now yield 7.75% to 8.25%+ (positive real return of +2.80%).</li>
           <li>🛒 <strong>Grocery Pressures:</strong> Inflation pegged at 5.2% driven by onion (+85%), sugar (+34%), and crude oil ($116/bbl).</li>
           <li>💼 <strong>Solid Job Market:</strong> 7.1% GDP growth keeps core employment stable, though tech valuations face global headwinds.</li>
@@ -1616,7 +1616,7 @@ const arrowResult = await conn.query(\`
           When the repo rate jumps by 25 basis points from 5.25% to 5.50%, your bank does not absorb the difference. Within 30 to 60 days, your loan rate rises by exactly 0.25%.
         </p>
         <ul class="space-y-2 text-zinc-700 dark:text-zinc-300 pl-5 list-disc">
-          <li><strong>Home Loans:</strong> If your rate moves from 8.50% to 8.75% on a ₹50 Lakh, 20-year home loan, your EMI jumps by ₹802/month. If the bank quietly extends your tenure instead, you will pay an extra 16 months of payments—costing you ₹7.1 Lakh in pure interest!</li>
+          <li><strong>Home Loans:</strong> If your rate moves from 8.50% to 8.75% on a ₹50 Lakh, 20-year home loan, your EMI jumps by ₹795/month. If the bank quietly extends your tenure instead, you will pay roughly 12.4 extra monthly installments—costing you approximately ₹5.40 Lakh in extended interest!</li>
           <li><strong>Auto &amp; Personal Loans:</strong> Fixed-rate auto loans taken out before October 7 will keep their existing rate. But any new car or personal loan applied for today will cost 0.25%–0.50% more annually.</li>
           <li><strong>Credit Card Revolving Debt:</strong> Unsecured lending gets stricter. If you carry a revolving balance on your credit cards (paying 36% to 42% APR), pay it off immediately. In a tightening cycle, banks aggressively trim credit card limits.</li>
         </ul>
