@@ -49,6 +49,15 @@ export async function generateMetadata({
     description: comp.metaDescription,
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        "en": canonicalUrl,
+        "en-US": canonicalUrl,
+        "es": canonicalUrl,
+        "pt": canonicalUrl,
+        "de": canonicalUrl,
+        "fr": canonicalUrl,
+        "x-default": canonicalUrl,
+      },
     },
     openGraph: {
       title: comp.title,

@@ -361,5 +361,91 @@ export function PresetQuickFactCard({
     );
   }
 
+  // 6. Percentage Calculator Math Facts (Position-0 AEO Snippet)
+  if (toolSlug === "percentage-calculator") {
+    let expression = "0.20 × 100";
+    let result = "20";
+    let decimalFormula = "0.20 × 100 = 20";
+    let fractionFormula = "20 / 100 × 100 = 20";
+
+    if (presetSlug === "0-20-x-100") {
+      expression = "0.20 * 100 (or 100 x 0.20)";
+      result = "20";
+      decimalFormula = "0.20 × 100 = 20";
+      fractionFormula = "100 × 0.20 = 20";
+    } else if (presetSlug === "100-percent-divided-by-20") {
+      expression = "100% / 20";
+      result = "5%";
+      decimalFormula = "1.0 ÷ 20 = 0.05";
+      fractionFormula = "100% ÷ 20 parts = 5% each";
+    } else if (presetSlug === "what-is-20-percent-of-100") {
+      expression = "20% of 100";
+      result = "20";
+      decimalFormula = "(20 ÷ 100) × 100 = 20";
+      fractionFormula = "0.20 × 100 = 20";
+    } else if (presetSlug === "what-is-15-percent-of-80") {
+      expression = "15% of 80";
+      result = "12";
+      decimalFormula = "(15 ÷ 100) × 80 = 12";
+      fractionFormula = "0.15 × 80 = 12";
+    }
+
+    return (
+      <div className="w-full bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent dark:from-emerald-950/40 dark:via-zinc-900 border border-emerald-200/80 dark:border-emerald-800/80 rounded-2xl p-4 sm:p-6 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-emerald-100 dark:border-emerald-900/60">
+          <div className="flex items-center gap-2">
+            <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+              Instant Answer & Math Proof (At a Glance)
+            </span>
+          </div>
+          {badge && (
+            <span className="text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700/60">
+              {badge}
+            </span>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-left">
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Expression
+            </span>
+            <span className="text-sm sm:text-base font-extrabold text-zinc-900 dark:text-zinc-50 font-mono">
+              {expression}
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Evaluated Result
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+              {result}
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Decimal Formula
+            </span>
+            <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-50 font-mono">
+              {decimalFormula}
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Arithmetic Step
+            </span>
+            <span className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-50 font-mono">
+              {fractionFormula}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 }

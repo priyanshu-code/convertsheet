@@ -20,14 +20,17 @@ describe("Competitor Comparison Pages", () => {
     expect(slugs).toContain("cloudconvert-alternative");
     expect(slugs).toContain("smallpdf-alternative");
     expect(slugs).toContain("omni-calculator-alternative");
+    expect(slugs).toContain("calculator-net-alternative");
+    expect(slugs).toContain("ilovepdf-alternative");
   });
 
   it("generateStaticParams generates all comparison competitor routes", () => {
     const params = generateStaticParams();
-    expect(params.length).toBeGreaterThanOrEqual(3);
+    expect(params.length).toBeGreaterThanOrEqual(5);
     expect(params.map((p) => p.competitor)).toContain("cloudconvert-alternative");
     expect(params.map((p) => p.competitor)).toContain("smartasset-alternative");
     expect(params.map((p) => p.competitor)).toContain("calculator-net-alternative");
+    expect(params.map((p) => p.competitor)).toContain("ilovepdf-alternative");
   });
 
   it("generateMetadata produces correct title, canonical, and OpenGraph", async () => {

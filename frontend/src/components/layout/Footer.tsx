@@ -54,6 +54,8 @@ export function Footer() {
     { name: "CloudConvert Alternative", href: "/compare/cloudconvert-alternative" },
     { name: "Smallpdf Alternative", href: "/compare/smallpdf-alternative" },
     { name: "Omni Calculator Alternative", href: "/compare/omni-calculator-alternative" },
+    { name: "Calculator.net Alternative", href: "/compare/calculator-net-alternative" },
+    { name: "iLovePDF Alternative", href: "/compare/ilovepdf-alternative" },
     { name: "100% Client-Side Processing", href: "/privacy#client-side" },
     { name: "Zero Server Data Retention", href: "/privacy#zero-retention" },
     { name: "Terms of Service", href: "/terms" },

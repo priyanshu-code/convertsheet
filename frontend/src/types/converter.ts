@@ -66,4 +66,5 @@ export type ConverterEngineId =
   | "heic-to-jpg"
   | "heic-to-png"
   | "jpg-to-pdf"
-  | "png-to-pdf";
+  | "png-to-pdf"
+  | "pdf-to-jpg";

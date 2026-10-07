@@ -455,5 +455,19 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(passport?.title).toContain("Passport Photo Resizer");
     expect(passport?.badge).toBe("Official 2×2\"");
   });
+
+  it("resolves mathematical syntax presets for Position-0 AEO answer cards", () => {
+    const math20 = getProgrammaticPreset("percentage-calculator", "0-20-x-100");
+    expect(math20).toBeDefined();
+    expect(math20?.title).toContain("0.20 * 100 = 20");
+    expect(math20?.badge).toBe("Instant Math Answer");
+    expect(math20?.answerSummary).toContain("0.20 * 100 equals 20");
+
+    const divide20 = getProgrammaticPreset("percentage-calculator", "100-percent-divided-by-20");
+    expect(divide20).toBeDefined();
+    expect(divide20?.title).toContain("100%/20 = 5%");
+    expect(divide20?.badge).toBe("Instant Math Answer");
+    expect(divide20?.answerSummary).toContain("100% divided by 20 equals 5%");
+  });
 });
 

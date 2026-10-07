@@ -1936,6 +1936,34 @@ export const CONVERTER_REGISTRY = {
       { question: "Does it work on mobile browsers?", answer: "Yes, you can convert HEIC files directly on iOS Safari or Android Chrome." }
     ]
   },
+
+  "pdf-to-jpg": {
+    slug: "pdf-to-jpg",
+    sourceFormat: "PDF",
+    targetFormat: "JPG",
+    sourceExtension: ".pdf",
+    targetExtension: ".jpg",
+    acceptedMimeTypes: ["application/pdf"],
+    category: "utility",
+    engineId: "pdf-to-jpg",
+    isClientSide: true,
+    featured: true,
+    badge: "High Demand",
+    title: "Convert PDF to JPG Online - Free In-Browser Document to Image",
+    subtitle: "Convert PDF pages to high-resolution JPEG and JPG images with 100% client-side privacy and zero server uploads.",
+    metaDescription: "Convert PDF to JPG online for free. Transform PDF documents and forms into crisp JPEG pictures directly in your web browser. 100% private, zero uploads.",
+    about: "Converting PDF pages into individual JPG images makes documents easily embeddable in presentations, social media, web pages, and mobile photo galleries.\n\nConvertSheet renders PDF pages directly in your browser using hardware-accelerated HTML5 Canvas and WebAssembly. Your confidential legal documents, statements, and tax forms never leave your device.",
+    howTo: [
+      { step: 1, title: "Select PDF Document", description: "Upload or drag-and-drop your .pdf file directly into the converter." },
+      { step: 2, title: "Canvas Rendering", description: "Our browser engine decodes and rasterizes pages to high-resolution JPEG." },
+      { step: 3, title: "Download JPG", description: "Save your crystal clear JPG image or batch ZIP archive instantly." }
+    ],
+    faqs: [
+      { question: "Are my confidential PDF documents uploaded to remote servers?", answer: "Never. ConvertSheet executes 100% client-side in your browser memory. Zero document bytes are transmitted across the internet." },
+      { question: "What is the image resolution of the output JPG?", answer: "Pages are rasterized at native display dimensions with crisp 92%+ JPEG quality encoding." },
+      { question: "Is this tool completely free with no limits?", answer: "Yes, 100% free with no account signup, subscription paywalls, or daily document limits." }
+    ]
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;

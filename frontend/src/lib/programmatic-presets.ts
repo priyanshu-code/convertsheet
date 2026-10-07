@@ -3474,6 +3474,68 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
   },
   {
     toolSlug: "percentage-calculator",
+    presetSlug: "0-20-x-100",
+    name: "0.20 * 100 (0.20 × 100 = 20)",
+    title: "0.20 * 100 = 20 — Percentage & Multiplication Calculator | ConvertSheet",
+    subtitle: "Calculate 0.20 * 100 (or 100 x 0.20). See why multiplying 0.20 by 100 equals 20, step-by-step arithmetic proof, and percentage conversion.",
+    metaDescription: "0.20 * 100 = 20. Instant Position-0 answer: 0.20 multiplied by 100 equals 20 (exact). Decimal multiplication, percentage equivalent (20% of 100), and free math guide.",
+    answerSummary: "0.20 * 100 equals 20. Multiplying 0.20 (which is 20 hundredths or 20%) by 100 shifts the decimal point two places to the right: 0.20 × 100 = 20.",
+    badge: "Instant Math Answer",
+    keywords: ["0.20 * 100", "100 x 0.20", "100*0.20", "0.20 times 100", "0.20 multiplied by 100", "20 percent of 100"],
+    about: "### Exact Mathematical Breakdown: 0.20 * 100 = 20\n\nThe mathematical expression `0.20 * 100` (or `100 x 0.20`, `100*0.20`) evaluates to **20**.\n\n#### Why 0.20 × 100 Equals 20:\n1. **Decimal Point Shift Rule**: Multiplying any decimal number by $10^2$ ($100$) moves the decimal point exactly two digits to the right:\n   $$0.20 \\times 100 = 20.0 = 20$$\n2. **Fractional Equivalence**: $0.20$ is equivalent to the fraction $\\frac{20}{100}$ (or $\\frac{1}{5}$):\n   $$\\frac{20}{100} \\times 100 = 20$$\n3. **Percentage Relationship**: $0.20$ represents $20\\%$. Calculating $0.20 \\times 100$ is identical to asking *\"What is 20% of 100?\"*, which equals **20**.",
+    initialValues: {
+      mode: "whatIs",
+      valX: 20,
+      valY: 100,
+    },
+    faqs: [
+      {
+        question: "What is 0.20 * 100?",
+        answer: "0.20 * 100 equals 20. Multiplying 0.20 by 100 shifts the decimal point two places to the right, yielding 20."
+      },
+      {
+        question: "What is 100 x 0.20?",
+        answer: "By the commutative property of multiplication (a × b = b × a), 100 × 0.20 = 0.20 × 100 = 20."
+      },
+      {
+        question: "How does 0.20 relate to percentage?",
+        answer: "0.20 is the decimal representation of 20% (20 ÷ 100 = 0.20). Multiplying 0.20 by 100 yields the percentage value 20."
+      }
+    ],
+  },
+  {
+    toolSlug: "percentage-calculator",
+    presetSlug: "100-percent-divided-by-20",
+    name: "100% / 20 (100% Divided by 20 = 5%)",
+    title: "100%/20 = 5% — Percentage Division & Share Calculator | ConvertSheet",
+    subtitle: "Calculate 100% divided by 20. Find equal allocation shares, unit percentages (5% each), and step-by-step arithmetic proof.",
+    metaDescription: "100% / 20 = 5%. Dividing 100% into 20 equal parts yields 5% per part (or 1 ÷ 20 = 0.05). Instant answer, formulas, and percentage allocation breakdown.",
+    answerSummary: "100% divided by 20 equals 5% (or 0.05 in pure decimal). Dividing a whole (100%) into 20 equal shares gives each share exactly 5%.",
+    badge: "Instant Math Answer",
+    keywords: ["100%/20", "100 percent divided by 20", "100 divided by 20 percent", "100% / 20", "divide 100 percent by 20"],
+    about: "### Exact Mathematical Breakdown: 100% / 20 = 5%\n\nThe calculation `100% / 20` divides a total whole into **20 equal parts**, where each part accounts for **5%** of the whole.\n\n#### Why 100% ÷ 20 Equals 5%:\n1. **Percentage Division**: $100\\% \\div 20 = 5\\%$.\n2. **Decimal Calculation**: $100\\% = 1.0$. Dividing $1.0 \\div 20 = 0.05$. Converting $0.05$ back to a percentage by multiplying by $100$ gives $5\\%$.\n3. **Practical Distribution**: If 20 team members or equity holders divide 100% equally, each receives exactly 5% ownership.",
+    initialValues: {
+      mode: "whatIs",
+      valX: 5,
+      valY: 100,
+    },
+    faqs: [
+      {
+        question: "What is 100% divided by 20?",
+        answer: "100% divided by 20 is 5%. Each of the 20 parts represents 5% of the total 100%."
+      },
+      {
+        question: "What is 100 divided by 20 as a percentage?",
+        answer: "100 divided by 20 is 5. If expressed as a fraction of 100, 5 is 5%."
+      },
+      {
+        question: "How do you calculate equal 20-way shares of 100%?",
+        answer: "Divide 100 by 20: 100 ÷ 20 = 5%. Each share is exactly 5%."
+      }
+    ],
+  },
+  {
+    toolSlug: "percentage-calculator",
     presetSlug: "what-is-20-percent-of-100",
     name: "What is 20% of 100?",
     title: "What is 20% of 100? Percentage Calculator & Formula | ConvertSheet",

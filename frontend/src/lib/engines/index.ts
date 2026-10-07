@@ -152,6 +152,7 @@ import {
   heicToPngEngine,
   jpgToPdfEngine,
   pngToPdfEngine,
+  pdfToJpgEngine,
 } from "./consumer-media-engine";
 
 const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
@@ -197,6 +198,7 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "heic-to-png": heicToPngEngine,
   "jpg-to-pdf": jpgToPdfEngine,
   "png-to-pdf": pngToPdfEngine,
+  "pdf-to-jpg": pdfToJpgEngine,
 };
 
 export function getConverterEngine(engineId: ConverterEngineId): IConverterEngine {

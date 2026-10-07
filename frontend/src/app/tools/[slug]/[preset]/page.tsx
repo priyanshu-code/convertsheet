@@ -74,6 +74,15 @@ export async function generateMetadata({
     description: preset.metaDescription,
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        "en": canonicalUrl,
+        "en-US": canonicalUrl,
+        "es": canonicalUrl,
+        "pt": canonicalUrl,
+        "de": canonicalUrl,
+        "fr": canonicalUrl,
+        "x-default": canonicalUrl,
+      },
     },
     openGraph: {
       title: preset.title,

@@ -20,7 +20,7 @@ describe("Converter Registry & Utilities", () => {
   describe("getAllConverterSlugs", () => {
     it("returns all registered converter slugs", () => {
       const slugs = getAllConverterSlugs();
-      expect(slugs).toHaveLength(44);
+      expect(slugs).toHaveLength(45);
       expect(slugs).toContain("webp-to-png");
       expect(slugs).toContain("png-to-webp");
       expect(slugs).toContain("jpg-to-png");
@@ -31,6 +31,7 @@ describe("Converter Registry & Utilities", () => {
       expect(slugs).toContain("heic-to-png");
       expect(slugs).toContain("jpg-to-pdf");
       expect(slugs).toContain("png-to-pdf");
+      expect(slugs).toContain("pdf-to-jpg");
       expect(slugs).toContain("parquet-to-excel");
       expect(slugs).toContain("parquet-to-csv");
       expect(slugs).toContain("parquet-to-json");

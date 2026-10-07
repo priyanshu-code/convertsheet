@@ -507,6 +507,108 @@ export const COMPARISONS: CompetitorComparison[] = [
       },
     ],
   },
+  {
+    slug: "ilovepdf-alternative",
+    competitorName: "iLovePDF",
+    title: "Best Free iLovePDF Alternative (100% In-Browser Privacy)",
+    metaDescription: "Looking for a secure iLovePDF alternative? ConvertSheet merges, splits, compresses, and converts PDFs with zero server uploads. 100% private, unlimited, and free.",
+    heroHeadline: "The Zero-Upload, Client-Side iLovePDF Alternative",
+    heroSubheadline: "Stop uploading private legal documents, contracts, and financial spreadsheets to cloud PDF servers. ConvertSheet processes everything locally on your device with WebAssembly.",
+    prosCompetitor: [
+      "Familiar user interface for simple PDF operations",
+      "Wide range of everyday PDF utilities",
+    ],
+    consCompetitor: [
+      "Uploads your sensitive documents to remote third-party cloud servers",
+      "Daily file quantity and size restrictions on free plan",
+      "Upload latency and queuing delays on larger files",
+      "Server-side retention risk for proprietary documents",
+    ],
+    convertsheetAdvantages: [
+      "100% In-Browser: Your PDF files never leave your computer",
+      "Completely Free & Unlimited: No daily task quotas or subscription paywalls",
+      "Zero Cloud Queues: Instant client-side processing using WebAssembly and Canvas",
+      "Bank-Grade Security: Safely process NDAs, medical records, and tax forms offline",
+    ],
+    featuresMatrix: [
+      {
+        feature: "Data Privacy & Processing",
+        convertsheet: "100% Local (Client-Side Memory)",
+        competitor: "Uploaded to Remote Cloud Servers",
+        isAdvantage: true,
+      },
+      {
+        feature: "Daily Task Limits",
+        convertsheet: "Unlimited Free Conversions",
+        competitor: "Task limits and file size caps on free tier",
+        isAdvantage: true,
+      },
+      {
+        feature: "Offline / Air-Gapped Mode",
+        convertsheet: "Yes (Full Progressive Web App)",
+        competitor: "No (Requires Constant Internet)",
+        isAdvantage: true,
+      },
+      {
+        feature: "Processing Speed",
+        convertsheet: "Zero Upload Delay (Instant Local Execution)",
+        competitor: "Subject to upload speeds & server queue wait times",
+        isAdvantage: true,
+      },
+      {
+        feature: "Data Breach & Retention Risk",
+        convertsheet: "Zero (No server ever receives file data)",
+        competitor: "Temporary server disk retention",
+        isAdvantage: true,
+      },
+      {
+        feature: "All-in-One Utility Suite",
+        convertsheet: "Integrated PDF, Image, Spreadsheet & Dev Tools",
+        competitor: "Focused primarily on basic PDF operations",
+        isAdvantage: true,
+      },
+    ],
+    recommendedConverters: [
+      {
+        slug: "compress-pdf",
+        name: "PDF Compressor Tool",
+        description: "Shrink bloated PDF file sizes locally without uploading to external servers.",
+        type: "tool",
+      },
+      {
+        slug: "merge-pdf",
+        name: "PDF Merge Tool",
+        description: "Combine multiple PDF documents into a single file directly in your browser.",
+        type: "tool",
+      },
+      {
+        slug: "pdf-to-jpg",
+        name: "PDF to JPG Converter",
+        description: "Convert PDF pages to high-resolution JPEG images with zero cloud transmission.",
+        type: "converter",
+      },
+      {
+        slug: "jpg-to-pdf",
+        name: "JPG to PDF Converter",
+        description: "Convert photos and receipts to standard PDF documents with zero cloud transmission.",
+        type: "converter",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is ConvertSheet really a free alternative to iLovePDF?",
+        answer: "Yes, ConvertSheet provides completely free, client-side PDF utilities with no file limits, no ads, and no premium subscription tiers.",
+      },
+      {
+        question: "Why is ConvertSheet safer than iLovePDF for business documents?",
+        answer: "iLovePDF uploads your files to remote web servers to process them. ConvertSheet uses WebAssembly and modern browser APIs (HTML5 Canvas & pdf-lib) to execute all PDF modifications directly in your browser RAM, guaranteeing that zero confidential data ever touches a third-party server.",
+      },
+      {
+        question: "Can I use ConvertSheet offline?",
+        answer: "Yes. Once the web application loads, all processing logic runs locally on your computer, meaning you can manipulate documents completely air-gapped without an internet connection.",
+      },
+    ],
+  },
 ];
 
 export function getAllComparisons(): CompetitorComparison[] {
