@@ -55,21 +55,53 @@ export default function BlogIndexPage() {
         </div>
       </section>
 
-      {/* Blog Cards Grid */}
-      <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8" aria-label="Latest Articles">
-        <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
-            Latest Articles & Guides
-          </h2>
-          <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-            {posts.length} {posts.length === 1 ? "Guide" : "Guides"}
+      {/* Topic Pillars & Comprehensive Hubs */}
+      <section className="mx-auto max-w-5xl px-4 pt-12 pb-6 sm:px-6 lg:px-8" aria-label="Core Topic Pillars">
+        <div className="mb-6 flex items-center justify-between border-b border-zinc-200 pb-4 dark:border-zinc-800">
+          <div>
+            <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              Latest Articles &amp; Guides
+            </h2>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              Foundational architectural breakdowns and benchmark frameworks
+            </p>
+          </div>
+          <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+            {posts.filter((p) => p.role === "pillar").length} Pillars
           </span>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          {posts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
-          ))}
+          {posts
+            .filter((p) => p.role === "pillar")
+            .map((post) => (
+              <BlogCard key={post.slug} post={post} />
+            ))}
+        </div>
+      </section>
+
+      {/* Deep Dive Branch Articles */}
+      <section className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8" aria-label="Branch Articles & Deep Dives">
+        <div className="mb-6 flex items-center justify-between border-b border-zinc-200 pb-4 dark:border-zinc-800">
+          <div>
+            <h2 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
+              🌿 Specialized Deep Dives & Branch Studies
+            </h2>
+            <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+              Targeted scenario analyses, mathematical proofs, and actionable strategies
+            </p>
+          </div>
+          <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+            {posts.filter((p) => p.role !== "pillar").length} Deep Dives
+          </span>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          {posts
+            .filter((p) => p.role !== "pillar")
+            .map((post) => (
+              <BlogCard key={post.slug} post={post} />
+            ))}
         </div>
       </section>
     </div>

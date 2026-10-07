@@ -4,6 +4,7 @@ import { describe, it, expect } from "vitest";
 import { ToolEmbedBanner } from "../ToolEmbedBanner";
 import { BlogCard } from "../BlogCard";
 import { AuthorBioCard } from "../AuthorBioCard";
+import { TopicClusterNav } from "../TopicClusterNav";
 import { BLOG_POSTS, FOUNDER_AUTHOR } from "@/lib/blog-registry";
 
 describe("Blog UI Components", () => {
@@ -59,5 +60,25 @@ describe("Blog UI Components", () => {
 
     const twitterLink = screen.getByRole("link", { name: /Priyanshu Rawat on X/i });
     expect(twitterLink).toHaveAttribute("href", "https://x.com/priyanshuz_code");
+  });
+
+  it("renders TopicClusterNav for pillar and branch posts correctly", () => {
+    const pillarPost = BLOG_POSTS.find((p) => p.slug === "rbi-repo-rate-hike-25-bps-home-loan-emi-impact");
+    expect(pillarPost).toBeDefined();
+
+    const { unmount } = render(<TopicClusterNav currentPost={pillarPost!} />);
+    expect(screen.getByText("Topic Cluster Sub-Guides")).toBeInTheDocument();
+    expect(screen.getByText("The Home Loan Tenure Trap: Why Banks Don't Increase Your EMI (And How It Costs ₹5 Lakh+)")).toBeInTheDocument();
+    expect(screen.getByText("The 1 Extra EMI Per Year Rule: How to Save ₹9 Lakh on a ₹50 Lakh Home Loan")).toBeInTheDocument();
+    unmount();
+
+    // Now test as a branch guide
+    const branchPost = BLOG_POSTS.find((p) => p.slug === "the-home-loan-tenure-trap-explained");
+    expect(branchPost).toBeDefined();
+
+    render(<TopicClusterNav currentPost={branchPost!} />);
+    expect(screen.getByText("Topic Cluster Hub & Related Guides")).toBeInTheDocument();
+    expect(screen.getByText("Core Pillar Guide")).toBeInTheDocument();
+    expect(screen.getByText(/RBI Increases Repo Rate by 25 BPS/i)).toBeInTheDocument();
   });
 });

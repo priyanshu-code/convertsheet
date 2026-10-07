@@ -3,6 +3,9 @@ import {
   getAllBlogPosts,
   getBlogPostBySlug,
   getAllBlogPostSlugs,
+  getBlogPostsByCluster,
+  getPillarPost,
+  getBranchPosts,
 } from "../blog-registry";
 
 describe("Blog Registry & Content Layer", () => {
@@ -103,5 +106,28 @@ describe("Blog Registry & Content Layer", () => {
     expect(ir35Guide).toBeDefined();
     expect(ir35Guide?.attachedToolSlug).toBe("income-tax-calculator");
     expect(ir35Guide?.content).toContain("IR35");
+  });
+
+  it("verifies pillar and branches topic cluster architecture integrity", () => {
+    // Cluster: indian-home-loans
+    const homeLoanPosts = getBlogPostsByCluster("indian-home-loans");
+    expect(homeLoanPosts.length).toBe(3);
+
+    const pillar = getPillarPost("indian-home-loans");
+    expect(pillar).toBeDefined();
+    expect(pillar?.slug).toBe("rbi-repo-rate-hike-25-bps-home-loan-emi-impact");
+    expect(pillar?.role).toBe("pillar");
+
+    const branches = getBranchPosts(pillar!.slug);
+    expect(branches.length).toBe(2);
+    const branchSlugs = branches.map((b: { slug: string }) => b.slug);
+    expect(branchSlugs).toContain("the-home-loan-tenure-trap-explained");
+    expect(branchSlugs).toContain("the-1-extra-emi-per-year-rule-home-loan-savings");
+
+    // Cluster: in-browser-data-processing
+    const dataPosts = getBlogPostsByCluster("in-browser-data-processing");
+    expect(dataPosts.length).toBe(3);
+    const dataPillar = getPillarPost("in-browser-data-processing");
+    expect(dataPillar?.slug).toBe("convert-json-to-excel-privately");
   });
 });

@@ -34,6 +34,10 @@ export interface BlogPost {
   attachedToolTitle: string;
   tableOfContents: BlogTocItem[];
   content: string; // Markdown / semantic HTML
+  clusterId?: string; // Topic cluster identifier (e.g. "indian-home-loans", "in-browser-data-processing", "contractor-tax-finance")
+  role?: "pillar" | "branch"; // Architecture role: "pillar" (comprehensive anchor guide) or "branch" (specialized subtopic)
+  pillarSlug?: string; // Slug of the parent pillar guide if this is a branch
+  relatedSlugs?: string[]; // Slugs of sibling branch articles or child branch articles
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -47,6 +51,12 @@ export const BLOG_POSTS: BlogPost[] = [
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "json-to-excel",
     attachedToolTitle: "JSON to Excel Converter (In-Browser WASM)",
+    clusterId: "in-browser-data-processing",
+    role: "pillar",
+    relatedSlugs: [
+      "client-side-wasm-future-of-private-data",
+      "convert-large-parquet-files-to-excel-in-browser"
+    ],
     tableOfContents: [
       { id: "the-silent-risk-of-cloud-converters", title: "1. The Silent Risk of Public Cloud Converters" },
       { id: "understanding-nested-json-structures", title: "2. Understanding Deeply Nested JSON Structures" },
@@ -212,6 +222,11 @@ export const BLOG_POSTS: BlogPost[] = [
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "hourly-to-salary-calculator",
     attachedToolTitle: "Hourly to Salary & Paycheck Calculator",
+    clusterId: "contractor-tax-finance",
+    role: "pillar",
+    relatedSlugs: [
+      "uk-contractor-inside-vs-outside-ir35-calculator-guide"
+    ],
     tableOfContents: [
       { id: "the-illusion-of-the-1099-premium", title: "1. The Illusion of the 1099 Premium" },
       { id: "the-self-employment-tax-penalty", title: "2. The 15.3% Self-Employment Tax Penalty" },
@@ -331,6 +346,12 @@ export const BLOG_POSTS: BlogPost[] = [
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "sql-query-studio",
     attachedToolTitle: "SQL Query Studio (DuckDB WASM)",
+    clusterId: "in-browser-data-processing",
+    role: "branch",
+    pillarSlug: "convert-json-to-excel-privately",
+    relatedSlugs: [
+      "convert-large-parquet-files-to-excel-in-browser"
+    ],
     tableOfContents: [
       { id: "the-death-of-trust-in-saas-apis", title: "1. The Death of Trust in Cloud Conversion APIs" },
       { id: "what-is-in-browser-webassembly", title: "2. What is In-Browser WebAssembly (WASM)?" },
@@ -438,6 +459,8 @@ export const BLOG_POSTS: BlogPost[] = [
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "mortgage-calculator",
     attachedToolTitle: "Mortgage & Amortization Calculator",
+    clusterId: "global-mortgage-underwriting",
+    role: "pillar",
     tableOfContents: [
       { id: "what-is-the-osfi-stress-test", title: "1. What is the OSFI Mortgage Stress Test?" },
       { id: "how-qualifying-rate-is-calculated", title: "2. The Qualifying Rate Formula (5.25% Floor vs Contract + 2%)" },
@@ -533,6 +556,12 @@ export const BLOG_POSTS: BlogPost[] = [
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "parquet-to-excel",
     attachedToolTitle: "Parquet to Excel Converter (In-Browser)",
+    clusterId: "in-browser-data-processing",
+    role: "branch",
+    pillarSlug: "convert-json-to-excel-privately",
+    relatedSlugs: [
+      "client-side-wasm-future-of-private-data"
+    ],
     tableOfContents: [
       { id: "the-parquet-to-excel-dilemma", title: "1. The Parquet-to-Excel Dilemma" },
       { id: "why-traditional-cloud-tools-fail", title: "2. Why Traditional Cloud Converters Fail" },
@@ -614,6 +643,12 @@ const arrowResult = await conn.query(\`
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "income-tax-calculator",
     attachedToolTitle: "Income Tax & Take-Home Calculator",
+    clusterId: "contractor-tax-finance",
+    role: "branch",
+    pillarSlug: "1099-vs-w2-true-hourly-rate-calculation",
+    relatedSlugs: [
+      "1099-vs-w2-true-hourly-rate-calculation"
+    ],
     tableOfContents: [
       { id: "what-is-ir35", title: "1. What is IR35 (Off-Payroll Working Rules)?" },
       { id: "inside-ir35-mechanics", title: "2. Inside IR35: Umbrella Deductions & Deemed Salary" },
@@ -718,6 +753,12 @@ const arrowResult = await conn.query(\`
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "emi-calculator",
     attachedToolTitle: "Home Loan EMI Calculator & Amortization Schedule",
+    clusterId: "indian-home-loans",
+    role: "pillar",
+    relatedSlugs: [
+      "the-home-loan-tenure-trap-explained",
+      "the-1-extra-emi-per-year-rule-home-loan-savings"
+    ],
     tableOfContents: [
       { id: "what-is-the-rbi-25-bps-repo-rate-hike", title: "1. What is the RBI 25 BPS Repo Rate Hike?" },
       { id: "mathematical-formula-for-emi-calculations", title: "2. The Mathematical Formula Behind EMI Resets" },
@@ -853,6 +894,13 @@ const arrowResult = await conn.query(\`
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "emi-calculator",
     attachedToolTitle: "Loan Tenure & EMI Impact Calculator",
+    clusterId: "indian-home-loans",
+    role: "branch",
+    pillarSlug: "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+    relatedSlugs: [
+      "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+      "the-1-extra-emi-per-year-rule-home-loan-savings"
+    ],
     tableOfContents: [
       { id: "the-psychology-of-the-silent-extension", title: "1. The Psychology of the Silent Tenure Extension" },
       { id: "the-rupee-for-rupee-math-50-lakh-loan", title: "2. The Rupee-for-Rupee Math: ₹50 Lakh Loan Case Study" },
@@ -967,6 +1015,13 @@ const arrowResult = await conn.query(\`
     author: FOUNDER_AUTHOR,
     attachedToolSlug: "emi-calculator",
     attachedToolTitle: "Home Loan Prepayment & Savings Calculator",
+    clusterId: "indian-home-loans",
+    role: "branch",
+    pillarSlug: "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+    relatedSlugs: [
+      "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+      "the-home-loan-tenure-trap-explained"
+    ],
     tableOfContents: [
       { id: "the-magic-of-13-emis-in-12-months", title: "1. The Magic of 13 EMIs in 12 Months" },
       { id: "mathematical-proof-50-lakh-loan", title: "2. The Mathematical Proof on a ₹50 Lakh Loan" },
@@ -1067,4 +1122,20 @@ export function getBlogPostBySlug(slug: string): BlogPost | undefined {
 
 export function getAllBlogPostSlugs(): string[] {
   return BLOG_POSTS.map((post) => post.slug);
+}
+
+export function getBlogPostsByCluster(clusterId: string): BlogPost[] {
+  return BLOG_POSTS.filter((post) => post.clusterId === clusterId);
+}
+
+export function getPillarPost(clusterId: string): BlogPost | undefined {
+  return BLOG_POSTS.find(
+    (post) => post.clusterId === clusterId && post.role === "pillar"
+  );
+}
+
+export function getBranchPosts(pillarSlug: string): BlogPost[] {
+  return BLOG_POSTS.filter(
+    (post) => post.pillarSlug === pillarSlug || (post.relatedSlugs && post.relatedSlugs.includes(pillarSlug) && post.role === "branch")
+  );
 }

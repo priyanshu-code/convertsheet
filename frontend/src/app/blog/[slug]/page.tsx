@@ -5,9 +5,11 @@ import Link from "next/link";
 import {
   getAllBlogPostSlugs,
   getBlogPostBySlug,
+  getPillarPost,
 } from "@/lib/blog-registry";
 import { ToolEmbedBanner } from "@/components/blog/ToolEmbedBanner";
 import { AuthorBioCard } from "@/components/blog/AuthorBioCard";
+import { TopicClusterNav } from "@/components/blog/TopicClusterNav";
 import {
   Clock,
   Calendar,
@@ -67,32 +69,60 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
+  const isPillar = post.role === "pillar";
+  const pillarPost = !isPillar && post.pillarSlug ? getBlogPostBySlug(post.pillarSlug) : undefined;
+
+  const breadcrumbItems = [
+    { name: "Home", url: "https://www.convertsheet.com" },
+    { name: "Blog", url: "https://www.convertsheet.com/blog" },
+    ...(pillarPost
+      ? [{ name: pillarPost.title, url: `https://www.convertsheet.com/blog/${pillarPost.slug}` }]
+      : []),
+    { name: post.title, url: `https://www.convertsheet.com/blog/${post.slug}` },
+  ];
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.description,
-    datePublished: post.publishedAt,
-    author: {
-      "@type": "Person",
-      name: post.author.name,
-      jobTitle: post.author.role,
-      url: "https://www.convertsheet.com/about",
-      sameAs: [
-        post.author.linkedInUrl,
-        post.author.twitterUrl,
-        post.author.githubUrl,
-      ].filter(Boolean),
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "ConvertSheet",
-      url: "https://www.convertsheet.com",
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `https://www.convertsheet.com/blog/${post.slug}`,
-    },
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: post.title,
+        description: post.description,
+        datePublished: post.publishedAt,
+        author: {
+          "@type": "Person",
+          name: post.author.name,
+          jobTitle: post.author.role,
+          url: "https://www.convertsheet.com/about",
+          sameAs: [
+            post.author.linkedInUrl,
+            post.author.twitterUrl,
+            post.author.githubUrl,
+          ].filter(Boolean),
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "ConvertSheet",
+          url: "https://www.convertsheet.com",
+        },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": `https://www.convertsheet.com/blog/${post.slug}`,
+        },
+      },
+      breadcrumbJsonLd,
+    ],
   };
 
   return (
@@ -102,7 +132,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Breadcrumb Header */}
+      {/* Breadcrumb Header with Topic Hierarchy */}
       <nav
         aria-label="Breadcrumb"
         className="border-b border-zinc-200 bg-white py-3.5 dark:border-zinc-800 dark:bg-zinc-900"
@@ -121,6 +151,18 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           >
             Blog
           </Link>
+          {pillarPost && (
+            <>
+              <ChevronRight className="h-3.5 w-3.5 text-zinc-400" aria-hidden="true" />
+              <Link
+                href={`/blog/${pillarPost.slug}`}
+                className="max-w-[200px] truncate transition-colors hover:text-zinc-900 dark:hover:text-white"
+                title={pillarPost.title}
+              >
+                {pillarPost.title}
+              </Link>
+            </>
+          )}
           <ChevronRight className="h-3.5 w-3.5 text-zinc-400" aria-hidden="true" />
           <span className="truncate text-zinc-900 dark:text-white font-medium" aria-current="page">
             {post.title}
@@ -277,6 +319,9 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* Author Bio Box for E-E-A-T and Personal Authority */}
             <AuthorBioCard author={post.author} className="mt-12" />
+
+            {/* Pillar & Branch Topic Cluster Cross-Linking Hub */}
+            <TopicClusterNav currentPost={post} className="mt-10" />
 
             {/* Bottom Interactive Tool Embed for conversion */}
             <div className="mt-8 border-t border-zinc-200 pt-8 dark:border-zinc-800">

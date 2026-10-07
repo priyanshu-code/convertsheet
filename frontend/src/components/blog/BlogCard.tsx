@@ -12,9 +12,16 @@ export function BlogCard({ post }: BlogCardProps) {
     <article className="group relative flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/50 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900">
       <div className="space-y-3">
         <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
-          <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
-            {post.category}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 font-medium text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+              {post.category}
+            </span>
+            {post.role === "pillar" && (
+              <span className="inline-flex items-center rounded-full bg-zinc-900 px-2 py-0.5 text-[10px] font-bold text-white dark:bg-white dark:text-zinc-900">
+                Pillar Guide
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" aria-hidden="true" />
