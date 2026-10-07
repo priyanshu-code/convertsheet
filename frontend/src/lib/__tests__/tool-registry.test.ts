@@ -12,9 +12,9 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
   const allSlugs = getAllToolSlugs();
   const allTools = getAllTools();
 
-  it("registers exactly 54 tools across 3 categories", () => {
-    expect(allSlugs).toHaveLength(54);
-    expect(allTools).toHaveLength(54);
+  it("registers exactly 55 tools across 3 categories", () => {
+    expect(allSlugs).toHaveLength(55);
+    expect(allTools).toHaveLength(55);
 
     const devTools = getToolsByCategory("data-developer");
     const financialTools = getToolsByCategory("financial");
@@ -22,7 +22,7 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
 
     expect(devTools).toHaveLength(13);
     expect(financialTools).toHaveLength(21);
-    expect(utilityTools).toHaveLength(20);
+    expect(utilityTools).toHaveLength(21);
   });
 
   it("each tool has complete SEO metadata, AEO answer summary, and E-E-A-T about section", () => {

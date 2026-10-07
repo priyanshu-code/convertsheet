@@ -311,7 +311,7 @@ export default function ToolCategoryPage({ params }: CategoryPageProps) {
               href="/tools"
               className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
             >
-              View All 38 Tools <ArrowRight className="w-3.5 h-3.5" />
+              View All {allTools.length} Tools <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 

@@ -92,11 +92,11 @@ export function ImageResizerTool({
     img.src = url;
   }, []);
 
-  const { isDragging, dropProps } = useFileDropAndPaste({
-    onFilesDropped: (files) => {
+  const { isDragOver, dragHandlers } = useFileDropAndPaste({
+    onFiles: (files) => {
       if (files.length > 0) handleFile(files[0]);
     },
-    acceptExtensions: [".jpg", ".jpeg", ".png", ".webp", ".svg"],
+    accept: (f) => f.type.startsWith("image/"),
   });
 
   // Re-run client-side canvas resize whenever dimensions or quality changes
@@ -191,29 +191,22 @@ export function ImageResizerTool({
   };
 
   return (
-    <CalcCard className="w-full max-w-4xl mx-auto shadow-sm">
+    <CalcCard
+      title={title}
+      subtitle={subtitle}
+      icon={Maximize2}
+      privacyScope="file"
+      className="w-full max-w-4xl mx-auto shadow-sm"
+    >
       <div className="space-y-6">
-        {/* Header */}
-        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4">
-          <div className="flex items-center gap-2 mb-1">
-            <Maximize2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-            <h2 className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-zinc-50">
-              {title}
-            </h2>
-          </div>
-          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-            {subtitle}
-          </p>
-        </div>
-
         {/* Upload Zone */}
         {!file ? (
           <div
-            {...dropProps}
+            {...dragHandlers}
             onClick={() => fileInputRef.current?.click()}
             className={cn(
               "border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all",
-              isDragging
+              isDragOver
                 ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
                 : "border-zinc-300 dark:border-zinc-700 hover:border-emerald-400 dark:hover:border-emerald-600 bg-zinc-50/50 dark:bg-zinc-900/50"
             )}
