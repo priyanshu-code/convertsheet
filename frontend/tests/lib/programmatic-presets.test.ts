@@ -390,9 +390,28 @@ describe("Programmatic SEO Presets Registry", () => {
 
   it("generates static params for all presets with slug and preset keys", () => {
     const params = getAllPresetStaticParams();
-    expect(params.length).toBeGreaterThanOrEqual(140);
+    expect(params.length).toBeGreaterThanOrEqual(700);
     expect(params[0]).toHaveProperty("slug");
     expect(params[0]).toHaveProperty("preset");
+  });
+
+  it("resolves complete 50-state salary matrix presets with authentic calculations", () => {
+    const tx100k = getProgrammaticPreset("salary-calculator", "100k-salary-in-texas");
+    expect(tx100k).toBeDefined();
+    expect(tx100k?.badge).toBe("0% State Tax");
+    expect(tx100k?.about).toContain("Texas");
+
+    const ca150k = getProgrammaticPreset("salary-calculator", "150k-salary-in-california");
+    expect(ca150k).toBeDefined();
+    expect(ca150k?.title).toContain("California");
+
+    const ny85k = getProgrammaticPreset("salary-calculator", "85k-salary-in-new-york");
+    expect(ny85k).toBeDefined();
+    expect(ny85k?.faqs.length).toBe(4);
+
+    const fl60k = getProgrammaticPreset("salary-calculator", "60k-salary-in-florida");
+    expect(fl60k).toBeDefined();
+    expect(fl60k?.badge).toBe("0% State Tax");
   });
 });
 

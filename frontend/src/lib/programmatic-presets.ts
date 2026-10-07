@@ -1,4 +1,5 @@
 import { FAQItem } from "@/types/registry";
+import { generate50StateSalaryPresets } from "./us-states-salary-matrix";
 
 export interface ProgrammaticPreset {
   toolSlug: string;
@@ -16,7 +17,7 @@ export interface ProgrammaticPreset {
   relatedPresetSlugs?: string[];
 }
 
-export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
+const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
   {
     "toolSlug": "mortgage-calculator",
     "presetSlug": "200k-mortgage",
@@ -6081,6 +6082,23 @@ Choosing between a 15-year and a 30-year fixed-rate mortgage is one of the most 
     relatedPresetSlugs: ["400k-mortgage", "500k-mortgage-30-year", "700k-mortgage-30-year"]
   },
 ];
+
+// Generate 50-State Salary Presets
+const STATE_SALARY_PRESETS = generate50StateSalaryPresets() as ProgrammaticPreset[];
+
+// Combine and deduplicate by `${toolSlug}:${presetSlug}`
+const SEEN_PRESET_KEYS = new Set<string>();
+const DEDUPED_PRESETS: ProgrammaticPreset[] = [];
+
+for (const preset of [...PROGRAMMATIC_PRESETS_BASE, ...STATE_SALARY_PRESETS]) {
+  const key = `${preset.toolSlug}:${preset.presetSlug}`;
+  if (!SEEN_PRESET_KEYS.has(key)) {
+    SEEN_PRESET_KEYS.add(key);
+    DEDUPED_PRESETS.push(preset);
+  }
+}
+
+export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = DEDUPED_PRESETS;
 
 // Indexed Maps for O(1) SSG and metadata lookups
 const PRESET_LOOKUP_MAP = new Map<string, ProgrammaticPreset>(
