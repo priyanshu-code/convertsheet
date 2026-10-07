@@ -111,7 +111,7 @@ describe("Blog Registry & Content Layer", () => {
   it("verifies pillar and branches topic cluster architecture integrity", () => {
     // Cluster: indian-home-loans
     const homeLoanPosts = getBlogPostsByCluster("indian-home-loans");
-    expect(homeLoanPosts.length).toBe(12);
+    expect(homeLoanPosts.length).toBe(14);
 
     const pillar = getPillarPost("indian-home-loans");
     expect(pillar).toBeDefined();
@@ -119,19 +119,36 @@ describe("Blog Registry & Content Layer", () => {
     expect(pillar?.role).toBe("pillar");
 
     const branches = getBranchPosts(pillar!.slug);
-    expect(branches.length).toBe(11);
+    expect(branches.length).toBe(13);
     const branchSlugs = branches.map((b: { slug: string }) => b.slug);
     expect(branchSlugs).toContain("how-to-reduce-home-loan-car-loan-after-repo-rate-hike");
     expect(branchSlugs).toContain("pnb-bob-indian-bank-sbi-rate-hikes-after-repo-revision");
     expect(branchSlugs).toContain("public-vs-private-bank-home-loan-rates-2026");
     expect(branchSlugs).toContain("mclr-vs-eblr-old-home-loan-conversion-guide");
     expect(branchSlugs).toContain("car-loans-after-repo-rate-hike-festive-season-guide");
+    expect(branchSlugs).toContain("how-rbi-repo-rate-affects-fixed-deposit-rates");
+    expect(branchSlugs).toContain("how-rbi-repo-rate-affects-loan-interest-rates");
     expect(branchSlugs).toContain("the-home-loan-tenure-trap-explained");
     expect(branchSlugs).toContain("the-1-extra-emi-per-year-rule-home-loan-savings");
     expect(branchSlugs).toContain("rbi-rate-hike-fixed-deposits-vs-equity-strategy");
     expect(branchSlugs).toContain("rbi-bank-rate-penal-interest-crr-slr-liquidity-guide");
     expect(branchSlugs).toContain("rbi-monetary-policy-october-2026-common-man-guide");
     expect(branchSlugs).toContain("rbi-cva-and-sa-ccr-counterparty-risk-explained");
+
+    // Verify detailed schema and content for the two new deep guides
+    const fdArticle = getBlogPostBySlug("how-rbi-repo-rate-affects-fixed-deposit-rates");
+    expect(fdArticle).toBeDefined();
+    expect(fdArticle?.attachedToolSlug).toBe("high-yield-savings-cd-calculator");
+    expect(fdArticle?.content).toContain("Credit-to-Deposit");
+    expect(fdArticle?.content).toContain("Liability Lag");
+    expect(fdArticle?.tableOfContents.length).toBeGreaterThanOrEqual(5);
+
+    const loanArticle = getBlogPostBySlug("how-rbi-repo-rate-affects-loan-interest-rates");
+    expect(loanArticle).toBeDefined();
+    expect(loanArticle?.attachedToolSlug).toBe("interest-rate-hike-calculator");
+    expect(loanArticle?.content).toContain("Rockets and Feathers");
+    expect(loanArticle?.content).toContain("Credit Risk Premium");
+    expect(loanArticle?.tableOfContents.length).toBeGreaterThanOrEqual(5);
 
     // Cluster: in-browser-data-processing
     const dataPosts = getBlogPostsByCluster("in-browser-data-processing");
