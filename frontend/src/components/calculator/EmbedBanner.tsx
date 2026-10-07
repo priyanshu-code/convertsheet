@@ -15,7 +15,7 @@ export function EmbedBanner({ tool, className = "" }: EmbedBannerProps) {
   const [copied, setCopied] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const snippet = `<iframe src="https://www.convertsheet.com/embed/${tool.slug}" width="100%" height="650" frameborder="0" style="border:0;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);max-width:100%;" title="${tool.name}"></iframe>`;
+  const snippet = `<div style="max-width:100%;"><iframe src="https://www.convertsheet.com/embed/${tool.slug}" width="100%" height="650" frameborder="0" style="border:0;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);max-width:100%;" title="${tool.name}"></iframe><div style="font-size:11px;color:#71717a;text-align:right;margin-top:4px;"><a href="https://www.convertsheet.com/tools/${tool.slug}" target="_blank" rel="noopener" style="color:#059669;text-decoration:none;font-weight:600;">Free ${tool.name}</a> powered by <a href="https://www.convertsheet.com" target="_blank" rel="noopener" style="color:#059669;text-decoration:none;font-weight:600;">ConvertSheet</a></div></div>`;
 
   const handleCopy = async () => {
     try {

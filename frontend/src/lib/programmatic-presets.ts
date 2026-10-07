@@ -1637,8 +1637,8 @@ While 84-month loans offer the lowest contractual monthly payments, they carry s
     "toolSlug": "inflation-calculator",
     "presetSlug": "100k-in-20-years",
     "name": "What Will $100,000 Be Worth in 20 Years?",
-    "title": "What Will $100k Be Worth in 20 Years? (2026 Inflation Calculation & Value Chart)",
-    "metaDescription": "In 20 years at 3.2% inflation, $100,000 loses 47% of its value, declining to $53,261 in real purchasing power. You will need $187,756 to equal $100k today. Free Excel amortization export.",
+    "title": "What Will $100k Be Worth in 20 Years? Exact Future Value Chart (2026 Inflation)",
+    "metaDescription": "$100,000 in 20 years shrinks to $53,261 in real purchasing power at 3.2% inflation (losing 46.7% of its value). See year-by-year loss table & how to protect your cash.",
     "answerSummary": "At a 3.2% annual inflation rate over 20 years, $100,000 in uninvested cash suffers a 46.7% loss in real purchasing power, declining to just $53,261 in today's dollars. To maintain your exact standard of living, you will need $187,756 in 20 years.",
     "about": "Compounding inflation erodes uninvested cash exponentially. At a 3.2% historical benchmark inflation rate, $100,000 declines in real purchasing power to $85,417 after 5 years, $72,961 after 10 years, $62,321 after 15 years, and just $53,261 after 20 years. To maintain the exact same purchasing power, you must grow your capital to at least $187,756. This calculator projects nominal price drift, real purchasing power degradation, and allows instant export to formatted Excel workbooks.",
     "initialValues": {
@@ -4075,8 +4075,8 @@ While 84-month loans offer the lowest contractual monthly payments, they carry s
     toolSlug: "car-loan-calculator",
     presetSlug: "ford-f150-monthly-payment",
     name: "Ford F-150 Monthly Payment Calculator",
-    title: "Ford F-150 Monthly Payment Calculator — Truck Loan Amortization | ConvertSheet",
-    metaDescription: "Calculate Ford F-150 truck loan payments. At $42,000 base MSRP with $4.2k down at 6.5% APR over 72 months, pay ~$668/mo. Free Excel schedule export.",
+    title: "Ford F-150 Monthly Payment Calculator: How Much Per Month? (2026 Truck Loan Chart)",
+    metaDescription: "Financing a Ford F-150? See exact monthly payments from $582/mo to $820/mo across 48, 60, and 72-month terms at 6.5% APR. Compare down payments & export free Excel schedule.",
     answerSummary: "Financing a popular Ford F-150 trim ($42,000 MSRP) with 10% down ($4,200) at 6.5% APR over 72 months costs approximately $668/month (net loan ~$41,200 with 7% sales tax and fees). Total interest paid over 6 years is approximately $8,680.",
     about: "The Ford F-150 has been America's best-selling truck for over 40 years. Model your monthly payments across SuperCab, SuperCrew, and XLT configurations with down payment options and realistic 60 vs 72-month financing schedules.",
     initialValues: {

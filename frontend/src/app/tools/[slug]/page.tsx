@@ -45,6 +45,7 @@ import { UuidGeneratorTool } from "@/components/tools/UuidGeneratorTool";
 import { MarginCalculator } from "@/components/tools/MarginCalculator";
 import { RoiCalculator } from "@/components/tools/RoiCalculator";
 import { ImageConverterTool } from "@/components/tools/ImageConverterTool";
+import { ImageResizerTool } from "@/components/tools/ImageResizerTool";
 import { PdfMergeTool } from "@/components/tools/PdfMergeTool";
 import { PdfSplitTool } from "@/components/tools/PdfSplitTool";
 import { PdfWatermarkTool } from "@/components/tools/PdfWatermarkTool";
@@ -396,6 +397,7 @@ export default function ToolPage({ params }: ToolPageProps) {
       />
     ),
     "svg-to-png": () => <ImageConverterTool defaultTargetFormat="image/png" title="SVG to PNG Rasterizer" subtitle="Render vector SVGs to crisp transparent PNG images at any resolution." />,
+    "image-resizer": ImageResizerTool,
     "compress-pdf": () => (
       <PdfCompressorTool
         title="Bulk PDF Compressor"

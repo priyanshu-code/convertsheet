@@ -322,5 +322,40 @@ export const IMAGE_TOOLS: Record<string, ToolConfig> = {
     ],
     relatedConverters: ["json-to-excel"],
     relatedTools: ["png-to-webp", "webp-to-png"]
+  },
+
+  "image-resizer": {
+    slug: "image-resizer",
+    name: "Free Image Resizer",
+    category: "utility",
+    title: "Image Resizer Online Free - Resize Images & Photos in Pixels",
+    subtitle: "Resize photos, graphics, and social media banners to exact pixel dimensions with lockable aspect ratio and 100% in-browser privacy.",
+    metaDescription: "Free online image resizer. Resize JPG, PNG, and WebP images to custom dimensions in pixels or percentages with zero server uploads and zero quality loss.",
+    answerSummary: "Resize images to custom width and height pixel dimensions with lockable aspect ratios and preset dimensions (YouTube thumbnail, Instagram story, Passport photo) directly in your browser.",
+    badge: "Most Popular",
+    featured: true,
+    keywords: [
+      "image resizer",
+      "resize image online",
+      "resize photo in pixels",
+      "free image resizer",
+      "passport photo resizer",
+      "youtube thumbnail resizer",
+      "social media banner resizer"
+    ],
+    formulaDescription: "Calculates new canvas dimensions based on aspect ratio constraints and resamples source pixel arrays using high-quality bi-cubic browser canvas interpolation.",
+    about: "Whether you need to fit photo requirements for government visa portals, social media banners, or web page hero containers, resizing images should be fast and private. ConvertSheet's Image Resizer runs 100% locally in your browser memory using HTML5 Canvas. Your personal photos, business graphics, and confidential documents are never sent across the internet.",
+    howTo: [
+      { step: 1, title: "Select Photo", description: "Choose or drag and drop your image into the workspace." },
+      { step: 2, title: "Adjust Dimensions", description: "Choose common presets (e.g. YouTube thumbnail, Instagram square) or enter custom width and height." },
+      { step: 3, title: "Download Resized Image", description: "Click download to save your resized JPG, PNG, or WebP photo immediately." }
+    ],
+    faqs: [
+      { question: "Can I lock the aspect ratio while resizing?", answer: "Yes! By default, the aspect ratio is locked to prevent stretching. You can unlock it at any time to enter independent width and height." },
+      { question: "Are my photos uploaded to any external server?", answer: "No. All canvas rendering and resizing occurs directly within your web browser. Zero bytes leave your device." },
+      { question: "What image formats are supported?", answer: "You can resize JPG, JPEG, PNG, WebP, and SVG files up to 50MB." }
+    ],
+    relatedConverters: ["jpg-to-png", "png-to-jpg"],
+    relatedTools: ["image-compressor", "webp-to-png", "svg-to-png"]
   }
 };
