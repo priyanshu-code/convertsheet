@@ -111,7 +111,7 @@ describe("Blog Registry & Content Layer", () => {
   it("verifies pillar and branches topic cluster architecture integrity", () => {
     // Cluster: indian-home-loans
     const homeLoanPosts = getBlogPostsByCluster("indian-home-loans");
-    expect(homeLoanPosts.length).toBe(3);
+    expect(homeLoanPosts.length).toBe(5);
 
     const pillar = getPillarPost("indian-home-loans");
     expect(pillar).toBeDefined();
@@ -119,10 +119,12 @@ describe("Blog Registry & Content Layer", () => {
     expect(pillar?.role).toBe("pillar");
 
     const branches = getBranchPosts(pillar!.slug);
-    expect(branches.length).toBe(2);
+    expect(branches.length).toBe(4);
     const branchSlugs = branches.map((b: { slug: string }) => b.slug);
     expect(branchSlugs).toContain("the-home-loan-tenure-trap-explained");
     expect(branchSlugs).toContain("the-1-extra-emi-per-year-rule-home-loan-savings");
+    expect(branchSlugs).toContain("rbi-rate-hike-fixed-deposits-vs-equity-strategy");
+    expect(branchSlugs).toContain("rbi-bank-rate-penal-interest-crr-slr-liquidity-guide");
 
     // Cluster: in-browser-data-processing
     const dataPosts = getBlogPostsByCluster("in-browser-data-processing");
