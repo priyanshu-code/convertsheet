@@ -63,5 +63,7 @@ export type ConverterEngineId =
   | "png-to-jpg"
   | "webp-to-jpg"
   | "svg-to-png"
+  | "heic-to-jpg"
+  | "heic-to-png"
   | "jpg-to-pdf"
   | "png-to-pdf";

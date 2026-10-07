@@ -81,7 +81,12 @@ export async function generateMetadata({
 }
 
 function renderConverter(config: ConverterConfig) {
-  if (config.slug === "webp-to-png" || config.slug === "jpg-to-png" || config.slug === "svg-to-png") {
+  if (
+    config.slug === "webp-to-png" ||
+    config.slug === "jpg-to-png" ||
+    config.slug === "svg-to-png" ||
+    config.slug === "heic-to-png"
+  ) {
     return (
       <ImageConverterTool
         defaultTargetFormat="image/png"
@@ -99,7 +104,11 @@ function renderConverter(config: ConverterConfig) {
       />
     );
   }
-  if (config.slug === "png-to-jpg" || config.slug === "webp-to-jpg") {
+  if (
+    config.slug === "png-to-jpg" ||
+    config.slug === "webp-to-jpg" ||
+    config.slug === "heic-to-jpg"
+  ) {
     return (
       <ImageConverterTool
         defaultTargetFormat="image/jpeg"

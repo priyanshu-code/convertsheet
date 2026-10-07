@@ -88,5 +88,7 @@ export const jpgToPngEngine = makeImageEngine("image/png", "png", "image/png");
 export const pngToJpgEngine = makeImageEngine("image/jpeg", "jpg", "image/jpeg");
 export const webpToJpgEngine = makeImageEngine("image/jpeg", "jpg", "image/jpeg");
 export const svgToPngEngine = makeImageEngine("image/png", "png", "image/png");
+export const heicToJpgEngine = makeImageEngine("image/jpeg", "jpg", "image/jpeg");
+export const heicToPngEngine = makeImageEngine("image/png", "png", "image/png");
 export const jpgToPdfEngine = makeImageToPdfEngine();
 export const pngToPdfEngine = makeImageToPdfEngine();

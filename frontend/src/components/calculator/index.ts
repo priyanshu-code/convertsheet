@@ -26,3 +26,4 @@ export * from "./MortgageTermComparisonTable";
 export * from "./PresetComparisonTable";
 export * from "./EmbedBanner";
 export * from "./EmbedWidgetCard";
+export * from "./PresetQuickFactCard";

@@ -148,6 +148,8 @@ import {
   pngToJpgEngine,
   webpToJpgEngine,
   svgToPngEngine,
+  heicToJpgEngine,
+  heicToPngEngine,
   jpgToPdfEngine,
   pngToPdfEngine,
 } from "./consumer-media-engine";
@@ -191,6 +193,8 @@ const ENGINES: Record<ConverterEngineId, IConverterEngine> = {
   "png-to-jpg": pngToJpgEngine,
   "webp-to-jpg": webpToJpgEngine,
   "svg-to-png": svgToPngEngine,
+  "heic-to-jpg": heicToJpgEngine,
+  "heic-to-png": heicToPngEngine,
   "jpg-to-pdf": jpgToPdfEngine,
   "png-to-pdf": pngToPdfEngine,
 };

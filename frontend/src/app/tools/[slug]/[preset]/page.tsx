@@ -38,6 +38,7 @@ import { InflationErosionMatrix } from "@/components/calculator/InflationErosion
 import { ApyCompoundingMatrix } from "@/components/calculator/ApyCompoundingMatrix";
 import { CarLoanTermMatrix } from "@/components/calculator/CarLoanTermMatrix";
 import { PresetComparisonTable } from "@/components/calculator/PresetComparisonTable";
+import { PresetQuickFactCard } from "@/components/calculator/PresetQuickFactCard";
 
 export interface ProgrammaticPresetPageProps {
   params: {
@@ -226,6 +227,16 @@ export default function ProgrammaticPresetPage({
           <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
             {preset.name}
           </h1>
+
+          {/* Position-0 AEO Quick Fact Card */}
+          <div className="pt-2 text-left">
+            <PresetQuickFactCard
+              toolSlug={tool.slug}
+              presetSlug={preset.presetSlug}
+              initialValues={preset.initialValues}
+              badge={preset.badge}
+            />
+          </div>
         </div>
 
         {/* Primary Interactive Calculator UI pre-populated with preset parameters - Spacious max-w-7xl */}

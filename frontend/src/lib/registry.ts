@@ -1878,6 +1878,64 @@ export const CONVERTER_REGISTRY = {
       { question: "Are my files uploaded to your servers?", answer: "No. Conversion executes strictly in your browser using client-side JavaScript." }
     ]
   },
+
+  "heic-to-jpg": {
+    slug: "heic-to-jpg",
+    sourceFormat: "HEIC",
+    targetFormat: "JPG",
+    sourceExtension: ".heic",
+    additionalExtensions: [".heif"],
+    targetExtension: ".jpg",
+    acceptedMimeTypes: ["image/heic", "image/heif"],
+    category: "utility",
+    engineId: "heic-to-jpg",
+    isClientSide: true,
+    featured: true,
+    badge: "High Demand",
+    title: "Convert HEIC to JPG Online - Free iPhone Photo Converter",
+    subtitle: "Convert Apple HEIC and HEIF photos from iPhone or iPad into universal JPG format instantly with 100% privacy in your browser.",
+    metaDescription: "Free online HEIC to JPG converter. Transform Apple iPhone HEIC pictures to high-quality JPG images directly in your browser with zero server uploads.",
+    about: "Modern Apple iPhones and iPads capture photos in High Efficiency Image Container (HEIC) format by default to save storage space. However, Windows PCs, Android devices, government portals, and school application forms frequently reject .heic files. ConvertSheet lets you transform your HEIC photos into universally compatible JPEG files in seconds. Everything runs 100% locally in your browser memory, ensuring your personal and family photos are never uploaded to remote cloud servers.",
+    howTo: [
+      { step: 1, title: "Select HEIC Photos", description: "Choose or drag and drop your Apple iPhone .heic images into the converter." },
+      { step: 2, title: "Auto-Convert", description: "Our browser engine immediately converts the photo to standard JPG format." },
+      { step: 3, title: "Download JPG", description: "Download your converted JPG image ready for any device or web portal." }
+    ],
+    faqs: [
+      { question: "Why can't my Windows PC or Android open HEIC photos?", answer: "HEIC is Apple's default compression format. Converting them to standard JPEG (.jpg) makes them universally viewable on all Windows, Android, and web platforms." },
+      { question: "Are my private personal photos uploaded to your server?", answer: "No. ConvertSheet processes all conversions strictly client-side in your web browser. Zero image bytes leave your computer or phone." },
+      { question: "Does converting from HEIC to JPG lose quality?", answer: "No. ConvertSheet preserves high JPEG quality (92%+) so your photos remain sharp and vibrant." }
+    ]
+  },
+
+  "heic-to-png": {
+    slug: "heic-to-png",
+    sourceFormat: "HEIC",
+    targetFormat: "PNG",
+    sourceExtension: ".heic",
+    additionalExtensions: [".heif"],
+    targetExtension: ".png",
+    acceptedMimeTypes: ["image/heic", "image/heif"],
+    category: "utility",
+    engineId: "heic-to-png",
+    isClientSide: true,
+    featured: false,
+    badge: "Lossless",
+    title: "Convert HEIC to PNG Online - Free Apple Photo to PNG",
+    subtitle: "Convert Apple HEIC photos into lossless PNG format with transparent background support and zero cloud uploads.",
+    metaDescription: "Convert HEIC to PNG online for free. Transform Apple iPhone photos to crisp, lossless PNG graphics with 100% client-side privacy.",
+    about: "When you need maximum pixel clarity or want to edit Apple iPhone photos in graphic design software like Photoshop, Figma, or Canva, converting HEIC to PNG provides an uncompressed, lossless container. ConvertSheet performs the conversion directly in your browser memory without storing or logging your files.",
+    howTo: [
+      { step: 1, title: "Upload HEIC Image", description: "Select the .heic file from your iPhone, iPad, or computer." },
+      { step: 2, title: "Convert to PNG", description: "The image is rendered locally into a high-fidelity PNG graphic." },
+      { step: 3, title: "Download PNG", description: "Click download to save your crisp PNG image to your downloads folder." }
+    ],
+    faqs: [
+      { question: "What is the difference between converting to JPG vs PNG?", answer: "JPG is smaller in file size and ideal for general sharing, while PNG is lossless and ideal for editing, graphic design, and preserving sharp text or lines." },
+      { question: "Is this converter free to use?", answer: "Yes, 100% free with no account creation, daily conversion limits, or watermarks." },
+      { question: "Does it work on mobile browsers?", answer: "Yes, you can convert HEIC files directly on iOS Safari or Android Chrome." }
+    ]
+  },
 } as const satisfies Record<string, ConverterConfig>;
 
 export type ConverterSlug = keyof typeof CONVERTER_REGISTRY;
