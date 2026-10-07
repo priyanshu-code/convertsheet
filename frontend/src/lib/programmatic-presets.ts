@@ -1170,6 +1170,90 @@ While 84-month loans offer the lowest contractual monthly payments, they carry s
     ],
   },
   {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "25k-car-loan-72-months",
+    name: "$25,000 Car Loan Payment (72 Months) Calculator",
+    title: "$25,000 Car Loan Payment (72 Months) Calculator | ConvertSheet",
+    metaDescription: "Calculate exact monthly payment on a $25,000 car loan over 72 months (6 years). Compare 6.5% vs 7.5% APR, see total interest paid, and export to Excel.",
+    answerSummary: "On a $25,000 car loan financed over 72 months (6 years) at 6.99% APR with $2,500 down payment (net loan $24,250 with tax & fees), the monthly payment is approximately $413/month. Total interest paid over 6 years is $5,502.",
+    about: `### $25,000 Car Loan 72 Months Financing Breakdown
+
+| Scenario | APR | Monthly Payment | Total Interest | Total Loan Cost |
+| :--- | :--- | :--- | :--- | :--- |
+| **72-Month Prime (6.5%)** | 6.50% | $408 / mo | $5,091 | $29,341 |
+| **72-Month Average (7.0%)** | 6.99% | $413 / mo | $5,502 | $29,752 |
+| **60-Month Comparison (6.0%)** | 6.00% | $469 / mo | $3,880 | $28,130 |
+
+Extending a $25k loan from 60 to 72 months lowers your payment by ~$56/month but adds $1,622 in total interest.`,
+    initialValues: {
+      vehiclePrice: 25000,
+      downPayment: 2500,
+      tradeInValue: 0,
+      interestRate: 6.99,
+      loanTermMonths: 72,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "How much is a $25,000 car loan payment for 72 months?",
+        answer: "At 6.99% APR with 10% down ($2,500), monthly payments on a $25,000 car loan are approximately $413/month. Without a down payment, the payment is ~$458/month.",
+      },
+      {
+        question: "How much total interest do you pay on a $25,000 car loan over 72 months?",
+        answer: "At an average 7.0% APR, total interest charges over 6 years equal approximately $5,502. Paying it off in 60 months saves over $1,600 in interest.",
+      },
+      {
+        question: "Is 72 months too long for a $25k car loan?",
+        answer: "While 72 months offers an accessible payment under $420/month, the vehicle is likely to experience negative equity during the first 30 months. Gap insurance is strongly advised.",
+      },
+      {
+        question: "Can I make extra payments on a 72-month car loan to pay it off faster?",
+        answer: "Yes! Most auto loans in the US have simple interest with no prepayment penalties. Paying an extra $50/month pays off the loan 10 months earlier and saves over $800 in interest.",
+      },
+    ],
+  },
+  {
+    toolSlug: "car-loan-calculator",
+    presetSlug: "15k-car-loan-5-years",
+    name: "$15,000 Car Loan Over 5 Years (60 Months) Calculator",
+    title: "$15,000 Car Loan Over 5 Years Calculator | ConvertSheet",
+    metaDescription: "Calculate monthly payments and interest on a $15,000 car loan over 5 years (60 months). Compare interest rates, see total cost, and export schedule.",
+    answerSummary: "Financing a $15,000 used car over 5 years (60 months) with $1,500 down at 6.75% APR results in a monthly payment of approximately $291/month. Total interest paid over 5 years is $2,698.",
+    about: `### $15,000 Car Loan Over 5 Years (60-Month Payment Matrix)
+
+| Interest Rate (APR) | Monthly Payment | Total Interest Paid | Total Cost of Loan |
+| :--- | :--- | :--- | :--- |
+| **5.49% (Excellent Credit)** | $281 / mo | $2,171 | $16,846 |
+| **6.75% (Average Prime)** | $291 / mo | $2,698 | $17,373 |
+| **8.99% (Non-Prime Credit)** | $307 / mo | $3,656 | $18,331 |
+
+A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid off before major maintenance issues typically emerge on a pre-owned vehicle.`,
+    initialValues: {
+      vehiclePrice: 15000,
+      downPayment: 1500,
+      tradeInValue: 0,
+      interestRate: 6.75,
+      loanTermMonths: 60,
+      salesTaxPercent: 7.0,
+      dealerFees: 450,
+    },
+    faqs: [
+      {
+        question: "How much is a monthly payment on a $15,000 car loan over 5 years?",
+        answer: "At a standard 6.75% APR with 10% down ($1,500), your monthly payment is roughly $291/month for 60 months.",
+      },
+      {
+        question: "How much interest will I pay on a $15,000 car loan over 5 years?",
+        answer: "You will pay approximately $2,698 in total interest at 6.75% APR over 60 months.",
+      },
+      {
+        question: "Is a 5-year loan good for a $15k used car?",
+        answer: "Yes, 60 months provides a comfortable sub-$300 monthly payment while limiting total interest to under $2,700.",
+      },
+    ],
+  },
+  {
     "toolSlug": "car-loan-calculator",
     "presetSlug": "subprime-credit-car-loan",
     "name": "Subprime Credit Auto Loan Calculator",
@@ -6082,6 +6166,86 @@ Choosing between a 15-year and a 30-year fixed-rate mortgage is one of the most 
     ],
     relatedPresetSlugs: ["400k-mortgage", "500k-mortgage-30-year", "700k-mortgage-30-year"]
   },
+  {
+    toolSlug: "image-resizer",
+    presetSlug: "resize-image-to-1080x1080",
+    name: "Resize Image to 1080×1080 (Square) Online Free",
+    title: "Resize Image to 1080×1080 (Square) Online Free | ConvertSheet",
+    metaDescription: "Resize any photo or image to exactly 1080×1080 pixels online for free. Ideal for Instagram posts and avatars with 100% private in-browser canvas scaling.",
+    answerSummary: "Resize JPG, PNG, and WebP images to exact 1080×1080 pixel square dimensions instantly. Rendered locally in your browser with high-quality bi-cubic interpolation and zero server uploads.",
+    about: `### 1080×1080 Square Image Specifications
+
+| Specification | Dimension / Value |
+| :--- | :--- |
+| **Pixel Dimensions** | 1080 px wide × 1080 px high |
+| **Aspect Ratio** | 1:1 Perfect Square |
+| **Resolution** | 1.17 Megapixels |
+| **Optimal Platform** | Instagram Grid, Profile Avatars, Product Listings |
+
+Resizing to 1080×1080 ensures maximum clarity on Retina mobile displays while avoiding platform compression artifacts.`,
+    initialValues: {
+      targetWidth: 1080,
+      targetHeight: 1080,
+      targetFormat: "image/png",
+    },
+    badge: "1:1 Square",
+    keywords: [
+      "resize image to 1080x1080",
+      "1080x1080 image resizer",
+      "square photo converter",
+      "instagram post resizer"
+    ],
+    faqs: [
+      {
+        question: "Why is 1080x1080 the standard square image size?",
+        answer: "1080×1080 is the standard recommendation for Instagram posts, Facebook profile pictures, and modern e-commerce product grids because it provides high-DPI crispness without excessive file payload."
+      },
+      {
+        question: "Does converting to 1080x1080 reduce quality?",
+        answer: "No. Our tool uses browser-native bi-cubic interpolation to resample pixel data smoothly while preserving color profiles and sharp edges."
+      }
+    ]
+  },
+  {
+    toolSlug: "image-resizer",
+    presetSlug: "passport-photo-maker",
+    name: "Passport Photo Resizer (600×600 px / 2×2 Inch)",
+    title: "Passport Photo Resizer Online (600×600 px / 2×2\") | ConvertSheet",
+    metaDescription: "Crop and resize photos to official 600×600 pixel (2x2 inch at 300 DPI) passport standards. 100% private in browser memory for government visa applications.",
+    answerSummary: "Convert photos to 600×600 pixels (2×2 inches at 300 DPI) meeting US State Department and international visa specifications with complete privacy.",
+    about: `### US & International Passport Photo Standards
+
+| Metric | Requirement |
+| :--- | :--- |
+| **Pixel Resolution** | 600 × 600 px (Square) |
+| **Physical Dimensions** | 2 × 2 inches (51 × 51 mm) |
+| **Print DPI** | 300 DPI |
+| **Supported File Types** | JPG, PNG |
+
+Upload your portrait to produce exact dimensions for online passport renewals, visa submissions, and ID badges with zero server storage.`,
+    initialValues: {
+      targetWidth: 600,
+      targetHeight: 600,
+      targetFormat: "image/jpeg",
+    },
+    badge: "Official 2×2\"",
+    keywords: [
+      "passport photo resizer",
+      "600x600 photo converter",
+      "visa photo maker online",
+      "2x2 photo resizer"
+    ],
+    faqs: [
+      {
+        question: "What size is a digital passport photo in pixels?",
+        answer: "The US State Department requires digital passport photos to be at least 600 × 600 pixels and square (1:1 aspect ratio), up to a maximum of 1200 × 1200 pixels."
+      },
+      {
+        question: "Are my passport photos saved on your server?",
+        answer: "Never. ConvertSheet operates entirely inside your client browser. Your personal identity photos are never uploaded, stored, or transmitted across any server."
+      }
+    ]
+  }
 ];
 
 // Generate 50-State Salary Presets

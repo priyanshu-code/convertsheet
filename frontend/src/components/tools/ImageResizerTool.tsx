@@ -20,6 +20,7 @@ import { useFileDropAndPaste } from "@/hooks/useFileDropAndPaste";
 export interface ImageResizerToolProps {
   title?: string;
   subtitle?: string;
+  initialValues?: Record<string, unknown>;
 }
 
 interface ImageDimensionState {
@@ -46,17 +47,22 @@ const COMMON_PRESETS = [
 export function ImageResizerTool({
   title = "Free Image Resizer & Scaler",
   subtitle = "Resize photos, graphics, and banner images to custom pixel dimensions with 100% in-browser privacy.",
+  initialValues = {},
 }: ImageResizerToolProps) {
+  const initW = Number(initialValues.targetWidth) || 0;
+  const initH = Number(initialValues.targetHeight) || 0;
+  const initFmt = (initialValues.targetFormat as "image/jpeg" | "image/png" | "image/webp") || "image/jpeg";
+
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [dims, setDims] = useState<ImageDimensionState>({
     originalWidth: 0,
     originalHeight: 0,
-    width: 0,
-    height: 0,
-    maintainAspectRatio: true,
-    aspectRatio: 1,
-    format: "image/jpeg",
+    width: initW,
+    height: initH,
+    maintainAspectRatio: !initW || !initH || initW === initH,
+    aspectRatio: initW && initH ? initW / initH : 1,
+    format: initFmt,
     quality: 90,
   });
   const [isProcessing, setIsProcessing] = useState(false);

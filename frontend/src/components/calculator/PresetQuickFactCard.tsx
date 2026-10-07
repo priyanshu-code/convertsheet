@@ -296,5 +296,70 @@ export function PresetQuickFactCard({
     );
   }
 
+  // 5. Image Resizer Facts
+  if (toolSlug === "image-resizer") {
+    const width = Number(initialValues.targetWidth) || 1080;
+    const height = Number(initialValues.targetHeight) || 1080;
+    const format = (initialValues.targetFormat as string) || "image/png";
+    const formatLabel = format.replace("image/", "").toUpperCase();
+    const megapixels = ((width * height) / 1000000).toFixed(2);
+
+    return (
+      <div className="w-full bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent dark:from-emerald-950/40 dark:via-zinc-900 border border-emerald-200/80 dark:border-emerald-800/80 rounded-2xl p-4 sm:p-6 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-emerald-100 dark:border-emerald-900/60">
+          <div className="flex items-center gap-2">
+            <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+              Preset Target Specifications ({width} × {height} px)
+            </span>
+          </div>
+          {badge && (
+            <span className="text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700/60">
+              {badge}
+            </span>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-left">
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Target Dimensions
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-zinc-50 font-mono">
+              {width}×{height}
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Aspect Ratio
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+              {width === height ? "1:1 Square" : `${(width / height).toFixed(2)}:1`}
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Total Pixels
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-zinc-50 font-mono">
+              {megapixels} MP
+            </span>
+          </div>
+
+          <div className="p-3 rounded-xl bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/60 dark:border-zinc-800">
+            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1">
+              Default Format
+            </span>
+            <span className="text-base sm:text-xl font-extrabold text-zinc-900 dark:text-zinc-50 font-mono">
+              {formatLabel}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return null;
 }

@@ -33,6 +33,7 @@ import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
 import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
 import { PercentageCalculator } from "@/components/tools/PercentageCalculator";
+import { ImageResizerTool } from "@/components/tools/ImageResizerTool";
 import { WageConversionMatrix } from "@/components/calculator/WageConversionMatrix";
 import { InflationErosionMatrix } from "@/components/calculator/InflationErosionMatrix";
 import { ApyCompoundingMatrix } from "@/components/calculator/ApyCompoundingMatrix";
@@ -152,6 +153,14 @@ export default function ProgrammaticPresetPage({
         return <AustraliaPayCalculator initialValues={preset.initialValues} />;
       case "percentage-calculator":
         return <PercentageCalculator initialValues={preset.initialValues} />;
+      case "image-resizer":
+        return (
+          <ImageResizerTool
+            title={preset.name}
+            subtitle={preset.title}
+            initialValues={preset.initialValues}
+          />
+        );
       default:
         return null;
     }
