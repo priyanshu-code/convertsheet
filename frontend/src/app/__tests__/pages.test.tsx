@@ -36,9 +36,20 @@ describe("Pages (Home)", () => {
         screen.getByText("100% In-Browser Privacy • Zero Server Uploads")
       ).toBeInTheDocument();
 
-      // Above the fold converter card
+      // Above the fold converter card or command hero
       expect(
-        screen.getByText(/Drop your JSON file here or/i)
+        screen.getByRole("button", { name: /Universal File Converter/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /Financial & Dev Calculators/i })
+      ).toBeInTheDocument();
+
+      // Trending Financial Suite section
+      expect(
+        screen.getByRole("heading", {
+          level: 2,
+          name: /Trending Financial & Mortgage Suite/i,
+        })
       ).toBeInTheDocument();
 
       // Popular Converters section

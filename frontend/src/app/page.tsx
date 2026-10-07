@@ -9,30 +9,15 @@ import {
   ArrowRight,
   Sparkles,
   CheckCircle2,
-  Cpu,
-  Layers,
-  FileSpreadsheet,
-  Binary,
-  Star,
-  Check,
-  TrendingUp,
 } from "lucide-react";
-import dynamic from "next/dynamic";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 import type { ConverterConfig } from "@/types/registry";
 import { getAllTools } from "@/lib/tool-registry";
-import { ConverterCardSkeleton } from "@/components/converter/ConverterCardSkeleton";
 import { AdBanner } from "@/components/layout";
+import { HomeCommandHero } from "@/components/home/HomeCommandHero";
+import { TrendingFinancialSuite } from "@/components/home/TrendingFinancialSuite";
 import { ConverterGrid } from "@/components/home/ConverterGrid";
 import { ToolGrid } from "@/components/home/ToolGrid";
-
-const DynamicConverterCard = dynamic(
-  () => import("@/components/converter/ConverterCard").then((mod) => mod.ConverterCard),
-  {
-    ssr: true,
-    loading: () => <ConverterCardSkeleton />,
-  }
-);
 
 export const metadata: Metadata = {
   title: "ConvertSheet - Fast, Private Structured Data Converter",
@@ -119,47 +104,8 @@ export default function HomePage() {
         }}
       />
 
-      {/* Product Hero Header */}
-      <div className="text-center max-w-4xl mx-auto space-y-3 pt-2 sm:pt-4">
-        {/* Top Trust Badge */}
-        <div className="flex items-center justify-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>100% In-Browser Privacy • Zero Server Uploads</span>
-          </div>
-        </div>
-
-        {/* Main Headline */}
-        <h1 className="text-sm sm:text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 my-1">
-          Fast, Private Structured Data Converter
-        </h1>
-
-        {/* Subtitle */}
-        <p className="text-xs sm:text-base text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Transform nested JSON, massive CSVs, and Excel spreadsheets directly in your browser memory via DuckDB WASM — 100% free, zero lag, and zero cloud uploads.
-        </p>
-
-        {/* Product Trust Highlights Bar */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-1 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-          <span className="inline-flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-500" />
-            Zero Server Uploads
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-500" />
-            DuckDB-WASM Engine
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-500" />
-            100% Free &amp; Open Utilities
-          </span>
-        </div>
-      </div>
-
-      {/* Hero Universal Converter Card - Spacious, pro-grade desktop width */}
-      <div className="w-full max-w-7xl mx-auto shadow-xl shadow-zinc-900/5 rounded-3xl">
-        <DynamicConverterCard config={defaultConverter} />
-      </div>
+      {/* Dual Hero Command Center: Universal File Converter & Financial Calculators */}
+      <HomeCommandHero defaultConverter={defaultConverter} />
 
       {/* Live Product Metrics Strip */}
       <section aria-label="Product Benchmarks" className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 py-2">
@@ -180,6 +126,9 @@ export default function HomePage() {
           <div className="text-[11px] sm:text-xs font-medium text-zinc-500 dark:text-zinc-400">Client-Side Private</div>
         </div>
       </section>
+
+      {/* Trending Financial & Mortgage Suite */}
+      <TrendingFinancialSuite />
 
       {/* Leaderboard Ad Slot */}
       <div className="flex justify-center w-full my-2">
