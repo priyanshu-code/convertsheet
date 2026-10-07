@@ -508,6 +508,56 @@ describe("Conversion Engines", () => {
       expect(getConverterEngine("excel-to-csv")).toBe(excelToCsvEngine);
       expect(getConverterEngine("xml-to-excel")).toBe(xmlToExcelEngine);
       expect(getConverterEngine("tally-xml-to-excel")).toBe(tallyXmlToExcelEngine);
+      expect(getConverterEngine("tsv-to-csv")).toBeDefined();
+      expect(getConverterEngine("csv-to-tsv")).toBeDefined();
+      expect(getConverterEngine("tsv-to-excel")).toBeDefined();
+      expect(getConverterEngine("excel-to-tsv")).toBeDefined();
+      expect(getConverterEngine("sql-to-csv")).toBeDefined();
+      expect(getConverterEngine("csv-to-sql")).toBeDefined();
+      expect(getConverterEngine("sql-to-json")).toBeDefined();
+      expect(getConverterEngine("json-to-sql")).toBeDefined();
+      expect(getConverterEngine("ndjson-to-csv")).toBeDefined();
+      expect(getConverterEngine("csv-to-ndjson")).toBeDefined();
+      expect(getConverterEngine("ndjson-to-excel")).toBeDefined();
+      expect(getConverterEngine("yaml-to-excel")).toBeDefined();
+      expect(getConverterEngine("excel-to-yaml")).toBeDefined();
+    });
+
+    it("verifies tsv-to-csv, sql-to-csv, ndjson-to-csv, and yaml-to-excel parsePreview and convert execution", async () => {
+      // TSV to CSV
+      const tsvFile = new File(["colA\tcolB\nval1\tval2"], "sample.tsv", { type: "text/tab-separated-values" });
+      const tsvEngine = getConverterEngine("tsv-to-csv");
+      const tsvPreview = await tsvEngine.parsePreview(tsvFile);
+      expect(tsvPreview.columns).toEqual(["colA", "colB"]);
+      const tsvOutput = await tsvEngine.convert(tsvFile);
+      expect(tsvOutput.filename).toBe("sample.csv");
+
+      // SQL to CSV
+      const sqlFile = new File(["INSERT INTO users (id, name) VALUES (1, 'Alice'), (2, 'Bob');"], "dump.sql", { type: "application/sql" });
+      const sqlEngine = getConverterEngine("sql-to-csv");
+      const sqlPreview = await sqlEngine.parsePreview(sqlFile);
+      expect(sqlPreview.columns).toContain("id");
+      expect(sqlPreview.columns).toContain("name");
+      const sqlOutput = await sqlEngine.convert(sqlFile);
+      expect(sqlOutput.filename).toBe("dump.csv");
+
+      // NDJSON to CSV
+      const ndjsonFile = new File(['{"id":1,"user":"Alice"}\n{"id":2,"user":"Bob"}'], "data.ndjson", { type: "application/x-ndjson" });
+      const ndjsonEngine = getConverterEngine("ndjson-to-csv");
+      const ndjsonPreview = await ndjsonEngine.parsePreview(ndjsonFile);
+      expect(ndjsonPreview.columns).toContain("id");
+      expect(ndjsonPreview.columns).toContain("user");
+      const ndjsonOutput = await ndjsonEngine.convert(ndjsonFile);
+      expect(ndjsonOutput.filename).toBe("data.csv");
+
+      // YAML to Excel
+      const yamlFile = new File(["- id: 1\n  name: Alice\n- id: 2\n  name: Bob\n"], "data.yaml", { type: "text/yaml" });
+      const yamlEngine = getConverterEngine("yaml-to-excel");
+      const yamlPreview = await yamlEngine.parsePreview(yamlFile);
+      expect(yamlPreview.columns).toContain("id");
+      expect(yamlPreview.columns).toContain("name");
+      const yamlOutput = await yamlEngine.convert(yamlFile);
+      expect(yamlOutput.filename).toBe("data.xlsx");
     });
 
     it("throws an error for unsupported engineId", () => {

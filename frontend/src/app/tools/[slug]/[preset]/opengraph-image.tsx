@@ -24,8 +24,11 @@ export default async function Image({
   const preset = getProgrammaticPreset(params.slug, params.preset);
   const tool = getToolBySlug(params.slug);
 
-  const title = preset ? preset.name : "Free Calculation Breakdown";
+  const rawTitle = preset ? preset.name : "Free Calculation Breakdown";
+  const title = rawTitle.replace(/₹/g, "Rs. ");
   const toolName = tool ? tool.name : "ConvertSheet Financial Tool";
+  const rawSummary = preset?.answerSummary || "";
+  const answerSummary = rawSummary.replace(/₹/g, "Rs. ");
 
   return new ImageResponse(
     (
@@ -145,7 +148,7 @@ export default async function Image({
         </div>
 
         {/* Answer Summary Callout Bar */}
-        {preset?.answerSummary && (
+        {answerSummary && (
           <div
             style={{
               display: "flex",
@@ -162,7 +165,7 @@ export default async function Image({
               marginBottom: "25px",
             }}
           >
-            💡 {preset.answerSummary.slice(0, 140)}...
+            💡 {answerSummary.slice(0, 140)}...
           </div>
         )}
 

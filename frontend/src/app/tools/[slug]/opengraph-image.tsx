@@ -156,11 +156,11 @@ export default async function Image({
             marginTop: "10px",
           }}
         >
-          <span>✓ Zero Server Uploads</span>
+          <span>Zero Server Uploads</span>
           <span>•</span>
-          <span>✓ Instant Real-Time Math</span>
+          <span>Instant Real-Time Math</span>
           <span>•</span>
-          <span>✓ 100% Free Forever</span>
+          <span>100% Free Forever</span>
         </div>
       </div>
     ),
