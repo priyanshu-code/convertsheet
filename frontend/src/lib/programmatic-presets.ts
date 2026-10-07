@@ -4719,6 +4719,778 @@ export const PROGRAMMATIC_PRESETS: ProgrammaticPreset[] = [
         question: "How much can you save living in Florida on $100k?",
         answer: "Compared to states with high local taxes like New York or California, Florida residents save between $5,500 and $8,200 annually on income taxes alone.",
       },
+      {
+        question: "What is the bi-weekly paycheck on $100k in Florida?",
+        answer: "On a standard 26-pay-period schedule, a $100,000 salary yields an average net paycheck of roughly $3,003 every two weeks.",
+      },
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "florida-take-home-50k",
+    name: "$50,000 Florida Take-Home Paycheck Calculator",
+    title: "$50k Salary in Florida: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $50,000 salary in Florida. Zero state tax: see net monthly, bi-weekly, and weekly pay after Federal taxes & FICA.",
+    answerSummary: "On a $50,000 salary in Florida (Single filer, 2026), your estimated annual take-home pay is ~$42,000 (~$3,500/month or $1,615 bi-weekly) after ~$4,180 in Federal income tax and ~$3,825 in FICA. Florida charges 0% state income tax.",
+    about: `### Florida $50,000 Salary Tax Breakdown (2026 Single Filer)
+
+| Pay Period | Gross Pay | Federal Income Tax | FICA (Social Security & Medicare) | State Tax | Net Take-Home Pay |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Annual** | $50,000 | $4,180 | $3,825 | $0 | **$41,995** |
+| **Monthly** | $4,167 | $348 | $319 | $0 | **$3,500** |
+| **Bi-Weekly** | $1,923 | $161 | $147 | $0 | **$1,615** |
+| **Weekly** | $962 | $80 | $74 | $0 | **$808** |
+
+Living in Florida allows $50,000 earners to retain nearly 84% of their gross paycheck because Florida has no personal state income tax.`,
+    initialValues: { regime: "US", grossSalary: 50000, filingStatus: "single", stateTaxPercent: 0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $50k in Florida?",
+        answer: "Net annual take-home pay is roughly $42,000, which equals about $3,500 per month or $1,615 every two weeks."
+      },
+      {
+        question: "Does Florida take state taxes out of a $50,000 paycheck?",
+        answer: "No. Florida has no state income tax, so only Federal income tax and FICA (7.65%) are withheld."
+      },
+      {
+        question: "What is the hourly equivalent of $50k a year in Florida?",
+        answer: "Based on a 40-hour work week (2,080 hours/year), a $50,000 salary is approximately $24.04 per hour."
+      },
+      {
+        question: "How much FICA tax is withheld on $50,000?",
+        answer: "FICA withholding is $3,825 annually (6.2% Social Security = $3,100, 1.45% Medicare = $725)."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "florida-take-home-75k",
+    name: "$75,000 Florida Take-Home Paycheck Calculator",
+    title: "$75k Salary in Florida: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $75,000 salary in Florida. Zero state tax: view net monthly, bi-weekly, and weekly pay after Federal tax & FICA.",
+    answerSummary: "On a $75,000 salary in Florida (Single filer, 2026), your estimated net take-home pay is ~$60,900 (~$5,075/month or $2,342 bi-weekly), retaining 81.2% of your gross earnings with 0% state income tax.",
+    about: `### Florida $75,000 Salary Tax Breakdown (2026 Single Filer)
+
+| Pay Period | Gross Pay | Federal Income Tax | FICA | State Tax | Net Take-Home Pay |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Annual** | $75,000 | $8,360 | $5,738 | $0 | **$60,902** |
+| **Monthly** | $6,250 | $697 | $478 | $0 | **$5,075** |
+| **Bi-Weekly** | $2,885 | $322 | $221 | $0 | **$2,342** |
+| **Weekly** | $1,442 | $161 | $110 | $0 | **$1,171** |`,
+    initialValues: { regime: "US", grossSalary: 75000, filingStatus: "single", stateTaxPercent: 0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $75k in Florida?",
+        answer: "Annual take-home pay on $75,000 in Florida is approximately $60,902, or about $5,075 per month."
+      },
+      {
+        question: "How much federal tax do I pay on $75,000?",
+        answer: "After taking the standard deduction, estimated federal income tax is roughly $8,360 (an effective federal rate of ~11.1%)."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $75,000 in Florida?",
+        answer: "A $75,000 annual salary pays roughly $2,342 every two weeks across 26 pay periods."
+      },
+      {
+        question: "How does Florida take-home on $75k compare to New York?",
+        answer: "A worker in Florida keeps approximately $4,200 more per year on $75,000 than a worker in New York State."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "florida-take-home-150k",
+    name: "$150,000 Florida Take-Home Paycheck Calculator",
+    title: "$150k Salary in Florida: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $150,000 salary in Florida. Zero state tax: breakdown of Federal tax, FICA, net monthly and bi-weekly earnings.",
+    answerSummary: "On a $150,000 salary in Florida (Single filer, 2026), your estimated net take-home pay is ~$112,700 (~$9,392/month or $4,335 bi-weekly). No state tax allows high earners to keep 75.1% of their gross earnings.",
+    about: `### Florida $150,000 Salary Tax Breakdown (2026 Single Filer)
+
+| Pay Period | Gross Pay | Federal Income Tax | FICA | State Tax | Net Take-Home Pay |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Annual** | $150,000 | $25,820 | $11,475 | $0 | **$112,705** |
+| **Monthly** | $12,500 | $2,152 | $956 | $0 | **$9,392** |
+| **Bi-Weekly** | $5,769 | $993 | $441 | $0 | **$4,335** |`,
+    initialValues: { regime: "US", grossSalary: 150000, filingStatus: "single", stateTaxPercent: 0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $150k in Florida?",
+        answer: "Estimated take-home pay is $112,705 per year, or roughly $9,392 per month and $4,335 every two weeks."
+      },
+      {
+        question: "How much state tax is saved on $150k in Florida vs California?",
+        answer: "Florida residents save approximately $10,800 annually in state taxes and SDI compared to California on a $150,000 salary."
+      },
+      {
+        question: "What is the effective tax rate on $150k in Florida?",
+        answer: "The total effective tax rate is approximately 24.9%, consisting entirely of Federal income tax (17.2%) and FICA (7.65%)."
+      },
+      {
+        question: "What is the monthly paycheck on $150,000 in Florida?",
+        answer: "Your monthly take-home pay is approximately $9,392 after all federal and FICA deductions."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "washington-take-home-100k",
+    name: "$100,000 Washington State Take-Home Paycheck Calculator",
+    title: "$100k Salary in Washington State: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Washington State. Zero state income tax: net monthly, bi-weekly, and weekly pay after Federal taxes & FICA.",
+    answerSummary: "On a $100,000 salary in Washington State (Single filer, 2026), your estimated net take-home pay is ~$78,090 (~$6,507/month or $3,003 bi-weekly). Washington has no personal state income tax on wages.",
+    about: `### Washington State $100,000 Salary Tax Breakdown (2026 Single Filer)
+
+| Pay Period | Gross Pay | Federal Tax | FICA | WA State Tax | Net Take-Home Pay |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Annual** | $100,000 | $14,260 | $7,650 | $0 | **$78,090** |
+| **Monthly** | $8,333 | $1,188 | $638 | $0 | **$6,507** |
+| **Bi-Weekly** | $3,846 | $548 | $294 | $0 | **$3,003** |`,
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "Does Washington State tax personal salary?",
+        answer: "No. Washington State does not impose any personal state income tax on wages or salaries."
+      },
+      {
+        question: "What is the take-home pay on $100k in Washington?",
+        answer: "Net annual take-home pay is approximately $78,090, meaning you keep about 78.1% of your gross salary."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100,000 in WA?",
+        answer: "Your average bi-weekly paycheck is approximately $3,003 across 26 pay periods."
+      },
+      {
+        question: "How does Washington compare to Oregon on a $100k salary?",
+        answer: "Workers in Washington save approximately $7,800 to $8,500 per year compared to Oregon, which levies a top income tax rate of 8.75%–9.9%."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "washington-take-home-150k",
+    name: "$150,000 Washington State Take-Home Paycheck Calculator",
+    title: "$150k Salary in Washington State: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $150,000 salary in Washington State. Zero state income tax: net monthly and bi-weekly pay after Federal tax & FICA.",
+    answerSummary: "On a $150,000 salary in Washington State (Single filer, 2026), your estimated net take-home pay is ~$112,705 (~$9,392/month or $4,335 bi-weekly). Zero state income tax maximizes earnings for tech and healthcare professionals.",
+    about: "Analyze your net paycheck in Washington State on a $150k annual salary. Review federal brackets, FICA contributions, and 401(k) pre-tax retirement savings.",
+    initialValues: { regime: "US", grossSalary: 150000, filingStatus: "single", stateTaxPercent: 0, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home on $150k in Washington State?",
+        answer: "Your annual take-home pay is approximately $112,705, or roughly $9,392 per month and $4,335 bi-weekly."
+      },
+      {
+        question: "Does Washington State have any payroll deductions for workers?",
+        answer: "While WA has no personal income tax, small mandatory state deductions exist for Paid Family & Medical Leave (PFML) and WA Cares Fund (long-term care)."
+      },
+      {
+        question: "What is the total tax paid on $150k in Washington?",
+        answer: "Total federal taxes and FICA equal approximately $37,295, resulting in an effective tax rate of 24.9%."
+      },
+      {
+        question: "How much more do you keep in WA vs California on $150k?",
+        answer: "You keep approximately $10,800 more per year in Washington State than in California on a $150,000 gross wage."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "pennsylvania-take-home-75k",
+    name: "$75,000 Pennsylvania Take-Home Paycheck Calculator",
+    title: "$75k Salary in Pennsylvania: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $75,000 salary in Pennsylvania. Flat 3.07% PA state tax: view net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $75,000 salary in Pennsylvania (Single filer, 2026), your estimated net take-home pay is ~$58,600 (~$4,883/month or $2,254 bi-weekly) after Federal tax (~$8,360), FICA (~$5,738), and PA flat state tax of 3.07% (~$2,303).",
+    about: `### Pennsylvania $75,000 Salary Tax Breakdown (2026 Single Filer)
+
+| Pay Period | Gross Pay | Federal Tax | FICA | PA State Tax (3.07%) | Net Take-Home Pay |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Annual** | $75,000 | $8,360 | $5,738 | $2,303 | **$58,599** |
+| **Monthly** | $6,250 | $697 | $478 | $192 | **$4,883** |
+| **Bi-Weekly** | $2,885 | $322 | $221 | $89 | **$2,254** |`,
+    initialValues: { regime: "US", grossSalary: 75000, filingStatus: "single", stateTaxPercent: 3.07, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the state tax rate in Pennsylvania?",
+        answer: "Pennsylvania has a flat state personal income tax rate of 3.07% on gross compensation."
+      },
+      {
+        question: "What is the take-home pay on $75k in Pennsylvania?",
+        answer: "Annual net take-home pay is approximately $58,599, or roughly $4,883 per month and $2,254 bi-weekly."
+      },
+      {
+        question: "Are local taxes withheld in Pennsylvania?",
+        answer: "Yes, many PA municipalities and school districts levy an additional local earned income tax (EIT), typically 1% to 3.75% (e.g. Philadelphia)."
+      },
+      {
+        question: "Does PA allow standard deductions for state tax?",
+        answer: "No. Unlike the Federal tax system, Pennsylvania does not offer standard or personal deductions on earned income."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "pennsylvania-take-home-100k",
+    name: "$100,000 Pennsylvania Take-Home Paycheck Calculator",
+    title: "$100k Salary in Pennsylvania: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Pennsylvania. Flat 3.07% PA state tax: net monthly, bi-weekly, and weekly pay after all taxes.",
+    answerSummary: "On a $100,000 salary in Pennsylvania (Single filer, 2026), your estimated net take-home pay is ~$75,020 (~$6,252/month or $2,885 bi-weekly) after Federal tax (~$14,260), FICA (~$7,650), and PA state tax of $3,070 (3.07%).",
+    about: "Calculate your net take-home pay in Pennsylvania on a $100k annual salary. Review federal withholding, PA's flat 3.07% state tax, and local earned income tax (EIT).",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 3.07, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home on $100k in Pennsylvania?",
+        answer: "Annual net take-home pay is approximately $75,020, or roughly $6,252 per month."
+      },
+      {
+        question: "How much state tax do you pay on $100k in PA?",
+        answer: "Pennsylvania flat state income tax is exactly $3,070 (3.07% of $100,000)."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100,000 in PA?",
+        answer: "On a bi-weekly payroll schedule (26 checks), you receive roughly $2,885 per paycheck."
+      },
+      {
+        question: "What is Philadelphia's wage tax on $100k?",
+        answer: "If you live or work in Philadelphia, the city levies a resident wage tax of ~3.75% ($3,750), reducing take-home pay to ~$71,270."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "illinois-take-home-75k",
+    name: "$75,000 Illinois Take-Home Paycheck Calculator",
+    title: "$75k Salary in Illinois: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $75,000 salary in Illinois. Flat 4.95% IL state tax: view net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $75,000 salary in Illinois (Single filer, 2026), your estimated net take-home pay is ~$57,310 (~$4,776/month or $2,204 bi-weekly) after Federal tax (~$8,360), FICA (~$5,738), and Illinois flat state tax of 4.95% (~$3,590).",
+    about: "Evaluate your net paycheck in Illinois on a $75k annual wage. Model Illinois's flat 4.95% tax rate and standard personal exemption.",
+    initialValues: { regime: "US", grossSalary: 75000, filingStatus: "single", stateTaxPercent: 4.95, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the state tax rate in Illinois?",
+        answer: "Illinois imposes a flat personal income tax rate of 4.95% on adjusted gross income."
+      },
+      {
+        question: "What is take-home pay on $75k in Illinois?",
+        answer: "Your estimated annual take-home pay is $57,313, or roughly $4,776 per month."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $75,000 in IL?",
+        answer: "You take home roughly $2,204 every two weeks across 26 pay periods."
+      },
+      {
+        question: "Does Illinois have city income taxes?",
+        answer: "No. Unlike New York City or Philadelphia, Chicago and other Illinois municipalities do not levy local personal income taxes."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "illinois-take-home-100k",
+    name: "$100,000 Illinois Take-Home Paycheck Calculator",
+    title: "$100k Salary in Illinois: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Illinois. Flat 4.95% IL state tax: net monthly, bi-weekly, and weekly pay after all taxes.",
+    answerSummary: "On a $100,000 salary in Illinois (Single filer, 2026), your estimated net take-home pay is ~$73,260 (~$6,105/month or $2,818 bi-weekly) after Federal tax (~$14,260), FICA (~$7,650), and IL state tax (~$4,830).",
+    about: "Analyze your take-home pay in Illinois on a $100k salary. Review federal brackets, IL 4.95% state tax, FICA deductions, and retirement contributions.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 4.95, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $100,000 in Illinois?",
+        answer: "Net annual take-home pay is approximately $73,260, or roughly $6,105 per month."
+      },
+      {
+        question: "How much state tax do you pay on $100k in Illinois?",
+        answer: "Illinois flat state income tax on $100,000 is approximately $4,826 after applying the basic personal exemption."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100k in IL?",
+        answer: "On a bi-weekly payroll schedule, your net paycheck is roughly $2,818 every two weeks."
+      },
+      {
+        question: "How much total tax is withheld on $100k in Illinois?",
+        answer: "Total combined taxes (Federal + FICA + State) equal approximately $26,740, representing an effective rate of 26.7%."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "arizona-take-home-75k",
+    name: "$75,000 Arizona Take-Home Paycheck Calculator",
+    title: "$75k Salary in Arizona: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $75,000 salary in Arizona. Flat 2.50% AZ state tax: view net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $75,000 salary in Arizona (Single filer, 2026), your estimated net take-home pay is ~$59,025 (~$4,919/month or $2,270 bi-weekly) thanks to Arizona's low flat 2.50% state income tax (~$1,875).",
+    about: "Calculate net pay in Arizona on a $75k annual wage. Arizona features one of the lowest flat income tax rates in the nation at 2.50%.",
+    initialValues: { regime: "US", grossSalary: 75000, filingStatus: "single", stateTaxPercent: 2.50, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the income tax rate in Arizona?",
+        answer: "Arizona has a flat individual income tax rate of 2.50% for all taxable income."
+      },
+      {
+        question: "What is take-home pay on $75k in Arizona?",
+        answer: "Annual net take-home pay is approximately $59,027, or about $4,919 per month."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $75,000 in AZ?",
+        answer: "You take home roughly $2,270 every two weeks across 26 pay periods."
+      },
+      {
+        question: "How much state tax is paid on $75,000 in Arizona?",
+        answer: "Arizona state income tax on $75,000 is approximately $1,875 annually."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "arizona-take-home-100k",
+    name: "$100,000 Arizona Take-Home Paycheck Calculator",
+    title: "$100k Salary in Arizona: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Arizona. Flat 2.50% AZ state tax: net monthly, bi-weekly, and weekly pay after all taxes.",
+    answerSummary: "On a $100,000 salary in Arizona (Single filer, 2026), your estimated net take-home pay is ~$75,590 (~$6,299/month or $2,907 bi-weekly) with AZ's flat 2.50% tax rate ($2,500 state tax).",
+    about: "Analyze your take-home pay in Arizona on a $100k salary. Compare Arizona's flat 2.50% tax rate to neighboring high-tax states like California.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 2.50, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $100k in Arizona?",
+        answer: "Annual take-home pay is roughly $75,590, or about $6,299 per month."
+      },
+      {
+        question: "How much state tax do you pay on $100k in Arizona?",
+        answer: "State income tax is flat at 2.50%, equaling $2,500 on a $100,000 wage."
+      },
+      {
+        question: "How much more do you keep in AZ vs California on $100k?",
+        answer: "You keep approximately $3,090 more per year in Arizona than in California on a $100,000 salary."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100,000 in Arizona?",
+        answer: "Your average bi-weekly paycheck is approximately $2,907 across 26 pay periods."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "colorado-take-home-100k",
+    name: "$100,000 Colorado Take-Home Paycheck Calculator",
+    title: "$100k Salary in Colorado: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Colorado. Flat 4.40% CO state tax: net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $100,000 salary in Colorado (Single filer, 2026), your estimated net take-home pay is ~$73,690 (~$6,141/month or $2,834 bi-weekly) after Federal tax (~$14,260), FICA (~$7,650), and CO flat state tax of 4.40% ($4,400).",
+    about: "Calculate your net earnings in Colorado on a $100k salary. Model Colorado's flat 4.40% state tax rate and TABOR refund mechanisms.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 4.40, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the state tax rate in Colorado?",
+        answer: "Colorado has a flat individual state income tax rate of 4.40%."
+      },
+      {
+        question: "What is take-home pay on $100k in Colorado?",
+        answer: "Estimated annual take-home pay is $73,690, or about $6,141 per month."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100k in CO?",
+        answer: "On a 26-pay-period schedule, your net paycheck is roughly $2,834 every two weeks."
+      },
+      {
+        question: "Does Colorado have local income taxes?",
+        answer: "A few Colorado municipalities (like Denver) levy small occupational privilege taxes (OPT, ~$5.75/month), but no local percentage income taxes."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "colorado-take-home-150k",
+    name: "$150,000 Colorado Take-Home Paycheck Calculator",
+    title: "$150k Salary in Colorado: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $150,000 salary in Colorado. Flat 4.40% CO state tax: net monthly and bi-weekly pay after Federal tax & FICA.",
+    answerSummary: "On a $150,000 salary in Colorado (Single filer, 2026), your estimated net take-home pay is ~$106,105 (~$8,842/month or $4,081 bi-weekly) after Federal tax (~$25,820), FICA (~$11,475), and CO state tax ($6,600).",
+    about: "Evaluate your net paycheck in Colorado on a $150k wage. Review federal withholding, state flat tax, and simulated 401(k) pre-tax deductions.",
+    initialValues: { regime: "US", grossSalary: 150000, filingStatus: "single", stateTaxPercent: 4.40, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $150k in Colorado?",
+        answer: "Annual net take-home pay is approximately $106,105, or roughly $8,842 per month."
+      },
+      {
+        question: "How much state tax is paid on $150,000 in Colorado?",
+        answer: "Colorado flat state income tax is $6,600 (4.40% of $150,000)."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $150,000 in Colorado?",
+        answer: "Your average bi-weekly paycheck is approximately $4,081 across 26 pay periods."
+      },
+      {
+        question: "What is the total effective tax rate on $150k in Colorado?",
+        answer: "Total effective tax rate is approximately 29.3%, combining Federal (17.2%), FICA (7.65%), and State (4.40%)."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "north-carolina-take-home-75k",
+    name: "$75,000 North Carolina Take-Home Paycheck Calculator",
+    title: "$75k Salary in North Carolina: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $75,000 salary in North Carolina. Flat 4.50% NC state tax: net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $75,000 salary in North Carolina (Single filer, 2026), your estimated net take-home pay is ~$57,525 (~$4,794/month or $2,213 bi-weekly) after Federal tax (~$8,360), FICA (~$5,738), and NC flat tax of 4.50% ($3,375).",
+    about: "Calculate your net pay in North Carolina on a $75k annual wage. Model North Carolina's flat 4.50% state tax rate and standard deduction.",
+    initialValues: { regime: "US", grossSalary: 75000, filingStatus: "single", stateTaxPercent: 4.50, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the state tax rate in North Carolina?",
+        answer: "North Carolina has a flat individual income tax rate of 4.50%."
+      },
+      {
+        question: "What is take-home pay on $75k in North Carolina?",
+        answer: "Annual net take-home pay is roughly $57,527, or about $4,794 per month."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $75,000 in NC?",
+        answer: "You receive roughly $2,213 every two weeks across 26 pay periods."
+      },
+      {
+        question: "Does North Carolina have city or county income taxes?",
+        answer: "No. North Carolina municipalities and counties do not levy local personal income taxes."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "north-carolina-take-home-100k",
+    name: "$100,000 North Carolina Take-Home Paycheck Calculator",
+    title: "$100k Salary in North Carolina: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in North Carolina. Flat 4.50% NC state tax: net monthly, bi-weekly, and weekly pay after all taxes.",
+    answerSummary: "On a $100,000 salary in North Carolina (Single filer, 2026), your estimated net take-home pay is ~$73,590 (~$6,133/month or $2,830 bi-weekly) after Federal tax (~$14,260), FICA (~$7,650), and NC state tax of $4,500 (4.50%).",
+    about: "Analyze your take-home pay in North Carolina on a $100k salary. Review federal brackets, NC 4.50% flat tax, FICA deductions, and 401(k) contributions.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 4.50, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $100,000 in North Carolina?",
+        answer: "Estimated annual take-home pay is $73,590, or roughly $6,133 per month."
+      },
+      {
+        question: "How much state tax do you pay on $100k in North Carolina?",
+        answer: "North Carolina state income tax is exactly $4,500 (4.50% of $100,000)."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100,000 in NC?",
+        answer: "On a 26-pay-period schedule, your net paycheck is roughly $2,830 every two weeks."
+      },
+      {
+        question: "What is the effective tax rate on $100k in NC?",
+        answer: "Total effective tax rate is approximately 26.4% (Federal 14.3%, FICA 7.65%, State 4.50%)."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "ohio-take-home-75k",
+    name: "$75,000 Ohio Take-Home Paycheck Calculator",
+    title: "$75k Salary in Ohio: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $75,000 salary in Ohio. State tax & municipal tax breakdown: view net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $75,000 salary in Ohio (Single filer, 2026), your estimated net take-home pay is ~$58,840 (~$4,903/month or $2,263 bi-weekly) after Federal tax (~$8,360), FICA (~$5,738), and OH state tax (~$2,060).",
+    about: "Calculate your net paycheck in Ohio on a $75k annual wage. Model Ohio's state income tax brackets and local city income taxes.",
+    initialValues: { regime: "US", grossSalary: 75000, filingStatus: "single", stateTaxPercent: 2.75, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $75k in Ohio?",
+        answer: "Annual net take-home pay is approximately $58,842, or about $4,903 per month."
+      },
+      {
+        question: "Does Ohio have local city income taxes?",
+        answer: "Yes. Most Ohio cities (like Columbus, Cleveland, Cincinnati) levy municipal income taxes typically ranging from 1.5% to 2.5%."
+      },
+      {
+        question: "What is the state income tax on $75,000 in Ohio?",
+        answer: "Ohio state income tax is approximately $2,060 after factoring in lower tier exemptions."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $75,000 in Ohio?",
+        answer: "You take home roughly $2,263 every two weeks across 26 pay periods."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "ohio-take-home-100k",
+    name: "$100,000 Ohio Take-Home Paycheck Calculator",
+    title: "$100k Salary in Ohio: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Ohio. State & local tax breakdown: net monthly, bi-weekly, and weekly pay after all taxes.",
+    answerSummary: "On a $100,000 salary in Ohio (Single filer, 2026), your estimated net take-home pay is ~$74,890 (~$6,241/month or $2,880 bi-weekly) after Federal tax (~$14,260), FICA (~$7,650), and OH state tax (~$3,200).",
+    about: "Analyze your take-home pay in Ohio on a $100k salary. Review federal brackets, OH state tax tiers, RITA/municipal taxes, and 401(k) deductions.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 3.50, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $100,000 in Ohio?",
+        answer: "Estimated annual take-home pay is $74,890, or roughly $6,241 per month."
+      },
+      {
+        question: "How much state tax do you pay on $100k in Ohio?",
+        answer: "Ohio progressive state income tax is roughly $3,200 (an effective state rate of ~3.2%)."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100,000 in Ohio?",
+        answer: "On a bi-weekly payroll schedule (26 checks), you receive roughly $2,880 per paycheck."
+      },
+      {
+        question: "What is the total tax on $100k in Ohio?",
+        answer: "Combined Federal, FICA, and State taxes total roughly $25,110 (25.1% effective tax rate)."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "georgia-take-home-75k",
+    name: "$75,000 Georgia Take-Home Paycheck Calculator",
+    title: "$75k Salary in Georgia: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $75,000 salary in Georgia. Flat 5.39% GA state tax: view net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $75,000 salary in Georgia (Single filer, 2026), your estimated net take-home pay is ~$57,250 (~$4,771/month or $2,202 bi-weekly) after Federal tax (~$8,360), FICA (~$5,738), and GA flat state tax (~$3,650).",
+    about: "Calculate your net paycheck in Georgia on a $75k annual wage. Model Georgia's flat state tax rate and standard personal exemption.",
+    initialValues: { regime: "US", grossSalary: 75000, filingStatus: "single", stateTaxPercent: 5.39, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is the state tax rate in Georgia?",
+        answer: "Georgia has transitioned to a flat individual income tax rate of 5.39%."
+      },
+      {
+        question: "What is take-home pay on $75k in Georgia?",
+        answer: "Annual net take-home pay is approximately $57,252, or roughly $4,771 per month."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $75,000 in GA?",
+        answer: "You take home roughly $2,202 every two weeks across 26 pay periods."
+      },
+      {
+        question: "Does Georgia have local city income taxes?",
+        answer: "No. Georgia cities and counties do not levy separate local personal income taxes."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "georgia-take-home-100k",
+    name: "$100,000 Georgia Take-Home Paycheck Calculator",
+    title: "$100k Salary in Georgia: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Georgia. Flat 5.39% GA state tax: net monthly, bi-weekly, and weekly pay after all taxes.",
+    answerSummary: "On a $100,000 salary in Georgia (Single filer, 2026), your estimated net take-home pay is ~$73,140 (~$6,095/month or $2,813 bi-weekly) after Federal tax (~$14,260), FICA (~$7,650), and GA state tax (~$4,950).",
+    about: "Analyze your take-home pay in Georgia on a $100k salary. Review federal brackets, GA flat 5.39% tax, FICA deductions, and retirement contributions.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 5.39, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $100,000 in Georgia?",
+        answer: "Estimated annual take-home pay is $73,140, or roughly $6,095 per month."
+      },
+      {
+        question: "How much state tax do you pay on $100k in Georgia?",
+        answer: "Georgia state income tax on $100,000 is approximately $4,950 after applying the personal exemption."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100,000 in GA?",
+        answer: "On a bi-weekly payroll schedule, your net paycheck is roughly $2,813 every two weeks."
+      },
+      {
+        question: "What is the effective tax rate on $100k in Georgia?",
+        answer: "Total effective tax rate is approximately 26.9% (Federal 14.3%, FICA 7.65%, State 4.95%)."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "virginia-take-home-100k",
+    name: "$100,000 Virginia Take-Home Paycheck Calculator",
+    title: "$100k Salary in Virginia: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $100,000 salary in Virginia. Progressive 5.75% VA state tax: net monthly, bi-weekly, and weekly pay after taxes.",
+    answerSummary: "On a $100,000 salary in Virginia (Single filer, 2026), your estimated net take-home pay is ~$72,740 (~$6,062/month or $2,798 bi-weekly) after Federal tax (~$14,260), FICA (~$7,650), and VA state tax (~$5,350).",
+    about: "Calculate your net take-home pay in Virginia on a $100k annual salary. Review federal withholding, VA 5.75% top marginal bracket, and FICA deductions.",
+    initialValues: { regime: "US", grossSalary: 100000, filingStatus: "single", stateTaxPercent: 5.75, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $100k in Virginia?",
+        answer: "Annual net take-home pay is approximately $72,740, or roughly $6,062 per month."
+      },
+      {
+        question: "What is the top state income tax rate in Virginia?",
+        answer: "Virginia's top personal income tax rate is 5.75% on taxable income over $17,000."
+      },
+      {
+        question: "How much state tax is paid on $100,000 in Virginia?",
+        answer: "Virginia state income tax is approximately $5,350 after standard deductions."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $100k in VA?",
+        answer: "On a 26-pay-period schedule, your net paycheck is roughly $2,798 every two weeks."
+      }
+    ],
+  },
+  {
+    toolSlug: "salary-calculator",
+    presetSlug: "virginia-take-home-150k",
+    name: "$150,000 Virginia Take-Home Paycheck Calculator",
+    title: "$150k Salary in Virginia: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a $150,000 salary in Virginia. Progressive 5.75% VA state tax: net monthly and bi-weekly pay after taxes.",
+    answerSummary: "On a $150,000 salary in Virginia (Single filer, 2026), your estimated net take-home pay is ~$104,480 (~$8,707/month or $4,018 bi-weekly) after Federal tax (~$25,820), FICA (~$11,475), and VA state tax (~$8,225).",
+    about: "Analyze your take-home pay in Virginia on a $150k salary. Review federal brackets, VA state tax, FICA deductions, and simulated 401(k) contributions.",
+    initialValues: { regime: "US", grossSalary: 150000, filingStatus: "single", stateTaxPercent: 5.75, k401ContributionPercent: 5 },
+    faqs: [
+      {
+        question: "What is take-home pay on $150k in Virginia?",
+        answer: "Annual net take-home pay is approximately $104,480, or roughly $8,707 per month and $4,018 bi-weekly."
+      },
+      {
+        question: "How much state tax do you pay on $150k in Virginia?",
+        answer: "Virginia state tax on $150,000 is approximately $8,225 (effective state tax rate of ~5.48%)."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $150,000 in VA?",
+        answer: "Your average bi-weekly paycheck is approximately $4,018 across 26 pay periods."
+      },
+      {
+        question: "What is the total effective tax rate on $150k in Virginia?",
+        answer: "Total effective tax rate is approximately 30.3%, combining Federal (17.2%), FICA (7.65%), and State (5.48%)."
+      }
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-45k",
+    name: "£45,000 UK Take-Home Paycheck Calculator",
+    title: "£45k Salary in UK: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a £45,000 salary in the UK. Income tax and National Insurance breakdown: view net monthly and weekly pay.",
+    answerSummary: "On a £45,000 salary in the UK (2026 tax year), your estimated take-home pay is £35,920 (~£2,993/month or £691/week) after £6,486 in income tax and £2,594 in National Insurance.",
+    about: `### UK £45,000 Salary Tax Breakdown (2026 Tax Year)
+
+| Pay Period | Gross Pay | Income Tax (20%) | National Insurance (8%) | Net Take-Home Pay |
+| :--- | :--- | :--- | :--- | :--- |
+| **Annual** | £45,000 | £6,486 | £2,594 | **£35,920** |
+| **Monthly** | £3,750 | £541 | £216 | **£2,993** |
+| **Weekly** | £865 | £125 | £50 | **£691** |`,
+    initialValues: { grossSalary: 45000, pensionPercent: 5, taxYear: "2025/26", studentLoan: "none" },
+    faqs: [
+      {
+        question: "What is the take-home pay on £45,000 in the UK?",
+        answer: "Net annual take-home pay is approximately £35,920, or roughly £2,993 per month and £691 per week."
+      },
+      {
+        question: "How much income tax do I pay on £45k in the UK?",
+        answer: "After the £12,570 Personal Allowance, you pay 20% basic rate tax on £32,430, which equals £6,486."
+      },
+      {
+        question: "How much National Insurance is deducted on £45,000?",
+        answer: "Employee Class 1 National Insurance at 8% totals approximately £2,594 per year."
+      },
+      {
+        question: "What percentage of a £45,000 salary do you keep?",
+        answer: "You keep approximately 79.8% of your gross earnings after income tax and NI."
+      }
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-75k",
+    name: "£75,000 UK Take-Home Paycheck Calculator",
+    title: "£75k Salary in UK: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a £75,000 salary in the UK. 40% higher rate tax breakdown: see net monthly and weekly earnings.",
+    answerSummary: "On a £75,000 salary in the UK (2026 tax year), your estimated net take-home pay is £55,022 (~£4,585/month or £1,058/week) after £16,458 in income tax and £3,520 in National Insurance.",
+    about: "Analyze net pay on a £75,000 salary in the UK. Review the 20% basic rate and 40% higher rate tax thresholds, National Insurance, and workplace pension savings.",
+    initialValues: { grossSalary: 75000, pensionPercent: 5, taxYear: "2025/26", studentLoan: "none" },
+    faqs: [
+      {
+        question: "What is the take-home pay on £75,000 in the UK?",
+        answer: "Estimated annual take-home pay is £55,022, or roughly £4,585 per month and £1,058 per week."
+      },
+      {
+        question: "How much tax do you pay in the 40% higher rate bracket on £75k?",
+        answer: "Earnings between £50,270 and £75,000 (£24,730) are taxed at 40%, totaling £9,892 in higher rate tax, on top of £7,540 in basic rate tax."
+      },
+      {
+        question: "What is the monthly paycheck on £75,000 in the UK?",
+        answer: "Your average monthly take-home pay is approximately £4,585 after tax and National Insurance."
+      },
+      {
+        question: "How much National Insurance is paid on £75k?",
+        answer: "National Insurance is £3,026 (8% on earnings up to £50,270) plus £494 (2% on earnings above £50,270), totaling £3,520."
+      }
+    ],
+  },
+  {
+    toolSlug: "uk-salary-calculator",
+    presetSlug: "uk-take-home-150k",
+    name: "£150,000 UK Take-Home Paycheck Calculator",
+    title: "£150k Salary in UK: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on a £150,000 salary in the UK. 45% additional rate tax and personal allowance tapering breakdown: see net monthly pay.",
+    answerSummary: "On a £150,000 salary in the UK (2026 tax year), your estimated take-home pay is £96,188 (~£8,016/month or £1,850/week). Because income exceeds £125,140, the personal allowance is reduced to £0, and earnings above £125,140 are taxed at the 45% additional rate.",
+    about: "Calculate your take-home pay in the UK on a £150,000 salary. Model the complete loss of the personal allowance, the 45% additional rate threshold, and salary sacrifice pension strategies.",
+    initialValues: { grossSalary: 150000, pensionPercent: 5, taxYear: "2025/26", studentLoan: "none" },
+    faqs: [
+      {
+        question: "What is take-home pay on £150,000 in the UK?",
+        answer: "Net annual take-home pay is approximately £96,188, or roughly £8,016 per month and £1,850 per week."
+      },
+      {
+        question: "What happens to the personal allowance at £150k in the UK?",
+        answer: "The personal allowance reduces by £1 for every £2 earned above £100,000, meaning it is completely reduced to £0 at £125,140."
+      },
+      {
+        question: "What is the additional tax rate on £150,000 in the UK?",
+        answer: "Earnings above £125,140 (£24,860) are taxed at the 45% additional rate, equaling £11,187."
+      },
+      {
+        question: "How much can you save via salary sacrifice pension on £150k?",
+        answer: "Contributing £40,000 to a pension lowers taxable income and recovers part of the personal allowance, saving up to £18,000 in tax."
+      }
+    ],
+  },
+  {
+    toolSlug: "canada-paycheck-calculator",
+    presetSlug: "alberta-take-home-80k",
+    name: "$80,000 Alberta Paycheck Calculator",
+    title: "$80k Salary in Alberta: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on an $80,000 salary in Alberta, Canada. Low provincial tax: view net monthly and bi-weekly pay after Federal tax, AB tax, CPP & EI.",
+    answerSummary: "On an $80,000 CAD salary in Alberta (2026), your estimated net take-home pay is ~$60,200 CAD (~$5,017/month or $2,315 bi-weekly) after Federal tax (~$9,500), Alberta provincial tax (10% flat rate ~$5,400), and CPP/EI contributions (~$4,900).",
+    about: "Evaluate your net paycheck in Alberta on an $80k salary. Alberta has no provincial sales tax and one of Canada's lowest personal income tax burdens.",
+    initialValues: { grossSalary: 80000, province: "AB", payFrequency: "bi-weekly" },
+    faqs: [
+      {
+        question: "What is take-home pay on $80,000 in Alberta?",
+        answer: "Estimated net take-home pay is approximately $60,200 CAD per year, or roughly $5,017 per month and $2,315 bi-weekly."
+      },
+      {
+        question: "What is the provincial tax rate in Alberta?",
+        answer: "Alberta taxes taxable income up to $148,269 at a low provincial rate of 10%."
+      },
+      {
+        question: "How much CPP and EI is deducted on $80k in Alberta?",
+        answer: "Maximum Canada Pension Plan (CPP) and Employment Insurance (EI) contributions total approximately $4,900 annually."
+      },
+      {
+        question: "How does Alberta take-home compare to Quebec on $80,000?",
+        answer: "Alberta workers keep approximately $4,500 to $6,000 more per year than workers in Quebec on the same $80k salary."
+      }
+    ],
+  },
+  {
+    toolSlug: "canada-paycheck-calculator",
+    presetSlug: "bc-take-home-80k",
+    name: "$80,000 British Columbia Paycheck Calculator",
+    title: "$80k Salary in BC: Take-Home Paycheck Calculator (2026) | ConvertSheet",
+    metaDescription: "Calculate take-home pay on an $80,000 salary in British Columbia. BC provincial tax breakdown: net monthly and bi-weekly earnings after Federal, CPP & EI.",
+    answerSummary: "On an $80,000 CAD salary in British Columbia (2026), your estimated net take-home pay is ~$61,500 CAD (~$5,125/month or $2,365 bi-weekly) after Federal tax (~$9,500), BC provincial tax (~$4,100), and CPP/EI contributions (~$4,900).",
+    about: "Calculate your net take-home pay in British Columbia on an $80k annual wage. Review BC's progressive provincial tax brackets, federal deductions, and mandatory payroll contributions.",
+    initialValues: { grossSalary: 80000, province: "BC", payFrequency: "bi-weekly" },
+    faqs: [
+      {
+        question: "What is take-home pay on $80,000 in British Columbia?",
+        answer: "Net annual take-home pay is approximately $61,500 CAD, or about $5,125 per month and $2,365 bi-weekly."
+      },
+      {
+        question: "What are the provincial income tax rates in BC?",
+        answer: "British Columbia taxes the first $47,937 at 5.06% and earnings from $47,937 to $95,875 at 7.70%."
+      },
+      {
+        question: "What is the bi-weekly paycheck on $80k in BC?",
+        answer: "Your average bi-weekly paycheck across 26 pay periods is approximately $2,365 CAD."
+      },
+      {
+        question: "Does BC have provincial health premiums deducted from paychecks?",
+        answer: "No. BC eliminated individual Medical Services Plan (MSP) premiums in 2020; healthcare is funded through employer health taxes."
+      }
     ],
   },
   {

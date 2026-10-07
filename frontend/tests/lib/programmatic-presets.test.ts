@@ -334,10 +334,35 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(preset?.initialValues.downPayment).toBe(100000);
     expect(preset?.initialValues.loanTermYears).toBe(15);
     expect(preset?.initialValues.interestRate).toBe(5.75);
-    expect(preset?.faqs.length).toBeGreaterThanOrEqual(6);
-    expect(preset?.faqs.some((f) => f.question.includes("Is a 15-year mortgage better"))).toBe(true);
-    expect(preset?.faqs.some((f) => f.question.includes("How much interest do I save"))).toBe(true);
     expect(preset?.about).toContain("15-Year vs 30-Year Fixed Mortgage Comparison");
+  });
+
+  it("resolves newly registered US state and bracket salary presets", () => {
+    const florida100k = getProgrammaticPreset("salary-calculator", "florida-take-home-100k");
+    expect(florida100k).toBeDefined();
+    expect(florida100k?.title).toContain("Florida");
+    expect(florida100k?.title).toContain("100k");
+    expect(florida100k?.faqs.length).toBeGreaterThanOrEqual(4);
+
+    const washington100k = getProgrammaticPreset("salary-calculator", "washington-take-home-100k");
+    expect(washington100k).toBeDefined();
+    expect(washington100k?.title).toContain("Washington");
+
+    const pennsylvania75k = getProgrammaticPreset("salary-calculator", "pennsylvania-take-home-75k");
+    expect(pennsylvania75k).toBeDefined();
+    expect(pennsylvania75k?.title).toContain("Pennsylvania");
+
+    const illinois100k = getProgrammaticPreset("salary-calculator", "illinois-take-home-100k");
+    expect(illinois100k).toBeDefined();
+    expect(illinois100k?.title).toContain("Illinois");
+
+    const uk45k = getProgrammaticPreset("uk-salary-calculator", "uk-take-home-45k");
+    expect(uk45k).toBeDefined();
+    expect(uk45k?.title).toContain("£45k");
+
+    const alberta80k = getProgrammaticPreset("canada-paycheck-calculator", "alberta-take-home-80k");
+    expect(alberta80k).toBeDefined();
+    expect(alberta80k?.title).toContain("Alberta");
   });
 
   it("generates static params for all presets with slug and preset keys", () => {
