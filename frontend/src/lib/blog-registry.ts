@@ -2463,7 +2463,7 @@ const arrowResult = await conn.query(\`
           <p class="text-emerald-700 dark:text-emerald-300 font-bold">• Total Net Lifetime Interest Saved (after fees): <strong>₹4,07,880</strong></p>
         </div>
         <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed pt-2">
-          Because the break-even is under 18 months and the remaining tenure is 18 years, <strong>the switch is overwhelmingly profitable</strong>. Run your custom figures in our <a href="/tools/interest-rate-hike-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Interest Rate Hike EMI Calculator</a> to model custom rate deltas.
+          Because the break-even is under 18 months and the remaining tenure is 18 years, <strong>the switch is overwhelmingly profitable</strong>. Run your custom figures directly in our dedicated <a href="/tools/home-loan-balance-transfer-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Home Loan Balance Transfer Savings Calculator</a> to audit your state MODT stamp duty and exact break-even payback month.
         </p>
       </section>
 
