@@ -62,7 +62,8 @@ export function HomeCommandHero({
           c.title?.toLowerCase().includes(q) ||
           c.sourceFormat?.toLowerCase().includes(q) ||
           c.targetFormat?.toLowerCase().includes(q) ||
-          (c.description ? c.description.toLowerCase().includes(q) : false)
+          c.subtitle?.toLowerCase().includes(q) ||
+          c.metaDescription?.toLowerCase().includes(q)
       )
       .slice(0, 4)
       .map((c) => ({
@@ -77,14 +78,16 @@ export function HomeCommandHero({
     const matchedTools = allTools
       .filter(
         (t) =>
+          t.name?.toLowerCase().includes(q) ||
           t.title?.toLowerCase().includes(q) ||
-          (t.description ? t.description.toLowerCase().includes(q) : false) ||
+          t.subtitle?.toLowerCase().includes(q) ||
+          t.metaDescription?.toLowerCase().includes(q) ||
           t.category?.toLowerCase().includes(q)
       )
       .slice(0, 4)
       .map((t) => ({
         type: "tool" as const,
-        title: t.title,
+        title: t.title || t.name,
         href: `/tools/${t.slug}`,
         subtitle: t.category,
         slug: t.slug,
@@ -95,7 +98,7 @@ export function HomeCommandHero({
   }, [searchQuery, allConverters, allTools]);
 
   const handleSelectPreset = (slug: string) => {
-    const found = CONVERTER_REGISTRY[slug];
+    const found = (CONVERTER_REGISTRY as Record<string, ConverterConfig>)[slug];
     if (found) {
       setActiveConverter(found);
       setMode("converter");
