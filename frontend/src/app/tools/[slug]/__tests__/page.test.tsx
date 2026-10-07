@@ -8,9 +8,9 @@ import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 describe("Dynamic Tools SSG Route /tools/[slug]", () => {
   const allSlugs = getAllToolSlugs();
 
-  it("generateStaticParams returns all 56 tool slugs", () => {
+  it("generateStaticParams returns all 57 tool slugs", () => {
     const params = generateStaticParams();
-    expect(params).toHaveLength(56);
+    expect(params).toHaveLength(57);
     for (const slug of allSlugs) {
       expect(params).toContainEqual({ slug });
     }

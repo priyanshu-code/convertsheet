@@ -448,7 +448,7 @@ export function PresetQuickFactCard({
   }
 
   // 7. EMI Calculator & Repo Rate Hike Facts
-  if (toolSlug === "emi-calculator") {
+  if (toolSlug === "emi-calculator" || toolSlug === "interest-rate-hike-calculator") {
     const loanAmount = Number(initialValues.loanAmount) || 5000000;
     const rate = Number(initialValues.interestRate) || 8.75;
     const years = Number(initialValues.loanTenureYears) || 20;

@@ -35,6 +35,7 @@ import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculato
 import { PercentageCalculator } from "@/components/tools/PercentageCalculator";
 import { ImageResizerTool } from "@/components/tools/ImageResizerTool";
 import { EmiCalculator } from "@/components/tools/EmiCalculator";
+import { RateHikeCalculator } from "@/components/tools/RateHikeCalculator";
 import { WageConversionMatrix } from "@/components/calculator/WageConversionMatrix";
 import { InflationErosionMatrix } from "@/components/calculator/InflationErosionMatrix";
 import { ApyCompoundingMatrix } from "@/components/calculator/ApyCompoundingMatrix";
@@ -165,6 +166,8 @@ export default function ProgrammaticPresetPage({
         return <PercentageCalculator initialValues={preset.initialValues} />;
       case "emi-calculator":
         return <EmiCalculator initialValues={preset.initialValues} />;
+      case "interest-rate-hike-calculator":
+        return <RateHikeCalculator initialValues={preset.initialValues} />;
       case "image-resizer":
         return (
           <ImageResizerTool

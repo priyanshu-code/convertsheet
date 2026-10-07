@@ -1800,4 +1800,190 @@ export function calculateRateHikeImpact(input: RateHikeInput): RateHikeResult {
   };
 }
 
+// ==========================================
+// 27. HOME LOAN BALANCE TRANSFER CALCULATOR
+// ==========================================
+
+export interface BalanceTransferInput {
+  currentBalance: number; // Outstanding principal (e.g. ₹50,00,000)
+  currentRate: number; // Current interest rate % (e.g. 9.10%)
+  newRate: number; // Proposed new lender rate % (e.g. 8.35%)
+  remainingTenureYears: number; // Remaining tenure in years (e.g. 15)
+  processingFeePercent?: number; // New lender processing fee % (e.g. 0.25% or 0.5%)
+  modtStampDutyPercent?: number; // MODT / Stamp duty % on mortgage deed (e.g. 0.2% - 0.5%)
+  otherCharges?: number; // Valuation, legal, NOC or application charges (e.g. ₹5,000)
+}
+
+export interface BalanceTransferYearlyComparison {
+  year: number;
+  currentInterest: number;
+  newInterest: number;
+  yearlySavings: number;
+  cumulativeSavings: number;
+  currentPrincipalRemaining: number;
+  newPrincipalRemaining: number;
+}
+
+export interface BalanceTransferResult {
+  currentBalance: number;
+  currentRate: number;
+  newRate: number;
+  rateCutPercent: number;
+  rateCutBps: number;
+  remainingTenureYears: number;
+  totalMonths: number;
+  currentEmi: number;
+  newEmi: number;
+  monthlySavings: number;
+  annualSavings: number;
+  totalCurrentInterest: number;
+  totalNewInterest: number;
+  grossLifetimeSavings: number;
+  processingFeeAmount: number;
+  modtStampDutyAmount: number;
+  otherCharges: number;
+  totalSwitchingCost: number;
+  netLifetimeSavings: number;
+  breakEvenMonths: number;
+  isViable: boolean;
+  recommendation: "Highly Recommended" | "Moderate / Worth Evaluating" | "Not Recommended (Costs Exceed Savings)";
+  recommendationReason: string;
+  yearlyComparison: BalanceTransferYearlyComparison[];
+}
+
+export function calculateBalanceTransfer(input: BalanceTransferInput): BalanceTransferResult {
+  const balance = Math.max(0, input.currentBalance || 0);
+  const currentRate = Math.max(0, input.currentRate || 0);
+  const newRate = Math.max(0, input.newRate || 0);
+  const tenureYears = Math.max(0.5, input.remainingTenureYears || 15);
+  const totalMonths = Math.round(tenureYears * 12);
+
+  const procFeePct = Math.max(0, input.processingFeePercent ?? 0.25);
+  const modtPct = Math.max(0, input.modtStampDutyPercent ?? 0.20);
+  const otherCharges = Math.max(0, input.otherCharges ?? 5000);
+
+  const computeEmi = (p: number, annualPct: number, n: number): number => {
+    if (annualPct <= 0 || n <= 0 || p <= 0) return roundTo(p / Math.max(1, n), 2);
+    const r = annualPct / 100 / 12;
+    const factor = Math.pow(1 + r, n);
+    return roundTo((p * r * factor) / (factor - 1), 2);
+  };
+
+  const currentEmi = computeEmi(balance, currentRate, totalMonths);
+  const newEmi = computeEmi(balance, newRate, totalMonths);
+  const monthlySavings = Math.max(0, roundTo(currentEmi - newEmi, 2));
+  const annualSavings = roundTo(monthlySavings * 12, 2);
+
+  const totalCurrentPayment = currentEmi * totalMonths;
+  const totalNewPayment = newEmi * totalMonths;
+  const totalCurrentInterest = Math.max(0, roundTo(totalCurrentPayment - balance, 2));
+  const totalNewInterest = Math.max(0, roundTo(totalNewPayment - balance, 2));
+  const grossLifetimeSavings = Math.max(0, roundTo(totalCurrentInterest - totalNewInterest, 2));
+
+  // Upfront switching costs
+  const processingFeeAmount = roundTo((balance * procFeePct) / 100, 2);
+  const modtStampDutyAmount = roundTo((balance * modtPct) / 100, 2);
+  const totalSwitchingCost = roundTo(processingFeeAmount + modtStampDutyAmount + otherCharges, 2);
+
+  const netLifetimeSavings = roundTo(grossLifetimeSavings - totalSwitchingCost, 2);
+
+  // Break-even months = Switching Costs / Monthly EMI Savings
+  let breakEvenMonths = 0;
+  if (monthlySavings > 0) {
+    breakEvenMonths = Math.ceil(totalSwitchingCost / monthlySavings);
+  } else {
+    breakEvenMonths = 999;
+  }
+
+  const rateCutPercent = roundTo(currentRate - newRate, 2);
+  const rateCutBps = Math.round(rateCutPercent * 100);
+
+  const isViable = netLifetimeSavings > 0 && breakEvenMonths < totalMonths && breakEvenMonths <= 36;
+
+  let recommendation: "Highly Recommended" | "Moderate / Worth Evaluating" | "Not Recommended (Costs Exceed Savings)";
+  let recommendationReason: string;
+
+  if (netLifetimeSavings > 100000 && breakEvenMonths <= 18) {
+    recommendation = "Highly Recommended";
+    recommendationReason = `Switching saves ₹${Math.round(netLifetimeSavings).toLocaleString("en-IN")} net after fees, recovering all switching costs in just ${breakEvenMonths} months.`;
+  } else if (netLifetimeSavings > 0 && breakEvenMonths <= 36) {
+    recommendation = "Moderate / Worth Evaluating";
+    recommendationReason = `Positive net savings of ₹${Math.round(netLifetimeSavings).toLocaleString("en-IN")}, but requires ${breakEvenMonths} months to recover upfront switching fees. First negotiate an internal rate reduction with your existing lender.`;
+  } else {
+    recommendation = "Not Recommended (Costs Exceed Savings)";
+    recommendationReason = `The switching costs (₹${Math.round(totalSwitchingCost).toLocaleString("en-IN")}) outweigh or delay benefits too close to remaining tenure. Prefer paying lump-sum principal to your current lender instead.`;
+  }
+
+  // Yearly comparison schedule
+  const rCurrent = currentRate / 100 / 12;
+  const rNew = newRate / 100 / 12;
+  let curBal = balance;
+  let newBal = balance;
+  let cumulativeSavings = 0;
+
+  const yearlyComparison: BalanceTransferYearlyComparison[] = [];
+  const yearsToSimulate = Math.min(Math.ceil(tenureYears), 30);
+
+  for (let yr = 1; yr <= yearsToSimulate; yr++) {
+    let curYrInt = 0;
+    let newYrInt = 0;
+
+    for (let m = 0; m < 12; m++) {
+      if (curBal > 0) {
+        const curInt = curBal * rCurrent;
+        const curPrin = Math.min(curBal, currentEmi - curInt);
+        curYrInt += curInt;
+        curBal = Math.max(0, curBal - curPrin);
+      }
+      if (newBal > 0) {
+        const nInt = newBal * rNew;
+        const nPrin = Math.min(newBal, newEmi - nInt);
+        newYrInt += nInt;
+        newBal = Math.max(0, newBal - nPrin);
+      }
+    }
+
+    const yrSavings = Math.max(0, roundTo(curYrInt - newYrInt, 2));
+    cumulativeSavings = roundTo(cumulativeSavings + yrSavings, 2);
+
+    yearlyComparison.push({
+      year: yr,
+      currentInterest: roundTo(curYrInt, 2),
+      newInterest: roundTo(newYrInt, 2),
+      yearlySavings: yrSavings,
+      cumulativeSavings,
+      currentPrincipalRemaining: roundTo(curBal, 2),
+      newPrincipalRemaining: roundTo(newBal, 2),
+    });
+  }
+
+  return {
+    currentBalance: balance,
+    currentRate,
+    newRate,
+    rateCutPercent,
+    rateCutBps,
+    remainingTenureYears: tenureYears,
+    totalMonths,
+    currentEmi,
+    newEmi,
+    monthlySavings,
+    annualSavings,
+    totalCurrentInterest,
+    totalNewInterest,
+    grossLifetimeSavings,
+    processingFeeAmount,
+    modtStampDutyAmount,
+    otherCharges,
+    totalSwitchingCost,
+    netLifetimeSavings,
+    breakEvenMonths,
+    isViable,
+    recommendation,
+    recommendationReason,
+    yearlyComparison,
+  };
+}
+
+
 

@@ -95,5 +95,62 @@ describe("PDF Dossier Engine", () => {
     const pdfDoc = await PDFDocument.load(pdfBytes);
     expect(pdfDoc.getPageCount()).toBe(1);
   });
+
+  it("generates a valid rate hike impact PDF audit dossier", async () => {
+    const { generateRateHikeDossierPdf } = await import("@/lib/engines/pdf-dossier-engine");
+    const pdfBytes = await generateRateHikeDossierPdf({
+      loanAmount: 5000000,
+      oldRate: 8.5,
+      newRate: 8.75,
+      rateDeltaBps: 25,
+      tenureYears: 20,
+      oldEmi: 43391,
+      newEmi: 44186,
+      monthlyHike: 795,
+      extraLifetimeInterest: 190800,
+      addedMonthsToTenure: 16,
+      extraInterestIfTenureExtended: 312000,
+      monthlyPrepaymentToNeutralize: 795,
+      currencySymbol: "₹",
+    });
+
+    expect(pdfBytes).toBeInstanceOf(Uint8Array);
+    expect(pdfBytes.length).toBeGreaterThan(1000);
+
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    expect(pdfDoc.getPageCount()).toBe(1);
+  });
+
+  it("generates a valid balance transfer PDF audit dossier", async () => {
+    const { generateBalanceTransferDossierPdf } = await import("@/lib/engines/pdf-dossier-engine");
+    const pdfBytes = await generateBalanceTransferDossierPdf({
+      currentBalance: 5000000,
+      currentRate: 9.1,
+      newRate: 8.35,
+      rateCutPercent: 0.75,
+      rateCutBps: 75,
+      remainingTenureYears: 15,
+      currentEmi: 51000,
+      newEmi: 48800,
+      monthlySavings: 2200,
+      annualSavings: 26400,
+      grossLifetimeSavings: 396000,
+      processingFeeAmount: 12500,
+      modtStampDutyAmount: 10000,
+      otherCharges: 5000,
+      totalSwitchingCost: 27500,
+      netLifetimeSavings: 368500,
+      breakEvenMonths: 13,
+      recommendation: "Highly Recommended",
+      recommendationReason: "Switching saves ₹3.68 Lakh net after fees.",
+      currencySymbol: "₹",
+    });
+
+    expect(pdfBytes).toBeInstanceOf(Uint8Array);
+    expect(pdfBytes.length).toBeGreaterThan(1000);
+
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+    expect(pdfDoc.getPageCount()).toBe(1);
+  });
 });
 

@@ -546,3 +546,367 @@ export async function generateRetirementDossierPdf(
   return await pdfDoc.save();
 }
 
+export interface RateHikeDossierInput {
+  loanAmount: number;
+  oldRate: number;
+  newRate: number;
+  rateDeltaBps: number;
+  tenureYears: number;
+  oldEmi: number;
+  newEmi: number;
+  monthlyHike: number;
+  extraLifetimeInterest: number;
+  addedMonthsToTenure: number;
+  extraInterestIfTenureExtended: number;
+  monthlyPrepaymentToNeutralize: number;
+  currencySymbol?: string;
+}
+
+export async function generateRateHikeDossierPdf(input: RateHikeDossierInput): Promise<Uint8Array> {
+  const pdfDoc = await PDFDocument.create();
+  const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const page = pdfDoc.addPage([612, 792]);
+  const { width, height } = page.getSize();
+  const rawSym = input.currencySymbol || "INR";
+  const sym = rawSym === "₹" ? "Rs." : rawSym;
+
+  // Top Accent Banner
+  page.drawRectangle({
+    x: 0,
+    y: height - 8,
+    width: width,
+    height: 8,
+    color: rgb(0.85, 0.15, 0.25), // Red / Rose accent
+  });
+
+  // Header
+  page.drawText("ConvertSheet Financial Intelligence", {
+    x: 50,
+    y: height - 40,
+    size: 10,
+    font: helveticaBold,
+    color: rgb(0.06, 0.72, 0.51),
+  });
+
+  page.drawText("INTEREST RATE HIKE IMPACT DOSSIER", {
+    x: 50,
+    y: height - 65,
+    size: 18,
+    font: helveticaBold,
+    color: rgb(0.1, 0.1, 0.12),
+  });
+
+  page.drawText(`Loan Amortization Delta, Monthly EMI Hike & Silent Tenure Trap Audit`, {
+    x: 50,
+    y: height - 82,
+    size: 9,
+    font: helvetica,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+
+  // Highlight Box: Monthly Hike & Lifetime Extra Interest
+  page.drawRectangle({
+    x: 50,
+    y: height - 150,
+    width: width - 100,
+    height: 55,
+    color: rgb(0.99, 0.94, 0.95), // Light rose
+    borderColor: rgb(0.9, 0.6, 0.65),
+    borderWidth: 1,
+  });
+
+  page.drawText("MONTHLY EMI HIKE", {
+    x: 70,
+    y: height - 110,
+    size: 8,
+    font: helveticaBold,
+    color: rgb(0.6, 0.1, 0.2),
+  });
+
+  page.drawText(`+${sym} ${Math.round(input.monthlyHike).toLocaleString()} /mo`, {
+    x: 70,
+    y: height - 135,
+    size: 18,
+    font: helveticaBold,
+    color: rgb(0.85, 0.15, 0.25),
+  });
+
+  page.drawText("CUMULATIVE EXTRA INTEREST", {
+    x: 320,
+    y: height - 110,
+    size: 8,
+    font: helveticaBold,
+    color: rgb(0.6, 0.1, 0.2),
+  });
+
+  page.drawText(`+${sym} ${Math.round(input.extraLifetimeInterest).toLocaleString()}`, {
+    x: 320,
+    y: height - 135,
+    size: 18,
+    font: helveticaBold,
+    color: rgb(0.85, 0.15, 0.25),
+  });
+
+  // Table of Parameters
+  let y = height - 180;
+  const auditFacts = [
+    ["Loan Principal Outstanding", `${sym} ${Math.round(input.loanAmount).toLocaleString()}`],
+    ["Original Rate & New Benchmark Rate", `${input.oldRate.toFixed(2)}% -> ${input.newRate.toFixed(2)}% (+${input.rateDeltaBps} bps)`],
+    ["Original Repayment Tenure", `${input.tenureYears} Years (${input.tenureYears * 12} Months)`],
+    ["Old Monthly Installment (Previous EMI)", `${sym} ${Math.round(input.oldEmi).toLocaleString()} /mo`],
+    ["Revised Monthly Installment (New EMI)", `${sym} ${Math.round(input.newEmi).toLocaleString()} /mo`],
+    ["Monthly EMI Increase (Option A)", `+${sym} ${Math.round(input.monthlyHike).toLocaleString()} /mo`],
+    ["Silent Tenure Trap Penalty (Option B)", `+${input.addedMonthsToTenure} Months added (Extra Int: +${sym} ${Math.round(input.extraInterestIfTenureExtended).toLocaleString()})`],
+    ["Prepayment Countermeasure to Neutralize", `Prepay +${sym} ${Math.round(input.monthlyPrepaymentToNeutralize).toLocaleString()} /mo to preserve original term`],
+  ];
+
+  auditFacts.forEach(([lbl, val], idx) => {
+    const bg = idx % 2 === 0 ? rgb(0.97, 0.98, 0.98) : rgb(1, 1, 1);
+    page.drawRectangle({ x: 50, y: y - 5, width: width - 100, height: 22, color: bg });
+    page.drawText(lbl, { x: 60, y: y + 2, size: 8.5, font: helvetica, color: rgb(0.3, 0.3, 0.3) });
+    page.drawText(val, { x: 290, y: y + 2, size: 8.5, font: helveticaBold, color: rgb(0.1, 0.1, 0.1) });
+    y -= 22;
+  });
+
+  // Strategic Advisory Box
+  y -= 15;
+  page.drawRectangle({
+    x: 50,
+    y: y - 80,
+    width: width - 100,
+    height: 85,
+    color: rgb(0.95, 0.98, 0.96),
+    borderColor: rgb(0.5, 0.8, 0.6),
+    borderWidth: 1,
+  });
+
+  page.drawText("EXECUTIVE BORROWER ADVISORY:", {
+    x: 65,
+    y: y - 15,
+    size: 9,
+    font: helveticaBold,
+    color: rgb(0.1, 0.5, 0.3),
+  });
+
+  const recommendations = [
+    "1. Instruct your bank in writing to absorb the hike via revised EMI rather than tenure extension.",
+    `2. Prepay ${sym} ${Math.round(input.monthlyPrepaymentToNeutralize).toLocaleString()}/month to keep total loan interest identical to pre-hike levels.`,
+    "3. Check your lender's spread margin; pay a nominal conversion fee if new borrowers receive lower rates.",
+    "4. Under RBI guidelines, individual floating-rate home loans carry 0% prepayment penalties.",
+  ];
+
+  recommendations.forEach((rec, rIdx) => {
+    page.drawText(rec, {
+      x: 65,
+      y: y - 32 - (rIdx * 13),
+      size: 7.5,
+      font: helvetica,
+      color: rgb(0.2, 0.25, 0.2),
+    });
+  });
+
+  // Footer
+  page.drawText("Generated locally via ConvertSheet (convertsheet.com)  •  100% In-Browser Private Computation", {
+    x: 50,
+    y: 30,
+    size: 7.5,
+    font: helvetica,
+    color: rgb(0.6, 0.6, 0.6),
+  });
+
+  return await pdfDoc.save();
+}
+
+// ==========================================
+// 8. HOME LOAN BALANCE TRANSFER DOSSIER
+// ==========================================
+
+export interface BalanceTransferDossierData {
+  currentBalance: number;
+  currentRate: number;
+  newRate: number;
+  rateCutPercent: number;
+  rateCutBps: number;
+  remainingTenureYears: number;
+  currentEmi: number;
+  newEmi: number;
+  monthlySavings: number;
+  annualSavings: number;
+  grossLifetimeSavings: number;
+  processingFeeAmount: number;
+  modtStampDutyAmount: number;
+  otherCharges: number;
+  totalSwitchingCost: number;
+  netLifetimeSavings: number;
+  breakEvenMonths: number;
+  recommendation: string;
+  recommendationReason: string;
+  currencySymbol?: string;
+}
+
+export async function generateBalanceTransferDossierPdf(input: BalanceTransferDossierData): Promise<Uint8Array> {
+  const pdfDoc = await PDFDocument.create();
+  const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+  const page = pdfDoc.addPage([612, 792]);
+  const { width, height } = page.getSize();
+  const rawSym = input.currencySymbol || "INR";
+  const sym = rawSym === "₹" ? "Rs." : rawSym;
+
+  // Top header bar
+  page.drawRectangle({
+    x: 0,
+    y: height - 10,
+    width: width,
+    height: 10,
+    color: rgb(0.06, 0.72, 0.51), // Emerald
+  });
+
+  // Header
+  page.drawText("CONVERTSHEET MORTGAGE LABS", {
+    x: 50,
+    y: height - 42,
+    size: 10,
+    font: helveticaBold,
+    color: rgb(0.06, 0.72, 0.51),
+  });
+
+  page.drawText("Home Loan Balance Transfer Audit Dossier", {
+    x: 50,
+    y: height - 64,
+    size: 18,
+    font: helveticaBold,
+    color: rgb(0.1, 0.1, 0.12),
+  });
+
+  page.drawText(`Confidential Switching Feasibility Report  |  Generated ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`, {
+    x: 50,
+    y: height - 80,
+    size: 8.5,
+    font: helvetica,
+    color: rgb(0.45, 0.45, 0.48),
+  });
+
+  // Primary Net Savings Banner
+  const isPositive = input.netLifetimeSavings > 0;
+  page.drawRectangle({
+    x: 50,
+    y: height - 150,
+    width: width - 100,
+    height: 55,
+    color: isPositive ? rgb(0.92, 0.98, 0.94) : rgb(0.99, 0.94, 0.94),
+    borderColor: isPositive ? rgb(0.3, 0.75, 0.45) : rgb(0.85, 0.35, 0.35),
+    borderWidth: 1,
+  });
+
+  page.drawText("NET LIFETIME SAVINGS (AFTER ALL FEES & STAMP DUTY):", {
+    x: 65,
+    y: height - 114,
+    size: 9,
+    font: helveticaBold,
+    color: isPositive ? rgb(0.1, 0.5, 0.3) : rgb(0.7, 0.2, 0.2),
+  });
+
+  page.drawText(`${sym} ${Math.round(input.netLifetimeSavings).toLocaleString()}`, {
+    x: 65,
+    y: height - 140,
+    size: 22,
+    font: helveticaBold,
+    color: isPositive ? rgb(0.06, 0.55, 0.32) : rgb(0.8, 0.15, 0.15),
+  });
+
+  page.drawText(`Break-Even: ${input.breakEvenMonths} Months  |  Monthly EMI Cut: ${sym} ${Math.round(input.monthlySavings).toLocaleString()}/mo`, {
+    x: 310,
+    y: height - 134,
+    size: 8.5,
+    font: helveticaBold,
+    color: rgb(0.2, 0.2, 0.25),
+  });
+
+  // Comparison Parameters Table
+  let y = height - 180;
+  const auditFacts = [
+    ["Outstanding Loan Principal", `${sym} ${Math.round(input.currentBalance).toLocaleString()}`],
+    ["Interest Rate Reduction", `${input.currentRate.toFixed(2)}% -> ${input.newRate.toFixed(2)}% (-${input.rateCutBps} bps / -${input.rateCutPercent.toFixed(2)}%)`],
+    ["Remaining Loan Tenure", `${input.remainingTenureYears} Years (${input.remainingTenureYears * 12} Months)`],
+    ["Current Monthly EMI", `${sym} ${Math.round(input.currentEmi).toLocaleString()} /mo`],
+    ["New Monthly EMI (After Transfer)", `${sym} ${Math.round(input.newEmi).toLocaleString()} /mo`],
+    ["Gross Lifetime Interest Saved", `${sym} ${Math.round(input.grossLifetimeSavings).toLocaleString()}`],
+    ["Switching Costs (MODT + Processing + Legal)", `${sym} ${Math.round(input.totalSwitchingCost).toLocaleString()} (Proc: ${sym}${Math.round(input.processingFeeAmount).toLocaleString()}, MODT: ${sym}${Math.round(input.modtStampDutyAmount).toLocaleString()})`],
+    ["Break-Even Payback Period", `${input.breakEvenMonths} Months to recover all upfront switching charges`],
+  ];
+
+  auditFacts.forEach(([lbl, val], idx) => {
+    const bg = idx % 2 === 0 ? rgb(0.97, 0.98, 0.98) : rgb(1, 1, 1);
+    page.drawRectangle({ x: 50, y: y - 5, width: width - 100, height: 22, color: bg });
+    page.drawText(lbl, { x: 60, y: y + 2, size: 8.5, font: helvetica, color: rgb(0.3, 0.3, 0.3) });
+    page.drawText(val, { x: 280, y: y + 2, size: 8, font: helveticaBold, color: rgb(0.1, 0.1, 0.1) });
+    y -= 22;
+  });
+
+  // Verdict Box
+  y -= 15;
+  page.drawRectangle({
+    x: 50,
+    y: y - 85,
+    width: width - 100,
+    height: 90,
+    color: rgb(0.95, 0.98, 0.96),
+    borderColor: rgb(0.5, 0.8, 0.6),
+    borderWidth: 1,
+  });
+
+  page.drawText(`VERDICT: ${input.recommendation.toUpperCase()}`, {
+    x: 65,
+    y: y - 16,
+    size: 10,
+    font: helveticaBold,
+    color: rgb(0.1, 0.5, 0.3),
+  });
+
+  const cleanReason = (input.recommendationReason || "")
+    .replace(/₹/g, "Rs.")
+    .replace(/–/g, "-")
+    .replace(/—/g, "-");
+
+  page.drawText(cleanReason, {
+    x: 65,
+    y: y - 32,
+    size: 8,
+    font: helvetica,
+    color: rgb(0.2, 0.25, 0.2),
+  });
+
+  const tips = [
+    "Step 1: Request an internal rate reduction from your current bank first (usually costs only Rs.1,000-5,000 repricing fee).",
+    "Step 2: If moving to a new bank, ask them to waive processing fees under festive or balance transfer campaigns.",
+    "Step 3: Ensure your original title deed and Encumbrance Certificate (EC) can be released within 15-30 days.",
+  ];
+
+  tips.forEach((tip, tIdx) => {
+    page.drawText(tip, {
+      x: 65,
+      y: y - 48 - (tIdx * 12),
+      size: 7.5,
+      font: helvetica,
+      color: rgb(0.25, 0.3, 0.25),
+    });
+  });
+
+  // Footer
+  page.drawText("Generated locally via ConvertSheet (convertsheet.com)  •  100% In-Browser Private Computation", {
+    x: 50,
+    y: 30,
+    size: 7.5,
+    font: helvetica,
+    color: rgb(0.6, 0.6, 0.6),
+  });
+
+  return await pdfDoc.save();
+}
+
+
+

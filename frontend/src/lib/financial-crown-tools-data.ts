@@ -812,4 +812,92 @@ By default, commercial banks keep your monthly debit mandate unchanged and silen
       "high-yield-savings-cd-calculator",
     ],
   },
+  "home-loan-balance-transfer-calculator": {
+    slug: "home-loan-balance-transfer-calculator",
+    name: "Home Loan Balance Transfer Savings Calculator",
+    category: "financial",
+    title: "Home Loan Balance Transfer Calculator – Net Savings, MODT & Break-Even (2026)",
+    subtitle: "Calculate exact net lifetime savings and break-even horizon when switching your home loan to a lower-interest lender. Accounts for MODT stamp duty, processing fees, and legal charges.",
+    metaDescription: "Free Home Loan Balance Transfer Savings Calculator. Compare current vs new lender EMI, deduct MODT stamp duty & processing charges, find break-even horizon in months, and download a PDF audit dossier.",
+    answerSummary: "A balance transfer is mathematically profitable when your rate drops by at least 40 to 50 bps and your remaining tenure exceeds 5 years. On a ₹50 Lakh loan with 15 years left, cutting your rate from 9.10% to 8.35% saves over ₹3.6 Lakh net even after paying ₹27,500 in processing fees and MODT stamp duty.",
+    badge: "MODT & Fees Audited",
+    badgeTooltip: "Includes state-specific mortgage stamp duty (0.1%–0.5%) and processing fee calculations",
+    featured: true,
+    isNew: true,
+    keywords: [
+      "home loan balance transfer calculator",
+      "balance transfer savings calculator",
+      "should i transfer my home loan",
+      "modt charges home loan balance transfer",
+      "home loan switching break even calculator",
+      "mortgage refinance savings calculator india",
+      "sbi vs hdfc balance transfer calculator",
+      "home loan takeover calculator",
+    ],
+    formulaDescription:
+      "Gross Savings = Total Current Interest - Total New Interest; Net Savings = Gross Savings - (Processing Fee + MODT Stamp Duty + Legal Fees); Break-Even Months = Upfront Switching Fees / Monthly EMI Savings.",
+    about: `### Is a Home Loan Balance Transfer Worth It?
+When commercial banks compete for prime credit-score borrowers, they often offer headline home loan rates that are 40 to 80 bps lower than what existing borrowers are paying. However, refinancing or transferring your mortgage is not free.
+
+#### Key Costs in an Indian Home Loan Balance Transfer:
+1. **MODT / Memorandum of Deposit of Title Deeds**: State-level stamp duty ranging from 0.10% to 0.50% (capped in states like Maharashtra at ₹10,000 to ₹15,000, or 0.20% in Karnataka and Telangana).
+2. **Processing & Administrative Fees**: New lenders charge 0.25% to 0.50% of the transferred principal (often capped or negotiable during festive campaigns).
+3. **Property Valuation & Legal Verification**: Independent lawyer title search and technical valuation fees typically cost ₹3,000 to ₹8,000.
+4. **Foreclosure Charges**: Under RBI mandate, individual floating-rate home loans carry **0% prepayment or foreclosure penalties**.
+
+#### When Should You Switch?
+- **Rate Delta $\\ge$ 0.50%**: If the new lender offers less than a 0.30% reduction, internal repricing with your existing bank is usually superior.
+- **Tenure Remaining $\\ge$ 5 Years**: In the first half of your loan, most of your monthly payment goes toward interest, maximizing refinancing yield. If you only have 3 years left, switching friction will destroy any net savings.
+- **Break-Even $\\le$ 18 Months**: If it takes longer than 2 years to recover the switching expenses through monthly EMI reductions, do not switch.`,
+    howTo: [
+      {
+        step: 1,
+        title: "Input Current Loan Details",
+        description:
+          "Enter your outstanding principal balance, current interest rate (e.g. 9.10%), and remaining repayment tenure.",
+      },
+      {
+        step: 2,
+        title: "Enter New Lender Offer & State Stamp Duty",
+        description:
+          "Type the new proposed rate (e.g. 8.35%) and select your state MODT preset (Karnataka 0.20%, Maharashtra 0.50%, or Delhi 0.10%).",
+      },
+      {
+        step: 3,
+        title: "Review Break-Even Horizon & Download PDF",
+        description:
+          "Check your net lifetime savings after all fees, inspect your break-even payback month, and download the confidential PDF dossier.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How much interest rate difference makes a balance transfer worthwhile?",
+        answer:
+          "A rate difference of at least 40 to 50 basis points (0.40% to 0.50%) is generally required to justify switching expenses such as MODT stamp duty and processing fees. For deltas under 30 bps, you should first ask your current bank for an internal repricing.",
+      },
+      {
+        question: "What is an internal repricing conversion fee?",
+        answer:
+          "Most Indian banks and HFCs permit existing borrowers to match new customer rates by paying an administrative repricing or conversion fee of ₹1,000 to ₹5,000 plus GST. This avoids MODT re-registration, NOC delays, and fresh legal searches.",
+      },
+      {
+        question: "Are there any foreclosure charges for closing my existing home loan?",
+        answer:
+          "No. Under Reserve Bank of India (RBI) regulations, banks and NBFCs are prohibited from levying any foreclosure charges or prepayment penalties on individual floating-rate home loans.",
+      },
+      {
+        question: "How long does a home loan balance transfer take?",
+        answer:
+          "A balance transfer typically takes between 15 to 25 business days. The longest step is retrieving original property title deeds and the No Objection Certificate (NOC) from your current bank after loan disbursement.",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: [
+      "interest-rate-hike-calculator",
+      "emi-calculator",
+      "mortgage-calculator",
+      "compound-interest-calculator",
+    ],
+  },
 };
+

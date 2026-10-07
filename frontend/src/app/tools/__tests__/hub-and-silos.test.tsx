@@ -44,7 +44,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(json["@graph"][0]["@type"]).toBe("CollectionPage");
       expect(json["@graph"][1]["@type"]).toBe("BreadcrumbList");
       expect(json["@graph"][2]["@type"]).toBe("ItemList");
-      expect(json["@graph"][2]["numberOfItems"]).toBe(56);
+      expect(json["@graph"][2]["numberOfItems"]).toBe(57);
     });
 
     it("live filter updates tool list when typing in search input", () => {
@@ -68,7 +68,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       const financialPill = screen.getByRole("button", { name: /Financial Math/i });
       fireEvent.click(financialPill);
 
-      expect(screen.getByText(/Showing 22 tools in financial/i)).toBeInTheDocument();
+      expect(screen.getByText(/Showing 23 tools in financial/i)).toBeInTheDocument();
       expect(
         screen.getByRole("heading", { level: 3, name: /Mortgage Calculator/i })
       ).toBeInTheDocument();
@@ -109,7 +109,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(
         screen.getByRole("heading", {
           level: 2,
-          name: /Available Financial Calculators \(22\)/i,
+          name: /Available Financial Calculators \(23\)/i,
         })
       ).toBeInTheDocument();
 

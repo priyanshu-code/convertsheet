@@ -60,6 +60,7 @@ import { AnnualToHourlyCalculator } from "@/components/tools/AnnualToHourlyCalcu
 import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
 import { SavingsCdCalculator } from "@/components/tools/SavingsCdCalculator";
 import { RateHikeCalculator } from "@/components/tools/RateHikeCalculator";
+import { BalanceTransferCalculator } from "@/components/tools/BalanceTransferCalculator";
 import { SqlStudioTool } from "@/components/tools/SqlStudioTool";
 import { SheetDiffTool } from "@/components/tools/SheetDiffTool";
 import { DataCleanerTool } from "@/components/tools/DataCleanerTool";
@@ -428,6 +429,7 @@ export default function ToolPage({ params }: ToolPageProps) {
     "debt-payoff-calculator": DebtPayoffCalculator,
     "high-yield-savings-cd-calculator": SavingsCdCalculator,
     "interest-rate-hike-calculator": RateHikeCalculator,
+    "home-loan-balance-transfer-calculator": BalanceTransferCalculator,
     "uk-salary-calculator": UkSalaryCalculator,
     "canada-paycheck-calculator": CanadaPaycheckCalculator,
     "australia-pay-calculator": AustraliaPayCalculator,

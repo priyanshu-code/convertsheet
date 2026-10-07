@@ -39,6 +39,7 @@ describe("Programmatic SEO Presets Registry", () => {
       "percentage-calculator",
       "image-resizer",
       "emi-calculator",
+      "interest-rate-hike-calculator",
     ]);
 
     PROGRAMMATIC_PRESETS.forEach((preset) => {

@@ -6531,6 +6531,141 @@ Upload your portrait to produce exact dimensions for online passport renewals, v
         answer: "Never. ConvertSheet operates entirely inside your client browser. Your personal identity photos are never uploaded, stored, or transmitted across any server."
       }
     ]
+  },
+  {
+    toolSlug: "interest-rate-hike-calculator",
+    presetSlug: "25-bps-rate-hike-on-50-lakh-home-loan",
+    name: "25 BPS Rate Hike on ₹50 Lakh Home Loan Impact",
+    title: "25 BPS Rate Hike on ₹50 Lakh Home Loan: Old EMI vs New EMI Calculation",
+    subtitle: "Calculate monthly EMI increase, lifetime interest penalty, and silent tenure extension on a ₹50 Lakh loan after a 25 bps rate hike.",
+    metaDescription: "Calculate the impact of a 25 bps (0.25%) interest rate hike on a ₹50 Lakh home loan. Old EMI (₹43,391) vs New EMI (₹44,186), +₹795/mo hike, and +₹1,90,800 total interest.",
+    answerSummary: "On a ₹50 Lakh home loan with a 20-year tenure, a 25 bps rate hike (from 8.50% to 8.75%) increases your monthly EMI from ₹43,391 to ₹44,186 (+₹795/month). Over 20 years, this adds ₹1,90,800 in extra lifetime interest. If your bank silently extends tenure instead, it adds 14 extra monthly installments.",
+    badge: "Most Common Hike (Oct 2026)",
+    keywords: [
+      "25 bps hike on 50 lakh home loan",
+      "50 lakh home loan emi increase",
+      "repo rate hike 50 lakh loan impact",
+      "8.50 to 8.75 home loan emi"
+    ],
+    about: "A 25 basis point (0.25%) increase is the standard increment by which the Reserve Bank of India (RBI) adjusts the policy repo rate. When commercial banks transmit this rate hike across External Benchmark Lending Rate (EBLR) loans, a ₹50 Lakh loan experiences an immediate ₹795 monthly EMI jump or a silent 14-month tenure extension. Use our prepayment neutralizer to eliminate the extra interest completely.",
+    initialValues: {
+      loanAmount: 5000000,
+      oldRate: 8.5,
+      newRate: 8.75,
+      tenureYears: 20
+    },
+    faqs: [
+      {
+        question: "How much does EMI increase on a ₹50 Lakh home loan after a 25 bps hike?",
+        answer: "On a 20-year tenure, the monthly EMI increases by ₹795 per month (from ₹43,391 at 8.50% to ₹44,186 at 8.75%)."
+      },
+      {
+        question: "How much total extra interest will I pay on a ₹50 Lakh loan?",
+        answer: "Over 240 months, you will pay an additional ₹1,90,800 in total interest solely due to the 25 bps increase."
+      },
+      {
+        question: "How can I neutralize the 25 bps hike on my ₹50 Lakh loan?",
+        answer: "By prepaying exactly ₹795 extra per month directly toward the principal balance, you will completely nullify the rate hike and finish your loan on the original 20-year schedule."
+      }
+    ]
+  },
+  {
+    toolSlug: "interest-rate-hike-calculator",
+    presetSlug: "25-bps-rate-hike-on-30-lakh-home-loan",
+    name: "25 BPS Rate Hike on ₹30 Lakh Home Loan Impact",
+    title: "25 BPS Rate Hike on ₹30 Lakh Home Loan: Old EMI vs New EMI Calculation",
+    subtitle: "Calculate monthly EMI increase, lifetime interest penalty, and silent tenure extension on a ₹30 Lakh loan after a 25 bps rate hike.",
+    metaDescription: "Calculate the impact of a 25 bps (0.25%) interest rate hike on a ₹30 Lakh home loan. Old EMI (₹26,035) vs New EMI (₹26,511), +₹476/mo hike, and +₹1,14,240 extra interest.",
+    answerSummary: "On a ₹30 Lakh home loan with a 20-year tenure, a 25 bps rate hike (from 8.50% to 8.75%) increases monthly EMI from ₹26,035 to ₹26,511 (+₹476/month). Cumulative extra lifetime interest equals ₹1,14,240 over 240 months.",
+    badge: "Affordable Housing",
+    keywords: [
+      "25 bps hike on 30 lakh home loan",
+      "30 lakh home loan emi increase",
+      "repo rate hike 30 lakh loan",
+      "8.50 to 8.75 on 30 lakh loan"
+    ],
+    about: "On a ₹30 Lakh affordable housing loan, a 25 bps policy rate increase translates to an additional ₹476 every month. Prepaying just ₹476 extra per month directly against principal completely immunizes your loan against the hike.",
+    initialValues: {
+      loanAmount: 3000000,
+      oldRate: 8.5,
+      newRate: 8.75,
+      tenureYears: 20
+    },
+    faqs: [
+      {
+        question: "What is the new EMI on a ₹30 Lakh loan after 25 bps rate increase?",
+        answer: "At 8.75% interest over 20 years, the revised monthly EMI is ₹26,511 (up from ₹26,035 at 8.50%)."
+      },
+      {
+        question: "How much extra interest is paid on a ₹30 Lakh loan?",
+        answer: "The 25 bps increase adds ₹1,14,240 in extra lifetime interest over a 20-year repayment period."
+      }
+    ]
+  },
+  {
+    toolSlug: "interest-rate-hike-calculator",
+    presetSlug: "25-bps-rate-hike-on-75-lakh-home-loan",
+    name: "25 BPS Rate Hike on ₹75 Lakh Home Loan Impact",
+    title: "25 BPS Rate Hike on ₹75 Lakh Home Loan: Old EMI vs New EMI Calculation",
+    subtitle: "Calculate monthly EMI increase, lifetime interest penalty, and silent tenure extension on a ₹75 Lakh loan after a 25 bps rate hike.",
+    metaDescription: "Calculate the impact of a 25 bps (0.25%) interest rate hike on a ₹75 Lakh home loan. Old EMI (₹65,087) vs New EMI (₹66,278), +₹1,191/mo hike, and +₹2,85,840 extra interest.",
+    answerSummary: "On a ₹75 Lakh home loan with a 20-year tenure, a 25 bps rate hike (from 8.50% to 8.75%) increases monthly EMI from ₹65,087 to ₹66,278 (+₹1,191/month). Cumulative extra lifetime interest equals ₹2,85,840.",
+    badge: "Metro Prime Housing",
+    keywords: [
+      "25 bps hike on 75 lakh home loan",
+      "75 lakh home loan emi increase",
+      "repo rate hike 75 lakh loan impact"
+    ],
+    about: "For metro home buyers in Mumbai, Bangalore, Delhi NCR, and Hyderabad with a ₹75 Lakh mortgage, a 25 bps rate hike adds ₹1,191 to the monthly EMI. Absorbing this via tenure extension adds more than 14 months to the loan term.",
+    initialValues: {
+      loanAmount: 7500000,
+      oldRate: 8.5,
+      newRate: 8.75,
+      tenureYears: 20
+    },
+    faqs: [
+      {
+        question: "How much does a ₹75 Lakh home loan EMI increase after 25 bps hike?",
+        answer: "Monthly EMI jumps by ₹1,191 per month (from ₹65,087 at 8.50% to ₹66,278 at 8.75%)."
+      },
+      {
+        question: "What is the cumulative interest increase on a ₹75 Lakh loan?",
+        answer: "Total additional interest paid over the 20-year loan equals ₹2,85,840."
+      }
+    ]
+  },
+  {
+    toolSlug: "interest-rate-hike-calculator",
+    presetSlug: "25-bps-rate-hike-on-1-crore-home-loan",
+    name: "25 BPS Rate Hike on ₹1 Crore Home Loan Impact",
+    title: "25 BPS Rate Hike on ₹1 Crore Home Loan: Old EMI vs New EMI Calculation",
+    subtitle: "Calculate monthly EMI increase, lifetime interest penalty, and silent tenure extension on a ₹1 Crore loan after a 25 bps rate hike.",
+    metaDescription: "Calculate the impact of a 25 bps (0.25%) interest rate hike on a ₹1 Crore home loan. Old EMI (₹86,782) vs New EMI (₹88,371), +₹1,589/mo hike, and +₹3,81,360 extra interest.",
+    answerSummary: "On a ₹1 Crore home loan with a 20-year tenure, a 25 bps rate hike (from 8.50% to 8.75%) increases monthly EMI from ₹86,782 to ₹88,371 (+₹1,589/month). Over 20 years, total extra interest equals ₹3,81,360.",
+    badge: "Luxury & High Value",
+    keywords: [
+      "25 bps hike on 1 crore home loan",
+      "1 crore home loan emi increase",
+      "repo rate hike 1 crore loan impact",
+      "8.50 to 8.75 on 1 crore loan"
+    ],
+    about: "On high-value ₹1 Crore mortgages, small rate adjustments create substantial cash outflow deltas. A 25 bps repo rate hike costs ₹19,068 extra per year or over ₹3.81 Lakh in cumulative interest. Prepay ₹1,589 extra per month to maintain your original amortization.",
+    initialValues: {
+      loanAmount: 10000000,
+      oldRate: 8.5,
+      newRate: 8.75,
+      tenureYears: 20
+    },
+    faqs: [
+      {
+        question: "What is the new EMI on a ₹1 Crore home loan after a 25 bps hike?",
+        answer: "The revised monthly EMI is ₹88,371 (up by ₹1,589/month from ₹86,782 at 8.50%)."
+      },
+      {
+        question: "How much extra interest is paid on a ₹1 Crore loan over 20 years?",
+        answer: "Total cumulative interest increases by ₹3,81,360 over the 240-month repayment schedule."
+      }
+    ]
   }
 ];
 

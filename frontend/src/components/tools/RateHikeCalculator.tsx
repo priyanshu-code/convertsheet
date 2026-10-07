@@ -10,6 +10,9 @@ import {
   Sparkles,
   Clock,
   Layers,
+  FileSpreadsheet,
+  FileText,
+  Download,
 } from "lucide-react";
 import {
   CalcCard,
@@ -23,6 +26,8 @@ import {
   calculateRateHikeImpact,
   RateHikeInput,
 } from "@/lib/engines/financial-engine";
+import { generateRateHikeDossierPdf } from "@/lib/engines/pdf-dossier-engine";
+import * as XLSX from "xlsx";
 
 export interface RateHikeCalculatorProps {
   initialValues?: Partial<RateHikeInput>;
@@ -103,6 +108,80 @@ export function RateHikeCalculator({
     }
     return data;
   }, [loanAmount, oldRate, newRate, tenureYears]);
+
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
+
+  const handleExportPdf = async () => {
+    try {
+      setIsExportingPdf(true);
+      const pdfBytes = await generateRateHikeDossierPdf({
+        loanAmount,
+        oldRate,
+        newRate,
+        rateDeltaBps: impact.rateDeltaBps,
+        tenureYears,
+        oldEmi: impact.oldEmi,
+        newEmi: impact.newEmi,
+        monthlyHike: impact.monthlyHike,
+        extraLifetimeInterest: impact.extraLifetimeInterest,
+        addedMonthsToTenure: impact.addedMonthsToTenure,
+        extraInterestIfTenureExtended: impact.extraInterestIfTenureExtended,
+        monthlyPrepaymentToNeutralize: impact.monthlyPrepaymentToNeutralize,
+        currencySymbol,
+      });
+
+      const blob = new Blob([pdfBytes as unknown as BlobPart], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `rate-hike-audit-dossier-${loanAmount}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+    } finally {
+      setIsExportingPdf(false);
+    }
+  };
+
+  const handleExportExcel = () => {
+    try {
+      const summaryRows = [
+        { Metric: "Principal Loan Amount", Value: loanAmount },
+        { Metric: "Original Rate (%)", Value: oldRate },
+        { Metric: "New Rate (%)", Value: newRate },
+        { Metric: "Rate Increase (bps)", Value: impact.rateDeltaBps },
+        { Metric: "Tenure (Years)", Value: tenureYears },
+        { Metric: "Old Monthly EMI", Value: Math.round(impact.oldEmi) },
+        { Metric: "New Monthly EMI", Value: Math.round(impact.newEmi) },
+        { Metric: "Monthly EMI Hike", Value: Math.round(impact.monthlyHike) },
+        { Metric: "Total Extra Interest Paid", Value: Math.round(impact.extraLifetimeInterest) },
+        { Metric: "Tenure Trap Added Months", Value: impact.addedMonthsToTenure },
+        { Metric: "Tenure Trap Extra Interest Penalty", Value: Math.round(impact.extraInterestIfTenureExtended) },
+        { Metric: "Monthly Prepayment to Neutralize", Value: Math.round(impact.monthlyPrepaymentToNeutralize) },
+      ];
+
+      const wsSummary = XLSX.utils.json_to_sheet(summaryRows);
+      const wsMatrix = XLSX.utils.json_to_sheet(
+        impact.bracketRows.map((r) => ({
+          "Loan Amount": r.loanAmount,
+          "Old EMI": r.oldEmi,
+          "New EMI": r.newEmi,
+          "Monthly Hike": r.monthlyHike,
+          "Extra Interest": r.extraLifetimeInterest,
+        }))
+      );
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, wsSummary, "AuditSummary");
+      XLSX.utils.book_append_sheet(wb, wsMatrix, "BenchmarkMatrix");
+      XLSX.writeFile(wb, `rate-hike-amortization-audit-${loanAmount}.xlsx`);
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -250,6 +329,34 @@ export function RateHikeCalculator({
                 </button>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Export Toolbar: One-Click PDF Audit Dossier & Excel Spreadsheet */}
+        <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1 pb-2 border-b border-zinc-200/80 dark:border-zinc-800">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
+              Download Audit Reports:
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleExportPdf}
+              disabled={isExportingPdf}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80 transition-all cursor-pointer shadow-xs disabled:opacity-50"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>{isExportingPdf ? "Generating..." : "Download PDF Audit"}</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleExportExcel}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 transition-all cursor-pointer shadow-xs"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <span>Export Excel (.xlsx)</span>
+            </button>
           </div>
         </div>
 

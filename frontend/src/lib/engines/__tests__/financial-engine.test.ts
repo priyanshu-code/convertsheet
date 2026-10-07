@@ -15,6 +15,7 @@ import {
   calculateCanadaSalary,
   calculateAustraliaSalary,
   calculateRateHikeImpact,
+  calculateBalanceTransfer,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -590,4 +591,62 @@ describe("financial-engine", () => {
       expect(res.extraInterestIfTenureExtended).toBeGreaterThan(res.extraLifetimeInterest);
     });
   });
+
+  describe("calculateBalanceTransfer", () => {
+    it("computes net lifetime savings, switching fees, and break-even accurately", () => {
+      // 50 Lakh outstanding, 15 years remaining, 9.10% dropping to 8.35%
+      const res = calculateBalanceTransfer({
+        currentBalance: 5000000,
+        currentRate: 9.10,
+        newRate: 8.35,
+        remainingTenureYears: 15,
+        processingFeePercent: 0.25, // ₹12,500
+        modtStampDutyPercent: 0.20, // ₹10,000
+        otherCharges: 5000,         // ₹5,000
+      });
+
+      expect(res.rateCutPercent).toBe(0.75);
+      expect(res.rateCutBps).toBe(75);
+      expect(res.totalMonths).toBe(180);
+      expect(res.currentEmi).toBeGreaterThan(50000);
+      expect(res.newEmi).toBeLessThan(res.currentEmi);
+      expect(res.monthlySavings).toBeGreaterThan(2000);
+
+      // Switching costs = 12500 + 10000 + 5000 = 27500
+      expect(res.totalSwitchingCost).toBe(27500);
+      expect(res.grossLifetimeSavings).toBeGreaterThan(350000);
+      expect(res.netLifetimeSavings).toBe(res.grossLifetimeSavings - res.totalSwitchingCost);
+
+      // Break-even months = ~27500 / ~2300 = ~12 months
+      expect(res.breakEvenMonths).toBeLessThanOrEqual(14);
+      expect(res.breakEvenMonths).toBeGreaterThan(8);
+      expect(res.isViable).toBe(true);
+      expect(res.recommendation).toBe("Highly Recommended");
+
+      // Verify schedule
+      expect(res.yearlyComparison).toHaveLength(15);
+      expect(res.yearlyComparison[0].yearlySavings).toBeGreaterThan(0);
+      expect(res.yearlyComparison[14].newPrincipalRemaining).toBe(0);
+    });
+
+    it("identifies unviable transfer when switching costs exceed savings", () => {
+      // 10 Lakh outstanding, only 1 year left, rate cut 0.10% with high fees
+      const res = calculateBalanceTransfer({
+        currentBalance: 1000000,
+        currentRate: 8.50,
+        newRate: 8.40,
+        remainingTenureYears: 1,
+        processingFeePercent: 0.50, // ₹5,000
+        modtStampDutyPercent: 0.50, // ₹5,000
+        otherCharges: 5000,         // ₹5,000
+      });
+
+      expect(res.totalSwitchingCost).toBe(15000);
+      expect(res.grossLifetimeSavings).toBeLessThan(res.totalSwitchingCost);
+      expect(res.netLifetimeSavings).toBeLessThan(0);
+      expect(res.isViable).toBe(false);
+      expect(res.recommendation).toBe("Not Recommended (Costs Exceed Savings)");
+    });
+  });
 });
+
