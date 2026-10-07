@@ -34,21 +34,21 @@ graph TD
 - Create: `src/components/home/HomeCalculatorSpotlight.tsx`
 - Test: `src/components/home/__tests__/HomeCalculatorSpotlight.test.tsx`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 Create test in `src/components/home/__tests__/HomeCalculatorSpotlight.test.tsx` testing tab switching between "Home Loan Balance Transfer", "Interest Rate Hike", and "EMI Calculator".
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 Run: `npx vitest run src/components/home/__tests__/HomeCalculatorSpotlight.test.tsx`
 Expected: FAIL (module not found).
 
-- [ ] **Step 3: Implement minimal HomeCalculatorSpotlight component**
+- [x] **Step 3: Implement minimal HomeCalculatorSpotlight component**
 Build `HomeCalculatorSpotlight.tsx` with clean tabs switching between `BalanceTransferCalculator`, `RateHikeCalculator`, and `EmiCalculator`.
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 Run: `npx vitest run src/components/home/__tests__/HomeCalculatorSpotlight.test.tsx`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 `git add src/components/home/HomeCalculatorSpotlight.tsx src/components/home/__tests__/HomeCalculatorSpotlight.test.tsx`
 `git commit -m "feat(home): add HomeCalculatorSpotlight component"`
 
@@ -60,24 +60,24 @@ Expected: PASS.
 - Create: `src/components/home/HomeCommandHero.tsx`
 - Test: `src/components/home/__tests__/HomeCommandHero.test.tsx`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 Create test in `src/components/home/__tests__/HomeCommandHero.test.tsx` verifying:
 - Mode toggle between "📁 Universal File Converter" and "⚡ Financial & Dev Calculators".
 - Format pills render and trigger converter switches.
 - Renders `DynamicConverterCard` when mode is converter, and `HomeCalculatorSpotlight` when mode is calculator.
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 Run: `npx vitest run src/components/home/__tests__/HomeCommandHero.test.tsx`
 Expected: FAIL.
 
-- [ ] **Step 3: Implement HomeCommandHero**
+- [x] **Step 3: Implement HomeCommandHero**
 Build `HomeCommandHero.tsx` with floating segmented mode pills, quick format shortcuts (JSON to Excel, CSV to Excel, Parquet to CSV, XML to Excel), and instant switching.
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 Run: `npx vitest run src/components/home/__tests__/HomeCommandHero.test.tsx`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 `git add src/components/home/HomeCommandHero.tsx src/components/home/__tests__/HomeCommandHero.test.tsx`
 `git commit -m "feat(home): add HomeCommandHero dual-mode switcher component"`
 
@@ -89,21 +89,21 @@ Expected: PASS.
 - Create: `src/components/home/TrendingFinancialSuite.tsx`
 - Test: `src/components/home/__tests__/TrendingFinancialSuite.test.tsx`
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 Create test in `src/components/home/__tests__/TrendingFinancialSuite.test.tsx` verifying feature cards for Balance Transfer, Rate Hike, and EMI with direct links and badges.
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 Run: `npx vitest run src/components/home/__tests__/TrendingFinancialSuite.test.tsx`
 Expected: FAIL.
 
-- [ ] **Step 3: Implement TrendingFinancialSuite**
+- [x] **Step 3: Implement TrendingFinancialSuite**
 Build `TrendingFinancialSuite.tsx` presenting interactive summary cards, live calculation formulas, and 1-click links to `/tools/home-loan-balance-transfer-calculator` and `/tools/interest-rate-hike-calculator`.
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 Run: `npx vitest run src/components/home/__tests__/TrendingFinancialSuite.test.tsx`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 `git add src/components/home/TrendingFinancialSuite.tsx src/components/home/__tests__/TrendingFinancialSuite.test.tsx`
 `git commit -m "feat(home): add TrendingFinancialSuite showcase component"`
 
@@ -115,21 +115,21 @@ Expected: PASS.
 - Modify: `src/app/page.tsx`
 - Test: `src/app/__tests__/pages.test.tsx`
 
-- [ ] **Step 1: Update homepage integration tests**
+- [x] **Step 1: Update homepage integration tests**
 Update `src/app/__tests__/pages.test.tsx` to assert new Dual Hero Command Center, mode switcher, and trending financial cards.
 
-- [ ] **Step 2: Run test to observe failure**
+- [x] **Step 2: Run test to observe failure**
 Run: `npx vitest run src/app/__tests__/pages.test.tsx`
 Expected: FAIL.
 
-- [ ] **Step 3: Update `src/app/page.tsx`**
+- [x] **Step 3: Update `src/app/page.tsx`**
 Refactor `src/app/page.tsx` to integrate `HomeCommandHero`, `TrendingFinancialSuite`, and updated metrics.
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 Run: `npx vitest run src/app/__tests__/pages.test.tsx`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 `git add src/app/page.tsx src/app/__tests__/pages.test.tsx`
 `git commit -m "feat(home): integrate command center dual hero and trending finance suite into homepage"`
 
@@ -142,14 +142,14 @@ Expected: PASS.
 - Run: `npm test`
 - Run: `npm run build`
 
-- [ ] **Step 1: Run linter**
+- [x] **Step 1: Run linter**
 Verify 0 errors and warnings.
 
-- [ ] **Step 2: Run full test suite**
+- [x] **Step 2: Run full test suite**
 Verify all 79+ test files pass.
 
-- [ ] **Step 3: Run production build**
+- [x] **Step 3: Run production build**
 Verify all 1,936 static pages compile cleanly.
 
-- [ ] **Step 4: Commit and push**
+- [x] **Step 4: Commit and push**
 `git push origin main`
