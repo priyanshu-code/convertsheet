@@ -482,6 +482,17 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(emi1Cr).toBeDefined();
     expect(emi1Cr?.title).toContain("₹1 Crore Home Loan EMI After RBI Repo Rate Hike");
     expect(emi1Cr?.answerSummary).toContain("₹1,585");
+
+    const extraEmi = getProgrammaticPreset("emi-calculator", "1-extra-emi-per-year-savings");
+    expect(extraEmi).toBeDefined();
+    expect(extraEmi?.badge).toBe("High Savings Strategy");
+    expect(extraEmi?.answerSummary).toContain("9.15 Lakh");
+    expect(extraEmi?.answerSummary).toContain("16.9 years");
+
+    const tenureTrap = getProgrammaticPreset("emi-calculator", "home-loan-tenure-extension-vs-higher-emi");
+    expect(tenureTrap).toBeDefined();
+    expect(tenureTrap?.badge).toBe("Avoid The Trap");
+    expect(tenureTrap?.answerSummary).toContain("3,03,000");
   });
 });
 

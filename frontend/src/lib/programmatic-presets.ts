@@ -3547,6 +3547,80 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     ],
   },
   {
+    toolSlug: "emi-calculator",
+    presetSlug: "1-extra-emi-per-year-savings",
+    name: "1 Extra EMI Per Year Home Loan Savings Calculator",
+    title: "1 Extra EMI Per Year: Save ₹9 Lakh & 3+ Years on Home Loan | ConvertSheet",
+    subtitle: "Calculate how paying 1 extra EMI per year (13 payments instead of 12) reduces your home loan tenure from 20 years to 16.9 years and saves over ₹9 Lakh in lifetime interest.",
+    metaDescription: "Free 1 extra EMI per year calculator. See exact interest savings on ₹50 Lakh home loans: chop 3.1 years off tenure and save ₹9,15,000 in interest. Step-by-step breakdown.",
+    answerSummary: "Paying 1 extra EMI each year on a ₹50 Lakh loan (8.0% for 20 years) saves ₹9.15 Lakh in interest and completes the loan in 16.9 years instead of 20 years.",
+    badge: "High Savings Strategy",
+    keywords: [
+      "1 extra emi per year calculator",
+      "pay 1 extra emi every year",
+      "how much save 1 extra emi home loan",
+      "13 emis in 12 months home loan",
+      "home loan prepayment 1 extra emi"
+    ],
+    about: "### The 1 Extra EMI Per Year Compounding Advantage\n\nMaking just **one extra EMI payment per year** (13 payments over 12 calendar months) is widely considered by financial planners to be the highest ROI, lowest-friction debt payoff strategy for retail borrowers.\n\n#### ₹50 Lakh Home Loan Example (8.00% Interest / 240 Months Standard)\n\n| Repayment Mode | Annual Installments | Payoff Duration | Total Interest Paid | Lifetime Savings |\n| :--- | :--- | :--- | :--- | :--- |\n| **Standard Repayment** | 12 EMIs / year | 20.0 Years (240 mos) | ₹50,37,281 | Baseline |\n| **1 Extra EMI Strategy** | **13 EMIs / year** | **16.9 Years (203 mos)** | **₹41,22,140** | **Save ₹9,15,141 + 3.1 Years!** |\n\n#### Why This Works:\nRegular EMIs in years 1–5 are roughly 75% interest and only 25% principal. However, a dedicated extra prepayment goes **100% directly toward reducing the principal debt**, permanently shortening future interest amortization.",
+    initialValues: {
+      loanAmount: 5000000,
+      interestRate: 8.0,
+      loanTenureYears: 20,
+    },
+    faqs: [
+      {
+        question: "How much interest do I save by paying 1 extra EMI each year?",
+        answer: "On a ₹50 Lakh home loan at 8% interest over 20 years, paying 1 extra EMI annually saves approximately ₹9.15 Lakh in lifetime interest and finishes the loan 3 years and 1 month early."
+      },
+      {
+        question: "When during the year should I pay the extra EMI?",
+        answer: "You can pay it at any point during the year when you receive cash flow—such as during annual bonus season, tax refund credits, or festive Diwali allowances. The earlier in the calendar year you make the payment, the more interest you save."
+      },
+      {
+        question: "Does the bank charge penalty fees for prepaying 1 extra EMI?",
+        answer: "No. Under RBI guidelines, commercial banks and housing finance companies (HFCs) are strictly prohibited from charging prepayment penalties or foreclosure fees on individual floating-rate home loans."
+      }
+    ],
+  },
+  {
+    toolSlug: "emi-calculator",
+    presetSlug: "home-loan-tenure-extension-vs-higher-emi",
+    name: "Home Loan Tenure Extension vs Higher EMI Calculator",
+    title: "Tenure Extension vs Higher EMI Calculator — Compare The Cost | ConvertSheet",
+    subtitle: "Compare the total interest cost of letting your bank increase your loan tenure versus paying a slightly higher monthly EMI after a benchmark rate hike.",
+    metaDescription: "Compare home loan tenure extension vs higher EMI. See why extending tenure by 12 months costs ₹3L to ₹5L in extra interest compared to paying ₹788 more per month.",
+    answerSummary: "On a ₹50 Lakh loan, accepting a 12-month tenure extension instead of a ₹788/month EMI hike costs ₹3,03,000 in additional lifetime interest paid to the lender.",
+    badge: "Avoid The Trap",
+    keywords: [
+      "home loan tenure extension vs higher emi",
+      "should i increase emi or tenure",
+      "cost of extending loan tenure",
+      "rbi rate hike tenure vs emi calculator",
+      "bank increased my loan tenure"
+    ],
+    about: "### Side-by-Side: Increasing EMI vs Extending Tenure\n\nWhen interest rates rise by 0.25%, borrowers face a critical fork in the road: allow the bank to silently add months to the loan, or request a revised monthly EMI.\n\n#### ₹50 Lakh Home Loan Comparison (Rate Increases from 7.75% to 8.00%)\n\n| Option Selected | Monthly EMI | Total Tenure | Cumulative Interest | Hidden Penalty |\n| :--- | :--- | :--- | :--- | :--- |\n| **Option A: Increase EMI** | **₹41,822 (+₹788/mo)** | **240 Months (20.0 yrs)** | **₹50,37,281** | Minimal (+₹1.89L total) |\n| **Option B: Extend Tenure** | ₹41,034 (unchanged) | 252 Months (21.0 yrs) | ₹53,40,281 | **₹3,03,000 extra interest penalty!** |\n\n#### The Recommendation:\nAlways instruct your bank to **increase the monthly EMI** if your household budget allows for the ₹700–₹800 difference. Letting the tenure stretch out hands the bank hundreds of thousands of rupees in pure profit.",
+    initialValues: {
+      loanAmount: 5000000,
+      interestRate: 8.0,
+      loanTenureYears: 20,
+    },
+    faqs: [
+      {
+        question: "Is it better to increase home loan EMI or increase tenure?",
+        answer: "It is substantially better to increase your monthly EMI. Keeping your EMI unchanged forces the bank to add extra months to your loan, resulting in ₹3 Lakh to ₹5 Lakh in compounding interest penalties on a typical ₹50 Lakh loan."
+      },
+      {
+        question: "Why do banks automatically extend tenure instead of increasing EMI?",
+        answer: "Banks extend tenure by default because it avoids customer disputes over automated bank mandate debits, while keeping the loan active longer to maximize the bank's net interest margin."
+      },
+      {
+        question: "Can I instruct my bank to revert the tenure back to original?",
+        answer: "Yes. You have the legal right under RBI regulations to submit a tenure reset request to your lender at any time and agree to an increased monthly EMI amount."
+      }
+    ],
+  },
+  {
     toolSlug: "percentage-calculator",
     presetSlug: "0-20-x-100",
     name: "0.20 * 100 (0.20 × 100 = 20)",
