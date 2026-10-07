@@ -39,10 +39,10 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
   const pdfConfig = CONVERTER_REGISTRY["pdf-to-excel"];
 
   describe("generateStaticParams", () => {
-    it("returns all 23 converter slugs for static pre-rendering", () => {
+    it("returns all 36 converter slugs for static pre-rendering", () => {
       const params = generateStaticParams();
 
-      expect(params).toHaveLength(23);
+      expect(params).toHaveLength(36);
       const slugs = params.map((p) => p.slug);
       expect(slugs).toEqual(
         expect.arrayContaining([
@@ -170,11 +170,11 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
         )
       ).toBeInTheDocument();
 
-      // Other Popular Data Converters (should list the other 22)
+      // Other Popular Data Converters (should list the other 35)
       const otherSection = screen.getByTestId("other-converters-section");
       expect(otherSection).toBeInTheDocument();
       const otherLinks = otherSection.querySelectorAll("a");
-      expect(otherLinks).toHaveLength(22);
+      expect(otherLinks).toHaveLength(35);
 
       const linkedHrefs = Array.from(otherLinks).map((a) =>
         a.getAttribute("href")
@@ -387,8 +387,8 @@ describe("Programmatic SEO Dynamic Routes (/convert/[slug])", () => {
     it("sitemap returns home, tools hub, blog, info pages, category silos, converters, tools, presets, and blog posts", () => {
       const entries = sitemap();
 
-      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 21 Self-Canonical Converters + 51 On-Brand Tools + 177 Presets + 6 Blog Posts + 5 Comparisons = 271 entries
-      expect(entries).toHaveLength(271);
+      // Home (1) + Tools Hub (1) + Blog Hub (1) + Directory (1) + Embed Directory (1) + About/Privacy/Terms (3) + 3 Category Silos + 34 Self-Canonical Converters + 51 On-Brand Tools + 210 Presets + 6 Blog Posts + 5 Comparisons = 317 entries
+      expect(entries).toHaveLength(317);
 
       // Embed directory entry
       const embedEntry = entries.find(

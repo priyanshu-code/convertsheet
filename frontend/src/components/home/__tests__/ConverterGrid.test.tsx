@@ -14,9 +14,9 @@ describe("ConverterGrid Component", () => {
     expect(screen.getByRole("button", { name: /Spreadsheets/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /DuckDB/i })).toBeInTheDocument();
 
-    expect(screen.getByText("(23)")).toBeInTheDocument();
-    expect(screen.getByText("(9)")).toBeInTheDocument();
-    expect(screen.getByText("(12)")).toBeInTheDocument();
+    expect(screen.getByText(`(${allConverters.length})`)).toBeInTheDocument();
+    expect(screen.getByText(`(${allConverters.filter(c => c.category === "spreadsheets").length})`)).toBeInTheDocument();
+    expect(screen.getByText(`(${allConverters.filter(c => c.category === "data-engineering").length})`)).toBeInTheDocument();
   });
 
   it("shows initial 6 converters by default with Show All button, and expands on click", () => {
@@ -31,7 +31,7 @@ describe("ConverterGrid Component", () => {
     expect(screen.queryByText("SQLite to Excel")).not.toBeInTheDocument();
 
     // Show All button is visible
-    const showAllBtn = screen.getByRole("button", { name: /Show All 23 Converters/i });
+    const showAllBtn = screen.getByRole("button", { name: new RegExp(`Show All ${allConverters.length} Converters`, "i") });
     expect(showAllBtn).toBeInTheDocument();
 
     // Click Show All

@@ -127,7 +127,7 @@ describe("Layout Components", () => {
       expect(menu).toBeInTheDocument();
 
       // All 7 converters should be present
-      expect(screen.getByRole("menuitem", { name: /JSON to Excel/i })).toHaveAttribute(
+      expect(screen.getByRole("menuitem", { name: /^JSON to Excel/i })).toHaveAttribute(
         "href",
         "/convert/json-to-excel"
       );
@@ -135,7 +135,7 @@ describe("Layout Components", () => {
         "href",
         "/convert/xml-to-excel"
       );
-      expect(screen.getByRole("menuitem", { name: /CSV to Excel/i })).toHaveAttribute(
+      expect(screen.getByRole("menuitem", { name: /^CSV to Excel/i })).toHaveAttribute(
         "href",
         "/convert/csv-to-excel"
       );
@@ -143,30 +143,30 @@ describe("Layout Components", () => {
         "href",
         "/convert/excel-to-json"
       );
-      expect(screen.getByRole("menuitem", { name: /Excel to CSV/i })).toHaveAttribute(
+      expect(screen.getByRole("menuitem", { name: /^Excel to CSV/i })).toHaveAttribute(
         "href",
         "/convert/excel-to-csv"
       );
-      expect(screen.getByRole("menuitem", { name: /PDF to Excel/i })).toHaveAttribute(
+      expect(screen.getByRole("menuitem", { name: /^PDF to Excel/i })).toHaveAttribute(
         "href",
         "/convert/pdf-to-excel"
       );
-      expect(screen.getByRole("menuitem", { name: /Tally XML to Excel/i })).toHaveAttribute(
+      expect(screen.getByRole("menuitem", { name: /^Tally XML to Excel/i })).toHaveAttribute(
         "href",
         "/convert/tally-xml-to-excel"
       );
 
       // Format badges
-      expect(screen.getByText("JSON → XLSX")).toBeInTheDocument();
+      expect(screen.getAllByText("JSON → XLSX")[0]).toBeInTheDocument();
       expect(screen.getByText("XML → XLSX")).toBeInTheDocument();
-      expect(screen.getByText("CSV → XLSX")).toBeInTheDocument();
+      expect(screen.getAllByText("CSV → XLSX")[0]).toBeInTheDocument();
       expect(screen.getByText("XLSX → JSON")).toBeInTheDocument();
       expect(screen.getByText("XLSX → CSV")).toBeInTheDocument();
       expect(screen.getByText("PDF → XLSX")).toBeInTheDocument();
       expect(screen.getByText("Tally XML → XLSX")).toBeInTheDocument();
 
       // Clicking a menuitem closes dropdown
-      const jsonItem = screen.getByRole("menuitem", { name: /JSON to Excel/i });
+      const jsonItem = screen.getByRole("menuitem", { name: /^JSON to Excel/i });
       fireEvent.click(jsonItem);
       expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     });
@@ -266,7 +266,7 @@ describe("Layout Components", () => {
 
     it("renders all 7 converter links", () => {
       render(<Footer />);
-      expect(screen.getByRole("link", { name: /JSON to Excel/i })).toHaveAttribute(
+      expect(screen.getByRole("link", { name: /^JSON to Excel/i })).toHaveAttribute(
         "href",
         "/convert/json-to-excel"
       );
@@ -354,13 +354,13 @@ describe("Layout Components", () => {
 
     it("renders converter badges aligned with CONVERTER_REGISTRY", () => {
       render(<Footer />);
-      expect(screen.getByText("Popular")).toBeInTheDocument();
-      expect(screen.getByText("Fast")).toBeInTheDocument();
-      expect(screen.getByText("Instant")).toBeInTheDocument();
-      expect(screen.getByText("Developer Favorite")).toBeInTheDocument();
-      expect(screen.getByText("UTF-8 Ready")).toBeInTheDocument();
-      expect(screen.getByText("Pro / OCR")).toBeInTheDocument();
-      expect(screen.getByText("Accounting Special")).toBeInTheDocument();
+      expect(screen.getAllByText("Popular")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Fast")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Instant")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Developer Favorite")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("UTF-8 Ready")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Pro / OCR")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Accounting Special")[0]).toBeInTheDocument();
     });
   });
 

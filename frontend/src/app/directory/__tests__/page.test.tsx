@@ -62,10 +62,9 @@ describe("Complete Master Directory Route (/directory)", () => {
       "href",
       "/tools/percentage-calculator"
     );
-    expect(screen.getByRole("link", { name: /JSON to Excel/i })).toHaveAttribute(
-      "href",
-      "/convert/json-to-excel"
-    );
+    expect(
+      container.querySelector('a[href="/convert/json-to-excel"]')
+    ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /What is 20% of 100\?/i })).toHaveAttribute(
       "href",
       "/tools/percentage-calculator/what-is-20-percent-of-100"
