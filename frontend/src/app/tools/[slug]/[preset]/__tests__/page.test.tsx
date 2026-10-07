@@ -44,6 +44,8 @@ describe("Programmatic Preset Dynamic Landing Page", () => {
       screen.getAllByText(/\$400,000 Mortgage Payment Calculator/i).length
     ).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Direct Answer:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Key Financial Facts & Estimates/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Monthly P&I Payment/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Related.*Calculations/i)).toBeInTheDocument();
   });
 

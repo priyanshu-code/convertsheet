@@ -110,25 +110,30 @@ export function ImageResizerTool({
     const ctx = canvas.getContext("2d");
 
     if (ctx) {
-      if (dims.format === "image/jpeg") {
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, dims.width, dims.height);
-      }
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(imgElementRef.current, 0, 0, dims.width, dims.height);
+      try {
+        if (dims.format === "image/jpeg") {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, dims.width, dims.height);
+        }
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(imgElementRef.current, 0, 0, dims.width, dims.height);
 
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            setResizedBlob(blob);
-            setResizedSize(blob.size);
-          }
-          setIsProcessing(false);
-        },
-        dims.format,
-        dims.quality / 100
-      );
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              setResizedBlob(blob);
+              setResizedSize(blob.size);
+            }
+            setIsProcessing(false);
+          },
+          dims.format,
+          dims.quality / 100
+        );
+      } catch (err) {
+        console.warn("Canvas rendering error:", err);
+        setIsProcessing(false);
+      }
     }
   }, [dims]);
 

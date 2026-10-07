@@ -86,4 +86,30 @@ describe("EmbedModal & EmbedTrigger Components", () => {
     fireEvent.click(embedBtn);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
+
+  it("EmbedBanner renders copy button, modal trigger, and copies canonical attribution snippet", async () => {
+    const writeTextMock = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: writeTextMock,
+      },
+    });
+
+    const { EmbedBanner } = await import("../EmbedBanner");
+    render(<EmbedBanner tool={mockTool} />);
+
+    expect(screen.getByText(/Add Mortgage Calculator to Your Website or Blog/i)).toBeInTheDocument();
+
+    const copyBtn = screen.getByRole("button", { name: /Copy Embed Code/i });
+    await act(async () => {
+      fireEvent.click(copyBtn);
+    });
+
+    expect(writeTextMock).toHaveBeenCalled();
+    const calledSnippet = writeTextMock.mock.calls[0][0];
+    expect(calledSnippet).toContain("https://www.convertsheet.com/embed/mortgage-calculator");
+    expect(calledSnippet).toContain("Free Mortgage Calculator");
+    expect(calledSnippet).toContain("powered by");
+    expect(calledSnippet).toContain("https://www.convertsheet.com");
+  });
 });
