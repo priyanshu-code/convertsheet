@@ -89,6 +89,8 @@ describe("Blog UI Components", () => {
     render(<TopicClusterNav currentPost={branchPost!} />);
     expect(screen.getByText("Topic Cluster Hub & Related Guides")).toBeInTheDocument();
     expect(screen.getByText("Core Pillar Guide")).toBeInTheDocument();
-    expect(screen.getByText(/RBI Increases Repo Rate by 25 BPS/i)).toBeInTheDocument();
+    const pillarLinks = screen.getAllByRole("link", { name: /RBI Repo Rate Hike to 5.5%: Exact EMI Increase/i });
+    expect(pillarLinks.length).toBeGreaterThanOrEqual(1);
+    expect(pillarLinks[0]).toHaveAttribute("href", "/blog/rbi-repo-rate-hike-25-bps-home-loan-emi-impact");
   });
 });

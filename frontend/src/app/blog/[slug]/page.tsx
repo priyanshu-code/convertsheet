@@ -122,6 +122,21 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
         },
       },
       breadcrumbJsonLd,
+      ...(post.faqs && post.faqs.length > 0
+        ? [
+            {
+              "@type": "FAQPage",
+              mainEntity: post.faqs.map((faq) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: faq.answer,
+                },
+              })),
+            },
+          ]
+        : []),
     ],
   };
 

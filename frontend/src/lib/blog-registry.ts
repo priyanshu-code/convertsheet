@@ -40,6 +40,7 @@ export interface BlogPost {
   relatedSlugs?: string[]; // Slugs of sibling branch articles or child branch articles
   tag?: string; // Catchy badge label: "New", "Latest", "RBI 2026", "Trending"
   tagTooltip?: string; // Contextual tooltip explaining the badge
+  faqs?: Array<{ question: string; answer: string }>; // High-intent FAQ items for schema and direct answers
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -747,8 +748,8 @@ const arrowResult = await conn.query(\`
   },
   {
     slug: "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
-    title: "RBI Increases Repo Rate by 25 BPS: How Much Will Your Home Loan EMI Increase?",
-    description: "Deep research and mathematical breakdown of the RBI 25 basis point (0.25%) repo rate hike. See exact EMI jumps on ₹30L, ₹50L, and ₹1Cr loans, tenure extensions, and how to neutralize the increase.",
+    title: "RBI Repo Rate Hike to 5.5%: Exact EMI Increase on ₹30L, ₹50L & ₹1Cr Loans",
+    description: "RBI raised repo rate by 25 bps to 5.50%. See exact monthly EMI jumps for ₹30L, ₹50L, and ₹1 Crore home loans, why banks extend tenures, and 3 proven strategies to beat the rate increase.",
     category: "Financial Planning",
     readTimeMinutes: 6,
     publishedAt: "2026-10-07",
@@ -757,11 +758,29 @@ const arrowResult = await conn.query(\`
     attachedToolTitle: "Home Loan EMI Calculator & Amortization Schedule",
     clusterId: "indian-home-loans",
     role: "pillar",
-    tag: "Latest • Oct 2026",
-    tagTooltip: "Updated with RBI MPC October 07, 2026 Repo Rate hike (5.50%)",
+    tag: "Latest • 5.50% Rate",
+    tagTooltip: "Updated for RBI Repo Rate hike to 5.50% (October 07, 2026)",
     relatedSlugs: [
       "the-home-loan-tenure-trap-explained",
       "the-1-extra-emi-per-year-rule-home-loan-savings"
+    ],
+    faqs: [
+      {
+        question: "What is the RBI repo rate today?",
+        answer: "As of October 07, 2026, the RBI Policy Repo Rate stands at 5.50%, following a 25 basis point hike from 5.25% by the Monetary Policy Committee (MPC)."
+      },
+      {
+        question: "How will the 25 bps repo rate hike affect my home loan EMI?",
+        answer: "On a ₹50 Lakh home loan with a 20-year tenure (8.50% to 8.75%), your monthly EMI increases by approximately ₹802/month, or ₹1.92 Lakh in total additional interest over the loan life."
+      },
+      {
+        question: "Why did RBI increase the repo rate in October 2026?",
+        answer: "The RBI increased the repo rate to 5.50% due to headline inflation pressures (CPI projected at 5.2%), rising global crude oil prices ($116/barrel), and sharp domestic food price spikes (onions +85%, sugar +34%)."
+      },
+      {
+        question: "Will my bank increase my EMI or loan tenure?",
+        answer: "Most banks silently extend your loan tenure instead of increasing your EMI. A 0.25% hike on a 20-year loan can extend your loan by 16 extra months unless you explicitly instruct the bank to raise your EMI."
+      }
     ],
     tableOfContents: [
       { id: "what-is-the-rbi-25-bps-repo-rate-hike", title: "1. What is the RBI 25 BPS Repo Rate Hike?" },
@@ -771,6 +790,23 @@ const arrowResult = await conn.query(\`
       { id: "3-proven-strategies-to-neutralize-the-hike", title: "5. 3 Proven Strategies to Neutralize the Rate Increase" }
     ],
     content: `
+      <div class="rounded-2xl border border-emerald-500/30 bg-emerald-50/50 p-5 dark:border-emerald-500/20 dark:bg-emerald-950/20 space-y-3 mb-8">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400"></span>
+          <span>RBI October 2026 Monetary Policy Snapshot</span>
+        </div>
+        <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          The current repo rate is <strong>5.50%</strong>, following a 25 basis point hike by the Reserve Bank of India on October 07, 2026.
+        </p>
+        <ul class="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 space-y-1.5 pl-4 list-disc">
+          <li><strong>Policy Repo Rate:</strong> 5.50% (+25 bps from 5.25%)</li>
+          <li><strong>Marginal Standing Facility (MSF) &amp; Bank Rate:</strong> 5.75%</li>
+          <li><strong>Standing Deposit Facility (SDF):</strong> 5.25%</li>
+          <li><strong>Real GDP Growth:</strong> 7.1% | <strong>CPI Headline Inflation:</strong> 5.2%</li>
+          <li><strong>Direct Impact:</strong> Retail floating loan rates (EBLR) rise by 0.25%, adding ₹802/mo on a ₹50L home loan.</li>
+        </ul>
+      </div>
+
       <section id="what-is-the-rbi-25-bps-repo-rate-hike" class="space-y-4">
         <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
           1. What is the RBI 25 BPS Repo Rate Hike?
@@ -906,6 +942,20 @@ const arrowResult = await conn.query(\`
     relatedSlugs: [
       "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
       "the-1-extra-emi-per-year-rule-home-loan-savings"
+    ],
+    faqs: [
+      {
+        question: "Why do banks increase tenure instead of EMI when repo rate rises?",
+        answer: "Banks default to extending loan tenure to prevent customer payment defaults and NACH mandate bounces. However, longer tenures mean the bank collects significantly more total interest from you."
+      },
+      {
+        question: "How do I ask my bank to increase my EMI instead of tenure?",
+        answer: "Log into your net banking or visit your home branch and submit a 'Change in Repayment Schedule' request selecting 'Tenure Reset / Revised EMI'. You may need to submit a new electronic NACH mandate."
+      },
+      {
+        question: "How many extra months does a 0.25% repo rate hike add to a home loan?",
+        answer: "On a ₹50 Lakh, 20-year home loan at 8.5%, a 0.25% hike (to 8.75%) silently adds approximately 16 additional monthly installments (1 year and 4 months) if the EMI remains unchanged."
+      }
     ],
     tableOfContents: [
       { id: "the-psychology-of-the-silent-extension", title: "1. The Psychology of the Silent Tenure Extension" },
@@ -1118,8 +1168,8 @@ const arrowResult = await conn.query(\`
   },
   {
     slug: "rbi-rate-hike-fixed-deposits-vs-equity-strategy",
-    title: "RBI Rate Hike & The 8% FD Dilemma: Are Bank Deposits Finally Beating Equity?",
-    description: "An insider look into the RBI Monetary Policy Statement of October 7, 2026. Why the MPC hiked the repo rate to 5.50%, how bank deposit rates are climbing to 8%+, and whether you should pivot your portfolio from equity to fixed deposits.",
+    title: "RBI Repo Rate Hike to 5.5%: Are Bank FDs (8.2%) Better Than Stocks Now?",
+    description: "RBI hiked the repo rate to 5.50% and ruled out rate cuts. Compare 8.25% fixed deposit returns against equity SIP returns, post-tax yields, and the exact asset allocation playbook.",
     category: "Financial Planning",
     readTimeMinutes: 7,
     publishedAt: "2026-10-07",
@@ -1128,10 +1178,26 @@ const arrowResult = await conn.query(\`
     attachedToolTitle: "Fixed Deposit & Compounding Interest Calculator",
     clusterId: "indian-home-loans",
     role: "branch",
+    tag: "Trending • 8%+ FDs",
+    tagTooltip: "Compare 8.25% bank deposits vs stock market equity returns post-hike",
     pillarSlug: "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
     relatedSlugs: [
       "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
       "rbi-bank-rate-penal-interest-crr-slr-liquidity-guide"
+    ],
+    faqs: [
+      {
+        question: "Will fixed deposit (FD) interest rates increase after the RBI repo rate hike?",
+        answer: "Yes. Following the repo rate hike to 5.50% and penal rates up to 10.75%, commercial banks are aggressively hiking FD rates to 7.75%–8.25% (and up to 8.50% for senior citizens) to attract retail deposits."
+      },
+      {
+        question: "Are fixed deposits better than equity mutual funds right now?",
+        answer: "With guaranteed bank FDs yielding 8.00%+ and headline inflation at 5.2%, the real risk-free return is +2.80%. For short-term horizons (1 to 3 years), locking in fixed deposits protects capital without taking stock market volatility risk."
+      },
+      {
+        question: "What is the post-tax return on an 8% fixed deposit?",
+        answer: "In the 30% tax bracket, an 8.0% FD yields roughly 5.50% post-tax, closely matching projected 5.2% inflation. For 10%–20% tax brackets or senior citizens with 80TTB exemptions, FDs deliver strong positive real returns."
+      }
     ],
     tableOfContents: [
       { id: "inside-the-rbi-mpc-statement", title: "1. Inside the Governor's Statement: Why the RBI Hiked" },
@@ -1142,6 +1208,21 @@ const arrowResult = await conn.query(\`
       { id: "the-optimal-asset-allocation-playbook", title: "6. My Personal Playbook for Navigating the Hike" }
     ],
     content: `
+      <div class="rounded-2xl border border-emerald-500/30 bg-emerald-50/50 p-5 dark:border-emerald-500/20 dark:bg-emerald-950/20 space-y-3 mb-8">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400"></span>
+          <span>Depositor Quick Summary: Repo 5.50% &amp; Fixed Deposits</span>
+        </div>
+        <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          With the repo rate hiked to <strong>5.50%</strong> and rate cuts explicitly ruled out, bank FDs offer the highest risk-free real yield in over 3 years.
+        </p>
+        <ul class="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 space-y-1.5 pl-4 list-disc">
+          <li><strong>Current FD Yields:</strong> Major commercial banks offering 7.75% to 8.25% (8.50%+ for seniors).</li>
+          <li><strong>Real Risk-Free Return:</strong> Nominal 8.00% FD minus projected 5.20% inflation = <strong>+2.80% positive real yield</strong>.</li>
+          <li><strong>Strategy:</strong> Lock in 1-2 year deposits for emergency cash while continuing systematic equity SIPs for 7+ year goals.</li>
+        </ul>
+      </div>
+
       <section id="inside-the-rbi-mpc-statement" class="space-y-4">
         <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
           1. Inside the Governor's Statement: Why the RBI Hiked
@@ -1405,8 +1486,8 @@ const arrowResult = await conn.query(\`
   },
   {
     slug: "rbi-monetary-policy-october-2026-common-man-guide",
-    title: "RBI Monetary Policy October 2026 Explained: What Repo at 5.50% & CPI at 5.2% Mean for Common People",
-    description: "A human, plain-English breakdown of the RBI October 07, 2026 monetary policy announcement: Repo at 5.50%, MSF at 5.75%, SDF at 5.25%, GDP at 7.1%, and CPI inflation at 5.2%. What it actually means for your grocery bills, fuel prices, job security, car loans, and savings.",
+    title: "RBI Repo Rate Hike to 5.5%: Impact on Loans, FDs, Grocery Prices & Jobs",
+    description: "RBI hiked repo rate to 5.50% and projected CPI inflation at 5.2%. A plain-English breakdown of what this means for your home loan EMI, savings account interest, petrol, and job security.",
     category: "Financial Planning",
     readTimeMinutes: 7,
     publishedAt: "2026-10-07",
@@ -1423,6 +1504,24 @@ const arrowResult = await conn.query(\`
       "rbi-rate-hike-fixed-deposits-vs-equity-strategy",
       "rbi-bank-rate-penal-interest-crr-slr-liquidity-guide"
     ],
+    faqs: [
+      {
+        question: "What are the key policy rates announced by the RBI on October 07, 2026?",
+        answer: "Policy Repo Rate: 5.50% (+25 bps), MSF & Bank Rate: 5.75%, Standing Deposit Facility (SDF): 5.25%, Real GDP Growth projection: 7.1%, and CPI Headline Inflation projection: 5.2%."
+      },
+      {
+        question: "How will the repo rate hike affect common people?",
+        answer: "Borrowers will face higher EMIs on home and personal loans (+0.25%). Savers benefit from higher bank FD rates (up to 8.25%). Kitchen budgets remain strained as the RBI projects 5.2% inflation driven by crude oil and food spikes."
+      },
+      {
+        question: "Will car loans and personal loans get costlier?",
+        answer: "Yes. Existing fixed-rate auto loans are unaffected, but all new vehicle and personal loans will see interest rates increase by 25 to 50 basis points across public and private banks."
+      },
+      {
+        question: "Is there any risk of recession in India following the rate hike?",
+        answer: "No. With Real GDP growth projected at a robust 7.1% for FY2026-27, India remains the world's fastest-growing major economy. The rate hike is designed to tame inflation without hurting economic expansion."
+      }
+    ],
     tableOfContents: [
       { id: "summing-up-the-monetary-policy-numbers", title: "1. The 5 Core Policy Numbers You Need to Know" },
       { id: "what-the-repo-rate-hike-means-for-your-wallet", title: "2. The Borrowing Side: Loans, Credit Cards, and EMIs" },
@@ -1432,6 +1531,22 @@ const arrowResult = await conn.query(\`
       { id: "actionable-checklist-for-every-household", title: "6. Your 4-Step Personal Finance Defense Checklist" }
     ],
     content: `
+      <div class="rounded-2xl border border-emerald-500/30 bg-emerald-50/50 p-5 dark:border-emerald-500/20 dark:bg-emerald-950/20 space-y-3 mb-8">
+        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400"></span>
+          <span>At a Glance: What RBI's Oct 7 Decision Means For You</span>
+        </div>
+        <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          The RBI increased the benchmark repo rate to <strong>5.50%</strong> (from 5.25%) to combat 5.2% inflation. Here is the bottom-line household impact:
+        </p>
+        <ul class="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 space-y-1.5 pl-4 list-disc">
+          <li>🏠 <strong>Higher Loan EMIs:</strong> Floating home &amp; auto loan rates rise by 0.25% (+₹802/mo on a ₹50L loan).</li>
+          <li>💰 <strong>Better Deposit Returns:</strong> Fixed deposits now yield 7.75% to 8.25%+ (positive real return of +2.80%).</li>
+          <li>🛒 <strong>Grocery Pressures:</strong> Inflation pegged at 5.2% driven by onion (+85%), sugar (+34%), and crude oil ($116/bbl).</li>
+          <li>💼 <strong>Solid Job Market:</strong> 7.1% GDP growth keeps core employment stable, though tech valuations face global headwinds.</li>
+        </ul>
+      </div>
+
       <p class="lead text-lg text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
         Whenever the Reserve Bank of India (RBI) holds its bi-monthly Monetary Policy Committee (MPC) press conference, television screens flood with technical jargon: <em>"liquidity corridor adjustments"</em>, <em>"calibrated tightening stance"</em>, <em>"marginal standing facility corridors"</em>. But strip away the central banker suits and monetary policy vocabulary, and the October 07, 2026 announcement boils down to one simple reality: <strong>money is getting more expensive, borrowing is slowing down, and cash savers finally have the upper hand</strong>.
       </p>
@@ -1599,6 +1714,20 @@ const arrowResult = await conn.query(\`
     relatedSlugs: [
       "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
       "rbi-bank-rate-penal-interest-crr-slr-liquidity-guide"
+    ],
+    faqs: [
+      {
+        question: "What is Credit Valuation Adjustment (CVA) in simple terms?",
+        answer: "CVA is a capital buffer banks must maintain to protect against losses if a trading counterparty's credit rating falls, reducing the market value of their outstanding derivative contracts."
+      },
+      {
+        question: "What is SA-CCR in banking regulation?",
+        answer: "SA-CCR (Standardised Approach for Counterparty Credit Risk) is the Basel III mathematical framework for calculating a bank's Exposure at Default (EAD) on derivative contracts, considering collateral, replacement cost, and potential future exposure."
+      },
+      {
+        question: "Are Indian bank deposits safe following these derivative rules?",
+        answer: "Yes. Indian commercial banks maintain an exceptional Capital to Risk-Weighted Assets Ratio (CRAR) of 17.87% (vs 9.0% Basel minimum) and a 15-year record low Gross NPA of 1.67%. The new CVA and SA-CCR rules further fortify deposit safety."
+      }
     ],
     tableOfContents: [
       { id: "what-are-cva-and-sa-ccr", title: "1. What are CVA and SA-CCR (In Plain English)?" },
