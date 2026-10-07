@@ -1,5 +1,6 @@
 import { FAQItem } from "@/types/registry";
 import { generate50StateSalaryPresets } from "./us-states-salary-matrix";
+import { generateConsumerFinancialPresets } from "./consumer-financial-matrix";
 
 export interface ProgrammaticPreset {
   toolSlug: string;
@@ -6086,11 +6087,14 @@ Choosing between a 15-year and a 30-year fixed-rate mortgage is one of the most 
 // Generate 50-State Salary Presets
 const STATE_SALARY_PRESETS = generate50StateSalaryPresets() as ProgrammaticPreset[];
 
+// Generate Consumer Financial Presets (Mortgage, Hourly, Auto Loan)
+const CONSUMER_FINANCIAL_PRESETS = generateConsumerFinancialPresets() as ProgrammaticPreset[];
+
 // Combine and deduplicate by `${toolSlug}:${presetSlug}`
 const SEEN_PRESET_KEYS = new Set<string>();
 const DEDUPED_PRESETS: ProgrammaticPreset[] = [];
 
-for (const preset of [...PROGRAMMATIC_PRESETS_BASE, ...STATE_SALARY_PRESETS]) {
+for (const preset of [...PROGRAMMATIC_PRESETS_BASE, ...STATE_SALARY_PRESETS, ...CONSUMER_FINANCIAL_PRESETS]) {
   const key = `${preset.toolSlug}:${preset.presetSlug}`;
   if (!SEEN_PRESET_KEYS.has(key)) {
     SEEN_PRESET_KEYS.add(key);

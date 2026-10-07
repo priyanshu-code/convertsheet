@@ -413,5 +413,21 @@ describe("Programmatic SEO Presets Registry", () => {
     expect(fl60k).toBeDefined();
     expect(fl60k?.badge).toBe("0% State Tax");
   });
+
+  it("resolves high-demand consumer mortgage, wage, and auto loan matrix presets", () => {
+    const m550k = getProgrammaticPreset("mortgage-calculator", "550k-mortgage-payment");
+    expect(m550k).toBeDefined();
+    expect(m550k?.title).toContain("$550,000 Mortgage");
+    expect(m550k?.faqs.length).toBeGreaterThanOrEqual(3);
+
+    const wage25 = getProgrammaticPreset("hourly-to-salary-calculator", "25-dollars-an-hour-is-how-much-a-year");
+    expect(wage25).toBeDefined();
+    expect(wage25?.title).toContain("$25 an Hour");
+    expect(wage25?.answerSummary).toContain("$52,000");
+
+    const car35k = getProgrammaticPreset("car-loan-calculator", "35k-car-loan-monthly-payment");
+    expect(car35k).toBeDefined();
+    expect(car35k?.title).toContain("$35,000 Car Loan");
+  });
 });
 
