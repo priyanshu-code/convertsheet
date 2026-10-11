@@ -111,7 +111,7 @@ describe("Blog Registry & Content Layer", () => {
   it("verifies pillar and branches topic cluster architecture integrity", () => {
     // Cluster: indian-home-loans
     const homeLoanPosts = getBlogPostsByCluster("indian-home-loans");
-    expect(homeLoanPosts.length).toBe(14);
+    expect(homeLoanPosts.length).toBe(15);
 
     const pillar = getPillarPost("indian-home-loans");
     expect(pillar).toBeDefined();
@@ -119,7 +119,7 @@ describe("Blog Registry & Content Layer", () => {
     expect(pillar?.role).toBe("pillar");
 
     const branches = getBranchPosts(pillar!.slug);
-    expect(branches.length).toBe(13);
+    expect(branches.length).toBe(14);
     const branchSlugs = branches.map((b: { slug: string }) => b.slug);
     expect(branchSlugs).toContain("how-to-reduce-home-loan-car-loan-after-repo-rate-hike");
     expect(branchSlugs).toContain("pnb-bob-indian-bank-sbi-rate-hikes-after-repo-revision");
@@ -134,6 +134,18 @@ describe("Blog Registry & Content Layer", () => {
     expect(branchSlugs).toContain("rbi-bank-rate-penal-interest-crr-slr-liquidity-guide");
     expect(branchSlugs).toContain("rbi-monetary-policy-october-2026-common-man-guide");
     expect(branchSlugs).toContain("rbi-cva-and-sa-ccr-counterparty-risk-explained");
+    expect(branchSlugs).toContain("sbi-maxgain-vs-prepayment-home-loan-overdraft-guide");
+
+    // Verify detailed schema and content for the new SBI MaxGain guide
+    const maxGainArticle = getBlogPostBySlug("sbi-maxgain-vs-prepayment-home-loan-overdraft-guide");
+    expect(maxGainArticle).toBeDefined();
+    expect(maxGainArticle?.attachedToolSlug).toBe("home-loan-overdraft-calculator");
+    expect(maxGainArticle?.attachedToolTitle).toBe("Home Loan Overdraft (SBI MaxGain) vs Prepayment Calculator");
+    expect(maxGainArticle?.content).toContain("SBI MaxGain");
+    expect(maxGainArticle?.content).toContain("40 BPS Spread Premium");
+    expect(maxGainArticle?.content).toContain("Break-Even");
+    expect(maxGainArticle?.tableOfContents).toHaveLength(7);
+    expect(maxGainArticle?.faqs).toHaveLength(6);
 
     // Verify detailed schema and content for the two new deep guides
     const fdArticle = getBlogPostBySlug("how-rbi-repo-rate-affects-fixed-deposit-rates");

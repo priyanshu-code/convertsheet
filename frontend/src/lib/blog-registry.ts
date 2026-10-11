@@ -3283,6 +3283,347 @@ const arrowResult = await conn.query(\`
         </p>
       </section>
     `.trim()
+  },
+  {
+    slug: "sbi-maxgain-vs-prepayment-home-loan-overdraft-guide",
+    title: "SBI MaxGain vs Regular Prepayment: The Exact Mathematics of Parking Cash in an Overdraft Account (And When the 40 bps Premium Makes It a Trap)",
+    description: "An analytical, mathematical guide for Indian home loan borrowers. Compare SBI MaxGain daily interest offsetting with direct principal prepayments, understand the 40 bps spread premium, compute your exact break-even parked balance, and optimize liquidity without tax drag.",
+    category: "Financial Engineering",
+    readTimeMinutes: 11,
+    publishedAt: "2026-10-12",
+    author: FOUNDER_AUTHOR,
+    attachedToolSlug: "home-loan-overdraft-calculator",
+    attachedToolTitle: "Home Loan Overdraft (SBI MaxGain) vs Prepayment Calculator",
+    clusterId: "indian-home-loans",
+    role: "branch",
+    pillarSlug: "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+    relatedSlugs: [
+      "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+      "how-to-reduce-home-loan-car-loan-after-repo-rate-hike",
+      "how-rbi-repo-rate-affects-loan-interest-rates",
+      "mclr-vs-eblr-old-home-loan-conversion-guide"
+    ],
+    tag: "SBI MaxGain 2026",
+    tagTooltip: "In-depth mathematical breakdown of bank overdraft spread markups, break-even formulas, and daily interest mechanics",
+    tableOfContents: [
+      { id: "how-overdraft-mechanics-work", title: "1. Mechanics: How SBI MaxGain Computes Daily Interest" },
+      { id: "the-40-bps-spread-premium-trap", title: "2. The 40 BPS Spread Premium Trap" },
+      { id: "break-even-surplus-formula", title: "3. The Break-Even Surplus Formula & Mathematical Proof" },
+      { id: "maxgain-vs-direct-prepayment-vs-fd", title: "4. MaxGain vs. Direct Prepayment vs. Fixed Deposits (Post-Tax Yield)" },
+      { id: "bank-comparison-sbi-bob-pnb", title: "5. Bank-by-Bank Overdraft Comparison (SBI vs. BoB vs. PNB)" },
+      { id: "salaried-borrower-action-playbook", title: "6. The Salaried Borrower Playbook: Maximizing Daily Offset" },
+      { id: "frequently-asked-questions", title: "7. Frequently Asked Questions & Edge Cases" }
+    ],
+    faqs: [
+      {
+        question: "How does SBI MaxGain calculate interest on a home loan?",
+        answer: "SBI MaxGain calculates interest on a daily basis on the net balance: Net Balance = max(0, Outstanding Principal - Parked Surplus). The contractual EMI remains unchanged, but because less interest is accrued each day, a larger share of each EMI goes toward principal repayment, cutting years off the loan tenure."
+      },
+      {
+        question: "Why does SBI charge a 40 bps premium on MaxGain over regular home loans?",
+        answer: "Banks charge an overdraft spread markup (+0.40% in SBI, +0.25% in Bank of Baroda) because they must maintain reserve capital against committed overdraft credit limits that borrowers can draw down anytime via ATM or UPI without bank intervention."
+      },
+      {
+        question: "What is the break-even parked surplus balance formula for SBI MaxGain?",
+        answer: "Break-Even Surplus = Outstanding Principal * (Overdraft Rate - Standard Rate) / Overdraft Rate. On a ₹50 Lakh loan at 8.50% regular vs 8.90% MaxGain (+40 bps), you must maintain an average parked balance of ₹2,24,719. Parking below this threshold means paying more interest than a regular loan."
+      },
+      {
+        question: "Is Home Loan Overdraft better than direct prepayment?",
+        answer: "Overdraft is superior for borrowers who require liquidity. Direct prepayment is non-reversible (your capital is locked into real estate equity). An overdraft facility provides 100% liquidity—you can withdraw your emergency fund, business working capital, or bonus instantly while enjoying the same interest deduction while parked."
+      },
+      {
+        question: "Are the interest savings from SBI MaxGain taxable under Indian Income Tax?",
+        answer: "No. Unlike Fixed Deposit or debt mutual fund interest which is taxed at your marginal slab rate (up to 30% plus surcharge), interest saved in a home loan overdraft is an expense reduction, not income. It is completely tax-free."
+      },
+      {
+        question: "Can I withdraw parked surplus cash anytime without bank approval?",
+        answer: "Yes. In an SBI MaxGain account, the surplus balance is held in an OD current account linked with an ATM debit card, UPI, and internet banking. You can withdraw funds 24/7 without submitting paperwork or incurring prepayment penalties."
+      }
+    ],
+    content: `
+      <section id="how-overdraft-mechanics-work" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">1. Mechanics: How SBI MaxGain Computes Daily Interest</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          For most Indian homebuyers, the standard strategy to tackle a multi-decade mortgage is direct prepayment: transferring lump-sum amounts directly toward the loan account whenever a festive bonus or investment matures. However, direct prepayment is an irreversible transaction. Once funds are credited against the principal, that capital is permanently converted into illiquid brick-and-mortar equity. In an emergency, retrieving that money requires either taking an expensive top-up loan or liquidating other investments.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          This structural liquidity problem led to the invention of the <strong>Home Loan Overdraft</strong> account, popularized by the State Bank of India as <strong>SBI MaxGain</strong> (and offered by competitors like Bank of Baroda as <em>Baroda Home Loan Advantage</em> and Punjab National Bank as <em>PNB Max-Saver</em>).
+        </p>
+        <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-2">
+          <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">The Core Operational Architecture:</h4>
+          <ul class="list-disc pl-5 space-y-1 text-sm text-zinc-600 dark:text-zinc-300">
+            <li><strong>Two Linked Accounts:</strong> The bank opens a primary Home Loan term account alongside an operational Overdraft (OD) current account.</li>
+            <li><strong>ATM & UPI Enabled:</strong> The OD current account comes with a debit card, net banking access, and cheque facility, functioning exactly like a normal savings or checking account.</li>
+            <li><strong>Daily Reducing Balance:</strong> Interest is computed daily on the net balance:</li>
+          </ul>
+          <div class="p-3 my-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 font-mono text-xs sm:text-sm text-center text-emerald-600 dark:text-emerald-400 font-bold">
+            Daily Interest = max(0, Outstanding Principal - Parked Surplus) × (Annual Rate ÷ 365)
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400">
+            Every single rupee sitting in your MaxGain account automatically shields the corresponding principal from accruing interest on that specific day.
+          </p>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Crucially, your monthly contractual EMI remains fixed. When less interest accumulates during the month due to your parked surplus balance, the portion of your EMI directed toward principal amortization swells automatically. Over months and years, this accelerates loan principal reduction and truncates loan tenure without requiring renegotiations or paperwork.
+        </p>
+      </section>
+
+      <section id="the-40-bps-spread-premium-trap" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">2. The 40 BPS Spread Premium Trap</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Because of the immense flexibility of withdrawing cash at 11 PM from an ATM, banks do not offer overdraft accounts at the same rate as standard term loans. Under Reserve Bank of India (RBI) guidelines, banks must hold capital reserves against undrawn overdraft lines. To compensate for this liquidity commitment, Indian banks add an <strong>Overdraft Spread Markup</strong> over their standard <a href="/blog/mclr-vs-eblr-old-home-loan-conversion-guide" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">External Benchmark Lending Rate (EBLR)</a>:
+        </p>
+        <div class="overflow-x-auto my-3">
+          <table class="w-full text-left text-sm border-collapse border border-zinc-200 dark:border-zinc-700">
+            <thead>
+              <tr class="bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">Lender & Product</th>
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">Regular Term Loan Rate</th>
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">Overdraft Facility Rate</th>
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">Overdraft Spread Penalty</th>
+              </tr>
+            </thead>
+            <tbody class="text-zinc-700 dark:text-zinc-300">
+              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-semibold">SBI MaxGain</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700">8.50%</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700">8.90%</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-bold text-amber-600 dark:text-amber-400">+0.40% (+40 bps)</td>
+              </tr>
+              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-semibold">Bank of Baroda Home Loan Advantage</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700">8.40%</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700">8.65%</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-bold text-amber-600 dark:text-amber-400">+0.25% (+25 bps)</td>
+              </tr>
+              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-semibold">PNB Max-Saver</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700">8.45%</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700">8.80%</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-bold text-amber-600 dark:text-amber-400">+0.35% (+35 bps)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60">
+          <h4 class="font-bold text-amber-900 dark:text-amber-200 text-sm sm:text-base">⚠️ The Silent Overdraft Trap:</h4>
+          <p class="text-xs sm:text-sm text-amber-800 dark:text-amber-300 leading-relaxed mt-1">
+            Many borrowers open an SBI MaxGain account intending to park cash, but end up leaving it virtually empty. Because the entire ₹50 Lakh or ₹1 Crore loan is charged at 8.90% rather than 8.50%, having zero or minimal parked balance means paying hundreds of thousands of rupees in <strong>unnecessary extra interest</strong>. To prevent this financial leak, you must know your exact mathematical break-even threshold.
+          </p>
+        </div>
+      </section>
+
+      <section id="break-even-surplus-formula" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">3. The Break-Even Surplus Formula & Mathematical Proof</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          How much money must you keep parked in your SBI MaxGain account to justify paying an extra 40 basis points on your entire home loan? We can derive the exact formula algebraically.
+        </p>
+        <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-2">
+          <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Mathematical Derivation:</h4>
+          <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+            Let $P$ be the outstanding loan principal, $r_{\text{std}}$ be the standard home loan rate, $r_{\text{od}}$ be the overdraft rate ($r_{\text{std}} + \Delta r$), and $S$ be the average parked surplus balance.
+          </p>
+          <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+            Annual interest on standard loan: $I_{\text{std}} = P \times r_{\text{std}}$
+          </p>
+          <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+            Annual interest on overdraft loan: $I_{\text{od}} = (P - S) \times r_{\text{od}}$
+          </p>
+          <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+            Setting $I_{\text{od}} = I_{\text{std}}$ to find the break-even balance $S_{\text{break-even}}$:
+          </p>
+          <div class="p-3 my-1 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 font-mono text-xs sm:text-sm text-center text-zinc-900 dark:text-zinc-100">
+            (P - S) × r<sub>od</sub> = P × r<sub>std</sub><br/>
+            P × r<sub>od</sub> - S × r<sub>od</sub> = P × r<sub>std</sub><br/>
+            S × r<sub>od</sub> = P × (r<sub>od</sub> - r<sub>std</sub>)<br/>
+            <strong class="text-emerald-600 dark:text-emerald-400">S<sub>break-even</sub> = P × [ (r<sub>od</sub> - r<sub>std</sub>) ÷ r<sub>od</sub> ]</strong>
+          </div>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Notice that the break-even balance depends solely on the ratio of the spread markup ($\Delta r = r_{\text{od}} - r_{\text{std}}$) to the overdraft interest rate ($r_{\text{od}}$). For an 8.50% regular loan and an 8.90% SBI MaxGain loan, the markup ratio is $\frac{0.40\%}{8.90\%} \approx 4.494\%$.
+        </p>
+
+        <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-base pt-2">Break-Even Surplus Threshold Across Common Indian Loan Brackets:</h4>
+        <div class="overflow-x-auto my-2">
+          <table class="w-full text-left text-sm border-collapse border border-zinc-200 dark:border-zinc-700">
+            <thead>
+              <tr class="bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100">
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">Outstanding Principal</th>
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">SBI MaxGain (+40 bps) Break-Even</th>
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">BoB Advantage (+25 bps) Break-Even</th>
+                <th class="p-3 border border-zinc-200 dark:border-zinc-700">Verdict for Borrower</th>
+              </tr>
+            </thead>
+            <tbody class="text-zinc-700 dark:text-zinc-300">
+              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-semibold">₹30,00,000 (30 Lakh)</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono">₹1,34,831</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono">₹86,705</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 text-xs">Easy for salaried single-earner</td>
+              </tr>
+              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-semibold">₹50,00,000 (50 Lakh)</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono font-bold text-emerald-600 dark:text-emerald-400">₹2,24,719</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono">₹1,44,508</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 text-xs">Equal to 3–4 months emergency fund</td>
+              </tr>
+              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-semibold">₹75,00,000 (75 Lakh)</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono">₹3,37,078</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono">₹2,16,763</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 text-xs">Requires structured cash flow</td>
+              </tr>
+              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/40">
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-semibold">₹1,00,00,000 (1 Crore)</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono font-bold text-emerald-600 dark:text-emerald-400">₹4,49,438</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 font-mono">₹2,89,017</td>
+                <td class="p-3 border border-zinc-200 dark:border-zinc-700 text-xs">High-income or business cash flow needed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed text-sm">
+          Run your exact numbers using our interactive <a href="/tools/home-loan-overdraft-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Home Loan Overdraft (SBI MaxGain) vs Prepayment Calculator</a> to simulate your customized parked balance and export the full year-by-year amortization curve to Excel.
+        </p>
+      </section>
+
+      <section id="maxgain-vs-direct-prepayment-vs-fd" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">4. MaxGain vs. Direct Prepayment vs. Fixed Deposits (Post-Tax Yield)</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Many borrowers ask: <em>"Why not just keep my emergency fund in a bank Fixed Deposit (FD) earning 7.00% to 7.25% instead of dealing with an overdraft spread markup?"</em>
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          The answer lies in the <strong>post-tax yield asymmetry</strong> under the Indian Income Tax Act.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
+          <div class="p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/50 space-y-2">
+            <h4 class="font-bold text-red-900 dark:text-red-200 text-sm">Fixed Deposit (FD) Post-Tax Reality:</h4>
+            <ul class="text-xs text-red-800 dark:text-red-300 space-y-1">
+              <li>• Headline FD interest rate: <strong>7.10%</strong></li>
+              <li>• Taxed at 30% slab + 4% cess: <strong>31.20% tax drag</strong></li>
+              <li>• Real net in-hand return: <strong>4.88% per year</strong></li>
+              <li>• Meanwhile, you are paying <strong>8.50%</strong> on your mortgage!</li>
+              <li>• <strong>Negative Carry:</strong> You are actively losing 3.62% per year on every parked rupee.</li>
+            </ul>
+          </div>
+          <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 space-y-2">
+            <h4 class="font-bold text-emerald-900 dark:text-emerald-200 text-sm">SBI MaxGain Overdraft Reality:</h4>
+            <ul class="text-xs text-emerald-800 dark:text-emerald-300 space-y-1">
+              <li>• Overdraft interest saved: <strong>8.90% per year</strong></li>
+              <li>• Tax liability under Section 56(2): <strong>₹0 (Zero)</strong></li>
+              <li>• Interest saved is an expense avoidance, NOT taxable income!</li>
+              <li>• <strong>Effective Pre-Tax Equivalent Yield:</strong> At the 30% slab, saving 8.90% is equivalent to earning an astounding <strong>12.93% pre-tax FD return</strong>.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          What about <strong>Direct Prepayment</strong>? Prepaying a regular 8.50% loan saves 8.50% directly, which beats the 8.90% overdraft rate if your parked balance is near zero. However, prepaying locks your cash permanently. The MaxGain account gives you the equivalent of a 12.93% guaranteed tax-free return with <strong>100% liquidity preservation</strong>.
+        </p>
+      </section>
+
+      <section id="bank-comparison-sbi-bob-pnb" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">5. Bank-by-Bank Overdraft Comparison (SBI vs. BoB vs. PNB)</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          While SBI is the most famous provider, other public sector and private banks offer competing home loan overdraft facilities with varying spread structures and rules:
+        </p>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-zinc-900 dark:text-zinc-100">1. State Bank of India (SBI MaxGain)</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 font-semibold">+40 bps spread</span>
+            </div>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+              <strong>Pros:</strong> Largest ATM network, seamless YONO app integration, zero charges on UPI transfers, available for loan amounts from ₹20 Lakh upwards.<br/>
+              <strong>Cons:</strong> Highest spread markup (+0.40%). Requires ₹2.25L+ average balance on ₹50L loan just to break even.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-zinc-900 dark:text-zinc-100">2. Bank of Baroda (Baroda Home Loan Advantage)</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-semibold">+25 bps spread</span>
+            </div>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+              <strong>Pros:</strong> Significantly lower spread penalty (+0.25%). The break-even threshold on a ₹50L loan is only ₹1,44,508. Links to a normal savings account rather than a current account.<br/>
+              <strong>Cons:</strong> Digital banking interface is less feature-complete than SBI YONO; branch processing speeds vary widely across regions.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-zinc-900 dark:text-zinc-100">3. Punjab National Bank (PNB Max-Saver)</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-semibold">+35 bps spread</span>
+            </div>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
+              <strong>Pros:</strong> Flexible OD limit reduction schedules; competitive base EBLR rates for borrowers with credit scores of 750+.<br/>
+              <strong>Cons:</strong> Minimum loan threshold is higher (typically ₹35 Lakh+ in metro locations).
+            </p>
+          </div>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed text-sm">
+          If you are currently paying high interest on an old non-overdraft loan, compare your switching options with our <a href="/tools/home-loan-balance-transfer-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Home Loan Balance Transfer Savings Calculator</a> to factor in state MODT stamp duty and processing fees.
+        </p>
+      </section>
+
+      <section id="salaried-borrower-action-playbook" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">6. The Salaried Borrower Playbook: Maximizing Daily Offset</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          For a salaried employee, your bank account experiences a predictable cyclic fluctuation: salary lands on the 1st of the month, and is gradually depleted by rent, bills, groceries, and investments over the next 30 days. Here is the exact mathematical playbook to exploit SBI MaxGain's <strong>daily interest calculation</strong>:
+        </p>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Step 1: Direct Your Monthly Salary into the Overdraft Account</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Have your employer credit your monthly salary directly into the MaxGain OD account on the 1st of every month. Even if that money is spent over the next 30 days, having ₹1,50,000 or ₹2,00,000 sitting in the account for an average of 15 days shields your home loan from interest during those crucial 15 days every single month.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Step 2: Route All Daily Expenses Through a Credit Card</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Instead of paying for groceries, dining, utility bills, and shopping via UPI from your debit card immediately, route 100% of discretionary spending through a credit card. This keeps your liquid cash parked in your MaxGain account for an extra 45 to 50 days interest-free, maximizing daily loan interest deductions until the credit card statement due date.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Step 3: Consolidate Emergency Funds & Sinking Funds</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Move your family emergency reserve (6 months of living expenses), upcoming annual school fee reserves, and term insurance premium pools out of low-yield savings accounts into MaxGain. This effortlessly pushes your average parked balance far past the ₹2.25 Lakh break-even cutoff.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="frequently-asked-questions" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">7. Frequently Asked Questions & Edge Cases</h2>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">What happens if my parked surplus exceeds the loan balance?</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              If your outstanding loan balance is ₹40 Lakh and you park ₹45 Lakh, your net interest payable drops to zero. However, SBI will <strong>not pay any interest</strong> on the excess ₹5 Lakh surplus. You should withdraw any amount exceeding the principal balance and invest it in mutual funds or fixed income.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Does parking money in MaxGain reduce my Section 24(b) tax deduction?</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Yes. Under Section 24(b) of the Income Tax Act, you can deduct up to ₹2,00,000 in interest paid on a self-occupied property. If parking surplus cash reduces your total annual interest paid below ₹2,00,000, your tax deduction decreases accordingly. However, saving ₹100 in interest to claim ₹30 in tax benefit is mathematically irrational—saving real cash always yields superior wealth over claiming deductions.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Can I switch my existing standard SBI home loan to SBI MaxGain?</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Yes. SBI permits internal conversion from a regular term loan to MaxGain upon payment of an administrative conversion fee (typically ₹5,000 to ₹10,000 + GST). You do not need to re-register property title deeds or pay fresh MODT stamp duty.
+            </p>
+          </div>
+        </div>
+
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed pt-2">
+          Ready to audit your own loan? Launch our free, 100% private <a href="/tools/home-loan-overdraft-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Home Loan Overdraft (SBI MaxGain) vs Prepayment Calculator</a> to model your numbers, or explore how central bank rate changes affect your mortgage in our guide on <a href="/blog/rbi-repo-rate-hike-25-bps-home-loan-emi-impact" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">RBI Repo Rate Hikes and Home Loan EMI Impact</a>.
+        </p>
+      </section>
+    `.trim()
   }
 ];
 
