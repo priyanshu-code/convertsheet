@@ -1,0 +1,301 @@
+{
+  "lastUpdated": "2026-10-11",
+  "totalBlogs": 21,
+  "totalTools": 18,
+  "blogs": [
+    {
+      "slug": "convert-json-to-excel-privately",
+      "title": "How to Convert 50,000+ Rows of Nested JSON to Excel Without Leaking Data",
+      "category": "Data & Spreadsheets",
+      "description": "A step-by-step guide for developers and financial analysts to flatten deeply nested JSON arrays into tabular Excel spreadsheets locally in the browser with zero cloud uploads."
+    },
+    {
+      "slug": "1099-vs-w2-true-hourly-rate-calculation",
+      "title": "1099 vs W2: How to Calculate Your True Hourly Rate After Self-Employment Tax",
+      "category": "Financial Engineering",
+      "description": "A definitive financial guide for contractors, engineers, and consultants to convert W2 salary into equivalent 1099 hourly consulting rates, factoring in FICA, health insurance, PTO, and business deductions."
+    },
+    {
+      "slug": "client-side-wasm-future-of-private-data",
+      "title": "Why Client-Side WebAssembly is the Future of Sensitive Data Processing",
+      "category": "Architecture & Security",
+      "description": "An architectural exploration into why enterprise security teams and developers are abandoning cloud upload APIs in favor of in-browser WebAssembly (WASM) and local sandboxed engines."
+    },
+    {
+      "slug": "canadian-mortgage-stress-test-guide-2026",
+      "title": "How the Canadian Mortgage Stress Test Works in 2026: OSFI Qualifying Rates & Rules",
+      "category": "Real Estate & Mortgages",
+      "description": "A complete analytical breakdown of Canada's mortgage stress test under OSFI Guideline B-20, qualifying benchmark formulas, CMHC insurance tiers, and debt service ratio limits."
+    },
+    {
+      "slug": "convert-large-parquet-files-to-excel-in-browser",
+      "title": "Converting Multi-Gigabyte Parquet Files to Excel Without Leaking Data or Crashing RAM",
+      "category": "Data & Spreadsheets",
+      "description": "How to query and transform columnar Apache Parquet datasets into Excel spreadsheets locally in the browser using WebAssembly and DuckDB WASM."
+    },
+    {
+      "slug": "uk-contractor-inside-vs-outside-ir35-calculator-guide",
+      "title": "Inside vs Outside IR35 for UK Contractors: The Complete 2026 Net Take-Home Calculation",
+      "category": "Financial Math",
+      "description": "A comprehensive financial comparison for UK freelancers and limited company directors calculating net take-home pay, dividend taxation, and umbrella company deductions."
+    },
+    {
+      "slug": "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
+      "title": "RBI Repo Rate Hike to 5.5%: Exact EMI Increase on ₹30L, ₹50L & ₹1Cr Loans",
+      "category": "Financial Planning",
+      "description": "RBI raised repo rate by 25 bps to 5.50%. See exact monthly EMI jumps for ₹30L, ₹50L, and ₹1 Crore home loans, why banks extend tenures, and 3 proven strategies to beat the rate increase."
+    },
+    {
+      "slug": "the-home-loan-tenure-trap-explained",
+      "title": "The Home Loan Tenure Trap: Why Banks Don't Increase Your EMI (And How It Costs ₹5 Lakh+)",
+      "category": "Financial Planning",
+      "description": "When interest rates rise, banks silently extend your loan tenure instead of hiking your monthly EMI. Uncover the compounding math behind this trap and how to protect yourself."
+    },
+    {
+      "slug": "the-1-extra-emi-per-year-rule-home-loan-savings",
+      "title": "The 1 Extra EMI Per Year Rule: How to Save ₹9 Lakh on a ₹50 Lakh Home Loan",
+      "category": "Financial Planning",
+      "description": "Learn how paying just 13 EMIs instead of 12 each year slashes more than 3 years off your loan tenure and saves up to ₹9 Lakh in lifetime interest without financial strain."
+    },
+    {
+      "slug": "rbi-rate-hike-fixed-deposits-vs-equity-strategy",
+      "title": "RBI Repo Rate Hike to 5.5%: Are Bank FDs (8.2%) Better Than Stocks Now?",
+      "category": "Financial Planning",
+      "description": "RBI hiked the repo rate to 5.50% and ruled out rate cuts. Compare 8.25% fixed deposit returns against equity SIP returns, post-tax yields, and the exact asset allocation playbook."
+    },
+    {
+      "slug": "rbi-bank-rate-penal-interest-crr-slr-liquidity-guide",
+      "title": "Understanding the RBI's Bank Rate Hike: Why CRR, SLR & Penal Interest Matter to You",
+      "category": "Financial Planning",
+      "description": "A plain-English guide to the RBI's October 7, 2026 circular on penal interest, CRR/SLR reserve shortfalls, and the new Credit Valuation Adjustment (CVA) framework. How banking plumbing drives consumer rates."
+    },
+    {
+      "slug": "rbi-monetary-policy-october-2026-common-man-guide",
+      "title": "RBI Repo Rate Hike to 5.5%: Impact on Loans, FDs, Grocery Prices & Jobs",
+      "category": "Financial Planning",
+      "description": "RBI hiked repo rate to 5.50% and projected CPI inflation at 5.2%. A plain-English breakdown of what this means for your home loan EMI, savings account interest, petrol, and job security."
+    },
+    {
+      "slug": "rbi-cva-and-sa-ccr-counterparty-risk-explained",
+      "title": "RBI's New CVA & SA-CCR Derivatives Frameworks Explained: Why They Protect Indian Banking Stability",
+      "category": "Financial Planning",
+      "description": "An in-depth, plain-language analysis of the RBI's October 07, 2026 directions on Credit Valuation Adjustment (CVA) and Standardised Approach for Counterparty Credit Risk (SA-CCR). How new capital rules effective April 1, 2027 shield depositors from derivatives contagion."
+    },
+    {
+      "slug": "how-to-reduce-home-loan-car-loan-after-repo-rate-hike",
+      "title": "How to Reduce Your Home Loan & Car Loan EMI After RBI Repo Rate Hike: 5 Proven Strategies",
+      "category": "Financial Planning",
+      "description": "RBI raised repo rate to 5.50%. Learn exact mathematical strategies to reduce your home loan and car loan interest burden, avoid silent tenure extensions, negotiate rate resets, and use prepayment neutralizers."
+    },
+    {
+      "slug": "pnb-bob-indian-bank-sbi-rate-hikes-after-repo-revision",
+      "title": "Loans Get Costlier: PNB, Bank of Baroda, Indian Bank & SBI Raise Lending Rates After RBI Repo Hike",
+      "category": "Financial Planning",
+      "description": "PNB, Bank of Baroda, Indian Bank, and SBI have revised their RLLR and MCLR lending benchmarks upward. Compare bank-by-bank rates, effective reset dates, and exact EMI jumps."
+    },
+    {
+      "slug": "public-vs-private-bank-home-loan-rates-2026",
+      "title": "Public vs. Private Banks: Should You Switch to SBI or Bank of Baroda to Lower Your Home Loan EMI?",
+      "category": "Financial Planning",
+      "description": "Private lenders like HDFC and ICICI often charge 40-75 bps higher spreads than PSU banks like SBI and BoB. Calculate switching fees, MODT stamp duty, and break-even timelines before refinancing."
+    },
+    {
+      "slug": "mclr-vs-eblr-old-home-loan-conversion-guide",
+      "title": "MCLR vs. EBLR in 2026: Why Old Home Loan Borrowers Pay 9.5%+ and How to Switch",
+      "category": "Financial Planning",
+      "description": "Millions of pre-2019 borrowers are still stuck on MCLR regimes paying over 9.5% interest. Learn the exact RBI circular rules and step-by-step instructions to switch to repo-linked EBLR."
+    },
+    {
+      "slug": "car-loans-after-repo-rate-hike-festive-season-guide",
+      "title": "Car Loans Hit 9.5%+: What the Repo Hike Means for Festive Season Buyers & EV Subsidies",
+      "category": "Financial Planning",
+      "description": "Auto loan interest rates from SBI, PNB, and HDFC are crossing 9.5%. How a 25-50 bps rate hike impacts 5 to 7 year car EMIs, down payments, and EV state subsidies this festive season."
+    },
+    {
+      "slug": "how-rbi-repo-rate-affects-fixed-deposit-rates",
+      "title": "How the RBI Repo Rate Affects Fixed Deposit (FD) Rates: The Complete Depositor's Playbook",
+      "category": "Financial Planning",
+      "description": "Understand the exact wholesale transmission mechanism between RBI repo rate revisions and bank fixed deposit interest rates. Learn why FD rates lag repo hikes, how credit-to-deposit ratios force special tenures, and how to ladder FDs at peak yields."
+    },
+    {
+      "slug": "how-rbi-repo-rate-affects-loan-interest-rates",
+      "title": "How the RBI Repo Rate Affects Loan Interest Rates & EMIs: The Borrower's Naked Truth",
+      "category": "Mortgage & Lending",
+      "description": "An exhaustive breakdown of how RBI repo rate changes hit your home and car loans. Discover the Rockets and Feathers pricing asymmetry, how EBLR spread mathematics work, the reset clause trap, and how to defend against the tenure extension trap."
+    },
+    {
+      "slug": "sbi-maxgain-vs-prepayment-home-loan-overdraft-guide",
+      "title": "SBI MaxGain vs Regular Prepayment: The Exact Mathematics of Parking Cash in an Overdraft Account (And When the 40 bps Premium Makes It a Trap)",
+      "category": "Financial Engineering",
+      "description": "An analytical, mathematical guide for Indian home loan borrowers. Compare SBI MaxGain daily interest offsetting with direct principal prepayments, understand the 40 bps spread premium, compute your exact break-even parked balance, and optimize liquidity without tax drag."
+    }
+  ],
+  "tools": [
+    {
+      "slug": "base64-encoder-decoder",
+      "name": "Base64 Encoder & Decoder"
+    },
+    {
+      "slug": "json-formatter-validator",
+      "name": "JSON Formatter & Validator"
+    },
+    {
+      "slug": "url-encoder-decoder",
+      "name": "URL Encoder & Decoder"
+    },
+    {
+      "slug": "hash-generator",
+      "name": "Cryptographic Hash Generator"
+    },
+    {
+      "slug": "unix-timestamp-converter",
+      "name": "Unix Timestamp Converter"
+    },
+    {
+      "slug": "color-code-converter",
+      "name": "Color Code Converter (HEX, RGB, HSL)"
+    },
+    {
+      "slug": "sip-calculator",
+      "name": "SIP Calculator"
+    },
+    {
+      "slug": "emi-calculator",
+      "name": "EMI Calculator"
+    },
+    {
+      "slug": "compound-interest-calculator",
+      "name": "Compound Interest Calculator"
+    },
+    {
+      "slug": "gst-calculator",
+      "name": "GST Calculator"
+    },
+    {
+      "slug": "percentage-calculator",
+      "name": "Percentage Calculator"
+    },
+    {
+      "slug": "discount-calculator",
+      "name": "Discount & Sale Price Calculator"
+    },
+    {
+      "slug": "age-calculator",
+      "name": "Chronological Age Calculator"
+    },
+    {
+      "slug": "date-difference-calculator",
+      "name": "Date Difference & Duration Calculator"
+    },
+    {
+      "slug": "bmi-calculator",
+      "name": "BMI Calculator (Body Mass Index)"
+    },
+    {
+      "slug": "unit-converter",
+      "name": "Universal Unit Converter"
+    },
+    {
+      "slug": "tip-calculator",
+      "name": "Tip & Bill Splitter Calculator"
+    },
+    {
+      "slug": "byte-converter",
+      "name": "Data Size & Byte Converter"
+    }
+  ],
+  "coveredCities": [],
+  "targetClusters": [
+    "in-browser-data-processing",
+    "indian-home-loans",
+    "contractor-tax-finance",
+    "us-real-estate-and-mortgages",
+    "uk-germany-property-finance"
+  ],
+  "calculatorAuditQueue": [
+    {
+      "slug": "mortgage-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "car-loan-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "home-loan-overdraft-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "rate-hike-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "savings-cd-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "balance-transfer-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "annual-to-hourly-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "canada-paycheck-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "salary-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "income-tax-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "emi-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "sip-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "compound-interest-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "percentage-calculator",
+      "lastAudited": null,
+      "moatsAdded": [],
+      "uxStatus": "pending-audit"
+    }
+  ]
+}

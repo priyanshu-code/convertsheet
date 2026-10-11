@@ -10,6 +10,7 @@ import {
   Trash2,
   X,
   AlertCircle,
+  Info,
 } from "lucide-react";
 import {
   CalcCard,
@@ -21,6 +22,17 @@ import { convertImage, ImageConversionResult } from "@/lib/engines/image-engine"
 import { createZipArchive, downloadBlob } from "@/lib/zip-utils";
 import { formatBytes, cn } from "@/lib/utils";
 import { useFileDropAndPaste } from "@/hooks/useFileDropAndPaste";
+
+export const MAX_IMAGE_FILE_SIZE_BYTES = 50 * 1024 * 1024; // 50MB exact
+
+export function isSameImageFormat(file: File, targetMime: string): boolean {
+  if (file.type && file.type.toLowerCase() === targetMime.toLowerCase()) return true;
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  if (targetMime === "image/png" && ext === "png") return true;
+  if (targetMime === "image/webp" && ext === "webp") return true;
+  if (targetMime === "image/jpeg" && (ext === "jpg" || ext === "jpeg")) return true;
+  return false;
+}
 
 export interface ConvertedItem {
   id: string;
@@ -128,11 +140,21 @@ export function ImageConverterTool({
     (files: File[]) => {
       const validFiles = files.filter(isImage);
       if (!validFiles.length) return;
-      const newItems: ConvertedItem[] = validFiles.map((file) => ({
-        id: `${file.name}-${file.size}-${file.lastModified}-${Math.random().toString(36).slice(2, 7)}`,
-        file,
-        status: "pending",
-      }));
+      const newItems: ConvertedItem[] = validFiles.map((file) => {
+        if (file.size > MAX_IMAGE_FILE_SIZE_BYTES) {
+          return {
+            id: `${file.name}-${file.size}-${file.lastModified}-${Math.random().toString(36).slice(2, 7)}`,
+            file,
+            status: "error",
+            error: `Exceeds 50MB limit (${formatBytes(file.size)})`,
+          };
+        }
+        return {
+          id: `${file.name}-${file.size}-${file.lastModified}-${Math.random().toString(36).slice(2, 7)}`,
+          file,
+          status: "pending",
+        };
+      });
 
       // Append new items to list and update ref immediately for the queue
       const updated = [...itemsRef.current, ...newItems];
@@ -473,10 +495,25 @@ export function ImageConverterTool({
               </div>
             )}
 
+            {/* Same format notice if user uploaded a file that already has target format */}
+            {items.some((it) => isSameImageFormat(it.file, targetFormat) && it.status !== "error") && (
+              <div
+                role="note"
+                className="flex items-start gap-2.5 p-3 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/80 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 text-xs leading-relaxed"
+              >
+                <Info className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-semibold text-amber-900 dark:text-amber-100">Notice:</span> One or more files are already in the{" "}
+                  <span className="font-semibold">{targetFormat === "image/png" ? "PNG" : targetFormat === "image/webp" ? "WebP" : "JPEG"}</span> format. ConvertSheet will re-encode them with your selected quality and resize settings, or you can switch the target format above.
+                </div>
+              </div>
+            )}
+
             {/* Compact File List */}
             <div className="space-y-2 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 bg-zinc-50/50 dark:bg-zinc-900/40 divide-y divide-zinc-200/60 dark:divide-zinc-800/60">
               {items.map((item) => {
                 const isSelected = activeItem?.id === item.id;
+                const isAlreadyFormat = isSameImageFormat(item.file, targetFormat);
                 return (
                   <div
                     key={item.id}
@@ -513,9 +550,16 @@ export function ImageConverterTool({
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
-                          {item.file.name}
-                        </p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                            {item.file.name}
+                          </p>
+                          {isAlreadyFormat && item.status !== "error" && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                              Already {targetFormat === "image/png" ? "PNG" : targetFormat === "image/webp" ? "WebP" : "JPEG"}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 flex flex-wrap items-center gap-1.5">
                           <span>{formatBytes(item.file.size)}</span>
                           {item.result && (

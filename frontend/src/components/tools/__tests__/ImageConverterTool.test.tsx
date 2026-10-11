@@ -278,4 +278,31 @@ describe("ImageConverterTool", () => {
       expect(screen.queryByText("notes.txt")).not.toBeInTheDocument();
     });
   });
+
+  it("flags images exceeding 50MB limit with clear error", async () => {
+    const { container } = render(<ImageConverterTool defaultTargetFormat="image/png" />);
+    const input = container.querySelector("input[type='file']") as HTMLInputElement;
+
+    const hugeFile = new File(["dummy"], "huge-poster.png", { type: "image/png" });
+    Object.defineProperty(hugeFile, "size", { value: 55 * 1024 * 1024 });
+
+    fireEvent.change(input, { target: { files: [hugeFile] } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Exceeds 50MB limit/i)).toBeInTheDocument();
+    });
+  });
+
+  it("displays helpful notice and badge when uploaded image is already in target format", async () => {
+    const { container } = render(<ImageConverterTool defaultTargetFormat="image/png" />);
+    const input = container.querySelector("input[type='file']") as HTMLInputElement;
+
+    const pngFile = new File(["dummypng"], "screenshot.png", { type: "image/png" });
+    fireEvent.change(input, { target: { files: [pngFile] } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Already PNG/i)).toBeInTheDocument();
+      expect(screen.getByText(/One or more files are already in the/i)).toBeInTheDocument();
+    });
+  });
 });
