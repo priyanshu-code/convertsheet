@@ -144,7 +144,7 @@ describe("Blog Registry & Content Layer", () => {
     expect(maxGainArticle?.content).toContain("SBI MaxGain");
     expect(maxGainArticle?.content).toContain("40 BPS Spread Premium");
     expect(maxGainArticle?.content).toContain("Break-Even");
-    expect(maxGainArticle?.tableOfContents).toHaveLength(7);
+    expect(maxGainArticle?.tableOfContents).toHaveLength(8);
     expect(maxGainArticle?.faqs).toHaveLength(6);
 
     // Verify detailed schema and content for the two new deep guides
