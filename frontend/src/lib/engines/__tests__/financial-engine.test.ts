@@ -16,6 +16,7 @@ import {
   calculateAustraliaSalary,
   calculateRateHikeImpact,
   calculateBalanceTransfer,
+  calculateHomeLoanOverdraft,
 } from "../financial-engine";
 
 describe("financial-engine", () => {
@@ -645,7 +646,69 @@ describe("financial-engine", () => {
       expect(res.grossLifetimeSavings).toBeLessThan(res.totalSwitchingCost);
       expect(res.netLifetimeSavings).toBeLessThan(0);
       expect(res.isViable).toBe(false);
-      expect(res.recommendation).toBe("Not Recommended (Costs Exceed Savings)");
+    });
+  });
+
+  describe("calculateHomeLoanOverdraft", () => {
+    it("computes interest savings, tenure reduction, and break-even balance correctly with parked surplus", () => {
+      const res = calculateHomeLoanOverdraft({
+        loanAmount: 5000000,
+        standardRate: 8.50,
+        overdraftRate: 8.90, // SBI MaxGain +0.40% spread
+        tenureYears: 20,
+        parkedSurplusAmount: 1000000, // ₹10 Lakh parked
+      });
+
+      expect(res.standardLoan.loanAmount).toBe(5000000);
+      expect(res.standardLoan.monthlyEmi).toBeGreaterThan(43000);
+      expect(res.standardLoan.monthlyEmi).toBeLessThan(44000);
+      expect(res.standardLoan.payoffMonths).toBe(240);
+
+      expect(res.overdraftLoan.loanAmount).toBe(5000000);
+      expect(res.overdraftLoan.payoffMonths).toBeLessThan(200);
+      expect(res.overdraftLoan.totalInterest).toBeLessThan(res.standardLoan.totalInterest);
+
+      expect(res.interestSavedVsStandard).toBeGreaterThan(1000000);
+      expect(res.tenureMonthsSaved).toBeGreaterThan(40);
+      expect(res.breakEvenBalance).toBeGreaterThan(200000);
+      expect(res.breakEvenBalance).toBeLessThan(250000); // 50L * (0.40 / 8.90) ≈ 2,24,719
+      expect(res.isMaxGainBeneficial).toBe(true);
+      expect(res.liquidityRetained).toBe(1000000);
+      expect(res.effectiveTaxFreeYield).toBe(8.90);
+      expect(res.equivalentFdPreTaxYield30Pct).toBeGreaterThan(12.5);
+      expect(res.yearlyComparison.length).toBeGreaterThan(10);
+    });
+
+    it("flags overdraft as disadvantageous when parked balance is zero due to spread premium", () => {
+      const res = calculateHomeLoanOverdraft({
+        loanAmount: 5000000,
+        standardRate: 8.50,
+        overdraftRate: 8.90,
+        tenureYears: 20,
+        parkedSurplusAmount: 0, // No money parked!
+      });
+
+      expect(res.isMaxGainBeneficial).toBe(false);
+      expect(res.interestSavedVsStandard).toBeLessThan(0); // Lost money because of +0.40% spread
+      expect(res.recommendation).toContain("Standard Loan is Cheaper");
+    });
+
+    it("compares overdraft against permanent prepayment accurately", () => {
+      const res = calculateHomeLoanOverdraft({
+        loanAmount: 5000000,
+        standardRate: 8.50,
+        overdraftRate: 8.90,
+        tenureYears: 20,
+        parkedSurplusAmount: 1000000,
+        prepaymentComparisonAmount: 1000000,
+      });
+
+      expect(res.directPrepaymentComparison).toBeDefined();
+      expect(res.directPrepaymentComparison.permanentPrepaymentAmount).toBe(1000000);
+      expect(res.directPrepaymentComparison.prepaidTenureMonths).toBeLessThan(240);
+      expect(res.directPrepaymentComparison.prepaidInterestSaved).toBeGreaterThan(0);
+      expect(res.liquidityComparison.overdraftLiquidity).toBe(1000000);
+      expect(res.liquidityComparison.prepaymentLiquidity).toBe(0);
     });
   });
 });

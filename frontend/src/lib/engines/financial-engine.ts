@@ -1985,5 +1985,278 @@ export function calculateBalanceTransfer(input: BalanceTransferInput): BalanceTr
   };
 }
 
+// ==========================================
+// 19. HOME LOAN OVERDRAFT (SBI MAXGAIN) ENGINE
+// ==========================================
+
+export interface HomeLoanOverdraftInput {
+  loanAmount: number;
+  standardRate: number; // % e.g. 8.50
+  overdraftRate: number; // % e.g. 8.90 (standardRate + spread premium, default +0.40%)
+  tenureYears: number; // e.g. 20
+  parkedSurplusAmount: number; // e.g. 1000000
+  monthlySurplusAddition?: number; // optional ongoing monthly addition
+  prepaymentComparisonAmount?: number; // optional comparison with one-time direct prepayment
+}
+
+export interface HomeLoanOverdraftYearlyPoint {
+  year: number;
+  standardBalance: number;
+  overdraftBalance: number;
+  standardCumulativeInterest: number;
+  overdraftCumulativeInterest: number;
+  cumulativeInterestSaved: number;
+}
+
+export interface HomeLoanOverdraftResult {
+  standardLoan: {
+    loanAmount: number;
+    interestRate: number;
+    tenureYears: number;
+    monthlyEmi: number;
+    totalInterest: number;
+    totalPayment: number;
+    payoffMonths: number;
+  };
+  overdraftLoan: {
+    loanAmount: number;
+    interestRate: number;
+    spreadBps: number;
+    monthlyEmi: number;
+    totalInterest: number;
+    totalPayment: number;
+    payoffMonths: number;
+    parkedSurplus: number;
+  };
+  interestSavedVsStandard: number;
+  tenureMonthsSaved: number;
+  tenureYearsSaved: number;
+  breakEvenBalance: number;
+  breakEvenPercentOfLoan: number;
+  isMaxGainBeneficial: boolean;
+  liquidityRetained: number;
+  effectiveTaxFreeYield: number;
+  equivalentFdPreTaxYield30Pct: number;
+  recommendation: string;
+  recommendationReason: string;
+  directPrepaymentComparison: {
+    permanentPrepaymentAmount: number;
+    prepaidTenureMonths: number;
+    prepaidInterestSaved: number;
+  };
+  liquidityComparison: {
+    overdraftLiquidity: number;
+    prepaymentLiquidity: number;
+    difference: number;
+  };
+  yearlyComparison: HomeLoanOverdraftYearlyPoint[];
+}
+
+export function calculateHomeLoanOverdraft(input: HomeLoanOverdraftInput): HomeLoanOverdraftResult {
+  const loanAmount = Math.max(0, input.loanAmount || 0);
+  const standardRate = Math.max(0, input.standardRate || 0);
+  const overdraftRate = Math.max(0, input.overdraftRate || 0);
+  const tenureYears = Math.max(1, input.tenureYears || 20);
+  const totalMonths = Math.round(tenureYears * 12);
+
+  const initialParkedSurplus = Math.max(0, input.parkedSurplusAmount || 0);
+  const monthlyAddition = Math.max(0, input.monthlySurplusAddition || 0);
+  const prepayAmount = Math.max(
+    0,
+    input.prepaymentComparisonAmount !== undefined
+      ? input.prepaymentComparisonAmount
+      : initialParkedSurplus
+  );
+
+  const computeEmi = (p: number, annualPct: number, n: number): number => {
+    if (annualPct <= 0 || n <= 0 || p <= 0) return roundTo(p / Math.max(1, n), 2);
+    const r = annualPct / 100 / 12;
+    const factor = Math.pow(1 + r, n);
+    return roundTo((p * r * factor) / (factor - 1), 2);
+  };
+
+  const standardEmi = computeEmi(loanAmount, standardRate, totalMonths);
+  const overdraftEmi = standardEmi; // Standard banking practice: fixed EMI remittance
+
+  // 1. Simulate Standard Loan
+  const rStd = standardRate / 100 / 12;
+  let stdBal = loanAmount;
+  let stdTotalInterest = 0;
+  let stdPayoffMonths = totalMonths;
+
+  for (let m = 1; m <= totalMonths * 2; m++) {
+    if (stdBal <= 1.0 || m > totalMonths) {
+      stdPayoffMonths = Math.min(totalMonths, m - 1);
+      break;
+    }
+    const mInt = stdBal * rStd;
+    const mPrin = Math.min(stdBal, Math.max(0, standardEmi - mInt));
+    stdTotalInterest += mInt;
+    stdBal = Math.max(0, stdBal - mPrin);
+  }
+  stdTotalInterest = roundTo(stdTotalInterest, 2);
+
+  // 2. Simulate Overdraft Loan
+  const rOd = overdraftRate / 100 / 12;
+  let odBal = loanAmount;
+  let currentParked = initialParkedSurplus;
+  let odTotalInterest = 0;
+  let odPayoffMonths = totalMonths;
+
+  for (let m = 1; m <= totalMonths * 2; m++) {
+    if (odBal <= 1.0) {
+      odPayoffMonths = m - 1;
+      break;
+    }
+
+    // Overdraft calculates interest only on the net balance
+    const netPrincipalSubjectToInterest = Math.max(0, odBal - currentParked);
+    const mInt = netPrincipalSubjectToInterest * rOd;
+
+    // Monthly principal reduction from fixed EMI
+    const mPrin = Math.min(odBal, Math.max(0, overdraftEmi - mInt));
+    odTotalInterest += mInt;
+    odBal = Math.max(0, odBal - mPrin);
+
+    currentParked += monthlyAddition;
+  }
+  odTotalInterest = roundTo(odTotalInterest, 2);
+
+  // 3. Break-Even Analysis
+  // If rOd > rStd, the extra spread on full principal costs P * (rOd - rStd).
+  // Parking surplus S saves S * rOd. Break-even occurs when S * rOd = P * (rOd - rStd).
+  let breakEvenBalance = 0;
+  if (overdraftRate > standardRate && overdraftRate > 0) {
+    breakEvenBalance = roundTo(loanAmount * ((overdraftRate - standardRate) / overdraftRate), 2);
+  }
+  const breakEvenPercentOfLoan = loanAmount > 0 ? roundTo((breakEvenBalance / loanAmount) * 100, 2) : 0;
+
+  const interestSavedVsStandard = roundTo(stdTotalInterest - odTotalInterest, 2);
+  const tenureMonthsSaved = Math.max(0, stdPayoffMonths - odPayoffMonths);
+  const tenureYearsSaved = roundTo(tenureMonthsSaved / 12, 1);
+  const spreadBps = Math.round((overdraftRate - standardRate) * 100);
+
+  const isMaxGainBeneficial = interestSavedVsStandard > 0;
+
+  // Effective Yield Calculations
+  // Interest saved in OD is 100% tax-free.
+  // In India 30% tax bracket (31.2% effective with 4% cess): Pre-tax equivalent = Rate / (1 - 0.312)
+  const effectiveTaxFreeYield = overdraftRate;
+  const equivalentFdPreTaxYield30Pct = roundTo(overdraftRate / (1 - 0.312), 2);
+
+  let recommendation: string;
+  let recommendationReason: string;
+
+  if (isMaxGainBeneficial && initialParkedSurplus >= breakEvenBalance * 1.5) {
+    recommendation = "Highly Recommended: Overdraft Yields Significant Net Savings";
+    recommendationReason = `Maintaining ₹${Math.round(initialParkedSurplus).toLocaleString("en-IN")} parked surplus saves ₹${Math.round(interestSavedVsStandard).toLocaleString("en-IN")} in lifetime interest and cuts ${tenureYearsSaved} years off your loan while retaining 100% instant liquidity.`;
+  } else if (isMaxGainBeneficial) {
+    recommendation = "Marginally Beneficial: Monitor Average Balance";
+    recommendationReason = `Your surplus is above the break-even threshold of ₹${Math.round(breakEvenBalance).toLocaleString("en-IN")}, yielding net savings of ₹${Math.round(interestSavedVsStandard).toLocaleString("en-IN")}. If your average balance dips below break-even, the +${spreadBps} bps spread will erase your advantage.`;
+  } else {
+    recommendation = "Not Recommended: Standard Loan is Cheaper";
+    recommendationReason = `With only ₹${Math.round(initialParkedSurplus).toLocaleString("en-IN")} parked, the +${spreadBps} bps spread premium increases your net interest by ₹${Math.round(Math.abs(interestSavedVsStandard)).toLocaleString("en-IN")}. You need an average parked balance of at least ₹${Math.round(breakEvenBalance).toLocaleString("en-IN")} to break even.`;
+  }
+
+  // 4. Direct Prepayment Simulation Comparison
+  let prepayBal = Math.max(0, loanAmount - prepayAmount);
+  let prepayTotalInterest = 0;
+  let prepayTenureMonths = totalMonths;
+
+  for (let m = 1; m <= totalMonths * 2; m++) {
+    if (prepayBal <= 1.0) {
+      prepayTenureMonths = m - 1;
+      break;
+    }
+    const mInt = prepayBal * rStd;
+    const mPrin = Math.min(prepayBal, Math.max(0, standardEmi - mInt));
+    prepayTotalInterest += mInt;
+    prepayBal = Math.max(0, prepayBal - mPrin);
+  }
+  prepayTotalInterest = roundTo(prepayTotalInterest, 2);
+  const prepaidInterestSaved = Math.max(0, roundTo(stdTotalInterest - prepayTotalInterest, 2));
+
+  // 5. Yearly Comparison Table
+  const yearlyComparison: HomeLoanOverdraftYearlyPoint[] = [];
+  const maxYears = Math.min(Math.ceil(tenureYears), 30);
+  let yStdBal = loanAmount;
+  let yOdBal = loanAmount;
+  let yStdCumInt = 0;
+  let yOdCumInt = 0;
+  let yParked = initialParkedSurplus;
+
+  for (let yr = 1; yr <= maxYears; yr++) {
+    for (let m = 0; m < 12; m++) {
+      if (yStdBal > 0.01) {
+        const mInt = yStdBal * rStd;
+        const mPrin = Math.min(yStdBal, Math.max(0, standardEmi - mInt));
+        yStdCumInt += mInt;
+        yStdBal = Math.max(0, yStdBal - mPrin);
+      }
+      if (yOdBal > 0.01) {
+        const netPrincipal = Math.max(0, yOdBal - yParked);
+        const mInt = netPrincipal * rOd;
+        const mPrin = Math.min(yOdBal, Math.max(0, overdraftEmi - mInt));
+        yOdCumInt += mInt;
+        yOdBal = Math.max(0, yOdBal - mPrin);
+        yParked += monthlyAddition;
+      }
+    }
+
+    yearlyComparison.push({
+      year: yr,
+      standardBalance: roundTo(yStdBal, 2),
+      overdraftBalance: roundTo(yOdBal, 2),
+      standardCumulativeInterest: roundTo(yStdCumInt, 2),
+      overdraftCumulativeInterest: roundTo(yOdCumInt, 2),
+      cumulativeInterestSaved: roundTo(yStdCumInt - yOdCumInt, 2),
+    });
+  }
+
+  return {
+    standardLoan: {
+      loanAmount,
+      interestRate: standardRate,
+      tenureYears,
+      monthlyEmi: standardEmi,
+      totalInterest: stdTotalInterest,
+      totalPayment: roundTo(loanAmount + stdTotalInterest, 2),
+      payoffMonths: stdPayoffMonths,
+    },
+    overdraftLoan: {
+      loanAmount,
+      interestRate: overdraftRate,
+      spreadBps,
+      monthlyEmi: overdraftEmi,
+      totalInterest: odTotalInterest,
+      totalPayment: roundTo(loanAmount + odTotalInterest, 2),
+      payoffMonths: odPayoffMonths,
+      parkedSurplus: initialParkedSurplus,
+    },
+    interestSavedVsStandard,
+    tenureMonthsSaved,
+    tenureYearsSaved,
+    breakEvenBalance,
+    breakEvenPercentOfLoan,
+    isMaxGainBeneficial,
+    liquidityRetained: initialParkedSurplus,
+    effectiveTaxFreeYield,
+    equivalentFdPreTaxYield30Pct,
+    recommendation,
+    recommendationReason,
+    directPrepaymentComparison: {
+      permanentPrepaymentAmount: prepayAmount,
+      prepaidTenureMonths: prepayTenureMonths,
+      prepaidInterestSaved,
+    },
+    liquidityComparison: {
+      overdraftLiquidity: initialParkedSurplus,
+      prepaymentLiquidity: 0,
+      difference: initialParkedSurplus,
+    },
+    yearlyComparison,
+  };
+}
+
 
 
