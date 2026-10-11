@@ -200,7 +200,7 @@ export function HomeLoanOverdraftCalculator({
         <div className="lg:col-span-7 space-y-6">
           <CalcCard
             title="Loan & Overdraft Parameters"
-            description="Enter your loan amount, standard interest rate, and bank spread"
+            subtitle="Enter your loan amount, standard interest rate, and bank spread"
           >
             <div className="space-y-5">
               {/* Preset Amount Pills */}
@@ -228,6 +228,7 @@ export function HomeLoanOverdraftCalculator({
 
               {/* Sanctioned Loan Amount */}
               <CalcInput
+                id="loan-amount"
                 label="Sanctioned Loan Amount"
                 value={loanAmount}
                 onChange={setLoanAmount}
@@ -241,6 +242,7 @@ export function HomeLoanOverdraftCalculator({
               {/* Standard Loan Interest Rate */}
               <div className="space-y-2">
                 <CalcInput
+                  id="standard-rate"
                   label="Standard Home Loan Interest Rate"
                   value={standardRate}
                   onChange={setStandardRate}
@@ -251,6 +253,8 @@ export function HomeLoanOverdraftCalculator({
                   helperText="Base floating repo-linked rate for standard term loans (e.g. 8.50%)"
                 />
                 <CalcSlider
+                  id="slider-standard-rate"
+                  label="Standard Home Loan Interest Rate Slider"
                   value={standardRate}
                   onChange={setStandardRate}
                   min={6.5}
@@ -300,6 +304,7 @@ export function HomeLoanOverdraftCalculator({
               {/* Remaining Tenure */}
               <div className="space-y-2">
                 <CalcInput
+                  id="tenure-years"
                   label="Loan Tenure (Years)"
                   value={tenureYears}
                   onChange={setTenureYears}
@@ -310,6 +315,8 @@ export function HomeLoanOverdraftCalculator({
                   helperText="Contractual repayment period"
                 />
                 <CalcSlider
+                  id="slider-tenure-years"
+                  label="Loan Tenure Slider"
                   value={tenureYears}
                   onChange={setTenureYears}
                   min={5}
@@ -321,6 +328,7 @@ export function HomeLoanOverdraftCalculator({
               {/* Parked Surplus in Overdraft Account */}
               <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800 space-y-2">
                 <CalcInput
+                  id="parked-surplus-amount"
                   label="Average Parked Surplus Balance in OD Account"
                   value={parkedSurplusAmount}
                   onChange={setParkedSurplusAmount}
@@ -331,6 +339,8 @@ export function HomeLoanOverdraftCalculator({
                   helperText="Cash parked in your MaxGain current account (Emergency funds, bonuses, savings)"
                 />
                 <CalcSlider
+                  id="slider-parked-surplus"
+                  label="Parked Surplus Slider"
                   value={parkedSurplusAmount}
                   onChange={setParkedSurplusAmount}
                   min={0}
@@ -341,6 +351,7 @@ export function HomeLoanOverdraftCalculator({
 
               {/* Monthly Surplus Addition (Optional) */}
               <CalcInput
+                id="monthly-addition"
                 label="Monthly Surplus Addition (Optional)"
                 value={monthlyAddition}
                 onChange={setMonthlyAddition}
@@ -442,7 +453,7 @@ export function HomeLoanOverdraftCalculator({
           {/* Overdraft vs. Direct Prepayment Comparison Card */}
           <CalcCard
             title="Overdraft vs. Direct Prepayment"
-            description="Comparing parked liquidity against permanent principal prepayment"
+            subtitle="Comparing parked liquidity against permanent principal prepayment"
           >
             <div className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
@@ -493,7 +504,7 @@ export function HomeLoanOverdraftCalculator({
           {/* Amortization Table */}
           <CalcCard
             title="Yearly Balance & Savings Progression"
-            description="Comparison of outstanding balances over the loan lifetime"
+            subtitle="Comparison of outstanding balances over the loan lifetime"
           >
             <div className="overflow-x-auto max-h-72 overflow-y-auto">
               <table className="w-full text-left text-xs font-mono">
