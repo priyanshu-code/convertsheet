@@ -899,5 +899,128 @@ When commercial banks compete for prime credit-score borrowers, they often offer
       "compound-interest-calculator",
     ],
   },
+  "home-loan-overdraft-calculator": {
+    slug: "home-loan-overdraft-calculator",
+    name: "Home Loan Overdraft (SBI MaxGain) vs Prepayment Calculator",
+    category: "financial",
+    title: "Home Loan Overdraft Calculator (SBI MaxGain) – Interest Savings & Break-Even",
+    subtitle: "Compare Home Loan Overdraft accounts (SBI MaxGain, BoB Home Loan Advantage, PNB Max-Saver) with regular term loans & direct prepayment. Calculate daily interest offset, tenure reduction, and exact break-even parked surplus balance.",
+    metaDescription: "Free Home Loan Overdraft vs Prepayment Calculator (2026). Model SBI MaxGain daily interest offset, calculate the impact of the 40 bps spread markup, find your break-even surplus balance, and export year-by-year amortization schedules.",
+    answerSummary: "A Home Loan Overdraft (like SBI MaxGain) links an operational account to your loan, computing daily interest only on Net Balance = max(0, Principal - Parked Surplus). However, SBI charges an extra 40 bps (+0.40%) spread over standard term loans. On a ₹50 Lakh loan at 8.50% standard vs 8.90% MaxGain, you must maintain at least ₹2,24,719 in average parked balance to break even. Any surplus above that yields pure interest savings with 100% ATM liquidity.",
+    badge: "SBI MaxGain & BoB Audited",
+    badgeTooltip: "Factors in bank spread markups (+0.25% to +0.40%) and daily balance offsetting",
+    featured: true,
+    isNew: true,
+    keywords: [
+      "home loan overdraft calculator",
+      "sbi maxgain calculator",
+      "maxgain vs prepayment calculator",
+      "home loan overdraft vs prepayment",
+      "sbi maxgain interest calculation formula",
+      "bob home loan advantage calculator",
+      "home loan overdraft break even",
+      "sbi maxgain 40 bps spread",
+      "park surplus cash home loan overdraft",
+    ],
+    formulaDescription:
+      "Daily Overdraft Interest = max(0, Principal - Parked Surplus) * (Annual Rate / 365). Break-Even Surplus = Outstanding Principal * (Overdraft Rate - Standard Rate) / Overdraft Rate.",
+    about: `### How Home Loan Overdraft Accounts Work (SBI MaxGain, BoB Advantage, PNB Orbit)
+A Home Loan Overdraft facility (most famously SBI MaxGain, Bank of Baroda Home Loan Advantage, or PNB Max-Saver) is a specialized mortgage variant linked to a current or savings account. Instead of locking away your savings in non-withdrawable direct principal prepayments, you can park surplus cash in the linked overdraft account.
+
+#### Daily Interest Calculation Formula
+Interest is computed on a daily reducing balance:
+\`\`\`
+Daily Interest = max(0, Outstanding Principal - Parked Surplus) × (Overdraft Annual Interest Rate ÷ 365)
+\`\`\`
+Every rupee parked in the account acts as a temporary principal deduction for interest computation while remaining 100% liquid and withdrawable at any time via ATM, UPI, or net banking.
+
+#### The 40 BPS Spread Premium Trap
+To compensate for the borrower's withdrawal flexibility, Indian lenders charge an **overdraft spread premium**:
+- **SBI MaxGain**: +0.40% (+40 basis points) over regular term loan rates.
+- **Bank of Baroda Home Loan Advantage**: +0.25% (+25 basis points).
+- **PNB Max-Saver**: +0.35% (+35 basis points).
+
+Because the entire loan principal starts at a higher interest rate, parking zero or negligible surplus money will cause you to pay significantly *more* interest than a regular term loan.
+
+#### Break-Even Parked Surplus Balance Formula
+To prevent the overdraft premium from eating your capital, your average parked balance throughout the loan must exceed the break-even threshold:
+\`\`\`
+Break-Even Parked Surplus = Outstanding Principal × [(Overdraft Rate - Standard Rate) ÷ Overdraft Rate]
+\`\`\`
+For example, on a ₹50,00,000 loan with an 8.50% standard rate vs an 8.90% SBI MaxGain rate (+40 bps):
+\`\`\`
+Break-Even = ₹50,00,000 × (0.40% ÷ 8.90%) = ₹2,24,719
+\`\`\`
+- If your average parked balance is **less than ₹2,24,719**, you lose money compared to a regular loan.
+- If your average parked balance is **greater than ₹2,24,719**, SBI MaxGain saves substantial interest while preserving complete financial liquidity.
+
+#### Home Loan Overdraft vs Direct Prepayment vs Fixed Deposit
+| Parameter | Direct Prepayment | Home Loan Overdraft (SBI MaxGain) | Fixed Deposit (FD) |
+| :--- | :--- | :--- | :--- |
+| **Interest Reduction** | Full (Standard Rate) | Full on (Principal - Surplus) | None (Earns FD Interest) |
+| **Cash Liquidity** | 0% (Locked in Property) | 100% (Instant ATM/UPI Access) | Moderate (Premature Penalty) |
+| **Tax Impact** | Reduces Sec 24(b) deduction | Reduces Sec 24(b) deduction | FD interest is fully taxable at slab rate (30%+) |
+| **Rate Premium** | None (0 bps) | +25 to +40 bps spread | N/A |
+| **Best For** | Borrowers with excess locked capital | Salaried professionals & business owners with fluctuating cash | Conservative short-term savings |`,
+    howTo: [
+      {
+        step: 1,
+        title: "Input Home Loan Details",
+        description:
+          "Enter your outstanding loan principal (e.g. ₹50,00,000), total tenure in years, and standard home loan interest rate (e.g. 8.50%).",
+      },
+      {
+        step: 2,
+        title: "Select Bank Spread & Parked Surplus",
+        description:
+          "Choose your bank spread preset (SBI MaxGain +0.40%, BoB +0.25%, or custom) and input your average parked surplus balance.",
+      },
+      {
+        step: 3,
+        title: "Inspect Break-Even & Export Amortization",
+        description:
+          "Review your exact break-even balance requirement, total interest savings, loan tenure reduction, and export the complete schedule to Excel.",
+      },
+    ],
+    faqs: [
+      {
+        question: "How does SBI MaxGain calculate interest on a home loan?",
+        answer:
+          "SBI MaxGain calculates interest on a daily basis on the net balance, which is the outstanding loan balance minus the surplus amount parked in the MaxGain current account. Your monthly EMI remains constant, but a smaller portion goes toward interest and a larger portion goes toward repaying the principal, drastically reducing loan tenure.",
+      },
+      {
+        question: "What is the 40 bps spread premium in SBI MaxGain?",
+        answer:
+          "SBI charges a 40 basis point (0.40%) markup on MaxGain home loans compared to regular term home loans. For example, if SBI's regular home loan interest rate is 8.50%, the MaxGain rate is typically 8.90%. You must park sufficient surplus cash to offset this higher rate.",
+      },
+      {
+        question: "Is home loan overdraft better than direct prepayment?",
+        answer:
+          "Home loan overdraft is superior if you want 100% liquidity. With direct prepayment, your money is permanently locked into property equity and cannot be retrieved in an emergency. With an overdraft account, parked funds can be withdrawn at any time via ATM, UPI, or cheque while saving interest as long as they remain in the account.",
+      },
+      {
+        question: "What happens if I park more money than the outstanding principal in MaxGain?",
+        answer:
+          "If the parked surplus equals or exceeds the outstanding principal, the net interest payable becomes zero. However, SBI does not pay interest on any surplus funds exceeding the principal balance.",
+      },
+      {
+        question: "Are interest savings in an overdraft account taxable in India?",
+        answer:
+          "No. Unlike Fixed Deposits where interest income is added to your income and taxed at your marginal income tax slab (up to 30%+ surcharge), money parked in an overdraft account does not earn income—it simply prevents interest expense. There is no tax liability on interest saved.",
+      },
+      {
+        question: "Can I withdraw parked surplus funds anytime from SBI MaxGain?",
+        answer:
+          "Yes. Surplus funds in an SBI MaxGain account are credited to an OD current account linked with an ATM card and internet banking. You can withdraw funds 24/7 without bank approval or prepayment charges.",
+      },
+    ],
+    relatedConverters: ["excel-to-csv", "csv-to-excel"],
+    relatedTools: [
+      "home-loan-balance-transfer-calculator",
+      "interest-rate-hike-calculator",
+      "emi-calculator",
+      "mortgage-calculator",
+    ],
+  },
 };
 

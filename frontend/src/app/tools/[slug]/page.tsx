@@ -70,6 +70,7 @@ import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
 import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
 import { AiDataPrepTool } from "@/components/tools/AiDataPrepTool";
+import { HomeLoanOverdraftCalculator } from "@/components/tools/HomeLoanOverdraftCalculator";
 
 export interface ToolPageProps {
   params: {
@@ -430,6 +431,7 @@ export default function ToolPage({ params }: ToolPageProps) {
     "high-yield-savings-cd-calculator": SavingsCdCalculator,
     "interest-rate-hike-calculator": RateHikeCalculator,
     "home-loan-balance-transfer-calculator": BalanceTransferCalculator,
+    "home-loan-overdraft-calculator": HomeLoanOverdraftCalculator,
     "uk-salary-calculator": UkSalaryCalculator,
     "canada-paycheck-calculator": CanadaPaycheckCalculator,
     "australia-pay-calculator": AustraliaPayCalculator,

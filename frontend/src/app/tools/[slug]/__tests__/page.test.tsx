@@ -8,9 +8,9 @@ import { ToolJsonLdSchema } from "@/components/seo/ToolJsonLdSchema";
 describe("Dynamic Tools SSG Route /tools/[slug]", () => {
   const allSlugs = getAllToolSlugs();
 
-  it("generateStaticParams returns all 57 tool slugs", () => {
+  it("generateStaticParams returns all 58 tool slugs", () => {
     const params = generateStaticParams();
-    expect(params).toHaveLength(57);
+    expect(params).toHaveLength(58);
     for (const slug of allSlugs) {
       expect(params).toContainEqual({ slug });
     }
@@ -84,6 +84,14 @@ describe("Dynamic Tools SSG Route /tools/[slug]", () => {
     expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Bulk PDF Compressor" })).toBeInTheDocument();
     expect(screen.getByText(/Drag & drop PDF files here/i)).toBeInTheDocument();
+  });
+
+  it("renders HomeLoanOverdraftCalculator for /tools/home-loan-overdraft-calculator", () => {
+    render(<ToolPage params={{ slug: "home-loan-overdraft-calculator" }} />);
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(screen.getAllByText(/SBI MaxGain/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Break-Even Surplus:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Total Interest Saved vs. Standard Loan:/i)).toBeInTheDocument();
   });
 
   it("renders Popular Scenarios & Calculations preset grid for tools with registered presets", () => {

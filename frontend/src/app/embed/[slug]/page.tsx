@@ -56,6 +56,7 @@ import { DebtPayoffCalculator } from "@/components/tools/DebtPayoffCalculator";
 import { UkSalaryCalculator } from "@/components/tools/UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalculator";
 import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
+import { HomeLoanOverdraftCalculator } from "@/components/tools/HomeLoanOverdraftCalculator";
 
 export interface EmbedPageProps {
   params: {
@@ -225,6 +226,7 @@ export default function EmbedToolPage({ params }: EmbedPageProps) {
     "high-yield-savings-cd-calculator": SavingsCdCalculator,
     "interest-rate-hike-calculator": RateHikeCalculator,
     "home-loan-balance-transfer-calculator": BalanceTransferCalculator,
+    "home-loan-overdraft-calculator": HomeLoanOverdraftCalculator,
     "uk-salary-calculator": UkSalaryCalculator,
     "canada-paycheck-calculator": CanadaPaycheckCalculator,
     "australia-pay-calculator": AustraliaPayCalculator,

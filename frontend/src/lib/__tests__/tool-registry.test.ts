@@ -12,16 +12,16 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
   const allSlugs = getAllToolSlugs();
   const allTools = getAllTools();
 
-  it("registers exactly 57 tools across 3 categories", () => {
-    expect(allSlugs).toHaveLength(57);
-    expect(allTools).toHaveLength(57);
+  it("registers exactly 58 tools across 3 categories", () => {
+    expect(allSlugs).toHaveLength(58);
+    expect(allTools).toHaveLength(58);
 
     const devTools = getToolsByCategory("data-developer");
     const financialTools = getToolsByCategory("financial");
     const utilityTools = getToolsByCategory("utility");
 
     expect(devTools).toHaveLength(13);
-    expect(financialTools).toHaveLength(23);
+    expect(financialTools).toHaveLength(24);
     expect(utilityTools).toHaveLength(21);
   });
 
@@ -165,5 +165,22 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
     // FAQs
     expect(byteTool?.faqs.some((f) => f.question.includes("How many MB is 100000 bytes?"))).toBe(true);
     expect(byteTool?.faqs.some((f) => f.question.includes("MB (1000^2) and MiB (1024^2)"))).toBe(true);
+  });
+
+  it("verifies home-loan-overdraft-calculator contains SBI MaxGain formulas, 40 bps spread, and FAQs", () => {
+    const odTool = getToolBySlug("home-loan-overdraft-calculator");
+    expect(odTool).toBeDefined();
+    expect(odTool?.slug).toBe("home-loan-overdraft-calculator");
+    expect(odTool?.category).toBe("financial");
+    expect(odTool?.title).toContain("Home Loan Overdraft");
+    expect(odTool?.formulaDescription).toContain("Daily Overdraft Interest");
+    expect(odTool?.formulaDescription).toContain("Break-Even Surplus");
+    expect(odTool?.about).toContain("SBI MaxGain");
+    expect(odTool?.about).toContain("40 BPS Spread Premium");
+    expect(odTool?.about).toContain("Break-Even Parked Surplus Balance Formula");
+    expect(odTool?.howTo).toHaveLength(3);
+    expect(odTool?.faqs.length).toBeGreaterThanOrEqual(6);
+    expect(odTool?.faqs.some((f) => f.question.includes("40 bps spread premium"))).toBe(true);
+    expect(odTool?.relatedTools).toContain("home-loan-balance-transfer-calculator");
   });
 });
