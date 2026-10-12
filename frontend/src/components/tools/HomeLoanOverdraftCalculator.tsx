@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Wallet,
   Percent,
@@ -23,6 +23,9 @@ import {
   CalcSlider,
   CalcResult,
   CalcChart,
+  CalcSaveButton,
+  CalcShareButton,
+  CalcPromptButton,
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 import {
@@ -65,6 +68,25 @@ export function HomeLoanOverdraftCalculator({
 
   const [isExportingExcel, setIsExportingExcel] = useState(false);
 
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("loanAmount", loanAmount.toString());
+    params.set("standardRate", standardRate.toString());
+    params.set("spreadPercent", spreadPercent.toString());
+    params.set("tenureYears", tenureYears.toString());
+    params.set("parkedSurplusAmount", parkedSurplusAmount.toString());
+    if (monthlyAddition > 0) {
+      params.set("monthlySurplusAddition", monthlyAddition.toString());
+    } else {
+      params.delete("monthlySurplusAddition");
+    }
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [loanAmount, standardRate, spreadPercent, tenureYears, parkedSurplusAmount, monthlyAddition]);
+
   // Derived overdraft rate
   const overdraftRate = useMemo(() => {
     return Number((standardRate + spreadPercent).toFixed(2));
@@ -81,6 +103,22 @@ export function HomeLoanOverdraftCalculator({
       monthlySurplusAddition: monthlyAddition,
     });
   }, [loanAmount, standardRate, overdraftRate, tenureYears, parkedSurplusAmount, monthlyAddition]);
+
+  const aiPrompt = useMemo(() => {
+    return `Analyze this Indian Home Loan Overdraft (SBI MaxGain) scenario:
+- Sanctioned Loan Amount: ₹${loanAmount.toLocaleString("en-IN")}
+- Standard Home Loan Rate: ${standardRate}%
+- Bank Spread Premium: +${spreadPercent}% (Effective OD Rate: ${overdraftRate}%)
+- Loan Tenure: ${tenureYears} Years (EMI: ₹${Math.round(result.standardLoan.monthlyEmi).toLocaleString("en-IN")}/mo)
+- Parked Surplus Cash: ₹${parkedSurplusAmount.toLocaleString("en-IN")}
+${monthlyAddition > 0 ? `- Monthly Extra Addition: ₹${monthlyAddition.toLocaleString("en-IN")}/mo` : ""}
+- Lifetime Interest Saved: ₹${Math.round(result.interestSavedVsStandard).toLocaleString("en-IN")}
+- Tenure Shortened: ${result.tenureYearsSaved.toFixed(1)} Years
+- Effective Tax-Free Yield on Surplus: ${result.effectiveTaxFreeYield}% (Equivalent 30% Tax Slab FD Return: ${result.equivalentFdPreTaxYield30Pct}%)
+- Recommendation: ${result.recommendation} (${result.recommendationReason})
+
+Provide strategic financial advice on whether parking emergency funds in an overdraft account outperforms bank fixed deposits or equity mutual funds after tax.`;
+  }, [loanAmount, standardRate, spreadPercent, overdraftRate, tenureYears, parkedSurplusAmount, monthlyAddition, result]);
 
   // Loan presets for quick Indian mortgage amounts
   const loanPresets = [
@@ -107,6 +145,7 @@ export function HomeLoanOverdraftCalculator({
       const summaryData = [
         ["ConvertSheet - Home Loan Overdraft (SBI MaxGain) Audit", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/home-loan-overdraft-calculator"],
         ["", ""],
         ["--- LOAN PARAMETERS ---", ""],
         ["Sanctioned Loan Amount", loanAmount],
@@ -159,7 +198,7 @@ export function HomeLoanOverdraftCalculator({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-16 sm:pb-0">
       {/* Header Banner */}
       <div className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -182,15 +221,40 @@ export function HomeLoanOverdraftCalculator({
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={handleExportExcel}
-            disabled={isExportingExcel}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0 disabled:opacity-50 cursor-pointer"
-          >
-            <FileSpreadsheet className="w-4 h-4" />
-            <span>{isExportingExcel ? "Generating..." : "Export Excel (.xlsx)"}</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleExportExcel}
+              disabled={isExportingExcel}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0 disabled:opacity-50 cursor-pointer min-h-[40px]"
+            >
+              <FileSpreadsheet className="w-4 h-4" />
+              <span>{isExportingExcel ? "Generating..." : "Export Excel (.xlsx)"}</span>
+            </button>
+            <CalcSaveButton
+              toolSlug="home-loan-overdraft-calculator"
+              toolName="Home Loan Overdraft (SBI MaxGain)"
+              summaryTitle={`₹${(loanAmount / 100000).toFixed(0)}L Loan @ ${standardRate}% (+${spreadPercent}%)`}
+              summaryMetrics={[
+                { label: "Interest Saved", value: formatCurrency(result.interestSavedVsStandard) },
+                { label: "Tenure Saved", value: `${result.tenureYearsSaved.toFixed(1)} Years` },
+                { label: "Parked Surplus", value: formatCurrency(parkedSurplusAmount) },
+                { label: "Verdict", value: result.recommendation },
+              ]}
+            />
+            <CalcShareButton
+              state={{
+                loanAmount,
+                standardRate,
+                spreadPercent,
+                tenureYears,
+                parkedSurplusAmount,
+                monthlyAddition,
+              }}
+              label="Share Scenario"
+            />
+            <CalcPromptButton prompt={aiPrompt} toolName="MaxGain Analysis" />
+          </div>
         </div>
       </div>
 
@@ -214,7 +278,7 @@ export function HomeLoanOverdraftCalculator({
                       key={p.val}
                       type="button"
                       onClick={() => setLoanAmount(p.val)}
-                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
+                      className={`min-h-[36px] px-3 py-1 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
                         loanAmount === p.val
                           ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
                           : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
@@ -227,17 +291,29 @@ export function HomeLoanOverdraftCalculator({
               </div>
 
               {/* Sanctioned Loan Amount */}
-              <CalcInput
-                id="loan-amount"
-                label="Sanctioned Loan Amount"
-                value={loanAmount}
-                onChange={setLoanAmount}
-                prefix={currencySymbol}
-                min={100000}
-                max={50000000}
-                step={50000}
-                helperText="Total principal sanctioned by the lender"
-              />
+              <div className="space-y-2">
+                <CalcInput
+                  id="loan-amount"
+                  label="Sanctioned Loan Amount"
+                  value={loanAmount}
+                  onChange={setLoanAmount}
+                  prefix={currencySymbol}
+                  min={100000}
+                  max={50000000}
+                  step={50000}
+                  helperText="Total principal sanctioned by the lender"
+                />
+                <CalcSlider
+                  id="slider-loan-amount"
+                  label=""
+                  value={loanAmount}
+                  onChange={setLoanAmount}
+                  min={1000000}
+                  max={20000000}
+                  step={100000}
+                  prefix={currencySymbol}
+                />
+              </div>
 
               {/* Standard Loan Interest Rate */}
               <div className="space-y-2">
@@ -534,6 +610,25 @@ export function HomeLoanOverdraftCalculator({
             </div>
           </CalcCard>
         </div>
+      </div>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Total Interest Saved</span>
+          <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
+            {result.interestSavedVsStandard >= 0 ? "+" : "-"}{formatCurrency(Math.abs(result.interestSavedVsStandard))}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          disabled={isExportingExcel}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white shadow-xs cursor-pointer disabled:opacity-50"
+        >
+          <FileSpreadsheet className="w-3.5 h-3.5" />
+          <span>Export</span>
+        </button>
       </div>
     </div>
   );

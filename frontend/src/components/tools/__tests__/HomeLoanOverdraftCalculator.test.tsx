@@ -22,7 +22,7 @@ describe("HomeLoanOverdraftCalculator", () => {
     );
 
     expect(screen.getByText("Home Loan Overdraft (SBI MaxGain) Calculator")).toBeInTheDocument();
-    expect(screen.getByText(/Total Interest Saved/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Total Interest Saved/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Tenure Shortened/i)).toBeInTheDocument();
     expect(screen.getByText(/Break-Even Surplus/i)).toBeInTheDocument();
     expect(screen.getByText(/Effective Tax-Free Yield/i)).toBeInTheDocument();
@@ -37,8 +37,11 @@ describe("HomeLoanOverdraftCalculator", () => {
     expect(screen.getByText("SBI MaxGain (+0.40%)")).toBeInTheDocument();
     expect(screen.getByText("Bank of Baroda (+0.25%)")).toBeInTheDocument();
 
-    // Verify export triggers
+    // Verify export & MOAT action triggers
     expect(screen.getByText("Export Excel (.xlsx)")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Share Scenario/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Copy MaxGain Analysis Prompt/i })).toBeInTheDocument();
+    expect(document.getElementById("slider-loan-amount")).toBeInTheDocument();
   });
 
   it("updates loan amount when loan preset pill is clicked", () => {

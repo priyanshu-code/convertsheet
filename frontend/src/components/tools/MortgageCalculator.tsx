@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Home, Table as TableIcon } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { Home, Table as TableIcon, ShieldCheck } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
@@ -100,6 +100,26 @@ export function MortgageCalculator({ initialValues }: MortgageCalculatorProps = 
     setDownPayment(Math.round((homePrice * pct) / 100));
   };
 
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("homePrice", homePrice.toString());
+    params.set("downPayment", downPayment.toString());
+    params.set("interestRate", interestRate.toString());
+    params.set("loanTermYears", loanTermYears.toString());
+    params.set("propertyTaxYearly", propertyTaxYearly.toString());
+    params.set("homeInsuranceYearly", homeInsuranceYearly.toString());
+    if (extraPayment > 0) {
+      params.set("extraPayment", extraPayment.toString());
+    } else {
+      params.delete("extraPayment");
+    }
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [homePrice, downPayment, interestRate, loanTermYears, propertyTaxYearly, homeInsuranceYearly, extraPayment]);
+
   const mortgage = useMemo(() => {
     return calculateMortgage({
       homePrice,
@@ -134,7 +154,7 @@ export function MortgageCalculator({ initialValues }: MortgageCalculatorProps = 
     });
   }, [mortgage.yearlySchedule]);
 
-  // Exportable schedule for SheetJS
+  // Exportable schedule for SheetJS with live brand retention hook
   const exportData = useMemo(() => {
     const activeSchedule = scheduleView === "yearly" ? mortgage.yearlySchedule : mortgage.monthlySchedule;
     return activeSchedule.map((row) => ({
@@ -144,6 +164,7 @@ export function MortgageCalculator({ initialValues }: MortgageCalculatorProps = 
       Interest: row.interest,
       "Total Interest": row.totalInterest,
       "Remaining Balance": row.balance,
+      "ConvertSheet Model": "https://www.convertsheet.com/tools/mortgage-calculator",
     }));
   }, [scheduleView, mortgage.yearlySchedule, mortgage.monthlySchedule]);
 
@@ -175,7 +196,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-16 sm:pb-0">
       <CalcCard
         title="Mortgage Calculator with Amortization Schedule"
       subtitle="Calculate your total monthly mortgage payment including principal, interest, taxes, insurance, and PMI with full amortization schedule export."
@@ -185,24 +206,45 @@ Provide financial advice on whether refinancing or making extra principal paymen
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* Left Column: Inputs, Sliders, Terms, Taxes & Insurance */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Top Controls Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <CalcInput
-            id="home-price"
-            label="Home Purchase Price"
-            value={homePrice}
-            onChange={(val) => {
-              const p = Number(val) || 0;
-              setHomePrice(p);
-              setDownPayment(Math.round((p * downPaymentPercent) / 100));
-            }}
-            type="number"
-            min={10000}
-            step={5000}
-            prefix={currencySymbol}
-          />
+          {/* Zero-Knowledge Privacy Reassurance Badge */}
+          <div className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-xs text-emerald-800 dark:text-emerald-300">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="font-medium">100% Client-Side In-Browser Computation • No loan or financial data leaves your browser</span>
+          </div>
 
-          <div className="space-y-1">
+        {/* Top Controls Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <CalcInput
+              id="home-price"
+              label="Home Purchase Price"
+              value={homePrice}
+              onChange={(val) => {
+                const p = Number(val) || 0;
+                setHomePrice(p);
+                setDownPayment(Math.round((p * downPaymentPercent) / 100));
+              }}
+              type="number"
+              min={10000}
+              step={5000}
+              prefix={currencySymbol}
+            />
+            <CalcSlider
+              id="home-price-slider"
+              label=""
+              value={homePrice}
+              min={50000}
+              max={2000000}
+              step={5000}
+              prefix={currencySymbol}
+              onChange={(val) => {
+                setHomePrice(val);
+                setDownPayment(Math.round((val * downPaymentPercent) / 100));
+              }}
+            />
+          </div>
+
+          <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label htmlFor="down-payment" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                 Down Payment ({downPaymentPercent}%)
@@ -219,13 +261,23 @@ Provide financial advice on whether refinancing or making extra principal paymen
               step={1000}
               prefix={currencySymbol}
             />
+            <CalcSlider
+              id="down-payment-slider"
+              label=""
+              value={downPaymentPercent}
+              min={0}
+              max={50}
+              step={1}
+              unit="%"
+              onChange={(pct) => handleDownPaymentPercentChange(pct)}
+            />
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
               {[5, 10, 15, 20, 25].map((pct) => (
                 <button
                   key={pct}
                   type="button"
                   onClick={() => handleDownPaymentPercentChange(pct)}
-                  className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                  className={`min-h-[36px] px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
                     downPaymentPercent === pct
                       ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                       : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -237,17 +289,29 @@ Provide financial advice on whether refinancing or making extra principal paymen
             </div>
           </div>
 
-          <CalcInput
-            id="interest-rate"
-            label="Interest Rate (Annual %)"
-            value={interestRate}
-            onChange={(val) => setInterestRate(Number(val) || 0)}
-            type="number"
-            min={0.1}
-            max={25}
-            step={0.1}
-            suffix="%"
-          />
+          <div className="space-y-2">
+            <CalcInput
+              id="interest-rate"
+              label="Interest Rate (Annual %)"
+              value={interestRate}
+              onChange={(val) => setInterestRate(Number(val) || 0)}
+              type="number"
+              min={0.1}
+              max={25}
+              step={0.1}
+              suffix="%"
+            />
+            <CalcSlider
+              id="interest-rate-slider"
+              label=""
+              value={interestRate}
+              min={2.0}
+              max={14.0}
+              step={0.1}
+              unit="%"
+              onChange={(val) => setInterestRate(val)}
+            />
+          </div>
 
           <div className="space-y-1">
             <CalcSelect
@@ -529,6 +593,22 @@ Provide financial advice on whether refinancing or making extra principal paymen
 
     <MortgageRatesCard loanAmount={mortgage.loanAmount} />
     <MortgageTermComparisonTable initialLoanAmount={mortgage.loanAmount} />
+
+    {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+    <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 shadow-lg flex items-center justify-between">
+      <div>
+        <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Total Monthly Payment</span>
+        <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
+          {formatCurrency(mortgage.totalMonthlyPayment)}/mo
+        </span>
+      </div>
+      <CalcExportButton
+        data={exportData}
+        filename={`mortgage_amortization_${homePrice}`}
+        sheetName="Amortization"
+        label="Export (.xlsx)"
+      />
+    </div>
   </div>
   );
 }

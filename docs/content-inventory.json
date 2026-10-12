@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-11",
-  "totalBlogs": 21,
+  "lastUpdated": "2026-10-12",
+  "totalBlogs": 22,
   "totalTools": 18,
   "blogs": [
     {
@@ -128,6 +128,12 @@
       "title": "SBI MaxGain vs Regular Prepayment: The Exact Mathematics of Parking Cash in an Overdraft Account (And When the 40 bps Premium Makes It a Trap)",
       "category": "Financial Engineering",
       "description": "An analytical, mathematical guide for Indian home loan borrowers. Compare SBI MaxGain daily interest offsetting with direct principal prepayments, understand the 40 bps spread premium, compute your exact break-even parked balance, and optimize liquidity without tax drag."
+    },
+    {
+      "slug": "h1b-visa-closed-rumors-vs-perm-pause-explained",
+      "title": "Did the US Just 'Close' H-1B Visas? Why Tech Layoffs Triggered Corporate PERM Pauses (And the Truth About 2026 Caps)",
+      "category": "Immigration & Career Finance",
+      "description": "Viral rumors claim the US has closed H-1B visas. Uncover the legal reality under 20 CFR § 656.17(k): why tech layoffs forced Big Tech to pause PERM labor certifications, what actually happened to the statutory 85,000 cap, and how to protect your immigration status and paycheck."
     }
   ],
   "tools": [
@@ -215,21 +221,39 @@
   "calculatorAuditQueue": [
     {
       "slug": "mortgage-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-12",
+      "moatsAdded": [
+        "dual-range-sliders",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "car-loan-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-12",
+      "moatsAdded": [
+        "dual-range-sliders",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "home-loan-overdraft-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-12",
+      "moatsAdded": [
+        "range-slider",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "save-share-prompt-actions",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "rate-hike-calculator",

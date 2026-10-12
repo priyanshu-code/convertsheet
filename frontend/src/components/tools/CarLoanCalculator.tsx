@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Car } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { Car, ShieldCheck } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
@@ -90,6 +90,22 @@ export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}
     return initialValues?.dealerFees !== undefined ? Number(initialValues.dealerFees) : 500;
   });
 
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("vehiclePrice", vehiclePrice.toString());
+    params.set("downPayment", downPayment.toString());
+    params.set("tradeInValue", tradeInValue.toString());
+    params.set("interestRate", interestRate.toString());
+    params.set("loanTermMonths", loanTermMonths.toString());
+    params.set("salesTaxPercent", salesTaxPercent.toString());
+    params.set("dealerFees", dealerFees.toString());
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [vehiclePrice, downPayment, tradeInValue, interestRate, loanTermMonths, salesTaxPercent, dealerFees]);
+
   const carLoan = useMemo(() => {
     return calculateCarLoan({
       vehiclePrice,
@@ -129,6 +145,7 @@ export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}
       "Remaining Balance": `$${row.balance.toLocaleString()}`,
       "Principal Paid This Year": `$${row.principal.toLocaleString()}`,
       "Interest Paid This Year": `$${row.interest.toLocaleString()}`,
+      "ConvertSheet Model": "https://www.convertsheet.com/tools/car-loan-calculator",
     }));
   }, [carLoan.yearlySchedule]);
 
@@ -158,7 +175,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-16 sm:pb-0">
       <CalcCard
         title="Auto Loan & Car Payment Calculator"
       subtitle="Calculate your monthly car payment, total interest, sales taxes, and net financed amount with visual payoff curves."
@@ -168,19 +185,37 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
       <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
         {/* Left Column: Input Fields */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <CalcInput
-              id="car-price"
-              label="Vehicle Purchase Price"
-              value={vehiclePrice}
-              onChange={(val) => setVehiclePrice(Number(val) || 0)}
-              type="number"
-              min={1000}
-              step={500}
-              prefix="$"
-            />
+          {/* Zero-Knowledge Privacy Reassurance Badge */}
+          <div className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-xs text-emerald-800 dark:text-emerald-300">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="font-medium">100% Client-Side In-Browser Computation • Zero auto loan or credit data leaves your device</span>
+          </div>
 
-            <div className="space-y-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <CalcInput
+                id="car-price"
+                label="Vehicle Purchase Price"
+                value={vehiclePrice}
+                onChange={(val) => setVehiclePrice(Number(val) || 0)}
+                type="number"
+                min={1000}
+                step={500}
+                prefix="$"
+              />
+              <CalcSlider
+                id="car-price-slider"
+                label=""
+                value={vehiclePrice}
+                min={5000}
+                max={120000}
+                step={500}
+                prefix="$"
+                onChange={(val) => setVehiclePrice(val)}
+              />
+            </div>
+
+            <div className="space-y-2">
               <CalcInput
                 id="car-down-payment"
                 label="Cash Down Payment"
@@ -191,13 +226,23 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
                 step={500}
                 prefix="$"
               />
+              <CalcSlider
+                id="car-down-payment-slider"
+                label=""
+                value={downPayment}
+                min={0}
+                max={40000}
+                step={500}
+                prefix="$"
+                onChange={(val) => setDownPayment(val)}
+              />
               <div className="flex flex-wrap items-center gap-1.5 pt-1">
                 {[0, 2500, 5000, 10000].map((amt) => (
                   <button
                     key={amt}
                     type="button"
                     onClick={() => setDownPayment(amt)}
-                    className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                    className={`min-h-[36px] px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
                       downPayment === amt
                         ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                         : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -221,17 +266,29 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
               helpText="Subtracted from taxable price"
             />
 
-            <CalcInput
-              id="car-apr"
-              label="Interest Rate (APR %)"
-              value={interestRate}
-              onChange={(val) => setInterestRate(Number(val) || 0)}
-              type="number"
-              min={0}
-              max={30}
-              step={0.1}
-              suffix="%"
-            />
+            <div className="space-y-2">
+              <CalcInput
+                id="car-apr"
+                label="Interest Rate (APR %)"
+                value={interestRate}
+                onChange={(val) => setInterestRate(Number(val) || 0)}
+                type="number"
+                min={0}
+                max={30}
+                step={0.1}
+                suffix="%"
+              />
+              <CalcSlider
+                id="car-apr-slider"
+                label=""
+                value={interestRate}
+                min={1.0}
+                max={25.0}
+                step={0.1}
+                unit="%"
+                onChange={(val) => setInterestRate(val)}
+              />
+            </div>
 
             <div className="space-y-1">
               <CalcSelect
@@ -253,7 +310,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
                     key={m}
                     type="button"
                     onClick={() => setLoanTermMonths(m)}
-                    className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                    className={`min-h-[36px] px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
                       loanTermMonths === m
                         ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                         : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -428,6 +485,22 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
     />
 
     <AutoLoanRatesCard financedAmount={carLoan.netLoanAmount} loanTermMonths={loanTermMonths} />
+
+    {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+    <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 shadow-lg flex items-center justify-between">
+      <div>
+        <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Monthly Payment</span>
+        <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
+          ${carLoan.monthlyPayment.toLocaleString()}/mo
+        </span>
+      </div>
+      <CalcExportButton
+        data={exportData}
+        filename={`car_loan_schedule_${vehiclePrice}`}
+        sheetName="AutoLoan"
+        label="Export (.xlsx)"
+      />
+    </div>
   </div>
   );
 }

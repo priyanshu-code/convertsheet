@@ -457,8 +457,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15 vs 30 Year Mortgage Calculator (2026) — Side-by-Side Savings & Payment Chart",
-    "metaDescription": "Compare 15 vs 30-year mortgages side by side. On a $320k loan, save $248,282 in interest with a 15-yr term. Calculate monthly payments & export amortization to Excel.",
+    "title": "15 vs 30 Year Mortgage Calculator (2026) — Compare Payments & Interest Savings",
+    "metaDescription": "Use our 15 vs 30 year mortgage calculator to compare monthly payments and interest savings side by side. On a $320k loan, save $248,282 in total interest.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {
@@ -471,20 +471,20 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     },
     "faqs": [
       {
+        "question": "What is the difference between a 15-year and a 30-year mortgage payment?",
+        "answer": "For a $320,000 loan balance, the 15-year monthly principal and interest payment is approximately $2,666/month (at 5.8%) compared to $2,023/month for a 30-year mortgage (at 6.5%)—an increase of $643 per month in exchange for saving $248,282 in lifetime interest."
+      },
+      {
+        "question": "How much interest do you save choosing a 15-year mortgage over a 30-year mortgage?",
+        "answer": "Choosing a 15-year term over a 30-year term typically reduces your lifetime interest bill by 60% to 65%. On a $320,000 mortgage at 2026 rates, you save roughly $248,282 in interest and become mortgage-free 15 years sooner."
+      },
+      {
         "question": "Should I get a 15-year mortgage or take a 30-year and pay extra?",
         "answer": "A 30-year mortgage provides financial safety: if your income drops or unexpected expenses arise, you are only committed to the lower monthly payment. You can voluntarily make extra principal payments to pay it off in 15 years with complete flexibility and without contractual risk."
       },
       {
-        "question": "How much interest do you save on a 15-year fixed mortgage?",
-        "answer": "On a $320,000 loan balance, choosing a 15-year term at 5.8% instead of a 30-year term at 6.5% saves approximately $248,282 in total lifetime interest charges while eliminating 180 months of mortgage debt."
-      },
-      {
-        "question": "What is the monthly payment difference between a 15-year and 30-year loan?",
-        "answer": "For a $320,000 mortgage, the 15-year payment is approximately $2,666/month (principal & interest) compared to $2,023/month for a 30-year loan—a difference of roughly $643 more per month."
-      },
-      {
-        "question": "Is it better to invest the extra cash in index funds or choose a 15-year mortgage?",
-        "answer": "If your mortgage rate is 6% or higher, the guaranteed 6% risk-free return of paying down mortgage debt is highly competitive with stock market returns (historic 7-10% nominal before capital gains taxes and volatility). In lower rate environments (<4%), investing the monthly difference in index funds often produces higher net wealth."
+        "question": "What are 15-year vs 30-year mortgage payments on $300k, $400k, and $500k?",
+        "answer": "At 2026 benchmark rates (5.8% for 15-yr, 6.5% for 30-yr): On $300k: $2,500/mo (15-yr) vs $1,896/mo (30-yr), saving $232,764 in interest. On $400k: $3,333/mo (15-yr) vs $2,528/mo (30-yr), saving $310,352 in interest. On $500k: $4,166/mo (15-yr) vs $3,160/mo (30-yr), saving $387,940 in interest."
       },
       {
         "question": "Can I refinance from a 30-year mortgage into a 15-year mortgage later?",
@@ -4347,10 +4347,10 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "car-loan-calculator",
     presetSlug: "72-month-car-loan",
     name: "72-Month (6-Year) Auto Loan Payment Calculator",
-    title: "72-Month Car Loan Calculator: 6-Year Financing & Interest Schedule | ConvertSheet",
-    metaDescription: "Calculate true total costs on a 72-month (6-year) auto loan. See how extending terms lowers monthly payments but adds thousands in extra interest charges.",
-    answerSummary: "On a $35,000 vehicle with 10% down ($3,500) at 6.9% APR, a 72-month loan results in a monthly payment of $585/month. While lower than a 48-month payment ($822/mo), the 72-month loan incurs $7,736 in total interest—$2,640 more than the shorter term.",
-    about: "The 72-month auto loan has become the most common financing term in the United States. Understand the trade-offs: lower monthly cash outflow in exchange for extended interest payments and higher risk of negative equity (being underwater).",
+    title: "72-Month Car Loan Calculator (2026) — Monthly Payment on $15k, $25k & $35k Loans",
+    metaDescription: "Calculate your monthly car loan payment for 72 months on $15k, $25k, and $35k auto loans. Compare total interest costs, calculate APR impact, and export to Excel.",
+    answerSummary: "On a $25,000 car loan at 6.9% APR over 72 months, your monthly payment is $425/month with $5,526 in total interest. On a $15,000 loan, your payment is $255/month ($3,315 interest). On a $35,000 vehicle with 10% down ($3,500) at 6.9% APR, the monthly payment is $585/month ($7,736 total interest).",
+    about: "The 72-month (6-year) auto loan has become the most common financing term in the United States. Understand the trade-offs: lower monthly cash outflow in exchange for extended interest payments and higher risk of negative equity (being underwater).",
     initialValues: {
       vehiclePrice: 35000,
       downPayment: 3500,
@@ -4362,12 +4362,20 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     },
     faqs: [
       {
+        question: "What is the monthly payment on a $25,000 car loan for 72 months?",
+        answer: "At 6.9% APR with $0 down, a $25,000 car loan over 72 months costs approximately $425 per month, with $5,526 in total interest paid over the 6-year term. With 10% down ($2,500), the monthly payment drops to $382/month ($4,973 total interest).",
+      },
+      {
+        question: "What is the monthly payment on a $15,000 car loan for 72 months?",
+        answer: "At 6.9% APR with $0 down, a $15,000 car loan over 72 months costs approximately $255 per month, with $3,315 in total interest paid. Over 5 years (60 months), the same loan is $296/month ($2,780 total interest)—saving $535 in interest charges.",
+      },
+      {
         question: "Is a 72-month car loan a bad idea?",
         answer: "A 72-month loan increases total interest and keeps you underwater (owing more than the car is worth) for 2 to 3 years. It is best paired with gap insurance and a reliable vehicle.",
       },
       {
         question: "What is the payment on a $35k car for 72 months?",
-        answer: "At 6.9% interest with 10% down, the payment is approximately $585/month.",
+        answer: "At 6.9% interest with 10% down ($3,500), the payment on a $35,000 car is approximately $585/month with $7,736 in total interest charges.",
       },
     ],
   },

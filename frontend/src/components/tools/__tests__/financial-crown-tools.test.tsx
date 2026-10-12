@@ -14,8 +14,13 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(
         screen.getByText(/Mortgage Calculator with Amortization Schedule/i)
       ).toBeInTheDocument();
-      expect(screen.getByText(/Total Monthly Payment/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/Total Monthly Payment/i).length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText(/Loan Amount Financed/i)).toBeInTheDocument();
+      expect(screen.getByText(/100% Client-Side In-Browser Computation/i)).toBeInTheDocument();
+
+      // Dual sliders
+      expect(document.getElementById("home-price-slider")).toBeInTheDocument();
+      expect(document.getElementById("interest-rate-slider")).toBeInTheDocument();
 
       // Export & AI Prompt buttons
       expect(screen.getByText(/Export.*Amortization/i)).toBeInTheDocument();
@@ -66,6 +71,11 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       ).toBeInTheDocument();
       expect(screen.getByText(/Monthly Auto Loan Payment/i)).toBeInTheDocument();
       expect(screen.getByText(/Net Loan Financed/i)).toBeInTheDocument();
+      expect(screen.getByText(/Zero auto loan or credit data leaves your device/i)).toBeInTheDocument();
+
+      // Dual sliders
+      expect(document.getElementById("car-price-slider")).toBeInTheDocument();
+      expect(document.getElementById("car-apr-slider")).toBeInTheDocument();
 
       expect(screen.getByText(/Export Loan Schedule/i)).toBeInTheDocument();
       expect(screen.getByText(/Copy Car Loan Advice Prompt/i)).toBeInTheDocument();

@@ -167,5 +167,39 @@ describe("Blog Registry & Content Layer", () => {
     expect(dataPosts.length).toBe(3);
     const dataPillar = getPillarPost("in-browser-data-processing");
     expect(dataPillar?.slug).toBe("convert-json-to-excel-privately");
+
+    // Cluster: contractor-tax-finance
+    const contractorPosts = getBlogPostsByCluster("contractor-tax-finance");
+    expect(contractorPosts.length).toBe(3);
+    const contractorPillar = getPillarPost("contractor-tax-finance");
+    expect(contractorPillar?.slug).toBe("1099-vs-w2-true-hourly-rate-calculation");
+    const contractorBranches = getBranchPosts("1099-vs-w2-true-hourly-rate-calculation");
+    expect(contractorBranches.length).toBe(2);
+    const contractorBranchSlugs = contractorBranches.map((b: { slug: string }) => b.slug);
+    expect(contractorBranchSlugs).toContain("h1b-visa-closed-rumors-vs-perm-pause-explained");
+    expect(contractorBranchSlugs).toContain("uk-contractor-inside-vs-outside-ir35-calculator-guide");
+  });
+
+  it("retrieves the H-1B rumors vs PERM pause factual guide", () => {
+    const post = getBlogPostBySlug("h1b-visa-closed-rumors-vs-perm-pause-explained");
+    expect(post).toBeDefined();
+    expect(post?.slug).toBe("h1b-visa-closed-rumors-vs-perm-pause-explained");
+    expect(post?.title).toContain("Did the US Just 'Close' H-1B Visas?");
+    expect(post?.category).toBe("Immigration & Career Finance");
+    expect(post?.attachedToolSlug).toBe("salary-calculator");
+    expect(post?.attachedToolTitle).toBe("US Salary & Take-Home Paycheck Calculator");
+    expect(post?.clusterId).toBe("contractor-tax-finance");
+    expect(post?.role).toBe("branch");
+    expect(post?.pillarSlug).toBe("1099-vs-w2-true-hourly-rate-calculation");
+    expect(post?.tableOfContents).toHaveLength(7);
+    expect(post?.faqs).toHaveLength(6);
+
+    // Fact checking content assertions
+    expect(post?.content).toContain("Department of Labor");
+    expect(post?.content).toContain("20 CFR § 656.17(k)");
+    expect(post?.content).toContain("Microsoft");
+    expect(post?.content).toContain("Infosys");
+    expect(post?.content).toContain("60-day grace period");
+    expect(post?.content).toContain("salary-calculator");
   });
 });

@@ -228,7 +228,8 @@ export const BLOG_POSTS: BlogPost[] = [
     clusterId: "contractor-tax-finance",
     role: "pillar",
     relatedSlugs: [
-      "uk-contractor-inside-vs-outside-ir35-calculator-guide"
+      "uk-contractor-inside-vs-outside-ir35-calculator-guide",
+      "h1b-visa-closed-rumors-vs-perm-pause-explained"
     ],
     tableOfContents: [
       { id: "the-illusion-of-the-1099-premium", title: "1. The Illusion of the 1099 Premium" },
@@ -3651,6 +3652,273 @@ const arrowResult = await conn.query(\`
 
         <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed pt-2">
           Want to see what your own savings would look like? Run your numbers in our interactive <a href="/tools/home-loan-overdraft-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Home Loan Overdraft (SBI MaxGain) vs Prepayment Calculator</a>, or learn how to protect yourself against recent central bank rate hikes in our guide on <a href="/blog/rbi-repo-rate-hike-25-bps-home-loan-emi-impact" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">RBI Repo Rate Hikes and Loan EMI Impact</a>.
+        </p>
+      </section>
+    `.trim()
+  },
+  {
+    slug: "h1b-visa-closed-rumors-vs-perm-pause-explained",
+    title: "Did the US Just 'Close' H-1B Visas? The Real Story Behind the Viral Rumors (And What the October PERM Pause Actually Means)",
+    description: "A factual, no-panic guide for tech workers, students, and NRIs. Understand why viral rumors claimed the US 'suspended' H-1B visas, what the Department of Labor's PERM audit on Microsoft, TCS, Infosys, and Cognizant actually does, and how to protect your immigration timeline.",
+    category: "Immigration & Career Finance",
+    readTimeMinutes: 9,
+    publishedAt: "2026-10-12",
+    author: FOUNDER_AUTHOR,
+    attachedToolSlug: "salary-calculator",
+    attachedToolTitle: "US Salary & Take-Home Paycheck Calculator",
+    clusterId: "contractor-tax-finance",
+    role: "branch",
+    pillarSlug: "1099-vs-w2-true-hourly-rate-calculation",
+    relatedSlugs: [
+      "1099-vs-w2-true-hourly-rate-calculation",
+      "canadian-mortgage-stress-test-guide-2026"
+    ],
+    tag: "US Tech Alert • Oct 2026",
+    tagTooltip: "Verified fact-check on Department of Labor PERM audit vs. H-1B work visa status",
+    tableOfContents: [
+      { id: "the-viral-panic-vs-reality", title: "1. The WhatsApp Panic vs. What Actually Happened" },
+      { id: "h1b-vs-perm-distinction", title: "2. H-1B (Work Visa) vs. PERM (Green Card Step 1): The Critical Difference" },
+      { id: "why-dol-flagged-tech-companies", title: "3. Why the US Department of Labor Flagged Microsoft, TCS, Infosys & Wipro" },
+      { id: "who-is-actually-impacted", title: "4. Who is Actually Impacted (And Who is 100% Safe)" },
+      { id: "the-60-day-grace-period-debate", title: "5. The 60-Day Grace Period Debate: What DHS is Proposing" },
+      { id: "actionable-engineer-checklist", title: "6. The H-1B Engineer Action Checklist: Your Next Steps" },
+      { id: "frequently-asked-questions", title: "7. Frequently Asked Questions & Edge Cases" }
+    ],
+    faqs: [
+      {
+        question: "Did the US government close or suspend H-1B visas in October 2026?",
+        answer: "No. The H-1B visa program is NOT closed, suspended, or cancelled. Current H-1B holders retain full legal status, work authorization, travel permissions, and extension rights. The recent news involves a Department of Labor pause on the PERM Green Card labor certification process for specific employers, not temporary work visas."
+      },
+      {
+        question: "What is the difference between an H-1B visa and a PERM labor certification?",
+        answer: "An H-1B visa (Form I-129, overseen by USCIS) is a temporary non-immigrant work permit valid for up to 6 years. PERM (ETA Form 9089, overseen by the Department of Labor) is the first step of applying for a permanent employment-based Green Card (EB-2 or EB-3) to prove no qualified US workers were available for the role."
+      },
+      {
+        question: "Which companies are affected by the October 2026 PERM suspension?",
+        answer: "The Department of Labor has placed a temporary hold on new PERM filings for several large IT services and technology firms, including Microsoft, Adobe, Tata Consultancy Services (TCS), Infosys, Wipro, Cognizant, HCL Technologies, and Capgemini, pending audits related to recent tech layoffs."
+      },
+      {
+        question: "If I work at TCS, Infosys, or Microsoft on an H-1B, is my visa in danger?",
+        answer: "No. Your H-1B visa status, monthly salary, and legal right to live and work in the United States remain 100% intact. The only disruption is that your employer cannot submit new PERM labor certifications for green card sponsorship until the DOL audit clears."
+      },
+      {
+        question: "Can I transfer my H-1B to a new employer during this PERM pause?",
+        answer: "Yes! H-1B changes of employer (transfers) are adjudicated entirely by USCIS under the Department of Homeland Security, completely independent of the Department of Labor's PERM processing. You can switch employers freely as long as your new sponsor files a Form I-129 petition."
+      },
+      {
+        question: "Has the 60-day grace period for laid-off H-1B workers been eliminated?",
+        answer: "No. While the Department of Homeland Security published a proposed rule in September 2026 regarding grace periods, it remains in the public comment period until November 10, 2026. The 60-day grace period remains active law today."
+      }
+    ],
+    content: `
+      <section id="the-viral-panic-vs-reality" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">1. The WhatsApp Panic vs. What Actually Happened</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Over the past few days, social media channels, Reddit threads, and family WhatsApp groups in India and the US exploded into full-blown panic:
+        </p>
+        <blockquote class="p-4 rounded-xl border-l-4 border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 text-zinc-800 dark:text-zinc-200 italic text-sm">
+          "Breaking: USA suspends H-1B visas! IT giants like TCS, Infosys, and Microsoft banned from hiring Indian engineers! Pack your bags!"
+        </blockquote>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          I received panicked calls from developer friends in Seattle, Austin, and San Jose asking if they should book emergency flights back to Hyderabad or Bengaluru. 
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed font-semibold text-emerald-600 dark:text-emerald-400">
+          Let's clear the air immediately: The United States government has NOT closed, cancelled, or suspended the H-1B visa program. Your visa is not revoked, your status is not cancelled, and you do not need to pack your bags.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          What actually happened on October 8 is a complex, regulatory enforcement action involving the <strong>Department of Labor (DOL)</strong> and employment-based <strong>Green Cards</strong>—not temporary work visas. However, because clickbait news portals don't know the difference between an I-129 and an ETA Form 9089, they slapped "H-1B CANCELLED" on their thumbnails.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Here is the factual, unvarnished truth of what happened, who is actually affected, and what you need to check on your visa papers right now.
+        </p>
+      </section>
+
+      <section id="h1b-vs-perm-distinction" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">2. H-1B (Work Visa) vs. PERM (Green Card Step 1): The Critical Difference</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          To understand why this rumor started, you must understand the two completely separate government tracks that govern foreign tech workers in America:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
+          <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Track 1: H-1B Visa</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-semibold">100% SAFE</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 space-y-1.5">
+              <li>• <strong>What it is:</strong> A temporary non-immigrant work authorization (Form I-129).</li>
+              <li>• <strong>Who runs it:</strong> USCIS under the Department of Homeland Security (DHS).</li>
+              <li>• <strong>Validity:</strong> Up to 6 years (3 years initial + 3 years extension).</li>
+              <li>• <strong>Current Status:</strong> Fully active. Renewals, transfers, and existing visas are completely unaffected.</li>
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/60 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-amber-900 dark:text-amber-200 text-sm sm:text-base">Track 2: PERM Labor Certification</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-semibold">ON AUDIT HOLD</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-amber-800 dark:text-amber-300 space-y-1.5">
+              <li>• <strong>What it is:</strong> Stage 1 of a permanent Green Card application (ETA Form 9089).</li>
+              <li>• <strong>Who runs it:</strong> The U.S. Department of Labor (DOL).</li>
+              <li>• <strong>Purpose:</strong> Proves that no qualified US citizen or permanent resident was available for your job.</li>
+              <li>• <strong>Current Status:</strong> Put on hold for 8 major tech and IT outsourcing employers.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          The confusion happened because PERM is the prerequisite for an H-1B worker to get a Green Card. When the Department of Labor put a hold on PERM filings for certain tech giants, sensationalist bloggers reported it as <em>"H-1B suspended"</em>. That is completely false.
+        </p>
+      </section>
+
+      <section id="why-dol-flagged-tech-companies" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">3. Why the US Department of Labor Flagged Microsoft, TCS, Infosys & Wipro</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Why did the Department of Labor intervene on October 8? The reason comes down to a strict, longstanding federal regulation: <strong>20 CFR § 656.17(k) — The Layoff Rule</strong>.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Under US immigration law, before an employer can sponsor a foreign worker for a Green Card, they must prove to the government that they advertised the position to the American public and could not find any qualified US worker.
+        </p>
+        <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-2">
+          <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">The 6-Month Layoff Lookback Rule:</h4>
+          <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+            If a company laid off American workers in the same or related occupation within the last 6 months in that metropolitan area, federal law requires the company to:
+          </p>
+          <ol class="list-decimal pl-5 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 space-y-1">
+            <li>Notify all laid-off US workers about the job opening.</li>
+            <li>Give them an opportunity to apply.</li>
+            <li>Document to the Department of Labor why none of the laid-off US citizens were qualified for the role before filing a PERM for a foreign employee.</li>
+          </ol>
+        </div>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Over the past 18 months, virtually every major tech and IT services firm conducted corporate layoffs and team restructuring. Yet, many of these firms continued filing hundreds of PERM labor applications for software engineers. The Department of Labor launched an administrative audit to check whether these companies properly gave laid-off US workers a fair chance before sponsoring green cards.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          The 8 companies named in this administrative pause include:
+        </p>
+        <div class="flex flex-wrap gap-2 pt-1 pb-2">
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">Microsoft</span>
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">Adobe</span>
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">Tata Consultancy Services (TCS)</span>
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">Infosys</span>
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">Wipro</span>
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">Cognizant</span>
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">HCL Technologies</span>
+          <span class="px-3 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700">Capgemini</span>
+        </div>
+      </section>
+
+      <section id="who-is-actually-impacted" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">4. Who is Actually Impacted (And Who is 100% Safe)</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Let's break down where you stand based on your exact immigration situation today:
+        </p>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20 space-y-1">
+            <span class="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">Category 1: You Have an Approved I-140</span>
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: 100% Safe &amp; Protected</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              If your PERM was already certified in the past and USCIS approved your Form I-140, this Department of Labor pause affects you ZERO percent. Your priority date is locked under AC21 § 104(c), and your employer can continue extending your H-1B indefinitely in 3-year increments beyond the 6-year limit.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/20 space-y-1">
+            <span class="text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Category 2: You Are in Years 1 to 4 of Your H-1B</span>
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: Safe, but Expect Green Card Delays</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              Your day-to-day life does not change. Your salary, visa stamp, and work authorization are untouched. However, if your employer was about to initiate your green card paperwork, expect a 6 to 12-month delay until the company clears the DOL audit and re-runs local recruitment ads.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20 space-y-1">
+            <span class="text-xs font-bold text-rose-700 dark:text-rose-300 uppercase tracking-wide">Category 3: You Are in Year 5 of Your H-1B Without an I-140</span>
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: Action Required (Clock is Ticking)</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              This is the only group facing real structural pressure. Under AC21 § 106(a), to extend your H-1B beyond the 6-year maximum cap, your PERM must have been filed at least 365 days prior to your 6-year end date, or your I-140 must be approved. If your company cannot file PERM right now, you need to talk to immigration counsel immediately about an H-1B transfer to an employer actively filing PERMs, an internal transfer abroad (L-1), or alternative visa paths.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="the-60-day-grace-period-debate" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">5. The 60-Day Grace Period Debate: What DHS is Proposing</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Another piece of news fueling social media panic is a proposed regulation regarding the <strong>60-day grace period</strong>.
+        </p>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Currently, under 8 CFR § 214.1(l)(2), if an H-1B worker is laid off, they get a 60-day grace period (or until their I-94 expires, whichever is shorter) to either:
+        </p>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-zinc-600 dark:text-zinc-300">
+          <li>Find a new employer to file an H-1B transfer petition.</li>
+          <li>Change status to B-1/B-2 (visitor) or F-1 (student).</li>
+          <li>Depart the United States voluntarily without accruing unlawful presence.</li>
+        </ul>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          In September 2026, the Department of Homeland Security published a <em>Notice of Proposed Rulemaking (NPRM)</em> exploring changes to how grace periods are administered for tech workers. 
+        </p>
+        <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60">
+          <h4 class="font-bold text-amber-900 dark:text-amber-200 text-sm">Important Rulemaking Fact:</h4>
+          <p class="text-xs sm:text-sm text-amber-800 dark:text-amber-300 leading-relaxed mt-1">
+            A proposed rule is <strong>NOT the law today</strong>. Public comments remain open until November 10, 2026. The government cannot implement a final rule without reviewing hundreds of thousands of public comments and issuing an official Final Rule in the Federal Register, which typically takes 6 to 18 months. As of today, the 60-day grace period remains 100% legally active.
+          </p>
+        </div>
+      </section>
+
+      <section id="actionable-engineer-checklist" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">6. The H-1B Engineer Action Checklist: Your Next Steps</h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          Instead of scrolling doom-and-gloom social media posts, here is the exact checklist of what you should do this week:
+        </p>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">1. Download and Check Your Most Recent I-94</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Go to the official CBP website (cbp.gov) and download your electronic I-94 arrival record. Note your "Admit Until Date". That date—not the expiration date on your passport visa stamp—governs your legal lawful presence in the United States.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">2. Audit Your Emergency Savings Runway</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              If you live in a high-cost-of-living state like California, Washington, or New York, run your numbers in our free <a href="/tools/salary-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">US Salary &amp; Take-Home Paycheck Calculator</a>. Make sure you maintain at least 4 to 6 months of living expenses in an easily accessible high-yield account so that job transitions or grace periods don't cause financial stress.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">3. Remember: H-1B Transfers are Unaffected</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              If your current employer is on the DOL pause list and you are worried about your green card timeline, you are legally free to interview and switch to another company. H-1B change of employer petitions are filed directly with USCIS and are not subject to the PERM audit pause.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="frequently-asked-questions" class="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">7. Frequently Asked Questions & Edge Cases</h2>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Can I travel outside the US on an H-1B right now?</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Yes. If you have an unexpired H-1B visa stamp in your passport and a valid Form I-797 approval notice, international travel is completely normal. The PERM audit affects green card labor certifications, not non-immigrant travel rights.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Does this affect F-1 OPT students hoping to get an H-1B next year?</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              No. F-1 STEM OPT and the annual March H-1B lottery are administered by USCIS. The Department of Labor's PERM audit only applies to permanent residency (Green Cards), not initial H-1B lottery petitions or OPT extensions.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">When will the Department of Labor resolve the PERM pause?</h4>
+            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+              Typically, DOL audits take between 6 to 12 months. Once the companies document that they followed recruitment rules or re-advertise open positions without violating the 6-month layoff provision, PERM processing resumes normally.
+            </p>
+          </div>
+        </div>
+
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed pt-2">
+          Want to audit your take-home pay, federal taxes, and state deductions? Use our private, client-side <a href="/tools/salary-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">US Salary &amp; Take-Home Paycheck Calculator</a>, or learn how contractor pay compares to W-2 corporate earnings in our guide on <a href="/blog/1099-vs-w2-true-hourly-rate-calculation" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">1099 vs W2 True Hourly Rate Calculations</a>.
         </p>
       </section>
     `.trim()
