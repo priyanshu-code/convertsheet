@@ -4,7 +4,8 @@ import React, { memo } from "react";
 
 export interface CalcSliderProps {
   id: string;
-  label: string;
+  label?: string;
+  ariaLabel?: string;
   value: number;
   min: number;
   max: number;
@@ -18,7 +19,8 @@ export interface CalcSliderProps {
 
 export const CalcSlider = memo(function CalcSlider({
   id,
-  label,
+  label = "",
+  ariaLabel,
   value,
   min,
   max,
@@ -29,6 +31,8 @@ export const CalcSlider = memo(function CalcSlider({
   prefix = "",
   helpText,
 }: CalcSliderProps) {
+  const effectiveLabel = label || ariaLabel || `${id} slider`;
+
   const handleCommit = (val: number) => {
     if (onCommit) {
       onCommit(val);
@@ -38,13 +42,19 @@ export const CalcSlider = memo(function CalcSlider({
   return (
     <div className="space-y-2 w-full">
       <div className="flex items-center justify-between text-xs sm:text-sm">
-        <label
-          htmlFor={id}
-          className="font-semibold text-zinc-700 dark:text-zinc-300"
-        >
-          {label}
-        </label>
-        <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded-lg text-xs">
+        {label ? (
+          <label
+            htmlFor={id}
+            className="font-semibold text-zinc-700 dark:text-zinc-300"
+          >
+            {label}
+          </label>
+        ) : (
+          <span className="sr-only" id={`${id}-label`}>
+            {effectiveLabel}
+          </span>
+        )}
+        <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded-lg text-xs ml-auto">
           {prefix}
           {value.toLocaleString()} {unit}
         </span>
@@ -53,6 +63,7 @@ export const CalcSlider = memo(function CalcSlider({
       <input
         id={id}
         type="range"
+        aria-label={effectiveLabel}
         min={min}
         max={max}
         step={step}

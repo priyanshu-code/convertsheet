@@ -63,7 +63,7 @@ export function MortgageTermComparisonTable({
 
   return (
     <section
-      aria-labelledby="comparison-table-heading"
+      aria-labelledby="mortgage-term-comparison-heading"
       className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 shadow-xs space-y-6"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-5">
@@ -72,7 +72,7 @@ export function MortgageTermComparisonTable({
             Side-by-Side Analysis
           </span>
           <h2
-            id="comparison-table-heading"
+            id="mortgage-term-comparison-heading"
             className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50"
           >
             15-Year vs. 30-Year Mortgage Side-by-Side

@@ -68,14 +68,14 @@ export function PresetComparisonTable({
 
     return (
       <section
-        aria-labelledby="comparison-table-heading"
+        aria-labelledby="preset-comparison-table-heading"
         className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/60">
           <div className="flex items-center gap-2">
             <Table className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <h2
-              id="comparison-table-heading"
+              id="preset-comparison-table-heading"
               className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100"
             >
               Side-by-Side Term Comparison: {presetName}
@@ -173,14 +173,14 @@ export function PresetComparisonTable({
 
     return (
       <section
-        aria-labelledby="comparison-table-heading"
+        aria-labelledby="preset-comparison-table-heading"
         className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/60">
           <div className="flex items-center gap-2">
             <Table className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <h2
-              id="comparison-table-heading"
+              id="preset-comparison-table-heading"
               className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100"
             >
               Pay Frequency Breakdown: {presetName}
@@ -237,13 +237,13 @@ export function PresetComparisonTable({
 
     return (
       <section
-        aria-labelledby="comparison-table-heading"
+        aria-labelledby="preset-comparison-table-heading"
         className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs"
       >
         <div className="flex items-center gap-2 p-4 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/60">
           <Table className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           <h2
-            id="comparison-table-heading"
+            id="preset-comparison-table-heading"
             className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100"
           >
             Quick Percentage Matrix: {presetName}

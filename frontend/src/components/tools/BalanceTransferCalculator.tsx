@@ -333,12 +333,12 @@ export function BalanceTransferCalculator({
         {/* Switching Costs Accordion/Section */}
         <div className="mt-6 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40">
           <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-            <h4 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+            <h3 className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
               <span>Switching Fees & MODT Stamp Duty</span>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 font-medium">
                 Upfront Costs
               </span>
-            </h4>
+            </h3>
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[11px] text-zinc-500">MODT State Preset:</span>
               {stateModtPresets.map((s) => (
@@ -611,27 +611,27 @@ export function BalanceTransferCalculator({
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
           <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-            <h5 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1 flex items-center gap-1.5">
+            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1 flex items-center gap-1.5">
               <span>1. The Internal Repricing Hack</span>
-            </h5>
+            </h3>
             <p>
               Before switching to an outside lender and incurring MODT stamp duty and legal fees, submit an internal repricing request to your existing bank. Banks routinely cut rates for existing borrowers by charging a nominal administrative repricing fee of ₹1,000–₹5,000 without requiring fresh mortgage registration.
             </p>
           </div>
 
           <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-            <h5 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1 flex items-center gap-1.5">
+            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1 flex items-center gap-1.5">
               <span>2. The 50 BPS & 5-Year Rule</span>
-            </h5>
+            </h3>
             <p>
               A balance transfer is mathematically lucrative if the interest rate delta is at least 0.40% to 0.50% (40–50 bps) and you have more than 5 years of repayment remaining. If your remaining term is less than 3–4 years, upfront switching friction will eat up almost all interest savings.
             </p>
           </div>
 
           <div className="p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-            <h5 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1 flex items-center gap-1.5">
+            <h3 className="font-bold text-zinc-900 dark:text-zinc-100 mb-1 flex items-center gap-1.5">
               <span>3. Document Handover & EC</span>
-            </h5>
+            </h3>
             <p>
               Under RBI fair practice directives, banks must return your original property title deeds and issue a No Objection Certificate (NOC) within 30 days of loan closure. Always check whether your prospective lender accepts certified copies during the transition window to prevent loan disbursement stalls.
             </p>

@@ -2924,7 +2924,7 @@ const arrowResult = await conn.query(\`
             <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
               High C-D Ratio (Desperate for Cash)
             </span>
-            <h4 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Large Private Banks &amp; SFBs (85%–92% C-D)</h4>
+            <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Large Private Banks &amp; SFBs (85%–92% C-D)</h3>
             <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
               When credit demand outstrips deposit inflows (such as post-merger balance sheet expansions), private lenders cannot issue new loans without securing fresh deposits. They aggressively launch promotional buckets offering 7.9% to 8.4% to vacuum liquidity from the market.
             </p>
@@ -2933,7 +2933,7 @@ const arrowResult = await conn.query(\`
             <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
               Low C-D Ratio (Cash Rich)
             </span>
-            <h4 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Public Sector Banks (SBI, BoB, Canara) (68%–74% C-D)</h4>
+            <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Public Sector Banks (SBI, BoB, Canara) (68%–74% C-D)</h3>
             <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Backed by massive rural and semi-urban branch networks, PSU banks hold millions of low-cost Current and Savings Account (CASA) deposits. Because they have surplus liquidity buffers, they do not need to overpay retail depositors to meet loan disbursements.
             </p>
@@ -3025,9 +3025,9 @@ const arrowResult = await conn.query(\`
           How should smart depositors position their money during a repo rate cycle? Rather than guessing whether the RBI will hike one more time, deploy the battle-tested <strong>FD Laddering Blueprint</strong>:
         </p>
         <div class="p-4 sm:p-5 rounded-2xl bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-3">
-          <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">
+          <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">
             The 3-Tranche Laddering Strategy (Example: ₹15 Lakh Corpus)
-          </h4>
+          </h3>
           <ol class="space-y-2 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 pl-5 list-decimal">
             <li><strong>Bucket 1 (₹5 Lakh in 1-Year Special Bucket):</strong> Earning 7.75%. Matures in 12 months. If the RBI hikes rates further, you reinvest this tranche at higher rates without breaking early.</li>
             <li><strong>Bucket 2 (₹5 Lakh in 2-Year Bucket):</strong> Earning 7.60%. Matures in 24 months, providing rolling mid-term liquidity.</li>
@@ -3169,13 +3169,13 @@ const arrowResult = await conn.query(\`
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 space-y-2">
-            <h4 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Monthly Reset Lenders (e.g. SBI)</h4>
+            <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Monthly Reset Lenders (e.g. SBI)</h3>
             <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Loans are recalibrated on the 1st of every calendar month following any change in the policy repo rate. If the RBI hikes on October 8th, your rate resets on November 1st.
             </p>
           </div>
           <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 space-y-2">
-            <h4 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Quarterly Reset Lenders (Private Banks)</h4>
+            <h3 class="font-bold text-sm text-zinc-900 dark:text-zinc-100">Quarterly Reset Lenders (Private Banks)</h3>
             <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Loans reset strictly on fixed calendar quarters (Jan 1, Apr 1, Jul 1, Oct 1). If the RBI hikes repo in early October, your rate might not jump until January 1st—giving you an extra 80 days of lower interest.
             </p>
@@ -3373,20 +3373,20 @@ const arrowResult = await conn.query(\`
         </p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-1.5">
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Account 1: Home Loan Account</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Account 1: Home Loan Account</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300">
               This is where your sanctioned loan principal (say, ₹50,00,000) lives. Your monthly contractual EMI is debited against this account just like any normal mortgage.
             </p>
           </div>
           <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 space-y-1.5">
-            <h4 class="font-bold text-emerald-900 dark:text-emerald-200 text-sm">Account 2: Overdraft (OD) Current Account</h4>
+            <h3 class="font-bold text-emerald-900 dark:text-emerald-200 text-sm">Account 2: Overdraft (OD) Current Account</h3>
             <p class="text-xs sm:text-sm text-emerald-800 dark:text-emerald-300">
               This is an operational bank account with an SBI Global debit card, cheque book, and net banking. Any surplus cash you transfer here acts as an instant interest shield.
             </p>
           </div>
         </div>
 
-        <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-base pt-2">The Daily Calculation in Real Life:</h4>
+        <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-base pt-2">The Daily Calculation in Real Life:</h3>
         <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
           SBI does not calculate interest monthly. It runs an automated batch script every single night at midnight that calculates daily interest on your <strong>Net Balance</strong>:
         </p>
@@ -3486,7 +3486,7 @@ const arrowResult = await conn.query(\`
           </div>
         </div>
 
-        <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-base pt-3">Break-Even Requirements for Common Loan Amounts:</h4>
+        <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-base pt-3">Break-Even Requirements for Common Loan Amounts:</h3>
         <div class="overflow-x-auto my-2">
           <table class="w-full text-left text-sm border-collapse border border-zinc-200 dark:border-zinc-700">
             <thead>
@@ -3540,7 +3540,7 @@ const arrowResult = await conn.query(\`
         </p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
           <div class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800/50 space-y-2">
-            <h4 class="font-bold text-rose-900 dark:text-rose-200 text-sm">Option A: The Fixed Deposit (FD) Trap</h4>
+            <h3 class="font-bold text-rose-900 dark:text-rose-200 text-sm">Option A: The Fixed Deposit (FD) Trap</h3>
             <ul class="text-xs text-rose-800 dark:text-rose-300 space-y-1.5">
               <li>• Headline FD interest rate: <strong>7.10%</strong></li>
               <li>• Tax deduction at 30% slab + 4% cess: <strong>31.2% tax cut</strong></li>
@@ -3550,7 +3550,7 @@ const arrowResult = await conn.query(\`
             </ul>
           </div>
           <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800/50 space-y-2">
-            <h4 class="font-bold text-emerald-900 dark:text-emerald-200 text-sm">Option B: The SBI MaxGain Advantage</h4>
+            <h3 class="font-bold text-emerald-900 dark:text-emerald-200 text-sm">Option B: The SBI MaxGain Advantage</h3>
             <ul class="text-xs text-emerald-800 dark:text-emerald-300 space-y-1.5">
               <li>• Loan interest saved: <strong>8.90% per year</strong></li>
               <li>• Income tax on interest saved: <strong>₹0 (Zero)</strong></li>
@@ -3571,21 +3571,21 @@ const arrowResult = await conn.query(\`
         </p>
         <div class="space-y-3">
           <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 space-y-1">
-            <h4 class="font-bold text-amber-900 dark:text-amber-200 text-sm">Gotcha #1: The Under-Construction Withdrawal Trap (Crucial!)</h4>
+            <h3 class="font-bold text-amber-900 dark:text-amber-200 text-sm">Gotcha #1: The Under-Construction Withdrawal Trap (Crucial!)</h3>
             <p class="text-xs sm:text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
               If your flat is under construction and the builder is receiving phased disbursements (e.g. 20%, 50%, 80%), SBI will open your MaxGain account, <strong>but they will block all withdrawals</strong> until the property is fully completed, registered, and the final disbursement cheque is issued! You can deposit money to save interest, but you CANNOT swipe your debit card or transfer it back out until possession. If you need liquidity during construction, do not rely on MaxGain.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-1">
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Gotcha #2: The 'Drawing Power' vs 'Book Balance' Confusion</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Gotcha #2: The 'Drawing Power' vs 'Book Balance' Confusion</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               In your MaxGain internet banking statement, you will see two numbers: <strong>Drawing Power (DP)</strong> and <strong>Book Balance</strong>. Drawing Power represents your maximum allowed loan limit, and it decreases automatically every single month by the principal portion of your EMI. If your principal drops to ₹42 Lakh, you cannot withdraw more than ₹42 Lakh even if you originally took a ₹50 Lakh loan.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-1">
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Gotcha #3: The Section 24(b) Tax Deduction Myth</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Gotcha #3: The Section 24(b) Tax Deduction Myth</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               Some accountants tell borrowers: <em>"Don't park too much cash in MaxGain or you'll lose your ₹2,00,000 Section 24(b) tax deduction!"</em> This is terrible financial advice. If you save ₹1,000 in interest, you lose ₹312 in tax deduction (at the 30% slab), but you keep <strong>₹688 of real cash</strong> in your pocket. Never pay the bank ₹1,000 just to save ₹312 on your tax return.
             </p>
@@ -3601,7 +3601,7 @@ const arrowResult = await conn.query(\`
         <div class="space-y-3">
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
             <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-0.5">STEP 1</span>
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Credit Your Entire Salary into MaxGain on the 1st</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Credit Your Entire Salary into MaxGain on the 1st</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Have your company HR credit your salary directly to your MaxGain OD account. Even if you spend ₹1,50,000 over the course of the month, that cash sits in your OD account for an average of 15 days, saving you interest every single day.
             </p>
@@ -3609,7 +3609,7 @@ const arrowResult = await conn.query(\`
 
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
             <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-0.5">STEP 2</span>
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Route All Household Spending Through Credit Cards</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Route All Household Spending Through Credit Cards</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Instead of paying for groceries, dining, utilities, and shopping via UPI from your bank account, put 100% of it on a credit card. Pay the credit card bill on its due date (45 to 50 days later). That keeps your ₹50,000 to ₹1,00,000 sitting in your MaxGain account for an extra month and a half, saving daily interest while the credit card company finances your lifestyle interest-free.
             </p>
@@ -3617,7 +3617,7 @@ const arrowResult = await conn.query(\`
 
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
             <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 block mb-0.5">STEP 3</span>
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Consolidate All Sinking Funds in MaxGain</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Consolidate All Sinking Funds in MaxGain</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Money saved for annual car insurance, upcoming school fees, term insurance premiums, and Diwali vacations usually sits in standard savings accounts earning a pathetic 2.7%. Move all of it into your MaxGain account. You can withdraw it the minute the bill arrives, but until that day, it saves you 8.90% interest daily.
             </p>
@@ -3629,21 +3629,21 @@ const arrowResult = await conn.query(\`
         <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">8. Frequently Asked Questions & Edge Cases</h2>
         <div class="space-y-3">
           <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">What happens if my parked surplus exceeds my outstanding loan balance?</h4>
+            <h3 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">What happens if my parked surplus exceeds my outstanding loan balance?</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               If your loan balance is ₹30 Lakh and you park ₹35 Lakh, your net interest payable drops to zero. However, SBI will <strong>never pay you interest</strong> on that extra ₹5 Lakh. As soon as your parked balance matches your principal balance, withdraw any excess and invest it in mutual funds or fixed deposits.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Can I switch my existing regular SBI home loan to SBI MaxGain?</h4>
+            <h3 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Can I switch my existing regular SBI home loan to SBI MaxGain?</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Yes. You can visit your RACPC or home loan branch and submit an internal conversion request. SBI charges a one-time administrative fee (usually ₹5,000 to ₹10,000 + GST). You do not need fresh property valuation or title deed verification.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">How does Bank of Baroda's Home Loan Advantage compare with SBI MaxGain?</h4>
+            <h3 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">How does Bank of Baroda's Home Loan Advantage compare with SBI MaxGain?</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Bank of Baroda charges only a <strong>0.25% spread</strong> (vs. SBI's 0.40%). That means your break-even parked balance on a ₹50 Lakh loan is only ₹1,44,508 (compared to SBI's ₹2,24,719). BoB also links to a savings account rather than a current account. If you have an active BoB branch nearby, it is often mathematically superior to SBI MaxGain.
             </p>
@@ -3779,7 +3779,7 @@ const arrowResult = await conn.query(\`
           Under US immigration law, before an employer can sponsor a foreign worker for a Green Card, they must prove to the government that they advertised the position to the American public and could not find any qualified US worker.
         </p>
         <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 space-y-2">
-          <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">The 6-Month Layoff Lookback Rule:</h4>
+          <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">The 6-Month Layoff Lookback Rule:</h3>
           <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
             If a company laid off American workers in the same or related occupation within the last 6 months in that metropolitan area, federal law requires the company to:
           </p>
@@ -3815,7 +3815,7 @@ const arrowResult = await conn.query(\`
         <div class="space-y-3">
           <div class="p-4 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20 space-y-1">
             <span class="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wide">Category 1: You Have an Approved I-140</span>
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: 100% Safe &amp; Protected</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: 100% Safe &amp; Protected</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               If your PERM was already certified in the past and USCIS approved your Form I-140, this Department of Labor pause affects you ZERO percent. Your priority date is locked under AC21 § 104(c), and your employer can continue extending your H-1B indefinitely in 3-year increments beyond the 6-year limit.
             </p>
@@ -3823,7 +3823,7 @@ const arrowResult = await conn.query(\`
 
           <div class="p-4 rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/20 space-y-1">
             <span class="text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wide">Category 2: You Are in Years 1 to 4 of Your H-1B</span>
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: Safe, but Expect Green Card Delays</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: Safe, but Expect Green Card Delays</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               Your day-to-day life does not change. Your salary, visa stamp, and work authorization are untouched. However, if your employer was about to initiate your green card paperwork, expect a 6 to 12-month delay until the company clears the DOL audit and re-runs local recruitment ads.
             </p>
@@ -3831,7 +3831,7 @@ const arrowResult = await conn.query(\`
 
           <div class="p-4 rounded-xl border border-rose-200 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20 space-y-1">
             <span class="text-xs font-bold text-rose-700 dark:text-rose-300 uppercase tracking-wide">Category 3: You Are in Year 5 of Your H-1B Without an I-140</span>
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: Action Required (Clock is Ticking)</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">Status: Action Required (Clock is Ticking)</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               This is the only group facing real structural pressure. Under AC21 § 106(a), to extend your H-1B beyond the 6-year maximum cap, your PERM must have been filed at least 365 days prior to your 6-year end date, or your I-140 must be approved. If your company cannot file PERM right now, you need to talk to immigration counsel immediately about an H-1B transfer to an employer actively filing PERMs, an internal transfer abroad (L-1), or alternative visa paths.
             </p>
@@ -3856,7 +3856,7 @@ const arrowResult = await conn.query(\`
           In September 2026, the Department of Homeland Security published a <em>Notice of Proposed Rulemaking (NPRM)</em> exploring changes to how grace periods are administered for tech workers. 
         </p>
         <div class="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60">
-          <h4 class="font-bold text-amber-900 dark:text-amber-200 text-sm">Important Rulemaking Fact:</h4>
+          <h3 class="font-bold text-amber-900 dark:text-amber-200 text-sm">Important Rulemaking Fact:</h3>
           <p class="text-xs sm:text-sm text-amber-800 dark:text-amber-300 leading-relaxed mt-1">
             A proposed rule is <strong>NOT the law today</strong>. Public comments remain open until November 10, 2026. The government cannot implement a final rule without reviewing hundreds of thousands of public comments and issuing an official Final Rule in the Federal Register, which typically takes 6 to 18 months. As of today, the 60-day grace period remains 100% legally active.
           </p>
@@ -3870,21 +3870,21 @@ const arrowResult = await conn.query(\`
         </p>
         <div class="space-y-3">
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">1. Download and Check Your Most Recent I-94</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">1. Download and Check Your Most Recent I-94</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Go to the official CBP website (cbp.gov) and download your electronic I-94 arrival record. Note your "Admit Until Date". That date—not the expiration date on your passport visa stamp—governs your legal lawful presence in the United States.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">2. Audit Your Emergency Savings Runway</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">2. Audit Your Emergency Savings Runway</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               If you live in a high-cost-of-living state like California, Washington, or New York, run your numbers in our free <a href="/tools/salary-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">US Salary &amp; Take-Home Paycheck Calculator</a>. Make sure you maintain at least 4 to 6 months of living expenses in an easily accessible high-yield account so that job transitions or grace periods don't cause financial stress.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">3. Remember: H-1B Transfers are Unaffected</h4>
+            <h3 class="font-bold text-zinc-900 dark:text-zinc-100 text-sm">3. Remember: H-1B Transfers are Unaffected</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               If your current employer is on the DOL pause list and you are worried about your green card timeline, you are legally free to interview and switch to another company. H-1B change of employer petitions are filed directly with USCIS and are not subject to the PERM audit pause.
             </p>
@@ -3896,21 +3896,21 @@ const arrowResult = await conn.query(\`
         <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">7. Frequently Asked Questions & Edge Cases</h2>
         <div class="space-y-3">
           <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Can I travel outside the US on an H-1B right now?</h4>
+            <h3 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Can I travel outside the US on an H-1B right now?</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Yes. If you have an unexpired H-1B visa stamp in your passport and a valid Form I-797 approval notice, international travel is completely normal. The PERM audit affects green card labor certifications, not non-immigrant travel rights.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Does this affect F-1 OPT students hoping to get an H-1B next year?</h4>
+            <h3 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">Does this affect F-1 OPT students hoping to get an H-1B next year?</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               No. F-1 STEM OPT and the annual March H-1B lottery are administered by USCIS. The Department of Labor's PERM audit only applies to permanent residency (Green Cards), not initial H-1B lottery petitions or OPT extensions.
             </p>
           </div>
 
           <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">
-            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">When will the Department of Labor resolve the PERM pause?</h4>
+            <h3 class="font-semibold text-zinc-900 dark:text-zinc-100 text-sm sm:text-base">When will the Department of Labor resolve the PERM pause?</h3>
             <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
               Typically, DOL audits take between 6 to 12 months. Once the companies document that they followed recruitment rules or re-advertise open positions without violating the 6-month layoff provision, PERM processing resumes normally.
             </p>

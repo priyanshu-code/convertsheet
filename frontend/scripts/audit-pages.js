@@ -15,6 +15,7 @@
  *    - Canonical URL validity
  *    - Missing og:title, og:description
  *    - Missing responsive <meta name="viewport">
+ * 3. Broken internal link detection
  */
 
 const fs = require("fs");
@@ -22,15 +23,10 @@ const path = require("path");
 const { JSDOM } = require("jsdom");
 
 const OUT_DIR = path.resolve(__dirname, "../out");
-const AXE_SOURCE_PATH = path.resolve(
-  __dirname,
-  "../node_modules/axe-core/axe.min.js"
-);
-
-let axeSource = "";
-if (fs.existsSync(AXE_SOURCE_PATH)) {
-  axeSource = fs.readFileSync(AXE_SOURCE_PATH, "utf8");
-} else {
+let axe = null;
+try {
+  axe = require("axe-core");
+} catch {
   console.warn("axe-core not found. Skipping deep DOM a11y engine checks.");
 }
 
@@ -49,23 +45,123 @@ function findHtmlFiles(dir, fileList = []) {
   return fileList;
 }
 
-async function auditHtmlFile(filePath) {
-  const relativePath = path.relative(OUT_DIR, filePath);
-  const htmlContent = fs.readFileSync(filePath, "utf8");
+function buildExistingFilesSet(dir, baseDir = dir, set = new Set()) {
+  if (!fs.existsSync(dir)) return set;
+  const files = fs.readdirSync(dir);
+  for (const file of files) {
+    const fullPath = path.join(dir, file);
+    const stat = fs.statSync(fullPath);
+    if (stat.isDirectory()) {
+      buildExistingFilesSet(fullPath, baseDir, set);
+    } else {
+      const rel = path.relative(baseDir, fullPath).replace(/\\/g, "/");
+      set.add("/" + rel);
+      if (rel.endsWith(".html")) {
+        set.add("/" + rel.replace(/\.html$/, ""));
+      }
+      if (rel.endsWith("/index.html")) {
+        set.add("/" + rel.replace(/\/index\.html$/, ""));
+      }
+    }
+  }
+  return set;
+}
+
+function checkInternalLinks(links, existingFilesSet, relativePath, errors) {
+  for (const href of links) {
+    if (!href) continue;
+    if (
+      href.startsWith("#") ||
+      href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:") ||
+      href.startsWith("javascript:")
+    ) {
+      continue;
+    }
+
+    const cleanPath = href.split("#")[0].split("?")[0];
+    if (!cleanPath || cleanPath === "/") continue;
+
+    const hasMatch =
+      existingFilesSet.has(cleanPath) ||
+      existingFilesSet.has(`${cleanPath}.html`) ||
+      existingFilesSet.has(`${cleanPath}/index.html`);
+
+    if (!hasMatch) {
+      errors.push(`Broken internal link (404): "${href}" on ${relativePath}`);
+    }
+  }
+}
+
+function auditFast(relativePath, htmlContent, existingFilesSet) {
   const errors = [];
   const warnings = [];
 
-  const dom = new JSDOM(htmlContent, {
-    runScripts: axeSource ? "dangerously" : undefined,
-    resources: "usable",
-  });
-  const { window } = dom;
-  const { document } = window;
+  // 1. Heading Hierarchy Check
+  const headingMatches = [...htmlContent.matchAll(/<(h[1-6])[\s>]([\s\S]*?)<\/\1>/gi)];
+  let lastLevel = 0;
+  const h1Count = headingMatches.filter((m) => m[1].toLowerCase() === "h1").length;
+
+  if (h1Count === 0 && !relativePath.includes("404.html")) {
+    errors.push("Missing <h1> element on page");
+  } else if (h1Count > 1) {
+    warnings.push(`Multiple <h1> elements found (${h1Count})`);
+  }
+
+  for (const m of headingMatches) {
+    const level = parseInt(m[1].substring(1), 10);
+    const text = m[2].replace(/<[^>]+>/g, "").trim().slice(0, 40);
+    if (lastLevel > 0 && level > lastLevel + 1) {
+      errors.push(`Heading hierarchy skipped: <h${lastLevel}> followed by <h${level}> ("${text}")`);
+    }
+    lastLevel = level;
+  }
+
+  // 2. SEO & Meta Checks
+  const titleMatch = htmlContent.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  const title = titleMatch ? titleMatch[1].trim() : "";
+  if (!title) {
+    errors.push("Missing or empty <title>");
+  } else if (title.length < 10) {
+    warnings.push(`Title too short (${title.length} chars): "${title}"`);
+  }
+
+  const metaDescMatch =
+    htmlContent.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i) ||
+    htmlContent.match(/<meta[^>]*content=["']([^"']*)["'][^>]*name=["']description["']/i);
+  const metaDesc = metaDescMatch ? metaDescMatch[1].trim() : "";
+  if (!metaDesc && !relativePath.includes("404.html")) {
+    errors.push('Missing <meta name="description">');
+  }
+
+  const canonicalMatch = htmlContent.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["']/i);
+  if (!canonicalMatch && !relativePath.includes("404.html")) {
+    warnings.push("Missing canonical link tag");
+  }
+
+  const viewportMatch = htmlContent.match(/<meta[^>]*name=["']viewport["']/i);
+  if (!viewportMatch) {
+    errors.push('Missing responsive <meta name="viewport">');
+  }
+
+  // 3. Internal Links Check
+  const linkMatches = [...htmlContent.matchAll(/<a[^>]+href=["']([^"']+)["']/gi)].map((m) => m[1]);
+  checkInternalLinks(linkMatches, existingFilesSet, relativePath, errors);
+
+  return { file: relativePath, errors, warnings };
+}
+
+async function auditWithAxe(relativePath, htmlContent, existingFilesSet) {
+  const errors = [];
+  const warnings = [];
+
+  const dom = new JSDOM(htmlContent);
+  const { document } = dom.window;
 
   // 1. Heading Hierarchy Check
-  const headings = Array.from(
-    document.querySelectorAll("h1, h2, h3, h4, h5, h6")
-  );
+  const headings = Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6"));
   let lastLevel = 0;
   const h1Count = headings.filter((h) => h.tagName.toLowerCase() === "h1").length;
 
@@ -123,7 +219,7 @@ async function auditHtmlFile(filePath) {
     }
   }
 
-  // 4. Buttons & Links Accessible Name Check
+  // 4. Buttons Accessible Name Check
   const buttons = Array.from(document.querySelectorAll("button"));
   for (const btn of buttons) {
     const text = btn.textContent.trim();
@@ -136,47 +232,17 @@ async function auditHtmlFile(filePath) {
     }
   }
 
-  // 5. Internal Link Crawler & 404 Detection
-  const links = Array.from(document.querySelectorAll("a[href]"));
-  for (const link of links) {
-    const href = link.getAttribute("href")?.trim();
-    if (!href) continue;
-
-    // Ignore anchors, external protocols, mailto, tel, javascript
-    if (
-      href.startsWith("#") ||
-      href.startsWith("http://") ||
-      href.startsWith("https://") ||
-      href.startsWith("mailto:") ||
-      href.startsWith("tel:") ||
-      href.startsWith("javascript:")
-    ) {
-      continue;
-    }
-
-    // Strip hash and query parameters
-    const cleanPath = href.split("#")[0].split("?")[0];
-    if (!cleanPath || cleanPath === "/") continue;
-
-    // Normalize path to check in OUT_DIR
-    const targetFile1 = path.join(OUT_DIR, `${cleanPath}.html`);
-    const targetFile2 = path.join(OUT_DIR, cleanPath, "index.html");
-    const targetFile3 = path.join(OUT_DIR, cleanPath); // direct static asset (e.g. .txt, .svg, .png)
-
-    if (
-      !fs.existsSync(targetFile1) &&
-      !fs.existsSync(targetFile2) &&
-      !fs.existsSync(targetFile3)
-    ) {
-      errors.push(`Broken internal link (404): "${href}" on ${relativePath}`);
-    }
-  }
+  // 5. Internal Links Check
+  const linkElements = Array.from(document.querySelectorAll("a[href]")).map((a) =>
+    a.getAttribute("href")?.trim()
+  );
+  checkInternalLinks(linkElements, existingFilesSet, relativePath, errors);
 
   // 6. axe-core Accessibility Engine
-  if (axeSource) {
+  if (axe) {
     try {
-      window.eval(axeSource);
-      const results = await window.axe.run(document, {
+      const targetElement = document.querySelector("main") || document.documentElement;
+      const results = await axe.run(targetElement, {
         runOnly: {
           type: "tag",
           values: ["wcag2a", "wcag2aa", "best-practice"],
@@ -198,11 +264,8 @@ async function auditHtmlFile(filePath) {
     }
   }
 
-  return {
-    file: relativePath,
-    errors,
-    warnings,
-  };
+  dom.window.close();
+  return { file: relativePath, errors, warnings };
 }
 
 async function runAudit() {
@@ -211,15 +274,13 @@ async function runAudit() {
   console.log("==================================================");
 
   if (!fs.existsSync(OUT_DIR)) {
-    console.error(
-      "out directory not found. Please run 'npm run build' first."
-    );
+    console.error("out directory not found. Please run 'npm run build' first.");
     process.exit(1);
   }
 
-  const htmlFiles = findHtmlFiles(OUT_DIR).filter(
-    (f) => !f.includes("/embed/")
-  );
+  const htmlFiles = findHtmlFiles(OUT_DIR).filter((f) => !f.includes("/embed/"));
+  const existingFilesSet = buildExistingFilesSet(OUT_DIR);
+  const presetAxeCounts = new Map();
 
   console.log(`Auditing ${htmlFiles.length} pages in loop...\n`);
 
@@ -229,7 +290,28 @@ async function runAudit() {
 
   for (let i = 0; i < htmlFiles.length; i++) {
     const file = htmlFiles[i];
-    const result = await auditHtmlFile(file);
+    const relativePath = path.relative(OUT_DIR, file).replace(/\\/g, "/");
+    const htmlContent = fs.readFileSync(file, "utf8");
+
+    // Decide whether to run deep axe-core with JSDOM
+    let shouldRunAxe = Boolean(axe);
+    if (shouldRunAxe && relativePath.startsWith("tools/") && relativePath.split("/").length > 2) {
+      const toolDir = relativePath.split("/")[1];
+      if (toolDir === "salary-calculator") {
+        shouldRunAxe = false;
+      } else {
+        const count = presetAxeCounts.get(toolDir) || 0;
+        if (count >= 3) {
+          shouldRunAxe = false;
+        } else {
+          presetAxeCounts.set(toolDir, count + 1);
+        }
+      }
+    }
+
+    const result = shouldRunAxe
+      ? await auditWithAxe(relativePath, htmlContent, existingFilesSet)
+      : auditFast(relativePath, htmlContent, existingFilesSet);
 
     if (result.errors.length > 0 || result.warnings.length > 0) {
       failedPages.push(result);

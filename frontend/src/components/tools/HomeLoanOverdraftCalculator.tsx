@@ -305,7 +305,7 @@ Provide strategic financial advice on whether parking emergency funds in an over
                 />
                 <CalcSlider
                   id="slider-loan-amount"
-                  label=""
+                  ariaLabel="Sanctioned loan amount range slider"
                   value={loanAmount}
                   onChange={setLoanAmount}
                   min={1000000}

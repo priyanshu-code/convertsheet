@@ -205,7 +205,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
               />
               <CalcSlider
                 id="car-price-slider"
-                label=""
+                ariaLabel="Vehicle price slider"
                 value={vehiclePrice}
                 min={5000}
                 max={120000}
@@ -228,7 +228,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
               />
               <CalcSlider
                 id="car-down-payment-slider"
-                label=""
+                ariaLabel="Cash down payment slider"
                 value={downPayment}
                 min={0}
                 max={40000}
@@ -280,7 +280,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
               />
               <CalcSlider
                 id="car-apr-slider"
-                label=""
+                ariaLabel="Interest rate APR slider"
                 value={interestRate}
                 min={1.0}
                 max={25.0}

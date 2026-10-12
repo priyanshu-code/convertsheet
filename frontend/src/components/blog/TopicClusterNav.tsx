@@ -121,9 +121,9 @@ export function TopicClusterNav({ currentPost, className = "" }: TopicClusterNav
                         </span>
                         <span>{branch.readTimeMinutes} min read</span>
                       </div>
-                      <h5 className="mt-1 text-xs font-bold text-zinc-900 group-hover:text-emerald-600 dark:text-zinc-100 dark:group-hover:text-emerald-400 line-clamp-2">
+                      <h4 className="mt-1 text-xs font-bold text-zinc-900 group-hover:text-emerald-600 dark:text-zinc-100 dark:group-hover:text-emerald-400 line-clamp-2">
                         {branch.title}
-                      </h5>
+                      </h4>
                     </div>
                     <div className="mt-2.5 flex items-center justify-end text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                       <span>Read Guide</span>

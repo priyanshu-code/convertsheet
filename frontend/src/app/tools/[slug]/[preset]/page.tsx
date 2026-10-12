@@ -403,10 +403,16 @@ export default function ProgrammaticPresetPage({
 
         {/* Sibling Long-Tail Presets (Internal Link Matrix) */}
         {siblingPresets.length > 0 && (
-          <section className="space-y-4 max-w-4xl mx-auto border-t border-zinc-200 dark:border-zinc-800 pt-8">
+          <section
+            aria-labelledby="sibling-presets-heading"
+            className="space-y-4 max-w-4xl mx-auto border-t border-zinc-200 dark:border-zinc-800 pt-8"
+          >
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-              <h2 className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-zinc-50">
+              <h2
+                id="sibling-presets-heading"
+                className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-zinc-50"
+              >
                 Related {tool.name} Calculations
               </h2>
             </div>

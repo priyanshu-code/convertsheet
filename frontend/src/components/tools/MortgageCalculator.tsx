@@ -231,7 +231,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
             />
             <CalcSlider
               id="home-price-slider"
-              label=""
+              ariaLabel="Home price slider"
               value={homePrice}
               min={50000}
               max={2000000}
@@ -245,14 +245,9 @@ Provide financial advice on whether refinancing or making extra principal paymen
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label htmlFor="down-payment" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                Down Payment ({downPaymentPercent}%)
-              </label>
-            </div>
             <CalcInput
               id="down-payment"
-              label=""
+              label={`Down Payment (${downPaymentPercent}%)`}
               value={downPayment}
               onChange={(val) => setDownPayment(Number(val) || 0)}
               type="number"
@@ -263,7 +258,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
             />
             <CalcSlider
               id="down-payment-slider"
-              label=""
+              ariaLabel="Down payment percentage slider"
               value={downPaymentPercent}
               min={0}
               max={50}
@@ -303,7 +298,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
             />
             <CalcSlider
               id="interest-rate-slider"
-              label=""
+              ariaLabel="Mortgage interest rate slider"
               value={interestRate}
               min={2.0}
               max={14.0}

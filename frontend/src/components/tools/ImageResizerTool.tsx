@@ -226,6 +226,7 @@ export function ImageResizerTool({
               ref={fileInputRef}
               type="file"
               accept="image/*"
+              aria-label="Upload image to resize"
               className="hidden"
               onChange={(e) => {
                 if (e.target.files && e.target.files[0]) {
@@ -271,10 +272,12 @@ export function ImageResizerTool({
             {/* Dimension Sliders & Inputs */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                <label htmlFor="img-resize-width" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                   Width (pixels)
                 </label>
                 <input
+                  id="img-resize-width"
+                  aria-label="Width in pixels"
                   type="number"
                   min={1}
                   max={8000}
@@ -286,7 +289,7 @@ export function ImageResizerTool({
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                  <label htmlFor="img-resize-height" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                     Height (pixels)
                   </label>
                   <button
@@ -311,6 +314,8 @@ export function ImageResizerTool({
                   </button>
                 </div>
                 <input
+                  id="img-resize-height"
+                  aria-label="Height in pixels"
                   type="number"
                   min={1}
                   max={8000}
@@ -324,10 +329,12 @@ export function ImageResizerTool({
             {/* Format & Quality Controls */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                <label htmlFor="img-resize-format" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                   Target Format
                 </label>
                 <select
+                  id="img-resize-format"
+                  aria-label="Target image format"
                   value={dims.format}
                   onChange={(e) =>
                     setDims((prev) => ({
@@ -346,10 +353,12 @@ export function ImageResizerTool({
               {dims.format !== "image/png" && (
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                    <span>Quality</span>
+                    <label htmlFor="img-resize-quality">Quality</label>
                     <span className="font-mono">{dims.quality}%</span>
                   </div>
                   <input
+                    id="img-resize-quality"
+                    aria-label="Image compression quality"
                     type="range"
                     min={20}
                     max={100}
