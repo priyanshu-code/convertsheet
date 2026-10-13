@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { PiggyBank, Landmark, ShieldCheck, AlertCircle } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { PiggyBank, Landmark, ShieldCheck, AlertCircle, FileSpreadsheet } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
@@ -10,6 +10,7 @@ import {
   CalcExportButton,
   CalcPromptButton,
   CalcSaveButton,
+  CalcShareButton,
   ModernSlider,
 } from "@/components/calculator";
 import {
@@ -17,6 +18,7 @@ import {
   CompoundingFrequency,
 } from "@/lib/engines/financial-engine";
 import { SavingsRatesCard } from "@/components/finance";
+import * as XLSX from "xlsx";
 
 export interface SavingsCdCalculatorProps {
   initialValues?: Partial<{
@@ -72,7 +74,79 @@ export function SavingsCdCalculator({
     mode,
   ]);
 
-  // SheetJS formatted export rows
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("mode", mode);
+    params.set("initialDeposit", initialDeposit.toString());
+    params.set("monthlyContribution", monthlyContribution.toString());
+    params.set("annualInterestRate", annualInterestRate.toString());
+    params.set("termMonths", termMonths.toString());
+    params.set("compoundingFrequency", compoundingFrequency);
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [mode, initialDeposit, monthlyContribution, annualInterestRate, termMonths, compoundingFrequency]);
+
+  // Branded SheetJS Excel Export with Retention Hook
+  const handleExportExcel = () => {
+    try {
+      const summaryRows = [
+        ["ConvertSheet - Savings Growth & CD Yield Audit", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/savings-cd-calculator"],
+        ["", ""],
+        ["--- ACCOUNT CONFIGURATION ---", ""],
+        ["Account Type", mode === "hysa" ? "High-Yield Savings Account (HYSA)" : "Certificate of Deposit (CD)"],
+        ["Initial Principal Deposit", initialDeposit],
+        ["Monthly Contribution", mode === "hysa" ? monthlyContribution : 0],
+        ["Quoted Interest Rate", `${annualInterestRate}%`],
+        ["Effective APY", `${result.effectiveApy}%`],
+        ["Compounding Frequency", compoundingFrequency],
+        ["Term Horizon", `${termMonths} Months (${(termMonths / 12).toFixed(1)} Years)`],
+        ["", ""],
+        ["--- GROWTH & YIELD SUMMARY ---", ""],
+        ["Total Principal Invested", result.initialDeposit + result.totalContributions],
+        ["Total Interest Earned", Math.round(result.totalInterestEarned)],
+        ["Final Ending Balance", Math.round(result.finalBalance)],
+        ...(mode === "cd"
+          ? [
+              ["Early Withdrawal Penalty", Math.round(result.earlyWithdrawalPenalty)],
+              ["Net Balance If Broken Early", Math.round(result.netBalanceAfterEarlyPenalty)],
+            ]
+          : []),
+      ];
+
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      const scheduleHeader = [
+        "Month",
+        "Starting Balance ($)",
+        "Monthly Deposit ($)",
+        "Interest Earned ($)",
+        "Cumulative Interest ($)",
+        "Ending Balance ($)",
+      ];
+      const scheduleRows = result.monthlySchedule.map((row) => [
+        row.month,
+        row.startingBalance,
+        row.contribution,
+        row.interestEarned,
+        row.totalInterestEarned,
+        row.endingBalance,
+      ]);
+      const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, wsSummary, "YieldSummary");
+      XLSX.utils.book_append_sheet(wb, wsSchedule, "GrowthSchedule");
+      XLSX.writeFile(wb, `ConvertSheet_${mode.toUpperCase()}_Growth_${initialDeposit}.xlsx`);
+    } catch (err) {
+      console.error("Export to Excel failed:", err);
+    }
+  };
+
+  // SheetJS formatted export rows for backwards compatibility
   const exportData = useMemo(() => {
     return result.monthlySchedule.map((row) => ({
       Month: row.month,
@@ -100,7 +174,13 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
   }, [mode, initialDeposit, monthlyContribution, annualInterestRate, compoundingFrequency, termMonths, result]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-24 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
       {/* Account Type Toggle */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-2">
@@ -117,7 +197,7 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
           <button
             type="button"
             onClick={() => setMode("hysa")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
               mode === "hysa"
                 ? "bg-emerald-600 text-white shadow-xs"
                 : "bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100"
@@ -128,7 +208,7 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
           <button
             type="button"
             onClick={() => setMode("cd")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
               mode === "cd"
                 ? "bg-emerald-600 text-white shadow-xs"
                 : "bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100"
@@ -432,6 +512,16 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                     { label: "Horizon", value: `${termMonths} mos` },
                   ]}
                 />
+                <CalcShareButton
+                  state={{
+                    mode,
+                    initialDeposit,
+                    monthlyContribution,
+                    annualInterestRate,
+                    termMonths,
+                    compoundingFrequency,
+                  }}
+                />
                 <CalcPromptButton prompt={aiPrompt} label="Analyze Yield with AI" />
               </div>
             </div>
@@ -442,6 +532,27 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
       {/* Benchmark Rates & High-Yield Yields Card */}
       <div className="mt-8">
         <SavingsRatesCard depositAmount={initialDeposit} />
+      </div>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
+            {mode === "hysa" ? "Final Balance" : "CD Maturity Balance"}
+          </span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            ${Math.round(result.finalBalance).toLocaleString()}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleExportExcel}
+            className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-xl shadow-xs"
+          >
+            Export Excel
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-12",
-  "totalBlogs": 22,
+  "lastUpdated": "2026-10-13",
+  "totalBlogs": 23,
   "totalTools": 18,
   "blogs": [
     {
@@ -134,6 +134,12 @@
       "title": "Did the US Just 'Close' H-1B Visas? Why Tech Layoffs Triggered Corporate PERM Pauses (And the Truth About 2026 Caps)",
       "category": "Immigration & Career Finance",
       "description": "Viral rumors claim the US has closed H-1B visas. Uncover the legal reality under 20 CFR § 656.17(k): why tech layoffs forced Big Tech to pause PERM labor certifications, what actually happened to the statutory 85,000 cap, and how to protect your immigration status and paycheck."
+    },
+    {
+      "slug": "mospi-cpi-inflation-surge-festive-home-loan-concessions-2026",
+      "title": "MoSPI Inflation Jumps to 5.54%: The Festive Home Loan Trap Behind 7.20% Bank Offers",
+      "category": "Financial Planning",
+      "description": "MoSPI's October 12, 2026 CPI data reveals retail inflation jumped 71 bps to 5.54%, driven by a 7.74% food spike. Discover why banks' promotional 7.20%–7.25% festive home loan offers mask structural EBLR reset traps."
     }
   ],
   "tools": [
@@ -257,21 +263,42 @@
     },
     {
       "slug": "rate-hike-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-13",
+      "moatsAdded": [
+        "dual-range-sliders",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "save-share-prompt-actions",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "savings-cd-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-13",
+      "moatsAdded": [
+        "hysa-cd-toggle-44px",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "save-share-prompt-actions",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "balance-transfer-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-13",
+      "moatsAdded": [
+        "4-slider-responsive-grid",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "save-share-prompt-actions",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "annual-to-hourly-calculator",

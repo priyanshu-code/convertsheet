@@ -457,8 +457,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15 vs 30 Year Mortgage Calculator (2026) — Compare Payments & Interest Savings",
-    "metaDescription": "Use our 15 vs 30 year mortgage calculator to compare monthly payments and interest savings side by side. On a $320k loan, save $248,282 in total interest.",
+    "title": "15 vs 30 Year Mortgage Calculator — Compare Monthly Payments & Interest (2026)",
+    "metaDescription": "Compare 15-year vs 30-year mortgage payments side by side. Calculate exact monthly payment differences, lifetime interest savings ($248k+), and amortization schedules.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {
@@ -793,8 +793,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "car-loan-calculator",
     "presetSlug": "15k-car-loan",
     "name": "$15,000 Auto Loan Payment Calculator",
-    "title": "$15,000 Car Loan Calculator (2026) — Monthly Payment & Interest Schedule",
-    "metaDescription": "Calculate monthly payments on a $15,000 car loan. At 6.5% APR over 48 months with $1.5k down, pay ~$356/mo ($2,075 total interest). Free Excel amortization export.",
+    "title": "$15,000 Car Loan Calculator (2026) — Monthly Payment on 36, 48 & 60 Mos",
+    "metaDescription": "Calculate exact monthly payments on a $15,000 car loan across 36, 48, 60, and 72-month terms. See interest rates, taxes, and download a free Excel schedule.",
     "answerSummary": "A $15,000 vehicle with $1,500 down payment at 6.5% interest over a 48-month term costs approximately $356/month (net loan of $15,000 including 7% sales tax and fees). Total interest paid over 4 years is $2,075.",
     "about": "Financing an entry-level or reliable pre-owned vehicle at the $15,000 mark is a great way to minimize depreciation. Use this tool to compute monthly financing and compare 36 vs 48-month payoffs.",
     "initialValues": {
@@ -3278,8 +3278,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "uk-salary-calculator",
     presetSlug: "uk-100k-tax-trap",
     name: "£100k UK Salary & 60% Marginal Tax Trap Calculator",
-    title: "£100,000 UK Salary Take-Home & 60% Tax Trap Calculator (2024/25)",
-    metaDescription: "Calculate net take-home pay on a £100,000 UK salary and navigate the 60% marginal tax trap between £100k–£125k. See pension salary sacrifice savings to protect tax allowances.",
+    title: "60% Tax Trap Calculator UK (2026) — £100k Salary Take-Home & Pension Relief",
+    metaDescription: "Calculate your exact UK 60% tax trap liability between £100k and £125,140. See HMRC Personal Allowance clawback, net monthly take-home, and pension sacrifice savings.",
     answerSummary: "On a £100,000 UK salary, earnings between £100,000 and £125,140 face an effective 60% marginal tax rate as the £12,570 Personal Allowance is reduced by £1 for every £2 earned. On £100k gross with 5% pension, take-home pay is £67,820/year (£5,652/month), with £27,432 in PAYE tax and £3,368 in NI.",
     about: "The UK's £100,000 tax trap is one of the most punitive marginal tax rate anomalies in the developed world. Once adjusted net income exceeds £100,000, HMRC tapers the tax-free Personal Allowance by £1 for every £2 earned until it is completely wiped out at £125,140. Combined with 40% income tax and 2% National Insurance, every extra pound is taxed at an effective 60% (plus loss of tax-free childcare benefits).",
     initialValues: {
@@ -3762,8 +3762,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "percentage-calculator",
     presetSlug: "what-is-20-percent-of-100",
     name: "What is 20% of 100?",
-    title: "What is 20% of 100? Percentage Calculator & Formula | ConvertSheet",
-    metaDescription: "20% of 100 is 20. See the step-by-step formula, decimal calculation (0.20 × 100 = 20), interactive percentage matrix, and free Excel sheet download.",
+    title: "What is 20% of 100? (0.20 × 100) — Exact Calculation & Formula | ConvertSheet",
+    metaDescription: "20% of 100 is 20. Solve 0.20 * 100 or 0.20 x 100 with step-by-step formula, fraction math (1/5), interactive percentage matrix, and free Excel download.",
     answerSummary: "20% of 100 equals 20. To calculate this, convert 20% to a decimal by dividing by 100 (0.20), then multiply by 100: 0.20 × 100 = 20.",
     about: "Calculate percentages instantly with step-by-step mathematical breakdowns. Understand how to convert percentages to decimals, fractions, and apply them to discounts, taxes, and tips.",
     initialValues: {
@@ -3774,7 +3774,15 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     faqs: [
       {
         question: "How do you calculate 20% of 100?",
-        answer: "Divide 20 by 100 to get the decimal 0.20, then multiply by 100 to get 20.",
+        answer: "Divide 20 by 100 to get the decimal 0.20, then multiply by 100: 0.20 × 100 = 20.",
+      },
+      {
+        question: "What is 0.20 * 100 in math?",
+        answer: "0.20 * 100 equals 20. In arithmetic, multiplying any decimal by 100 shifts the decimal point two places to the right, yielding 20.",
+      },
+      {
+        question: "What is 20 percent off 100?",
+        answer: "20% off 100 is 80. Subtract the 20 discount from 100: 100 - 20 = 80.",
       },
       {
         question: "What is a fast mental math trick for 20%?",

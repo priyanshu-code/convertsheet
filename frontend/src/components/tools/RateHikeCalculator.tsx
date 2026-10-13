@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   TrendingUp,
   Percent,
@@ -20,6 +20,9 @@ import {
   CalcSlider,
   CalcResult,
   CalcChart,
+  CalcSaveButton,
+  CalcShareButton,
+  CalcPromptButton,
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 import {
@@ -146,45 +149,85 @@ export function RateHikeCalculator({
     }
   };
 
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("loanAmount", loanAmount.toString());
+    params.set("oldRate", oldRate.toString());
+    params.set("newRate", newRate.toString());
+    params.set("tenureYears", tenureYears.toString());
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [loanAmount, oldRate, newRate, tenureYears]);
+
+  const aiPrompt = useMemo(() => {
+    return `Analyze this Interest Rate Hike scenario:
+- Loan Principal: ${currencySymbol}${loanAmount.toLocaleString()}
+- Loan Tenure: ${tenureYears} years
+- Original Interest Rate: ${oldRate}% (Original Monthly EMI: ${currencySymbol}${Math.round(impact.oldEmi).toLocaleString()})
+- Revised Interest Rate: ${newRate}% (+${impact.rateDelta}% / +${impact.rateDeltaBps} bps hike)
+- New Monthly EMI: ${currencySymbol}${Math.round(impact.newEmi).toLocaleString()} (Monthly Hike: +${currencySymbol}${Math.round(impact.monthlyHike).toLocaleString()}/mo)
+- Extra Lifetime Interest Paid: ${currencySymbol}${Math.round(impact.extraLifetimeInterest).toLocaleString()}
+- Bank Tenure Extension Penalty: If EMI is kept constant, tenure extends by ${impact.addedMonthsToTenure} months (${(impact.addedMonthsToTenure / 12).toFixed(1)} yrs), costing an extra ${currencySymbol}${Math.round(impact.extraInterestIfTenureExtended).toLocaleString()} in interest.
+- Neutralization Strategy: Prepaying ${currencySymbol}${Math.round(impact.monthlyPrepaymentToNeutralize).toLocaleString()}/mo extra towards principal neutralizes the rate hike.
+
+Please evaluate whether to absorb the higher EMI, execute the monthly prepayment neutralizer, or consider a balance transfer refinance.`;
+  }, [currencySymbol, loanAmount, oldRate, newRate, tenureYears, impact]);
+
   const handleExportExcel = () => {
     try {
       const summaryRows = [
-        { Metric: "Principal Loan Amount", Value: loanAmount },
-        { Metric: "Original Rate (%)", Value: oldRate },
-        { Metric: "New Rate (%)", Value: newRate },
-        { Metric: "Rate Increase (bps)", Value: impact.rateDeltaBps },
-        { Metric: "Tenure (Years)", Value: tenureYears },
-        { Metric: "Old Monthly EMI", Value: Math.round(impact.oldEmi) },
-        { Metric: "New Monthly EMI", Value: Math.round(impact.newEmi) },
-        { Metric: "Monthly EMI Hike", Value: Math.round(impact.monthlyHike) },
-        { Metric: "Total Extra Interest Paid", Value: Math.round(impact.extraLifetimeInterest) },
-        { Metric: "Tenure Trap Added Months", Value: impact.addedMonthsToTenure },
-        { Metric: "Tenure Trap Extra Interest Penalty", Value: Math.round(impact.extraInterestIfTenureExtended) },
-        { Metric: "Monthly Prepayment to Neutralize", Value: Math.round(impact.monthlyPrepaymentToNeutralize) },
+        ["ConvertSheet - Interest Rate Hike Impact & Tenure Trap Audit", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/interest-rate-hike-calculator"],
+        ["", ""],
+        ["--- LOAN & RATE HIKE PARAMETERS ---", ""],
+        ["Principal Loan Amount", loanAmount],
+        ["Original Interest Rate (%)", `${oldRate}%`],
+        ["Revised Interest Rate (%)", `${newRate}%`],
+        ["Rate Hike (bps)", `${impact.rateDeltaBps} bps (+${impact.rateDelta}%)`],
+        ["Loan Tenure (Years)", tenureYears],
+        ["", ""],
+        ["--- IMPACT METRICS ---", ""],
+        ["Original Monthly EMI", Math.round(impact.oldEmi)],
+        ["Revised Monthly EMI", Math.round(impact.newEmi)],
+        ["Monthly EMI Jump", Math.round(impact.monthlyHike)],
+        ["Total Extra Lifetime Interest Paid", Math.round(impact.extraLifetimeInterest)],
+        ["Tenure Extension Trap (Months Added)", impact.addedMonthsToTenure],
+        ["Tenure Extension Extra Penalty Interest", Math.round(impact.extraInterestIfTenureExtended)],
+        ["Monthly Prepayment to Neutralize Hike", Math.round(impact.monthlyPrepaymentToNeutralize)],
       ];
 
-      const wsSummary = XLSX.utils.json_to_sheet(summaryRows);
-      const wsMatrix = XLSX.utils.json_to_sheet(
-        impact.bracketRows.map((r) => ({
-          "Loan Amount": r.loanAmount,
-          "Old EMI": r.oldEmi,
-          "New EMI": r.newEmi,
-          "Monthly Hike": r.monthlyHike,
-          "Extra Interest": r.extraLifetimeInterest,
-        }))
-      );
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      const matrixHeader = ["Loan Amount", "Original EMI", "Revised EMI", "Monthly Hike", "Lifetime Extra Interest"];
+      const matrixRows = impact.bracketRows.map((r) => [
+        r.loanAmount,
+        Math.round(r.oldEmi),
+        Math.round(r.newEmi),
+        Math.round(r.monthlyHike),
+        Math.round(r.extraLifetimeInterest),
+      ]);
+      const wsMatrix = XLSX.utils.aoa_to_sheet([matrixHeader, ...matrixRows]);
 
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, wsSummary, "AuditSummary");
+      XLSX.utils.book_append_sheet(wb, wsSummary, "RateHikeSummary");
       XLSX.utils.book_append_sheet(wb, wsMatrix, "BenchmarkMatrix");
-      XLSX.writeFile(wb, `rate-hike-amortization-audit-${loanAmount}.xlsx`);
+      XLSX.writeFile(wb, `ConvertSheet_Rate_Hike_Audit_${loanAmount}.xlsx`);
     } catch (err) {
       console.error("Excel export failed:", err);
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
       <CalcCard
         title="Interest Rate Hike EMI Calculator"
         subtitle="Compare your Old EMI vs. New EMI, calculate additional monthly cost, and see the exact lifetime interest increase."
@@ -214,7 +257,7 @@ export function RateHikeCalculator({
                   key={preset.bps}
                   type="button"
                   onClick={() => handleApplyDelta(preset.bps)}
-                  className={`px-3 py-1 text-xs font-semibold rounded-lg border transition-all ${
+                  className={`min-h-[44px] px-3.5 py-2 text-xs font-semibold rounded-lg border transition-all ${
                     isSelected
                       ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-900 dark:border-white shadow-xs"
                       : "bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300"
@@ -239,6 +282,16 @@ export function RateHikeCalculator({
               prefix={currencySymbol}
               onChange={(v) => setLoanAmount(Number(v) || 0)}
             />
+            <CalcSlider
+              id="hike-loan-amount-slider"
+              ariaLabel="Loan Principal Slider"
+              value={loanAmount}
+              min={100000}
+              max={20000000}
+              step={100000}
+              prefix={currencySymbol}
+              onChange={setLoanAmount}
+            />
             <div className="flex flex-wrap gap-1">
               {(currencySymbol === "₹"
                 ? [
@@ -258,7 +311,7 @@ export function RateHikeCalculator({
                   key={btn.l}
                   type="button"
                   onClick={() => setLoanAmount(btn.v)}
-                  className={`text-[11px] px-2 py-0.5 rounded border ${
+                  className={`text-[11px] px-2 py-0.5 rounded border min-h-[32px] sm:min-h-0 ${
                     loanAmount === btn.v
                       ? "bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-700 font-bold"
                       : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700"
@@ -281,6 +334,16 @@ export function RateHikeCalculator({
               suffix="%"
               onChange={(v) => setOldRate(Number(v) || 0.1)}
             />
+            <CalcSlider
+              id="hike-old-rate-slider"
+              ariaLabel="Current Interest Rate Slider"
+              value={oldRate}
+              min={1}
+              max={20}
+              step={0.05}
+              unit="%"
+              onChange={setOldRate}
+            />
             <span className="text-[11px] text-zinc-500 block">
               Baseline interest rate before policy hike
             </span>
@@ -296,6 +359,16 @@ export function RateHikeCalculator({
               step={0.05}
               suffix="%"
               onChange={(v) => setNewRate(Number(v) || 0.1)}
+            />
+            <CalcSlider
+              id="hike-new-rate-slider"
+              ariaLabel="Revised Interest Rate Slider"
+              value={newRate}
+              min={1}
+              max={20}
+              step={0.05}
+              unit="%"
+              onChange={setNewRate}
             />
             <span className="text-[11px] text-rose-600 dark:text-rose-400 font-medium block">
               +{impact.rateDelta}% ({impact.rateDeltaBps} bps increase)
@@ -313,13 +386,23 @@ export function RateHikeCalculator({
               suffix="Years"
               onChange={(v) => setTenureYears(Number(v) || 1)}
             />
+            <CalcSlider
+              id="hike-tenure-slider"
+              ariaLabel="Loan Tenure Slider"
+              value={tenureYears}
+              min={1}
+              max={30}
+              step={1}
+              unit=" Yrs"
+              onChange={setTenureYears}
+            />
             <div className="flex flex-wrap gap-1">
               {[10, 15, 20, 25, 30].map((yr) => (
                 <button
                   key={yr}
                   type="button"
                   onClick={() => setTenureYears(yr)}
-                  className={`text-[11px] px-2 py-0.5 rounded border ${
+                  className={`text-[11px] px-2 py-0.5 rounded border min-h-[32px] sm:min-h-0 ${
                     tenureYears === yr
                       ? "bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-700 font-bold"
                       : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700"
@@ -332,14 +415,36 @@ export function RateHikeCalculator({
           </div>
         </div>
 
-        {/* Export Toolbar: One-Click PDF Audit Dossier & Excel Spreadsheet */}
-        <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1 pb-2 border-b border-zinc-200/80 dark:border-zinc-800">
+        {/* Action Toolbar: One-Click PDF Audit Dossier, Excel Spreadsheet & Retention Loops */}
+        <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 pb-2 border-b border-zinc-200/80 dark:border-zinc-800">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-              Download Audit Reports:
+              Audit Actions &amp; Retention:
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <CalcSaveButton
+              toolSlug="interest-rate-hike-calculator"
+              toolName="Interest Rate Hike EMI Calculator"
+              summaryTitle={`${currencySymbol}${(loanAmount / 100000).toFixed(0)}L Loan @ ${oldRate}% -> ${newRate}%`}
+              summaryMetrics={[
+                { label: "Monthly EMI Hike", value: `+${formatCurrency(impact.monthlyHike)}` },
+                { label: "Lifetime Extra Interest", value: `+${formatCurrency(impact.extraLifetimeInterest)}` },
+              ]}
+              path="/tools/interest-rate-hike-calculator"
+            />
+            <CalcShareButton
+              state={{
+                loanAmount,
+                oldRate,
+                newRate,
+                tenureYears,
+              }}
+            />
+            <CalcPromptButton
+              prompt={aiPrompt}
+              toolName="Rate Hike Neutralizer"
+            />
             <button
               type="button"
               onClick={handleExportPdf}
@@ -623,6 +728,27 @@ export function RateHikeCalculator({
           </button>
         </div>
       </section>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
+            Monthly EMI Hike
+          </span>
+          <span className="text-base font-extrabold text-rose-600 dark:text-rose-400">
+            +{formatCurrency(impact.monthlyHike)}/mo
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleExportExcel}
+            className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-xl shadow-xs"
+          >
+            Export Excel
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

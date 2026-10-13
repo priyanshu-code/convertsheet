@@ -111,7 +111,7 @@ describe("Blog Registry & Content Layer", () => {
   it("verifies pillar and branches topic cluster architecture integrity", () => {
     // Cluster: indian-home-loans
     const homeLoanPosts = getBlogPostsByCluster("indian-home-loans");
-    expect(homeLoanPosts.length).toBe(15);
+    expect(homeLoanPosts.length).toBe(16);
 
     const pillar = getPillarPost("indian-home-loans");
     expect(pillar).toBeDefined();
@@ -119,7 +119,7 @@ describe("Blog Registry & Content Layer", () => {
     expect(pillar?.role).toBe("pillar");
 
     const branches = getBranchPosts(pillar!.slug);
-    expect(branches.length).toBe(14);
+    expect(branches.length).toBe(15);
     const branchSlugs = branches.map((b: { slug: string }) => b.slug);
     expect(branchSlugs).toContain("how-to-reduce-home-loan-car-loan-after-repo-rate-hike");
     expect(branchSlugs).toContain("pnb-bob-indian-bank-sbi-rate-hikes-after-repo-revision");
@@ -135,6 +135,18 @@ describe("Blog Registry & Content Layer", () => {
     expect(branchSlugs).toContain("rbi-monetary-policy-october-2026-common-man-guide");
     expect(branchSlugs).toContain("rbi-cva-and-sa-ccr-counterparty-risk-explained");
     expect(branchSlugs).toContain("sbi-maxgain-vs-prepayment-home-loan-overdraft-guide");
+    expect(branchSlugs).toContain("mospi-cpi-inflation-surge-festive-home-loan-concessions-2026");
+
+    // Verify detailed schema and content for the MoSPI inflation surge & festive concessions guide
+    const mospiArticle = getBlogPostBySlug("mospi-cpi-inflation-surge-festive-home-loan-concessions-2026");
+    expect(mospiArticle).toBeDefined();
+    expect(mospiArticle?.attachedToolSlug).toBe("home-loan-balance-transfer-calculator");
+    expect(mospiArticle?.attachedToolTitle).toBe("Home Loan Balance Transfer Savings Calculator");
+    expect(mospiArticle?.content).toContain("5.54%");
+    expect(mospiArticle?.content).toContain("7.74%");
+    expect(mospiArticle?.content).toContain("RBI/2026-27/290");
+    expect(mospiArticle?.tableOfContents).toHaveLength(6);
+    expect(mospiArticle?.faqs).toHaveLength(4);
 
     // Verify detailed schema and content for the new SBI MaxGain guide
     const maxGainArticle = getBlogPostBySlug("sbi-maxgain-vs-prepayment-home-loan-overdraft-guide");

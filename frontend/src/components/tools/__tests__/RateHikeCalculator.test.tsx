@@ -59,4 +59,36 @@ describe("RateHikeCalculator", () => {
     // Delta should update to +50 bps
     expect(screen.getByText("Current Delta: +50 bps (+0.5%)")).toBeInTheDocument();
   });
+
+  it("renders privacy badge, accessible sliders, and mobile summary bar", () => {
+    render(
+      <CurrencyProvider>
+        <RateHikeCalculator
+          initialValues={{
+            loanAmount: 5000000,
+            oldRate: 8.50,
+            newRate: 8.75,
+            tenureYears: 20,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    // Zero-knowledge privacy badge
+    expect(screen.getByText(/100% Client-Side • Zero Server Storage/i)).toBeInTheDocument();
+
+    // Accessible sliders
+    expect(screen.getByLabelText("Loan Principal Slider")).toBeInTheDocument();
+    expect(screen.getByLabelText("Current Interest Rate Slider")).toBeInTheDocument();
+    expect(screen.getByLabelText("Revised Interest Rate Slider")).toBeInTheDocument();
+    expect(screen.getByLabelText("Loan Tenure Slider")).toBeInTheDocument();
+
+    // Retention action buttons
+    expect(screen.getByRole("button", { name: /Save Scenario/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Share Calculation/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Copy Rate Hike Neutralizer Prompt/i })).toBeInTheDocument();
+
+    // Mobile sticky bar
+    expect(screen.getAllByText("Monthly EMI Hike").length).toBeGreaterThanOrEqual(1);
+  });
 });

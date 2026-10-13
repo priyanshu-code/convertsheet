@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   ArrowRightLeft,
   Percent,
@@ -14,6 +14,7 @@ import {
   Clock,
   Sparkles,
   Info,
+  ShieldCheck,
 } from "lucide-react";
 import {
   CalcCard,
@@ -21,6 +22,9 @@ import {
   CalcSlider,
   CalcResult,
   CalcChart,
+  CalcSaveButton,
+  CalcShareButton,
+  CalcPromptButton,
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 import {
@@ -145,34 +149,68 @@ export function BalanceTransferCalculator({
     }
   };
 
-  // 1-Click Excel Export
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("currentBalance", currentBalance.toString());
+    params.set("currentRate", currentRate.toString());
+    params.set("newRate", newRate.toString());
+    params.set("remainingTenureYears", remainingTenureYears.toString());
+    params.set("processingFeePercent", processingFeePercent.toString());
+    params.set("modtStampDutyPercent", modtStampDutyPercent.toString());
+    params.set("otherCharges", otherCharges.toString());
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [currentBalance, currentRate, newRate, remainingTenureYears, processingFeePercent, modtStampDutyPercent, otherCharges]);
+
+  const aiPrompt = useMemo(() => {
+    return `Analyze this Home Loan Balance Transfer scenario:
+- Outstanding Loan Principal: ${currencySymbol}${currentBalance.toLocaleString()}
+- Current Interest Rate: ${currentRate}% (Current Monthly EMI: ${currencySymbol}${Math.round(result.currentEmi).toLocaleString()})
+- New Lender Rate: ${newRate}% (New Monthly EMI: ${currencySymbol}${Math.round(result.newEmi).toLocaleString()})
+- Rate Cut: -${result.rateCutPercent}% (-${result.rateCutBps} bps)
+- Remaining Loan Tenure: ${remainingTenureYears} Years
+- Monthly EMI Savings: ${currencySymbol}${Math.round(result.monthlySavings).toLocaleString()}
+- Gross Lifetime Interest Saved: ${currencySymbol}${Math.round(result.grossLifetimeSavings).toLocaleString()}
+- Upfront Switching Costs: ${currencySymbol}${Math.round(result.totalSwitchingCost).toLocaleString()} (Processing: ${currencySymbol}${Math.round(result.processingFeeAmount)}, MODT: ${currencySymbol}${Math.round(result.modtStampDutyAmount)}, Other: ${currencySymbol}${Math.round(result.otherCharges)})
+- Net Lifetime Savings: ${currencySymbol}${Math.round(result.netLifetimeSavings).toLocaleString()}
+- Break-Even Horizon: ${result.breakEvenMonths} Months
+- Executive Verdict: ${result.recommendation} (${result.recommendationReason})
+
+Evaluate if switching to the new lender is financially superior to negotiating an internal rate reset (repricing conversion fee) with the existing lender.`;
+  }, [currencySymbol, currentBalance, currentRate, newRate, remainingTenureYears, result]);
+
+  // 1-Click Excel Export with SheetJS Retention Hook
   const handleExportExcel = () => {
     try {
       setIsExportingExcel(true);
       const wb = XLSX.utils.book_new();
 
       const summaryData = [
-        ["CONVERTSHEET HOME LOAN BALANCE TRANSFER AUDIT"],
-        ["Generated", new Date().toLocaleString()],
-        [],
-        ["LOAN PARAMETERS", ""],
+        ["ConvertSheet - Home Loan Balance Transfer Audit", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/home-loan-balance-transfer-calculator"],
+        ["", ""],
+        ["--- LOAN PARAMETERS ---", ""],
         ["Outstanding Principal", result.currentBalance],
-        ["Current Interest Rate (%)", result.currentRate],
-        ["New Interest Rate (%)", result.newRate],
-        ["Rate Cut (% / bps)", `${result.rateCutPercent}% (${result.rateCutBps} bps)`],
+        ["Current Interest Rate (%)", `${result.currentRate}%`],
+        ["New Interest Rate (%)", `${result.newRate}%`],
+        ["Rate Cut (% / bps)", `${result.rateCutPercent}% (-${result.rateCutBps} bps)`],
         ["Remaining Tenure (Years)", result.remainingTenureYears],
-        [],
-        ["SAVINGS & EXPENSES", ""],
-        ["Current Monthly EMI", result.currentEmi],
-        ["New Monthly EMI", result.newEmi],
-        ["Monthly EMI Savings", result.monthlySavings],
-        ["Annual Savings", result.annualSavings],
-        ["Gross Lifetime Savings", result.grossLifetimeSavings],
-        ["Processing Fee", result.processingFeeAmount],
-        ["MODT / Stamp Duty", result.modtStampDutyAmount],
-        ["Other Charges", result.otherCharges],
-        ["Total Switching Costs", result.totalSwitchingCost],
-        ["Net Lifetime Savings", result.netLifetimeSavings],
+        ["", ""],
+        ["--- SAVINGS & SWITCHING EXPENSES ---", ""],
+        ["Current Monthly EMI", Math.round(result.currentEmi)],
+        ["New Monthly EMI", Math.round(result.newEmi)],
+        ["Monthly EMI Savings", Math.round(result.monthlySavings)],
+        ["Annual Savings", Math.round(result.annualSavings)],
+        ["Gross Lifetime Savings", Math.round(result.grossLifetimeSavings)],
+        ["Processing Fee", Math.round(result.processingFeeAmount)],
+        ["MODT / Stamp Duty", Math.round(result.modtStampDutyAmount)],
+        ["Other Valuation/Legal Charges", Math.round(result.otherCharges)],
+        ["Total Switching Costs", Math.round(result.totalSwitchingCost)],
+        ["Net Lifetime Savings", Math.round(result.netLifetimeSavings)],
         ["Break-Even Payback Horizon (Months)", result.breakEvenMonths],
         ["Verdict", result.recommendation],
         ["Executive Reason", result.recommendationReason],
@@ -193,12 +231,12 @@ export function BalanceTransferCalculator({
       ];
       const scheduleRows = result.yearlyComparison.map((r) => [
         `Year ${r.year}`,
-        r.currentInterest,
-        r.newInterest,
-        r.yearlySavings,
-        r.cumulativeSavings,
-        r.currentPrincipalRemaining,
-        r.newPrincipalRemaining,
+        Math.round(r.currentInterest),
+        Math.round(r.newInterest),
+        Math.round(r.yearlySavings),
+        Math.round(r.cumulativeSavings),
+        Math.round(r.currentPrincipalRemaining),
+        Math.round(r.newPrincipalRemaining),
       ]);
 
       const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeaders, ...scheduleRows]);
@@ -206,7 +244,7 @@ export function BalanceTransferCalculator({
 
       XLSX.writeFile(
         wb,
-        `balance-transfer-audit-${Math.round(currentBalance / 100000)}Lakh.xlsx`
+        `ConvertSheet_Balance_Transfer_Audit_${Math.round(currentBalance / 100000)}Lakh.xlsx`
       );
     } catch (e) {
       console.error("Excel export failed:", e);
@@ -225,7 +263,13 @@ export function BalanceTransferCalculator({
   }, [result]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-24 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
       <CalcCard
         title="Home Loan Balance Transfer Savings Calculator"
         subtitle="Calculate if switching your existing home loan to a lower-interest lender actually saves money after accounting for MODT stamp duty, processing fees, and title valuation costs."
@@ -241,9 +285,9 @@ export function BalanceTransferCalculator({
               key={p.val}
               type="button"
               onClick={() => setCurrentBalance(p.val)}
-              className={`px-2.5 py-1 text-xs font-medium rounded-lg border transition-all ${
+              className={`min-h-[44px] sm:min-h-0 px-2.5 py-1 text-xs font-medium rounded-lg border transition-all ${
                 currentBalance === p.val
-                  ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-900 dark:border-zinc-100 shadow-xs"
+                  ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-900 dark:border-zinc-100 shadow-xs font-bold"
                   : "bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300"
               }`}
             >
@@ -297,10 +341,20 @@ export function BalanceTransferCalculator({
         </div>
 
         {/* Sliders */}
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <CalcSlider
+            id="bt-slider-current-balance"
+            ariaLabel="Outstanding Principal Balance Slider"
+            value={currentBalance}
+            onChange={setCurrentBalance}
+            min={500000}
+            max={20000000}
+            step={100000}
+            prefix={currencySymbol}
+          />
           <CalcSlider
             id="bt-slider-current-rate"
-            label="Current Rate"
+            ariaLabel="Current Interest Rate Slider"
             value={currentRate}
             onChange={setCurrentRate}
             min={6.5}
@@ -310,7 +364,7 @@ export function BalanceTransferCalculator({
           />
           <CalcSlider
             id="bt-slider-new-rate"
-            label="New Lender Rate"
+            ariaLabel="New Lender Rate Slider"
             value={newRate}
             onChange={setNewRate}
             min={6.5}
@@ -320,7 +374,7 @@ export function BalanceTransferCalculator({
           />
           <CalcSlider
             id="bt-slider-remaining-tenure"
-            label="Remaining Tenure"
+            ariaLabel="Remaining Tenure Years Slider"
             value={remainingTenureYears}
             onChange={setRemainingTenureYears}
             min={1}
@@ -505,7 +559,33 @@ export function BalanceTransferCalculator({
 
         {/* Export Toolbar */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <CalcSaveButton
+              toolSlug="home-loan-balance-transfer-calculator"
+              toolName="Home Loan Balance Transfer"
+              summaryTitle={`₹${(currentBalance / 100000).toFixed(0)}L Loan @ ${currentRate}% -> ${newRate}%`}
+              summaryMetrics={[
+                { label: "Net Lifetime Savings", value: formatCurrency(result.netLifetimeSavings) },
+                { label: "Monthly Savings", value: formatCurrency(result.monthlySavings) },
+                { label: "Break-Even", value: `${result.breakEvenMonths} Mos` },
+              ]}
+              path="/tools/home-loan-balance-transfer-calculator"
+            />
+            <CalcShareButton
+              state={{
+                currentBalance,
+                currentRate,
+                newRate,
+                remainingTenureYears,
+                processingFeePercent,
+                modtStampDutyPercent,
+                otherCharges,
+              }}
+            />
+            <CalcPromptButton
+              prompt={aiPrompt}
+              toolName="Balance Transfer Strategy"
+            />
             <button
               type="button"
               onClick={handleDownloadPdf}
@@ -638,6 +718,27 @@ export function BalanceTransferCalculator({
           </div>
         </div>
       </CalcCard>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
+            Net Lifetime Savings
+          </span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {formatCurrency(result.netLifetimeSavings)}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleExportExcel}
+            className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-xl shadow-xs"
+          >
+            Export Excel
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

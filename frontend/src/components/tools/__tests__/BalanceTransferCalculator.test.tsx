@@ -62,4 +62,36 @@ describe("BalanceTransferCalculator", () => {
     const inputs = screen.getAllByRole("spinbutton") as HTMLInputElement[];
     expect(inputs[0].value).toBe("10000000");
   });
+
+  it("renders privacy badge, accessible sliders, retention actions, and mobile summary bar", () => {
+    render(
+      <CurrencyProvider>
+        <BalanceTransferCalculator
+          initialValues={{
+            currentBalance: 5000000,
+            currentRate: 9.10,
+            newRate: 8.35,
+            remainingTenureYears: 15,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    // Zero-knowledge privacy badge
+    expect(screen.getByText(/100% Client-Side • Zero Server Storage • Private & Free Forever/i)).toBeInTheDocument();
+
+    // Accessible sliders
+    expect(screen.getByLabelText("Outstanding Principal Balance Slider")).toBeInTheDocument();
+    expect(screen.getByLabelText("Current Interest Rate Slider")).toBeInTheDocument();
+    expect(screen.getByLabelText("New Lender Rate Slider")).toBeInTheDocument();
+    expect(screen.getByLabelText("Remaining Tenure Years Slider")).toBeInTheDocument();
+
+    // Retention action buttons
+    expect(screen.getByRole("button", { name: /Save Scenario/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Share Calculation/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Copy Balance Transfer Strategy Prompt/i })).toBeInTheDocument();
+
+    // Mobile sticky bar
+    expect(screen.getAllByText("Net Lifetime Savings").length).toBeGreaterThanOrEqual(2);
+  });
 });

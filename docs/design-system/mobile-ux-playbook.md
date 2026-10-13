@@ -1,25 +1,27 @@
 # ConvertSheet Mobile UI/UX Playbook & Design System
 
 ## 1. Core Principles & Research Foundation
-Grounded in empirical ergonomics from the Nielsen Norman Group (NN/g), Apple Human Interface Guidelines (HIG), and Google Material Design 3:
+Grounded in empirical ergonomics from the Nielsen Norman Group (NN/g), Apple Human Interface Guidelines (HIG), Smashing Magazine, UX Collective, and Google Material Design 3:
 
-1. **Thumb-Zone Ergonomics:** 
+1. **Thumb-Zone Ergonomics (Steven Hoober & NN/g Empirical Studies):** 
    - 82%+ of smartphone users operate devices one-handed or with index-finger support.
-   - The "Natural Thumb Zone" occupies the lower 50–60% of the screen. Primary levers (calculate, preset pills, currency toggles, export buttons) MUST live inside this zone.
-   - Danger zone: Top-left and top-right navigation triggers are out of reach for comfortable single-handed operation.
-2. **Minimum Touch Targets:**
+   - The "Natural Thumb Zone" occupies the lower 50–60% of the screen. Primary levers (calculate, preset pills, currency toggles, export buttons, slider thumbs) MUST live inside this zone.
+   - Danger zone: Top-left and top-right navigation triggers require uncomfortable grip readjustment or two-handed operation, increasing drop and mis-tap probabilities.
+2. **Minimum Touch Targets (Apple HIG & Google Material 3):**
    - Apple HIG specifies **44px x 44px** absolute minimum touch bounding boxes.
    - Google Material 3 specifies **48px x 48px** with at least 8px separation between adjacent interactive targets.
-   - Even if visual pills render at 32px height, the hit area or padding (`py-2 sm:py-1 px-3`, `min-h-[44px]`) must guarantee zero mis-taps.
-3. **Instant Tactile Feedback:**
+   - Even when visual pills render with compact typography (e.g., 12px or 13px font), the hit area (`min-h-[44px]`, `py-2 sm:py-1 px-3`, `touch-manipulation`) must guarantee zero mis-taps.
+3. **Instant Tactile Feedback (Zero-Lag Execution):**
    - Visual and mathematical recalculation must execute in <16ms (60fps) upon every slider drag or numeric stroke.
-   - Zero artificial loading spinners on client-side calculators.
+   - Zero artificial loading spinners on client-side calculators. The user's physical input must yield instant feedback.
 4. **Zero-Knowledge Privacy Prominence:**
    - Clear visual reassurance badge ("100% Client-Side • No server data transfer • Private & Free Forever") prominently displayed on tool hero headers.
-5. **Repeat Usage Habit Loops:**
+   - Directly addresses enterprise security concerns and privacy skepticism when entering sensitive salary or mortgage numbers.
+5. **Repeat Usage Habit Loops & Retention Architecture:**
    - **Real-Time URL Query Serialization:** As users slide values or adjust parameters, update `window.history.replaceState` smoothly without page reloads, ensuring every URL is an instant shareable permalink.
    - **Local Storage Saved Runs:** Let users save calculation runs locally (`CalcSaveButton`) with zero friction or registration walls.
    - **Branded Excel Retention Hooks:** Include a clean, un-obfuscated hyperlink back to the interactive calculator in all SheetJS `.xlsx` workbook exports.
+   - **AI Prompt Exporters (`CalcPromptButton`):** Generate pre-structured executive prompts that borrowers and financial analysts can paste into ChatGPT/Claude for scenario analysis, reinforcing ConvertSheet as their modeling foundation.
 
 ---
 
@@ -27,8 +29,9 @@ Grounded in empirical ergonomics from the Nielsen Norman Group (NN/g), Apple Hum
 
 ### A. Dual Numeric & Range Slider Controls
 Always pair numeric inputs (`<input type="number">`) with range sliders (`CalcSlider`):
-- Sliders provide rapid macro exploration (e.g. testing $300k vs $800k).
-- Numeric text inputs allow exact penny or dollar precision for mortgage underwriters and contractors.
+- Sliders provide rapid macro exploration (e.g. testing $300k vs $800k or 7.5% vs 8.5%).
+- Numeric text inputs allow exact penny or dollar precision for mortgage underwriters, accountants, and contractors.
+- Ensure all sliders have explicit `aria-label` or `ariaLabel` attributes for screen readers to achieve 100% WCAG 2.1 AA compliance.
 
 ### B. Sticky Bottom Mobile Summary Bar (<640px)
 On mobile viewports, the primary result card often scrolls out of the initial viewport. To eliminate disorientation:
@@ -39,12 +42,12 @@ On mobile viewports, the primary result card often scrolls out of the initial vi
       <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Monthly Payment</span>
       <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">$2,450/mo</span>
     </div>
-    <button onClick={handleExport} className="px-3.5 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-xl">
+    <button onClick={handleExport} className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-xl">
       Export Excel
     </button>
   </div>
   ```
-- Include padding `pb-20` on the main container so content is never obscured by the bottom bar.
+- Always include bottom padding (`pb-24`) on the parent container so inputs and tables are never obscured by the bottom bar.
 
 ### C. Swipeable Bottom Sheets & Drawers
 For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket overrides), employ slide-over drawers or bottom sheets with natural swipe-to-dismiss behavior rather than desktop pop-up modals.
@@ -56,4 +59,4 @@ For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket 
 ---
 
 ## 3. Rotational Improvement Tracking
-Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`. Each rotation upgrades 2–3 pending calculators to conform with this playbook, accompanied by unit tests.
+Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`. Each daily rotation upgrades 2–3 pending calculators to conform with this playbook, accompanied by unit tests.
