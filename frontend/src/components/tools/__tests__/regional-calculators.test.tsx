@@ -1,9 +1,15 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { UkSalaryCalculator } from "../UkSalaryCalculator";
 import { CanadaPaycheckCalculator } from "../CanadaPaycheckCalculator";
 import { AustraliaPayCalculator } from "../AustraliaPayCalculator";
+
+beforeEach(() => {
+  if (typeof window !== "undefined") {
+    window.history.replaceState(null, "", "/");
+  }
+});
 
 describe("UkSalaryCalculator UI Component", () => {
   it("renders UK Salary Calculator with £ symbol and 2024/25 HMRC metadata", () => {
@@ -117,7 +123,7 @@ describe("CanadaPaycheckCalculator UI Component", () => {
     // Net Annual: $62,856.75
     // Net Bi-Weekly (26): $2,417.57
     // Net Semi-Monthly (24): $2,619.03
-    expect(screen.getByText("$2,417.57")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,417.57").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("$62,856.75")).toBeInTheDocument();
     expect(screen.getByText("$11,996.57")).toBeInTheDocument();
     expect(screen.getByText("$5,042.06")).toBeInTheDocument();
@@ -136,21 +142,21 @@ describe("CanadaPaycheckCalculator UI Component", () => {
       />
     );
 
-    expect(screen.getByText("$2,417.57")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,417.57").length).toBeGreaterThanOrEqual(1);
 
     // Change province to British Columbia (BC)
     const provinceSelect = screen.getByLabelText(/Province \/ Territory/i);
     fireEvent.change(provinceSelect, { target: { value: "BC" } });
 
     // BC provincial tax is lower ($4,642.92 vs $5,042.06 in ON), net bi-weekly is $2,432.92
-    expect(screen.getByText("$2,432.92")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,432.92").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("$4,642.92")).toBeInTheDocument();
 
     // Change province to Alberta (AB)
     fireEvent.change(provinceSelect, { target: { value: "AB" } });
 
     // AB provincial tax is $6,311.50, net bi-weekly is $2,368.74
-    expect(screen.getByText("$2,368.74")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,368.74").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("$6,311.50")).toBeInTheDocument();
 
     // Switch back to ON and add 10% RRSP contribution ($8,500 pre-tax deduction)
@@ -159,7 +165,7 @@ describe("CanadaPaycheckCalculator UI Component", () => {
     fireEvent.change(rrspSlider, { target: { value: "10" } });
 
     // With 10% RRSP ($8,500), Net Bi-Weekly is $2,187.58, RRSP deduction is $8,500.00
-    expect(screen.getByText("$2,187.58")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,187.58").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("$8,500.00")).toBeInTheDocument();
   });
 

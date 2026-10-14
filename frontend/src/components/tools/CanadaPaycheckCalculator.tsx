@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { DollarSign } from "lucide-react";
+import { DollarSign, ShieldCheck, Download } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
@@ -10,7 +10,6 @@ import {
   CalcSelect,
   CalcResult,
   CalcChart,
-  CalcExportButton,
   CalcShareButton,
   CalcSaveButton,
   CalcPromptButton,
@@ -19,6 +18,7 @@ import {
   calculateCanadaSalary,
   CanadaSalaryResult,
 } from "@/lib/engines/financial-engine";
+import * as XLSX from "xlsx";
 
 export interface CanadaPaycheckCalculatorProps {
   initialValues?: Partial<{
@@ -90,6 +90,18 @@ export function CanadaPaycheckCalculator({
     });
   }, [grossSalary, province, rrspContributionPercent]);
 
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("grossSalary", grossSalary.toString());
+    params.set("province", province);
+    params.set("rrspContributionPercent", rrspContributionPercent.toString());
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [grossSalary, province, rrspContributionPercent]);
+
   const chartData = useMemo(() => {
     return [
       { label: "Gross Salary", amount: result.grossSalary },
@@ -102,60 +114,6 @@ export function CanadaPaycheckCalculator({
     ];
   }, [result]);
 
-  const exportSchedule = useMemo(() => {
-    return [
-      {
-        Component: "Gross Salary",
-        BiWeekly: result.biWeeklyGross,
-        SemiMonthly: result.semiMonthlyGross,
-        Monthly: result.monthlyGross,
-        Annual: result.grossSalary,
-      },
-      {
-        Component: "Federal Income Tax",
-        BiWeekly: Math.round((result.federalTax / 26) * 100) / 100,
-        SemiMonthly: Math.round((result.federalTax / 24) * 100) / 100,
-        Monthly: Math.round((result.federalTax / 12) * 100) / 100,
-        Annual: result.federalTax,
-      },
-      {
-        Component: "Provincial Income Tax",
-        BiWeekly: Math.round((result.provincialTax / 26) * 100) / 100,
-        SemiMonthly: Math.round((result.provincialTax / 24) * 100) / 100,
-        Monthly: Math.round((result.provincialTax / 12) * 100) / 100,
-        Annual: result.provincialTax,
-      },
-      {
-        Component: "CPP / CPP2 Contribution",
-        BiWeekly: Math.round((result.cppContribution / 26) * 100) / 100,
-        SemiMonthly: Math.round((result.cppContribution / 24) * 100) / 100,
-        Monthly: Math.round((result.cppContribution / 12) * 100) / 100,
-        Annual: result.cppContribution,
-      },
-      {
-        Component: "Employment Insurance (EI)",
-        BiWeekly: Math.round((result.eiContribution / 26) * 100) / 100,
-        SemiMonthly: Math.round((result.eiContribution / 24) * 100) / 100,
-        Monthly: Math.round((result.eiContribution / 12) * 100) / 100,
-        Annual: result.eiContribution,
-      },
-      {
-        Component: "RRSP Deduction",
-        BiWeekly: Math.round((result.rrspDeduction / 26) * 100) / 100,
-        SemiMonthly: Math.round((result.rrspDeduction / 24) * 100) / 100,
-        Monthly: Math.round((result.rrspDeduction / 12) * 100) / 100,
-        Annual: result.rrspDeduction,
-      },
-      {
-        Component: "Net Take-Home Pay",
-        BiWeekly: result.netBiWeeklyTakeHome,
-        SemiMonthly: result.netSemiMonthlyTakeHome,
-        Monthly: result.netMonthlyTakeHome,
-        Annual: result.netAnnualTakeHome,
-      },
-    ];
-  }, [result]);
-
   const formatCurrency = (val: number): string => {
     return `$${val.toLocaleString("en-CA", {
       minimumFractionDigits: 2,
@@ -163,8 +121,45 @@ export function CanadaPaycheckCalculator({
     })}`;
   };
 
+  const handleExportExcel = () => {
+    try {
+      const summaryRows = [
+        ["ConvertSheet - Canadian Paycheck & Tax Deduction Breakdown (CRA)", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/canada-paycheck-calculator"],
+        ["", ""],
+        ["--- INCOME & TAX PARAMETERS ---", ""],
+        ["Gross Annual Salary ($ CAD)", grossSalary],
+        ["Province / Territory", province],
+        ["RRSP Contribution (%)", `${rrspContributionPercent}%`],
+        ["RRSP Deduction ($ CAD)", Math.round(result.rrspDeduction)],
+        ["", ""],
+        ["--- TAX & STATUTORY DEDUCTIONS ---", ""],
+        ["Federal Income Tax (CRA)", Math.round(result.federalTax)],
+        ["Provincial Income Tax", Math.round(result.provincialTax)],
+        ["CPP / CPP2 Contribution", Math.round(result.cppContribution)],
+        ["Employment Insurance (EI)", Math.round(result.eiContribution)],
+        ["Total Statutory Deductions", Math.round(result.totalDeductions)],
+        ["Effective Total Tax Rate", `${result.effectiveTaxRate}%`],
+        ["", ""],
+        ["--- NET TAKE-HOME PAY INTERVALS ---", ""],
+        ["Net Annual Take-Home", Math.round(result.netAnnualTakeHome)],
+        ["Net Monthly Take-Home (12x)", Math.round(result.netMonthlyTakeHome)],
+        ["Net Semi-Monthly (24x)", Math.round(result.netSemiMonthlyTakeHome)],
+        ["Net Bi-Weekly Take-Home (26x)", Math.round(result.netBiWeeklyTakeHome)],
+      ];
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "CanadaPaycheckSummary");
+      XLSX.writeFile(wb, `ConvertSheet_Canada_Paycheck_${grossSalary}_${province}.xlsx`);
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    }
+  };
+
   const llmPrompt = useMemo(() => {
-    return `Analyze my Canadian Paycheck & Take-Home breakdown (2024 CRA tax year):
+    return `Analyze my Canadian Paycheck & Take-Home breakdown (2024-2026 CRA tax rules):
 - Gross Annual Salary: $${result.grossSalary.toLocaleString()} CAD
 - Province / Territory: ${province}
 - RRSP Contribution: ${rrspContributionPercent}% ($${result.rrspDeduction.toLocaleString()}/yr)
@@ -182,201 +177,230 @@ Please advise on tax optimization strategies (RRSP deduction limit, TFSA contrib
   }, [result, province, rrspContributionPercent]);
 
   return (
-    <CalcCard
-      title="Canada Paycheck & Salary Take-Home Calculator (CRA 2024)"
-      subtitle="Calculate your exact Canadian take-home pay after Federal tax, Provincial tax, CPP/CPP2, EI, and RRSP deductions across Ontario, BC, Alberta, and Quebec."
-      icon={DollarSign}
-      badge="Canada • CRA 2024"
-    >
-      {/* Country cross-link navigation hub */}
-      <div className="flex items-center justify-start pb-2">
-        <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
-          <Link
-            href="/tools/salary-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇺🇸</span>
-            <span>US Paycheck</span>
-          </Link>
-          <Link
-            href="/tools/uk-salary-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇬🇧</span>
-            <span>UK Salary</span>
-          </Link>
-          <div className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs flex items-center gap-1.5">
-            <span>🇨🇦</span>
-            <span>Canada Paycheck</span>
-          </div>
-          <Link
-            href="/tools/australia-pay-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇦🇺</span>
-            <span>Australia Pay</span>
-          </Link>
-        </div>
+    <div className="space-y-6 pb-24 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Inputs */}
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <CalcInput
-              id="gross-salary"
-              label="Gross Annual Salary"
-              value={grossSalary}
-              onChange={(val) => setGrossSalary(Number(val) || 0)}
-              prefix="$"
-              min={0}
-              step={1000}
-              helpText="Your total annual pre-tax base salary in Canadian Dollars ($ CAD)"
+      <CalcCard
+        title="Canada Paycheck & Salary Take-Home Calculator (CRA)"
+        subtitle="Calculate your exact Canadian take-home pay after Federal tax, Provincial tax, CPP/CPP2, EI, and RRSP deductions across Ontario, BC, Alberta, and Quebec."
+        icon={DollarSign}
+        badge="Canada • CRA 2024 Ready"
+      >
+        {/* Country cross-link navigation hub */}
+        <div className="flex items-center justify-start pb-2">
+          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
+            <Link
+              href="/tools/salary-calculator"
+              className="min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇺🇸</span>
+              <span>US Paycheck</span>
+            </Link>
+            <Link
+              href="/tools/uk-salary-calculator"
+              className="min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇬🇧</span>
+              <span>UK Salary</span>
+            </Link>
+            <div className="min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs flex items-center gap-1.5">
+              <span>🇨🇦</span>
+              <span>Canada Paycheck</span>
+            </div>
+            <Link
+              href="/tools/australia-pay-calculator"
+              className="min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇦🇺</span>
+              <span>Australia Pay</span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Inputs */}
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <CalcInput
+                id="gross-salary"
+                label="Gross Annual Salary"
+                value={grossSalary}
+                onChange={(val) => setGrossSalary(Number(val) || 0)}
+                prefix="$"
+                min={0}
+                step={1000}
+                helpText="Your total annual pre-tax base salary in Canadian Dollars ($ CAD)"
+              />
+              {/* Quick presets */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">Presets:</span>
+                {PRESET_SALARIES.map((preset) => (
+                  <button
+                    key={preset.value}
+                    type="button"
+                    onClick={() => setGrossSalary(preset.value)}
+                    className={`min-h-[44px] px-3 py-1 text-xs font-medium rounded-lg border transition-colors ${
+                      grossSalary === preset.value
+                        ? "bg-emerald-500 text-white border-emerald-500 dark:border-emerald-600"
+                        : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300"
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <CalcSelect
+              id="province"
+              label="Province / Territory"
+              value={province}
+              onChange={(val) =>
+                setProvince(val as "ON" | "BC" | "AB" | "QC")
+              }
+              options={PROVINCE_OPTIONS}
+              helperText="Provincial tax rates and basic personal exemption amounts"
             />
-            {/* Quick presets */}
-            <div className="flex items-center gap-2 pt-1">
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">Presets:</span>
-              {PRESET_SALARIES.map((preset) => (
-                <button
-                  key={preset.value}
-                  type="button"
-                  onClick={() => setGrossSalary(preset.value)}
-                  className={`px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors ${
-                    grossSalary === preset.value
-                      ? "bg-emerald-500 text-white border-emerald-500 dark:border-emerald-600"
-                      : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300"
-                  }`}
-                >
-                  {preset.label}
-                </button>
-              ))}
+
+            <CalcSlider
+              id="rrsp-contribution-percent"
+              label="RRSP Contribution Slider"
+              ariaLabel="RRSP Contribution Slider"
+              value={rrspContributionPercent}
+              onChange={setRrspContributionPercent}
+              min={0}
+              max={18}
+              step={1}
+              unit="%"
+              helpText="Registered Retirement Savings Plan pre-tax deduction (statutory CRA limit up to 18%)"
+            />
+
+            <div className="pt-2 flex flex-wrap gap-2.5">
+              <CalcSaveButton
+                toolSlug="canada-paycheck-calculator"
+                toolName="Canada Paycheck Calculator"
+                summaryTitle={`Salary: $${grossSalary.toLocaleString()} CAD (${province})`}
+                summaryMetrics={[
+                  { label: "Bi-Weekly Pay", value: formatCurrency(result.netBiWeeklyTakeHome) },
+                  { label: "Monthly Pay", value: formatCurrency(result.netMonthlyTakeHome) },
+                  { label: "Annual Take-Home", value: formatCurrency(result.netAnnualTakeHome) },
+                  { label: "Federal Tax", value: formatCurrency(result.federalTax) },
+                  { label: "Provincial Tax", value: formatCurrency(result.provincialTax) },
+                ]}
+              />
+              <CalcShareButton
+                state={{
+                  grossSalary,
+                  province,
+                  rrspContributionPercent,
+                }}
+                label="Share Calculation"
+              />
+              <CalcPromptButton promptText={llmPrompt} />
+              <button
+                type="button"
+                onClick={handleExportExcel}
+                className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-black text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white shadow-xs transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Export to Excel</span>
+              </button>
             </div>
           </div>
 
-          <CalcSelect
-            id="province"
-            label="Province / Territory"
-            value={province}
-            onChange={(val) =>
-              setProvince(val as "ON" | "BC" | "AB" | "QC")
-            }
-            options={PROVINCE_OPTIONS}
-            helperText="Provincial tax rates and basic personal exemption amounts for 2024"
-          />
-
-          <CalcSlider
-            id="rrsp-contribution-percent"
-            label="RRSP Contribution"
-            value={rrspContributionPercent}
-            onChange={setRrspContributionPercent}
-            min={0}
-            max={18}
-            step={1}
-            unit="%"
-            helpText="Registered Retirement Savings Plan pre-tax deduction (statutory CRA limit up to 18%)"
-          />
-
-          <div className="pt-2 flex flex-wrap gap-3">
-            <CalcSaveButton
-              toolSlug="canada-paycheck-calculator"
-              toolName="Canada Paycheck Calculator"
-              summaryTitle={`Salary: $${grossSalary.toLocaleString()} CAD (${province})`}
-              summaryMetrics={[
-                { label: "Bi-Weekly Pay", value: formatCurrency(result.netBiWeeklyTakeHome) },
-                { label: "Monthly Pay", value: formatCurrency(result.netMonthlyTakeHome) },
-                { label: "Annual Take-Home", value: formatCurrency(result.netAnnualTakeHome) },
-                { label: "Federal Tax", value: formatCurrency(result.federalTax) },
-                { label: "Provincial Tax", value: formatCurrency(result.provincialTax) },
+          {/* Right Results */}
+          <div className="space-y-4">
+            <CalcResult
+              title="Canadian Take-Home Pay Summary"
+              primaryLabel="Net Bi-Weekly Take-Home"
+              primaryValue={formatCurrency(result.netBiWeeklyTakeHome)}
+              primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+              copyValue={`Canada Net Pay: ${formatCurrency(result.netBiWeeklyTakeHome)} bi-weekly (${formatCurrency(result.netMonthlyTakeHome)}/mo, ${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: $${grossSalary.toLocaleString()} (${province}) | Effective Tax: ${result.effectiveTaxRate}%`}
+              columns={2}
+              items={[
+                {
+                  label: "Net Annual Take-Home",
+                  value: formatCurrency(result.netAnnualTakeHome),
+                  subtext: "Total net salary received after all CRA taxes & deductions",
+                  highlight: true,
+                },
+                {
+                  label: "Net Semi-Monthly (24 periods)",
+                  value: formatCurrency(result.netSemiMonthlyTakeHome),
+                  subtext: "Pay per period (15th and end of month)",
+                },
+                {
+                  label: "Federal Tax",
+                  value: formatCurrency(result.federalTax),
+                  subtext: "CRA progressive federal income tax",
+                },
+                {
+                  label: "Provincial Tax",
+                  value: formatCurrency(result.provincialTax),
+                  subtext: `${province} provincial income tax`,
+                },
+                {
+                  label: "CPP / CPP2",
+                  value: formatCurrency(result.cppContribution),
+                  subtext: "Canada Pension Plan Tier 1 + enhanced Tier 2",
+                },
+                {
+                  label: "EI Contribution",
+                  value: formatCurrency(result.eiContribution),
+                  subtext: "Employment Insurance statutory premium",
+                },
+                {
+                  label: "RRSP Deduction",
+                  value: formatCurrency(result.rrspDeduction),
+                  subtext: `${rrspContributionPercent}% pre-tax retirement contribution`,
+                },
+                {
+                  label: "Effective Tax Rate",
+                  value: `${result.effectiveTaxRate}%`,
+                  subtext: "(Total Taxes & Statutory) / Gross Salary",
+                },
               ]}
-            />
-            <CalcShareButton
-              state={{
-                grossSalary,
-                province,
-                rrspContributionPercent,
-              }}
-              label="Share Canada Paycheck Plan"
-            />
-            <CalcPromptButton promptText={llmPrompt} />
-            <CalcExportButton
-              data={exportSchedule}
-              filename="canada-paycheck-take-home-breakdown"
-              sheetName="Canada Paycheck Breakdown"
             />
           </div>
         </div>
 
-        {/* Right Results */}
-        <div className="space-y-4">
-          <CalcResult
-            title="Canadian Take-Home Pay Summary"
-            primaryLabel="Net Bi-Weekly Take-Home"
-            primaryValue={formatCurrency(result.netBiWeeklyTakeHome)}
-            primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
-            copyValue={`Canada Net Pay: ${formatCurrency(result.netBiWeeklyTakeHome)} bi-weekly (${formatCurrency(result.netMonthlyTakeHome)}/mo, ${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: $${grossSalary.toLocaleString()} (${province}) | Effective Tax: ${result.effectiveTaxRate}%`}
-            columns={2}
-            items={[
+        <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+          <CalcChart
+            title="Canada Paycheck & Tax Breakdown"
+            data={chartData}
+            series={[
               {
-                label: "Net Annual Take-Home",
-                value: formatCurrency(result.netAnnualTakeHome),
-                subtext: "Total net salary received after all CRA taxes & deductions",
-                highlight: true,
-              },
-              {
-                label: "Net Semi-Monthly (24 periods)",
-                value: formatCurrency(result.netSemiMonthlyTakeHome),
-                subtext: "Pay per period (15th and end of month)",
-              },
-              {
-                label: "Federal Tax",
-                value: formatCurrency(result.federalTax),
-                subtext: "CRA progressive federal income tax",
-              },
-              {
-                label: "Provincial Tax",
-                value: formatCurrency(result.provincialTax),
-                subtext: `${province} provincial income tax`,
-              },
-              {
-                label: "CPP / CPP2",
-                value: formatCurrency(result.cppContribution),
-                subtext: "Canada Pension Plan Tier 1 + enhanced Tier 2",
-              },
-              {
-                label: "EI Contribution",
-                value: formatCurrency(result.eiContribution),
-                subtext: "Employment Insurance statutory premium",
-              },
-              {
-                label: "RRSP Deduction",
-                value: formatCurrency(result.rrspDeduction),
-                subtext: `${rrspContributionPercent}% pre-tax retirement contribution`,
-              },
-              {
-                label: "Effective Tax Rate",
-                value: `${result.effectiveTaxRate}%`,
-                subtext: "(Total Taxes & Statutory) / Gross Salary",
+                key: "amount",
+                name: "Amount ($ CAD)",
+                color: "#10b981",
+                gradientId: "canadaSalaryGrad",
               },
             ]}
+            valuePrefix="$"
           />
         </div>
-      </div>
+      </CalcCard>
 
-      <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-        <CalcChart
-          title="Canada Paycheck & Tax Breakdown"
-          data={chartData}
-          series={[
-            {
-              key: "amount",
-              name: "Amount ($ CAD)",
-              color: "#10b981",
-              gradientId: "canadaSalaryGrad",
-            },
-          ]}
-          valuePrefix="$"
-        />
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Bi-Weekly Pay</span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {formatCurrency(result.netBiWeeklyTakeHome)}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors"
+        >
+          Export Excel
+        </button>
       </div>
-    </CalcCard>
+    </div>
   );
 }

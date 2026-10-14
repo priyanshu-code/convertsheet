@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { vi } from "vitest";
+import { vi, afterEach } from "vitest";
 
 vi.mock("next/font/google", () => ({
   Inter: () => ({ className: "font-sans", variable: "--font-inter" }),
@@ -22,4 +22,15 @@ if (typeof window !== "undefined") {
     window.URL.revokeObjectURL = vi.fn();
   }
 }
+
+afterEach(() => {
+  if (typeof window !== "undefined") {
+    try {
+      window.history.replaceState(null, "", "/");
+      window.localStorage.clear();
+    } catch {
+      // ignore
+    }
+  }
+});
 

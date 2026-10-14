@@ -793,8 +793,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "car-loan-calculator",
     "presetSlug": "15k-car-loan",
     "name": "$15,000 Auto Loan Payment Calculator",
-    "title": "$15,000 Car Loan Calculator (2026) — Monthly Payment on 36, 48 & 60 Mos",
-    "metaDescription": "Calculate exact monthly payments on a $15,000 car loan across 36, 48, 60, and 72-month terms. See interest rates, taxes, and download a free Excel schedule.",
+    "title": "$15,000 Car Loan Calculator (2026) — Payment on 36, 48, 60 & 72 Months (5 Years)",
+    "metaDescription": "Calculate exact monthly payments on a $15,000 car loan over 36, 48, 60 (5 years), or 72 months. See interest rates, total loan cost, and free Excel schedule.",
     "answerSummary": "A $15,000 vehicle with $1,500 down payment at 6.5% interest over a 48-month term costs approximately $356/month (net loan of $15,000 including 7% sales tax and fees). Total interest paid over 4 years is $2,075.",
     "about": "Financing an entry-level or reliable pre-owned vehicle at the $15,000 mark is a great way to minimize depreciation. Use this tool to compute monthly financing and compare 36 vs 48-month payoffs.",
     "initialValues": {
@@ -1217,8 +1217,8 @@ Extending a $25k loan from 60 to 72 months lowers your payment by ~$56/month but
     toolSlug: "car-loan-calculator",
     presetSlug: "15k-car-loan-5-years",
     name: "$15,000 Car Loan Over 5 Years (60 Months) Calculator",
-    title: "$15,000 Car Loan Over 5 Years Calculator | ConvertSheet",
-    metaDescription: "Calculate monthly payments and interest on a $15,000 car loan over 5 years (60 months). Compare interest rates, see total cost, and export schedule.",
+    title: "$15,000 Car Loan Over 5 Years Calculator (60 Months) — Monthly Payments (2026)",
+    metaDescription: "Calculate monthly payment on a $15,000 car loan over 5 years (60 months). Compare 5.49% to 8.99% APR interest rates, total loan cost, and export Excel amortization.",
     answerSummary: "Financing a $15,000 used car over 5 years (60 months) with $1,500 down at 6.75% APR results in a monthly payment of approximately $291/month. Total interest paid over 5 years is $2,698.",
     about: `### $15,000 Car Loan Over 5 Years (60-Month Payment Matrix)
 

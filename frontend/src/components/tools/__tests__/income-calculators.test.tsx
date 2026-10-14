@@ -57,8 +57,8 @@ describe("Income & Salary Calculators UI", () => {
     );
 
     expect(screen.getByText("Annual Compensation & Work Schedule")).toBeInTheDocument();
-    expect(screen.getByText(/48.08/i)).toBeInTheDocument();
-    expect(screen.getByText("$8,333")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Export to Excel/i })).toBeInTheDocument();
+    expect(screen.getAllByText(/48.08/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("$8,333").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByRole("button", { name: /Export/i }).length).toBeGreaterThanOrEqual(1);
   });
 });

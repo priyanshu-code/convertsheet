@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Briefcase } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { Briefcase, ShieldCheck, Download } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
@@ -19,6 +19,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { calculateUsSalary, UsSalaryInput } from "@/lib/engines/financial-engine";
 import { generateSalaryDossierPdf } from "@/lib/engines/pdf-dossier-engine";
 import { RemittancePartnerCard } from "@/components/finance";
+import * as XLSX from "xlsx";
 
 export interface SalaryCalculatorProps {
   initialValues?: Partial<{
@@ -123,6 +124,45 @@ export function SalaryCalculator({ initialValues }: SalaryCalculatorProps = {}) 
     return 200;
   });
 
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("regime", regime);
+    if (regime === "US") {
+      params.set("grossSalary", grossSalary.toString());
+      params.set("filingStatus", filingStatus);
+      params.set("k401Percent", k401Percent.toString());
+      params.set("stateTaxPercent", stateTaxPercent.toString());
+      params.set("pretaxDeductionsMonthly", pretaxDeductionsMonthly.toString());
+      params.delete("annualCtc");
+      params.delete("epfPercent");
+      params.delete("professionalTaxMonthly");
+    } else {
+      params.set("annualCtc", annualCtc.toString());
+      params.set("epfPercent", epfPercent.toString());
+      params.set("professionalTaxMonthly", professionalTaxMonthly.toString());
+      params.delete("grossSalary");
+      params.delete("filingStatus");
+      params.delete("k401Percent");
+      params.delete("stateTaxPercent");
+      params.delete("pretaxDeductionsMonthly");
+    }
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [
+    regime,
+    grossSalary,
+    filingStatus,
+    k401Percent,
+    stateTaxPercent,
+    pretaxDeductionsMonthly,
+    annualCtc,
+    epfPercent,
+    professionalTaxMonthly,
+  ]);
+
   // --- US Computations ---
   const usResult = useMemo(() => {
     return calculateUsSalary({
@@ -224,6 +264,70 @@ export function SalaryCalculator({ initialValues }: SalaryCalculatorProps = {}) 
     ];
   }, [regime, usResult, pretaxDeductionsMonthly, inResult, annualCtc]);
 
+  const handleExportExcel = () => {
+    try {
+      const summaryRows =
+        regime === "US"
+          ? [
+              ["ConvertSheet - US Paycheck & Take-Home Tax Audit", ""],
+              ["Report Generated At", new Date().toISOString().split("T")[0]],
+              ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/salary-calculator"],
+              ["", ""],
+              ["--- GROSS SALARY & TAX BRACKET ---", ""],
+              ["Annual Gross Salary ($)", grossSalary],
+              ["Filing Status", filingStatus === "single" ? "Single Filer" : "Married Filing Jointly"],
+              ["401(k) Contribution Rate", `${k401Percent}% ($${usResult.k401Deduction}/yr)`],
+              ["Estimated State Tax Rate", `${stateTaxPercent}%`],
+              ["Monthly Pre-Tax Deductions", `$${pretaxDeductionsMonthly}/mo`],
+              ["", ""],
+              ["--- TAX & STATUTORY DEDUCTIONS ---", ""],
+              ["Federal Income Tax", Math.round(usResult.federalIncomeTax)],
+              ["Social Security Tax (6.2%)", Math.round(usResult.socialSecurityTax)],
+              ["Medicare Tax (1.45% + surtax)", Math.round(usResult.medicareTax)],
+              ["State Income Tax", Math.round(usResult.stateIncomeTax)],
+              ["Effective Total Tax Rate", `${usResult.effectiveTaxRate}%`],
+              ["", ""],
+              ["--- NET TAKE-HOME PAY INTERVALS ---", ""],
+              ["Net Annual Take-Home", Math.round(usResult.netAnnualTakeHome)],
+              ["Net Monthly Take-Home (12x)", Math.round(usResult.netMonthlyTakeHome)],
+              ["Net Bi-Weekly Take-Home (26x)", Math.round(usResult.netBiWeeklyTakeHome)],
+            ]
+          : [
+              ["ConvertSheet - India CTC to In-Hand Salary Breakdown", ""],
+              ["Report Generated At", new Date().toISOString().split("T")[0]],
+              ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/salary-calculator?regime=IN"],
+              ["", ""],
+              ["--- CTC COMPENSATION PARAMETERS ---", ""],
+              ["Annual Cost to Company (CTC)", annualCtc],
+              ["Monthly Gross Compensation", inResult.monthlyGross],
+              ["EPF Contribution (% of Basic)", `${epfPercent}%`],
+              ["Monthly Professional Tax", inResult.monthlyPt],
+              ["", ""],
+              ["--- DEDUCTIONS & TAXES ---", ""],
+              ["Employee Provident Fund (EPF Annual)", inResult.annualEpf],
+              ["Professional Tax (Annual)", inResult.annualPt],
+              ["Estimated Income Tax TDS (Annual)", inResult.annualTax],
+              ["Effective Tax Rate", `${inResult.effectiveTaxRate}%`],
+              ["", ""],
+              ["--- NET TAKE-HOME SALARY ---", ""],
+              ["Net In-Hand Salary (Monthly)", inResult.monthlyTakeHome],
+              ["Net In-Hand Salary (Annual)", inResult.annualTakeHome],
+            ];
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "SalarySummary");
+      XLSX.writeFile(
+        wb,
+        regime === "US"
+          ? `ConvertSheet_US_Salary_${grossSalary}.xlsx`
+          : `ConvertSheet_India_CTC_${annualCtc}.xlsx`
+      );
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    }
+  };
+
   // Prompt for ChatGPT
   const llmPrompt = useMemo(() => {
     if (regime === "US") {
@@ -254,395 +358,428 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
   }, [regime, usResult, filingStatus, pretaxDeductionsMonthly, annualCtc, inResult]);
 
   return (
-    <div className="space-y-6">
-      <CalcCard
-      title={
-        regime === "US"
-          ? "Salary & Take-Home Paycheck Calculator (US 2024)"
-          : "Salary & In-Hand Pay Calculator (India FY 2024-25)"
-      }
-      subtitle={
-        regime === "US"
-          ? "Calculate your exact take-home pay after Federal income tax, FICA (Social Security & Medicare), State tax, and 401(k) contributions."
-          : "Calculate your exact monthly take-home salary from gross annual CTC after EPF, professional tax, and Indian Income Tax (New Regime)."
-      }
-      icon={Briefcase}
-      badge={regime === "US" ? "United States • 2024" : "India • FY 2024-25"}
-    >
-      {/* Country pill switcher */}
-      <div className="flex items-center justify-start pb-2">
-        <div className="inline-flex p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
-          <button
-            type="button"
-            onClick={() => setRegime("US")}
-            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-              regime === "US"
-                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
-            }`}
-          >
-            <span>🇺🇸</span>
-            <span>United States (W-2)</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setRegime("IN")}
-            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-              regime === "IN"
-                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
-            }`}
-          >
-            <span>🇮🇳</span>
-            <span>India (CTC / In-Hand)</span>
-          </button>
-        </div>
+    <div className="space-y-6 pb-24 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
       </div>
 
-      <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
-        {/* Left Column: Inputs */}
-        <div className="lg:col-span-7 space-y-6">
-          {regime === "US" ? (
-            <>
-              <div>
-                <CalcInput
-                  id="gross-salary"
-                  label="Gross Annual Salary"
-                  value={grossSalary}
-                  onChange={setGrossSalary}
-                  prefix="$"
-                  min={0}
-                  step={5000}
-                  helpText="Your total base salary or annual wages before any deductions"
-                />
-                <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
-                  {[
-                    { label: "$50k", val: 50000 },
-                    { label: "$75k", val: 75000 },
-                    { label: "$100k", val: 100000 },
-                    { label: "$125k", val: 125000 },
-                    { label: "$150k", val: 150000 },
-                    { label: "$200k", val: 200000 },
-                  ].map((p) => (
-                    <button
-                      key={p.label}
-                      type="button"
-                      onClick={() => setGrossSalary(p.val)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
-                        grossSalary === p.val
-                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                      }`}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <CalcSelect
-                id="filing-status"
-                label="Tax Filing Status"
-                value={filingStatus}
-                onChange={(val) => setFilingStatus(val as "single" | "married")}
-                options={[
-                  { value: "single", label: "Single" },
-                  { value: "married", label: "Married Filing Jointly" },
-                ]}
-                helperText="Standard deduction 2024: $14,600 (Single) / $29,200 (Married)"
-              />
-              <CalcSlider
-                id="k401-percent"
-                label="401(k) Contribution"
-                value={k401Percent}
-                onChange={setK401Percent}
-                min={0}
-                max={50}
-                step={1}
-                unit="%"
-                helpText="Traditional pre-tax 401(k) contribution reduces federal taxable income"
-              />
-              <CalcSlider
-                id="state-tax-percent"
-                label="Estimated State Income Tax"
-                value={stateTaxPercent}
-                onChange={setStateTaxPercent}
-                min={0}
-                max={15}
-                step={0.1}
-                unit="%"
-                helpText="Average state tax rate (0% in TX/FL/WA, ~5% in IL/MA, up to 13.3% in CA)"
-              />
-              <CalcInput
-                id="pretax-deductions-monthly"
-                label="Pre-tax Deductions (Monthly)"
-                value={pretaxDeductionsMonthly}
-                onChange={setPretaxDeductionsMonthly}
-                prefix="$"
-                min={0}
-                step={50}
-                helpText="Health insurance premiums, HSA, FSA, dental, and vision ($/month)"
-              />
-            </>
-          ) : (
-            <>
-              <div>
-                <CalcInput
-                  id="annual-ctc"
-                  label="Gross Annual CTC"
-                  value={annualCtc}
-                  onChange={setAnnualCtc}
-                  prefix="₹"
-                  min={100000}
-                  step={50000}
-                  helpText="Total cost-to-company quoted in your offer letter"
-                />
-                <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
-                  {[
-                    { label: "₹6L", val: 600000 },
-                    { label: "₹10L", val: 1000000 },
-                    { label: "₹12L", val: 1200000 },
-                    { label: "₹15L", val: 1500000 },
-                    { label: "₹20L", val: 2000000 },
-                    { label: "₹25L", val: 2500000 },
-                  ].map((p) => (
-                    <button
-                      key={p.label}
-                      type="button"
-                      onClick={() => setAnnualCtc(p.val)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
-                        annualCtc === p.val
-                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                      }`}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <CalcSlider
-                id="epf-percent"
-                label="Employee Provident Fund (EPF % of Basic)"
-                value={epfPercent}
-                onChange={setEpfPercent}
-                min={0}
-                max={12}
-                step={1}
-                unit="%"
-                helpText="Standard EPF contribution is 12% of basic salary"
-              />
-              <CalcInput
-                id="professional-tax"
-                label="Monthly Professional Tax"
-                value={professionalTaxMonthly}
-                onChange={setProfessionalTaxMonthly}
-                prefix="₹"
-                min={0}
-                max={2500}
-                step={50}
-                helpText="State professional tax (typically ₹200/month)"
-              />
-            </>
-          )}
-        </div>
-        {/* End Left Column */}
-
-        {/* Right Column: Sticky Results & Actions */}
-        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-20">
-          {regime === "US" ? (
-            <CalcResult
-              title="Paycheck & Take-Home Summary"
-              primaryLabel="Net Monthly Take-Home"
-              primaryValue={`$${usResult.netMonthlyTakeHome.toLocaleString()}`}
-              primarySubtext={`Bi-Weekly: $${usResult.netBiWeeklyTakeHome.toLocaleString()} (26 paychecks) • Annual: $${usResult.netAnnualTakeHome.toLocaleString()}`}
-              copyValue={`US Take-Home Pay: $${usResult.netMonthlyTakeHome.toLocaleString()}/mo ($${usResult.netBiWeeklyTakeHome.toLocaleString()} bi-weekly, $${usResult.netAnnualTakeHome.toLocaleString()}/yr) | Gross: $${grossSalary.toLocaleString()} | Effective Tax: ${usResult.effectiveTaxRate}%`}
-              columns={2}
-              items={[
-                {
-                  label: "Bi-Weekly Take-Home",
-                  value: `$${usResult.netBiWeeklyTakeHome.toLocaleString()}`,
-                  subtext: "Every 2 weeks (26 periods)",
-                  highlight: true,
-                },
-                {
-                  label: "Federal Income Tax",
-                  value: `$${usResult.federalIncomeTax.toLocaleString()}`,
-                  subtext: `Taxable: $${usResult.federalTaxableIncome.toLocaleString()}`,
-                },
-                {
-                  label: "FICA: Social Security",
-                  value: `$${usResult.socialSecurityTax.toLocaleString()}`,
-                  subtext: "6.2% up to $168,600 cap",
-                },
-                {
-                  label: "FICA: Medicare",
-                  value: `$${usResult.medicareTax.toLocaleString()}`,
-                  subtext: "1.45% base + 0.9% surtax",
-                },
-                {
-                  label: "State Income Tax",
-                  value: `$${usResult.stateIncomeTax.toLocaleString()}`,
-                  subtext: `${stateTaxPercent}% estimated`,
-                },
-                {
-                  label: "401(k) Retirement",
-                  value: `$${usResult.k401Deduction.toLocaleString()}`,
-                  subtext: `${k401Percent}% pre-tax savings`,
-                },
-                {
-                  label: "Effective Tax Rate",
-                  value: `${usResult.effectiveTaxRate}%`,
-                  subtext: "Taxes / Gross Salary",
-                },
-              ]}
-            />
-          ) : (
-            <CalcResult
-              title="Monthly Take-Home Summary"
-              primaryLabel="Net In-Hand Paycheck"
-              primaryValue={`₹${inResult.monthlyTakeHome.toLocaleString()}`}
-              primarySubtext={`Annual In-Hand: ₹${inResult.annualTakeHome.toLocaleString()}`}
-              copyValue={`India In-Hand Salary: ₹${inResult.monthlyTakeHome.toLocaleString()}/mo (₹${inResult.annualTakeHome.toLocaleString()}/yr) | Gross CTC: ₹${annualCtc.toLocaleString()} | Monthly EPF: ₹${inResult.monthlyEpf.toLocaleString()} | Monthly Tax: ₹${inResult.monthlyTax.toLocaleString()}`}
-              columns={2}
-              items={[
-                {
-                  label: "Monthly EPF",
-                  value: `₹${inResult.monthlyEpf.toLocaleString()}`,
-                  subtext: "Retirement savings",
-                  highlight: true,
-                },
-                {
-                  label: "Monthly Tax TDS",
-                  value: `₹${inResult.monthlyTax.toLocaleString()}`,
-                  subtext: "Estimated income tax",
-                },
-                {
-                  label: "Monthly Gross",
-                  value: `₹${inResult.monthlyGross.toLocaleString()}`,
-                },
-                {
-                  label: "Annual Deductions",
-                  value: `₹${inResult.annualDeductions.toLocaleString()}`,
-                },
-              ]}
-            />
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2 pt-1">
-            <CalcSaveButton
-              toolSlug="salary-calculator"
-              toolName="Salary & Take-Home Calculator"
-              summaryTitle={
+      <CalcCard
+        title={
+          regime === "US"
+            ? "Salary & Take-Home Paycheck Calculator (US 2026)"
+            : "Salary & In-Hand Pay Calculator (India FY 2024-26)"
+        }
+        subtitle={
+          regime === "US"
+            ? "Calculate your exact take-home pay after Federal income tax, FICA (Social Security & Medicare), State tax, and 401(k) contributions."
+            : "Calculate your exact monthly take-home salary from gross annual CTC after EPF, professional tax, and Indian Income Tax (New Regime)."
+        }
+        icon={Briefcase}
+        badge={regime === "US" ? "United States • 2026 Ready" : "India • Budget 2024-26"}
+      >
+        {/* Country pill switcher */}
+        <div className="flex items-center justify-start pb-2">
+          <div className="inline-flex p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
+            <button
+              type="button"
+              onClick={() => setRegime("US")}
+              className={`min-h-[44px] px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
                 regime === "US"
-                  ? `Salary: $${grossSalary.toLocaleString()} (Take-Home: $${usResult.netMonthlyTakeHome.toLocaleString()}/mo)`
-                  : `Salary: ₹${annualCtc.toLocaleString()} CTC (In-Hand: ₹${inResult.monthlyTakeHome.toLocaleString()}/mo)`
-              }
-              summaryMetrics={
-                regime === "US"
-                  ? [
-                      { label: "Monthly Take-Home", value: `$${usResult.netMonthlyTakeHome.toLocaleString()}` },
-                      { label: "Bi-Weekly Take-Home", value: `$${usResult.netBiWeeklyTakeHome.toLocaleString()}` },
-                      { label: "Federal Tax", value: `$${usResult.federalIncomeTax.toLocaleString()}` },
-                      { label: "Effective Tax Rate", value: `${usResult.effectiveTaxRate}%` },
-                    ]
-                  : [
-                      { label: "Monthly In-Hand", value: `₹${inResult.monthlyTakeHome.toLocaleString()}` },
-                      { label: "Annual In-Hand", value: `₹${inResult.annualTakeHome.toLocaleString()}` },
-                      { label: "Monthly EPF", value: `₹${inResult.monthlyEpf.toLocaleString()}` },
-                      { label: "Annual Tax", value: `₹${inResult.annualTax.toLocaleString()}` },
-                    ]
-              }
-            />
-            <CalcShareButton
-              state={
-                regime === "US"
-                  ? {
-                      regime: "US",
-                      grossSalary,
-                      filingStatus,
-                      k401Percent,
-                      stateTaxPercent,
-                      pretaxDeductionsMonthly,
-                    }
-                  : {
-                      regime: "IN",
-                      annualCtc,
-                      epfPercent,
-                      professionalTaxMonthly,
-                    }
-              }
-              label={regime === "US" ? "Share Paycheck Plan" : "Share Take-Home Plan"}
-            />
-            <CalcPromptButton promptText={llmPrompt} />
-            <CalcExportButton
-              data={exportSchedule}
-              filename={regime === "US" ? "us-paycheck-breakdown" : "salary-breakdown"}
-              sheetName="Salary Summary"
-            />
-            <CalcPdfReportButton
-              filename={regime === "US" ? `us_salary_dossier_${grossSalary}.pdf` : `india_salary_dossier_${annualCtc}.pdf`}
-              label="Download Salary Dossier (PDF)"
-              onGenerate={() =>
-                generateSalaryDossierPdf(
-                  regime === "US"
-                    ? {
-                        grossSalary,
-                        netAnnualTakeHome: usResult.netAnnualTakeHome,
-                        netMonthlyTakeHome: usResult.netMonthlyTakeHome,
-                        netBiWeeklyTakeHome: usResult.netBiWeeklyTakeHome,
-                        federalTax: usResult.federalIncomeTax,
-                        stateTax: usResult.stateIncomeTax,
-                        ficaTax: usResult.socialSecurityTax + usResult.medicareTax,
-                        effectiveTaxRate: usResult.effectiveTaxRate,
-                        currencySymbol: "$",
-                        regimeLabel: "US 2026",
-                      }
-                    : {
-                        grossSalary: annualCtc,
-                        netAnnualTakeHome: inResult.annualTakeHome,
-                        netMonthlyTakeHome: inResult.monthlyTakeHome,
-                        netBiWeeklyTakeHome: Math.round(inResult.annualTakeHome / 26),
-                        federalTax: inResult.annualTax,
-                        stateTax: inResult.annualPt,
-                        ficaTax: inResult.annualEpf,
-                        effectiveTaxRate: inResult.effectiveTaxRate,
-                        currencySymbol: "₹",
-                        regimeLabel: "India FY 2024-25",
-                      }
-                )
-              }
-            />
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+              }`}
+            >
+              <span>🇺🇸</span>
+              <span>United States (W-2)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRegime("IN")}
+              className={`min-h-[44px] px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
+                regime === "IN"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+              }`}
+            >
+              <span>🇮🇳</span>
+              <span>India (CTC / In-Hand)</span>
+            </button>
           </div>
         </div>
-        {/* End Right Column */}
-      </div>
 
-      <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-        <CalcChart
-          title={
-            regime === "US"
-              ? "Annual Paycheck & Deductions Distribution"
-              : "Salary Distribution & Deductions"
-          }
-          data={chartData}
-          series={[
-            {
-              key: "amount",
-              name: regime === "US" ? "Amount ($)" : "Amount (₹)",
-              color: "#10b981",
-              gradientId: "salaryGrad",
-            },
-          ]}
-        />
-      </div>
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+          {/* Left Column: Inputs */}
+          <div className="lg:col-span-7 space-y-6">
+            {regime === "US" ? (
+              <>
+                <div>
+                  <CalcInput
+                    id="gross-salary"
+                    label="Gross Annual Salary"
+                    value={grossSalary}
+                    onChange={setGrossSalary}
+                    prefix="$"
+                    min={0}
+                    step={5000}
+                    helpText="Your total base salary or annual wages before any deductions"
+                  />
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                    {[
+                      { label: "$50k", val: 50000 },
+                      { label: "$75k", val: 75000 },
+                      { label: "$100k", val: 100000 },
+                      { label: "$125k", val: 125000 },
+                      { label: "$150k", val: 150000 },
+                      { label: "$200k", val: 200000 },
+                    ].map((p) => (
+                      <button
+                        key={p.label}
+                        type="button"
+                        onClick={() => setGrossSalary(p.val)}
+                        className={`min-h-[44px] px-3 py-1 text-xs font-medium rounded-lg border transition-colors ${
+                          grossSalary === p.val
+                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <CalcSelect
+                  id="filing-status"
+                  label="Tax Filing Status"
+                  value={filingStatus}
+                  onChange={(val) => setFilingStatus(val as "single" | "married")}
+                  options={[
+                    { value: "single", label: "Single" },
+                    { value: "married", label: "Married Filing Jointly" },
+                  ]}
+                  helperText="Standard deduction: $14,600 (Single) / $29,200 (Married)"
+                />
+                <CalcSlider
+                  id="k401-percent"
+                  label="401(k) Contribution Slider"
+                  ariaLabel="401(k) Contribution Slider"
+                  value={k401Percent}
+                  onChange={setK401Percent}
+                  min={0}
+                  max={50}
+                  step={1}
+                  unit="%"
+                  helpText="Traditional pre-tax 401(k) contribution reduces federal taxable income"
+                />
+                <CalcSlider
+                  id="state-tax-percent"
+                  label="Estimated State Income Tax Slider"
+                  ariaLabel="Estimated State Income Tax Slider"
+                  value={stateTaxPercent}
+                  onChange={setStateTaxPercent}
+                  min={0}
+                  max={15}
+                  step={0.1}
+                  unit="%"
+                  helpText="Average state tax rate (0% in TX/FL/WA, ~5% in IL/MA, up to 13.3% in CA)"
+                />
+                <CalcInput
+                  id="pretax-deductions-monthly"
+                  label="Pre-tax Deductions (Monthly)"
+                  value={pretaxDeductionsMonthly}
+                  onChange={setPretaxDeductionsMonthly}
+                  prefix="$"
+                  min={0}
+                  step={50}
+                  helpText="Health insurance premiums, HSA, FSA, dental, and vision ($/month)"
+                />
+              </>
+            ) : (
+              <>
+                <div>
+                  <CalcInput
+                    id="annual-ctc"
+                    label="Gross Annual CTC"
+                    value={annualCtc}
+                    onChange={setAnnualCtc}
+                    prefix="₹"
+                    min={100000}
+                    step={50000}
+                    helpText="Total cost-to-company quoted in your offer letter"
+                  />
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                    {[
+                      { label: "₹6L", val: 600000 },
+                      { label: "₹10L", val: 1000000 },
+                      { label: "₹12L", val: 1200000 },
+                      { label: "₹15L", val: 1500000 },
+                      { label: "₹20L", val: 2000000 },
+                      { label: "₹25L", val: 2500000 },
+                    ].map((p) => (
+                      <button
+                        key={p.label}
+                        type="button"
+                        onClick={() => setAnnualCtc(p.val)}
+                        className={`min-h-[44px] px-3 py-1 text-xs font-medium rounded-lg border transition-colors ${
+                          annualCtc === p.val
+                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <CalcSlider
+                  id="epf-percent"
+                  label="Employee Provident Fund (EPF % of Basic) Slider"
+                  ariaLabel="Employee Provident Fund (EPF % of Basic) Slider"
+                  value={epfPercent}
+                  onChange={setEpfPercent}
+                  min={0}
+                  max={12}
+                  step={1}
+                  unit="%"
+                  helpText="Standard EPF contribution is 12% of basic salary"
+                />
+                <CalcInput
+                  id="professional-tax"
+                  label="Monthly Professional Tax"
+                  value={professionalTaxMonthly}
+                  onChange={setProfessionalTaxMonthly}
+                  prefix="₹"
+                  min={0}
+                  max={2500}
+                  step={50}
+                  helpText="State professional tax (typically ₹200/month)"
+                />
+              </>
+            )}
+          </div>
+          {/* End Left Column */}
+
+          {/* Right Column: Sticky Results & Actions */}
+          <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-20">
+            {regime === "US" ? (
+              <CalcResult
+                title="Paycheck & Take-Home Summary"
+                primaryLabel="Net Monthly Take-Home"
+                primaryValue={`$${usResult.netMonthlyTakeHome.toLocaleString()}`}
+                primarySubtext={`Bi-Weekly: $${usResult.netBiWeeklyTakeHome.toLocaleString()} (26 paychecks) • Annual: $${usResult.netAnnualTakeHome.toLocaleString()}`}
+                copyValue={`US Take-Home Pay: $${usResult.netMonthlyTakeHome.toLocaleString()}/mo ($${usResult.netBiWeeklyTakeHome.toLocaleString()} bi-weekly, $${usResult.netAnnualTakeHome.toLocaleString()}/yr) | Gross: $${grossSalary.toLocaleString()} | Effective Tax: ${usResult.effectiveTaxRate}%`}
+                columns={2}
+                items={[
+                  {
+                    label: "Bi-Weekly Take-Home",
+                    value: `$${usResult.netBiWeeklyTakeHome.toLocaleString()}`,
+                    subtext: "Every 2 weeks (26 periods)",
+                    highlight: true,
+                  },
+                  {
+                    label: "Federal Income Tax",
+                    value: `$${usResult.federalIncomeTax.toLocaleString()}`,
+                    subtext: `Taxable: $${usResult.federalTaxableIncome.toLocaleString()}`,
+                  },
+                  {
+                    label: "FICA: Social Security",
+                    value: `$${usResult.socialSecurityTax.toLocaleString()}`,
+                    subtext: "6.2% up to $168,600 cap",
+                  },
+                  {
+                    label: "FICA: Medicare",
+                    value: `$${usResult.medicareTax.toLocaleString()}`,
+                    subtext: "1.45% base + 0.9% surtax",
+                  },
+                  {
+                    label: "State Income Tax",
+                    value: `$${usResult.stateIncomeTax.toLocaleString()}`,
+                    subtext: `${stateTaxPercent}% estimated`,
+                  },
+                  {
+                    label: "401(k) Retirement",
+                    value: `$${usResult.k401Deduction.toLocaleString()}`,
+                    subtext: `${k401Percent}% pre-tax savings`,
+                  },
+                  {
+                    label: "Effective Tax Rate",
+                    value: `${usResult.effectiveTaxRate}%`,
+                    subtext: "Taxes / Gross Salary",
+                  },
+                ]}
+              />
+            ) : (
+              <CalcResult
+                title="Monthly Take-Home Summary"
+                primaryLabel="Net In-Hand Paycheck"
+                primaryValue={`₹${inResult.monthlyTakeHome.toLocaleString()}`}
+                primarySubtext={`Annual In-Hand: ₹${inResult.annualTakeHome.toLocaleString()}`}
+                copyValue={`India In-Hand Salary: ₹${inResult.monthlyTakeHome.toLocaleString()}/mo (₹${inResult.annualTakeHome.toLocaleString()}/yr) | Gross CTC: ₹${annualCtc.toLocaleString()} | Monthly EPF: ₹${inResult.monthlyEpf.toLocaleString()} | Monthly Tax: ₹${inResult.monthlyTax.toLocaleString()}`}
+                columns={2}
+                items={[
+                  {
+                    label: "Monthly EPF",
+                    value: `₹${inResult.monthlyEpf.toLocaleString()}`,
+                    subtext: "Retirement savings",
+                    highlight: true,
+                  },
+                  {
+                    label: "Monthly Tax TDS",
+                    value: `₹${inResult.monthlyTax.toLocaleString()}`,
+                    subtext: "Estimated income tax",
+                  },
+                  {
+                    label: "Monthly Gross",
+                    value: `₹${inResult.monthlyGross.toLocaleString()}`,
+                  },
+                  {
+                    label: "Annual Deductions",
+                    value: `₹${inResult.annualDeductions.toLocaleString()}`,
+                  },
+                ]}
+              />
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <CalcSaveButton
+                toolSlug="salary-calculator"
+                toolName="Salary & Take-Home Calculator"
+                summaryTitle={
+                  regime === "US"
+                    ? `Salary: $${grossSalary.toLocaleString()} (Take-Home: $${usResult.netMonthlyTakeHome.toLocaleString()}/mo)`
+                    : `Salary: ₹${annualCtc.toLocaleString()} CTC (In-Hand: ₹${inResult.monthlyTakeHome.toLocaleString()}/mo)`
+                }
+                summaryMetrics={
+                  regime === "US"
+                    ? [
+                        { label: "Monthly Take-Home", value: `$${usResult.netMonthlyTakeHome.toLocaleString()}` },
+                        { label: "Bi-Weekly Take-Home", value: `$${usResult.netBiWeeklyTakeHome.toLocaleString()}` },
+                        { label: "Federal Tax", value: `$${usResult.federalIncomeTax.toLocaleString()}` },
+                        { label: "Effective Tax Rate", value: `${usResult.effectiveTaxRate}%` },
+                      ]
+                    : [
+                        { label: "Monthly In-Hand", value: `₹${inResult.monthlyTakeHome.toLocaleString()}` },
+                        { label: "Annual In-Hand", value: `₹${inResult.annualTakeHome.toLocaleString()}` },
+                        { label: "Monthly EPF", value: `₹${inResult.monthlyEpf.toLocaleString()}` },
+                        { label: "Annual Tax", value: `₹${inResult.annualTax.toLocaleString()}` },
+                      ]
+                }
+              />
+              <CalcShareButton
+                state={
+                  regime === "US"
+                    ? {
+                        regime: "US",
+                        grossSalary,
+                        filingStatus,
+                        k401Percent,
+                        stateTaxPercent,
+                        pretaxDeductionsMonthly,
+                      }
+                    : {
+                        regime: "IN",
+                        annualCtc,
+                        epfPercent,
+                        professionalTaxMonthly,
+                      }
+                }
+                label={regime === "US" ? "Share Paycheck Plan" : "Share Take-Home Plan"}
+              />
+              <CalcPromptButton promptText={llmPrompt} />
+              <button
+                type="button"
+                onClick={handleExportExcel}
+                className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-black text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white shadow-xs transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Export to Excel (.xlsx)</span>
+              </button>
+              <CalcPdfReportButton
+                filename={regime === "US" ? `us_salary_dossier_${grossSalary}.pdf` : `india_salary_dossier_${annualCtc}.pdf`}
+                label="Download Salary Dossier (PDF)"
+                onGenerate={() =>
+                  generateSalaryDossierPdf(
+                    regime === "US"
+                      ? {
+                          grossSalary,
+                          netAnnualTakeHome: usResult.netAnnualTakeHome,
+                          netMonthlyTakeHome: usResult.netMonthlyTakeHome,
+                          netBiWeeklyTakeHome: usResult.netBiWeeklyTakeHome,
+                          federalTax: usResult.federalIncomeTax,
+                          stateTax: usResult.stateIncomeTax,
+                          ficaTax: usResult.socialSecurityTax + usResult.medicareTax,
+                          effectiveTaxRate: usResult.effectiveTaxRate,
+                          currencySymbol: "$",
+                          regimeLabel: "US 2026",
+                        }
+                      : {
+                          grossSalary: annualCtc,
+                          netAnnualTakeHome: inResult.annualTakeHome,
+                          netMonthlyTakeHome: inResult.monthlyTakeHome,
+                          netBiWeeklyTakeHome: Math.round(inResult.annualTakeHome / 26),
+                          federalTax: inResult.annualTax,
+                          stateTax: inResult.annualPt,
+                          ficaTax: inResult.annualEpf,
+                          effectiveTaxRate: inResult.effectiveTaxRate,
+                          currencySymbol: "₹",
+                          regimeLabel: "India FY 2024-26",
+                        }
+                  )
+                }
+              />
+            </div>
+          </div>
+          {/* End Right Column */}
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+          <CalcChart
+            title={
+              regime === "US"
+                ? "Annual Paycheck & Deductions Distribution"
+                : "Salary Distribution & Deductions"
+            }
+            data={chartData}
+            series={[
+              {
+                key: "amount",
+                name: regime === "US" ? "Amount ($)" : "Amount (₹)",
+                color: "#10b981",
+                gradientId: "salaryGrad",
+              },
+            ]}
+          />
+        </div>
       </CalcCard>
       <RemittancePartnerCard
         sourceCurrency={regime === "US" ? "USD" : "INR"}
         targetCurrency={regime === "US" ? "INR" : "USD"}
       />
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
+            {regime === "US" ? "Monthly Take-Home" : "Monthly In-Hand"}
+          </span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {regime === "US"
+              ? `$${usResult.netMonthlyTakeHome.toLocaleString()}/mo`
+              : `₹${inResult.monthlyTakeHome.toLocaleString()}/mo`}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors"
+        >
+          Export Excel
+        </button>
+      </div>
     </div>
   );
 }

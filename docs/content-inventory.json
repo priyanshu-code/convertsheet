@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-13",
-  "totalBlogs": 23,
+  "lastUpdated": "2026-10-14",
+  "totalBlogs": 24,
   "totalTools": 18,
   "blogs": [
     {
@@ -140,6 +140,12 @@
       "title": "MoSPI Inflation Jumps to 5.54%: The Festive Home Loan Trap Behind 7.20% Bank Offers",
       "category": "Financial Planning",
       "description": "MoSPI's October 12, 2026 CPI data reveals retail inflation jumped 71 bps to 5.54%, driven by a 7.74% food spike. Discover why banks' promotional 7.20%–7.25% festive home loan offers mask structural EBLR reset traps."
+    },
+    {
+      "slug": "freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026",
+      "title": "Freddie Mac Mortgage Rates Hit 7.40%: The Brutal Math of 15-Year (6.73%) vs. 30-Year Loans",
+      "category": "Mortgage & Lending",
+      "description": "Freddie Mac's October 2026 survey shows 30-year mortgages at 7.40% and 15-year loans at 6.73%. Discover the exact monthly payment jump, lifetime interest savings, and why voluntary prepayment beats locking into a 15-year contractual obligation."
     }
   ],
   "tools": [
@@ -302,21 +308,42 @@
     },
     {
       "slug": "annual-to-hourly-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-14",
+      "moatsAdded": [
+        "dual-range-sliders",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "save-share-prompt-actions",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "canada-paycheck-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-14",
+      "moatsAdded": [
+        "rrsp-slider-44px",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "save-share-prompt-actions",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "salary-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-14",
+      "moatsAdded": [
+        "dual-regime-responsive-grid",
+        "sticky-bottom-mobile-bar",
+        "url-query-permalink-sync",
+        "privacy-reassurance-badge",
+        "save-share-prompt-actions",
+        "sheetjs-retention-hook"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "income-tax-calculator",

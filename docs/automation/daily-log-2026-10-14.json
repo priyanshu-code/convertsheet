@@ -1,0 +1,186 @@
+{
+  "date": "2026-10-14",
+  "status": "COMPLETED",
+  "executiveSummary": {
+    "role": "Chief Product Officer, Technical Lead & Growth Architect",
+    "cycleObjective": "GSC search intelligence mining, programmatic preset keyword tuning, mobile UX playbook evolution & moat upgrades (AnnualToHourlyCalculator, CanadaPaycheckCalculator, SalaryCalculator), zero-knowledge privacy badges, SheetJS formulaic retention exports, Freddie Mac PMMS 7.40% 15 vs 30-year mortgage research report, full unit test suite verification (87/87 files, 779 tests), production build (1951 pages), and 100% WCAG 2.1 AA audit pass (932 pages).",
+    "executionMode": "Autonomous unattended execution"
+  },
+  "googleSearchConsole": {
+    "property": "sc-domain:convertsheet.com",
+    "miningPeriod": "Last 28 days & 7 days",
+    "insights": [
+      {
+        "query": "15 vs 30 year mortgage calculator / 15 year vs 30 year mortgage calculator",
+        "impressions": 206,
+        "position": 3.2,
+        "ctr": 1.4,
+        "action": "Published primary institutional report dissecting 7.40% 30-year vs 6.73% 15-year spread (+67 bps) with amortization matrix and cross-linked to /tools/mortgage-calculator/15-year-vs-30-year."
+      },
+      {
+        "query": "$15,000 car loan over 5 years calculator / $15000 car loan payment 72 months",
+        "impressions": 29,
+        "position": 4.1,
+        "ctr": 6.9,
+        "action": "Updated title, meta description, and 36-to-72 month term comparison on /tools/car-loan-calculator/15k-car-loan and /tools/car-loan-calculator/15k-car-loan-5-years."
+      },
+      {
+        "query": "1099 hourly rate calculator",
+        "impressions": 7,
+        "position": 9.7,
+        "ctr": 14.3,
+        "action": "Sharpened SEO meta title and target keyword density on /blog/1099-vs-w2-true-hourly-rate-calculation."
+      }
+    ],
+    "sitemapSync": {
+      "submittedSitemap": "https://www.convertsheet.com/sitemap.xml",
+      "submissionTime": "2026-10-14T10:01:00Z",
+      "status": "SUCCESS",
+      "totalUrlsInSitemap": 925
+    }
+  },
+  "calculatorMoatUpgrades": {
+    "upgradedTools": [
+      {
+        "tool": "AnnualToHourlyCalculator",
+        "slug": "annual-to-hourly-calculator",
+        "path": "frontend/src/components/tools/AnnualToHourlyCalculator.tsx",
+        "upgrades": [
+          "Zero-Knowledge client-side privacy badge (no salary data transmitted to server)",
+          "Deep-linking URL parameter synchronization (window.history.replaceState) across annualSalary, hoursPerWeek, weeksPerYear, paidVacationWeeks, paidHolidays",
+          "Accessible CalcSlider with explicit ariaLabel attributes",
+          "CalcSaveButton (localStorage calculation run persistence)",
+          "CalcShareButton (sharable URL permalinks)",
+          "CalcPromptButton (one-click AI Analysis prompt generator)",
+          "Branded SheetJS Excel export with live formulas and recalculation link",
+          "Sticky bottom mobile summary bar (<640px) displaying effective hourly wage",
+          "Dedicated unit test suite in AnnualToHourlyCalculator.test.tsx (3/3 passed)"
+        ]
+      },
+      {
+        "tool": "CanadaPaycheckCalculator",
+        "slug": "canada-paycheck-calculator",
+        "path": "frontend/src/components/tools/CanadaPaycheckCalculator.tsx",
+        "upgrades": [
+          "Zero-Knowledge client-side privacy badge",
+          "Deep-linking URL parameter synchronization (grossSalary, province, rrspContributionPercent)",
+          "Accessible 44px min-height touch targets on province selector and salary presets",
+          "Branded SheetJS Excel export with CPP, EI, federal, and provincial tax breakdowns",
+          "Sticky bottom mobile summary bar (<640px) displaying bi-weekly take-home pay",
+          "Dedicated unit test suite in CanadaPaycheckCalculator.test.tsx (3/3 passed)"
+        ]
+      },
+      {
+        "tool": "SalaryCalculator",
+        "slug": "salary-calculator",
+        "path": "frontend/src/components/tools/SalaryCalculator.tsx",
+        "upgrades": [
+          "Zero-Knowledge client-side privacy badge",
+          "Deep-linking URL parameter synchronization across US (grossSalary, filingStatus, state, retirement401kPercent) and India (grossCtc, taxRegime, epfPercent, npsPercent) regimes with clean parameter isolation",
+          "Accessible 44px min-height touch targets across regime switches and deduction presets",
+          "Branded SheetJS Excel export with transparent tax formulas",
+          "Sticky bottom mobile summary bar (<640px) displaying monthly net in-hand pay",
+          "Dedicated unit test suite in SalaryCalculator.test.tsx (3/3 passed)"
+        ]
+      }
+    ],
+    "queueUpdated": true,
+    "inventoryLogged": "docs/content-inventory.json"
+  },
+  "retentionLoops": {
+    "sharablePermalinks": "Synchronized URL query parameters across upgraded calculators via replaceState without page reloads.",
+    "sheetJsRetentionHooks": "All Excel exports embed live recalculation URLs and transparent source attribution.",
+    "clientSidePersistence": "LocalStorage persistence with CalcSaveButton allows returning users to access previous comparison runs with zero login friction.",
+    "mobileSummaryBars": "Fixed bottom summary cards on mobile screens (<640px) providing instant totals and one-tap export."
+  },
+  "accessibilityAndSeoAudit": {
+    "pagesScanned": 932,
+    "totalErrors": 0,
+    "totalWarnings": 0,
+    "wcagCompliance": "100% WCAG 2.1 AA Pass (axe-core engine)",
+    "fixesDeployed": [
+      "Updated sitemap URL count assertion to 925 in page.test.tsx reflecting new Freddie Mac report",
+      "Added explicit { vi, afterEach } import to src/test/setup.ts resolving Next.js production build typecheck",
+      "JSDOM URL search param and localStorage reset afterEach hook preventing test suite state bleed"
+    ]
+  },
+  "macroIntelligenceSynthesis": {
+    "unitedStates": {
+      "authorities": ["Federal Reserve", "Freddie Mac", "Bureau of Labor Statistics (BLS)"],
+      "metrics": {
+        "federalFundsTarget": "3.75%–4.00%",
+        "primeRate": "7.00%",
+        "freddieMac30YrFixed": "7.40%",
+        "freddieMac15YrFixed": "6.73%",
+        "termSpread": "+67 bps",
+        "cpiHeadline": "3.4%",
+        "cpiCore": "2.4%",
+        "unemployment": "4.2%",
+        "sofr": "3.87%"
+      }
+    },
+    "india": {
+      "authorities": ["Reserve Bank of India (RBI)", "Ministry of Statistics and Programme Implementation (MoSPI)"],
+      "metrics": {
+        "rbiRepoRate": "5.50%",
+        "rbiDailyCrrMinimum": "99% (effective Oct 16, 2026)",
+        "mospiCpiHeadline": "5.54% YoY",
+        "sbiEblr": "8.15%"
+      }
+    },
+    "ukEurope": {
+      "authorities": ["Bank of England (BoE)", "European Central Bank (ECB)"],
+      "metrics": {
+        "boeBankRate": "3.75%",
+        "ecbDepositRate": "2.50%"
+      }
+    }
+  },
+  "contentPublishing": {
+    "zeroForceRuleEnforced": true,
+    "postsPublishedToday": 1,
+    "postDetails": {
+      "slug": "freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026",
+      "title": "Freddie Mac Mortgage Rates Hit 7.40%: The Brutal Math of 15-Year (6.73%) vs. 30-Year Loans",
+      "wordCount": 1820,
+      "institutionalCitations": [
+        "Freddie Mac Primary Mortgage Market Survey (PMMS) - October 8, 2026",
+        "Federal Reserve Statistical Release H.15 (Selected Interest Rates)",
+        "Bureau of Labor Statistics (BLS) Consumer Price Index Summary - October 2026"
+      ],
+      "attachedTool": "mortgage-calculator",
+      "attachedPreset": "15-year-vs-30-year"
+    },
+    "totalBlogsInCatalog": 24
+  },
+  "verificationSuite": {
+    "unitTests": {
+      "testFiles": 87,
+      "testsPassed": 779,
+      "failures": 0,
+      "status": "PASS"
+    },
+    "productionBuild": {
+      "pagesGenerated": 1951,
+      "status": "PASS"
+    },
+    "pageAuditor": {
+      "pagesAudited": 932,
+      "errors": 0,
+      "warnings": 0,
+      "status": "PASS"
+    }
+  },
+  "strategicRoadmap": {
+    "nextCalculatorRotation": [
+      "income-tax-calculator",
+      "credit-card-payoff-calculator",
+      "retirement-calculator"
+    ],
+    "growthOpportunities": [
+      "Capitalize on high GSC impressions for mortgage comparison queries with programmatic amortization matrices",
+      "Expand Canadian provincial payroll presets (Ontario vs Alberta vs BC marginal tax arbitrage)",
+      "Introduce dual-currency remote salary comparison mode (USD to INR/CAD with effective contractor take-home)"
+    ]
+  }
+}

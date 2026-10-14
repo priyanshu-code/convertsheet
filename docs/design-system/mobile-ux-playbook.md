@@ -39,24 +39,48 @@ On mobile viewports, the primary result card often scrolls out of the initial vi
   ```tsx
   <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
     <div>
-      <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Monthly Payment</span>
-      <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">$2,450/mo</span>
+      <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Hourly Wage / Paycheck</span>
+      <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">$48.08/hr</span>
     </div>
-    <button onClick={handleExport} className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-xl">
+    <button onClick={handleExport} className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-xl shadow-xs">
       Export Excel
     </button>
   </div>
   ```
-- Always include bottom padding (`pb-24`) on the parent container so inputs and tables are never obscured by the bottom bar.
+- Always include bottom padding (`pb-24 sm:pb-0`) on the parent container so inputs and tables are never obscured by the bottom bar.
 
-### C. Swipeable Bottom Sheets & Drawers
+### C. Dynamic State Serialization (URL Permalink Engine)
+Every calculator component implements live browser history synchronization:
+```tsx
+useEffect(() => {
+  if (typeof window === "undefined") return;
+  const params = new URLSearchParams(window.location.search);
+  params.set("annualSalary", annualSalary.toString());
+  params.set("hoursPerWeek", hoursPerWeek.toString());
+  const query = params.toString();
+  const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+  window.history.replaceState(null, "", newUrl);
+}, [annualSalary, hoursPerWeek]);
+```
+This ensures zero page reloads while guaranteeing that whenever a user shares a link via Slack, Teams, WhatsApp, or email, the recipient opens the exact computational model.
+
+### D. One-Tap Formulaic Excel Exports (SheetJS Retention Loop)
+All financial exports created via `xlsx` (SheetJS) must embed:
+1. Model Title & Date Stamp.
+2. Canonical recalculation hyperlink back to ConvertSheet (`https://www.convertsheet.com/tools/...`).
+3. Complete parameter breakdown section followed by computational intervals.
+
+### E. Swipeable Bottom Sheets & Drawers
 For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket overrides), employ slide-over drawers or bottom sheets with natural swipe-to-dismiss behavior rather than desktop pop-up modals.
 
-### D. Data Density & Visual Amortization
+### F. Data Density & Visual Amortization
 - Accompany amortization tables with stacked bar or area charts (Equity Paid vs Remaining Balance vs Total Interest).
 - Restrict initial table view to 60 rows on client devices to prevent DOM rendering lag, with instant full export to Excel.
 
 ---
 
 ## 3. Rotational Improvement Tracking
-Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`. Each daily rotation upgrades 2–3 pending calculators to conform with this playbook, accompanied by unit tests.
+Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`:
+- **2026-10-12:** `mortgage-calculator`, `car-loan-calculator`, `home-loan-overdraft-calculator`
+- **2026-10-13:** `rate-hike-calculator`, `savings-cd-calculator`, `balance-transfer-calculator`
+- **2026-10-14:** `annual-to-hourly-calculator`, `canada-paycheck-calculator`, `salary-calculator`

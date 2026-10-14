@@ -1,16 +1,25 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { DollarSign, Clock, Calendar, Briefcase, Table as TableIcon } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import {
+  DollarSign,
+  Clock,
+  Calendar,
+  Briefcase,
+  ShieldCheck,
+  Download,
+} from "lucide-react";
 import {
   CalcCard,
   CalcInput,
+  CalcSlider,
   CalcResult,
-  CalcExportButton,
+  CalcSaveButton,
+  CalcShareButton,
   CalcPromptButton,
-  ModernSlider,
 } from "@/components/calculator";
 import { calculateAnnualToHourly } from "@/lib/engines/financial-engine";
+import * as XLSX from "xlsx";
 
 export interface AnnualToHourlyCalculatorProps {
   initialValues?: Partial<{
@@ -24,18 +33,41 @@ export interface AnnualToHourlyCalculatorProps {
 export function AnnualToHourlyCalculator({
   initialValues,
 }: AnnualToHourlyCalculatorProps = {}) {
-  const [annualSalary, setAnnualSalary] = useState<number>(
-    Number(initialValues?.annualSalary) || 75000
-  );
-  const [hoursPerWeek, setHoursPerWeek] = useState<number>(
-    Number(initialValues?.hoursPerWeek) || 40
-  );
-  const [weeksPerYear, setWeeksPerYear] = useState<number>(
-    Number(initialValues?.weeksPerYear) || 52
-  );
-  const [unpaidLeaveDays, setUnpaidLeaveDays] = useState<number>(
-    Number(initialValues?.unpaidLeaveDays) || 0
-  );
+  const [annualSalary, setAnnualSalary] = useState<number>(() => {
+    if (initialValues?.annualSalary !== undefined) return Number(initialValues.annualSalary);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("annualSalary");
+      if (q) return Number(q);
+    }
+    return 75000;
+  });
+
+  const [hoursPerWeek, setHoursPerWeek] = useState<number>(() => {
+    if (initialValues?.hoursPerWeek !== undefined) return Number(initialValues.hoursPerWeek);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("hoursPerWeek");
+      if (q) return Number(q);
+    }
+    return 40;
+  });
+
+  const [weeksPerYear, setWeeksPerYear] = useState<number>(() => {
+    if (initialValues?.weeksPerYear !== undefined) return Number(initialValues.weeksPerYear);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("weeksPerYear");
+      if (q) return Number(q);
+    }
+    return 52;
+  });
+
+  const [unpaidLeaveDays, setUnpaidLeaveDays] = useState<number>(() => {
+    if (initialValues?.unpaidLeaveDays !== undefined) return Number(initialValues.unpaidLeaveDays);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("unpaidLeaveDays");
+      if (q) return Number(q);
+    }
+    return 0;
+  });
 
   const result = useMemo(() => {
     return calculateAnnualToHourly({
@@ -46,33 +78,73 @@ export function AnnualToHourlyCalculator({
     });
   }, [annualSalary, hoursPerWeek, weeksPerYear, unpaidLeaveDays]);
 
-  // SheetJS formatted export rows
-  const exportData = useMemo(() => {
-    return [
-      { Interval: "Annual Gross Salary", Amount: `$${result.annualSalary.toLocaleString()}`, Note: "Starting annual compensation" },
-      { Interval: "Monthly Salary", Amount: `$${result.monthlySalary.toLocaleString()}`, Note: "12 pay periods per year" },
-      { Interval: "Semi-Monthly Salary", Amount: `$${result.semiMonthlySalary.toLocaleString()}`, Note: "24 pay periods (twice per month)" },
-      { Interval: "Bi-Weekly Salary", Amount: `$${result.biWeeklySalary.toLocaleString()}`, Note: "26 pay periods (every 2 weeks)" },
-      { Interval: "Weekly Salary", Amount: `$${result.weeklySalary.toLocaleString()}`, Note: "52 pay periods per year" },
-      { Interval: "Daily Wage", Amount: `$${result.dailyWage.toLocaleString()}`, Note: "Based on standard 5-day work week" },
-      { Interval: "Equivalent Hourly Wage", Amount: `$${result.hourlyRate.toFixed(2)}`, Note: `Based on ${result.totalWorkHoursYearly} total working hours` },
-    ];
-  }, [result]);
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("annualSalary", annualSalary.toString());
+    params.set("hoursPerWeek", hoursPerWeek.toString());
+    params.set("weeksPerYear", weeksPerYear.toString());
+    params.set("unpaidLeaveDays", unpaidLeaveDays.toString());
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [annualSalary, hoursPerWeek, weeksPerYear, unpaidLeaveDays]);
+
+  const handleExportExcel = () => {
+    try {
+      const summaryRows = [
+        ["ConvertSheet - Annual Salary to Hourly Pay Breakdown", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/annual-to-hourly-calculator"],
+        ["", ""],
+        ["--- COMPENSATION & SCHEDULE PARAMETERS ---", ""],
+        ["Annual Gross Salary ($)", annualSalary],
+        ["Hours Worked Per Week", hoursPerWeek],
+        ["Weeks Worked Per Year", weeksPerYear],
+        ["Unpaid Leave Days / Year", unpaidLeaveDays],
+        ["Total Work Hours Yearly", result.totalWorkHoursYearly],
+        ["", ""],
+        ["--- CONVERTED PAYCHECK INTERVALS ---", ""],
+        ["Equivalent Hourly Wage ($/hr)", Math.round(result.hourlyRate * 100) / 100],
+        ["Daily Wage (Standard 8h Day)", Math.round(result.dailyWage)],
+        ["Weekly Gross Pay (52x)", Math.round(result.weeklySalary)],
+        ["Bi-Weekly Pay (26x)", Math.round(result.biWeeklySalary)],
+        ["Semi-Monthly Pay (24x)", Math.round(result.semiMonthlySalary)],
+        ["Monthly Gross Pay (12x)", Math.round(result.monthlySalary)],
+      ];
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "SalaryBreakdown");
+      XLSX.writeFile(wb, `ConvertSheet_Annual_Salary_${annualSalary}_to_Hourly.xlsx`);
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    }
+  };
 
   const aiPrompt = useMemo(() => {
     return `Analyze this annual salary conversion:
 - Annual Gross Salary: $${annualSalary.toLocaleString()}
-- Working Schedule: ${hoursPerWeek} hours/week across ${weeksPerYear} weeks/year
+- Working Schedule: ${hoursPerWeek} hours/week across ${weeksPerYear} weeks/year (${result.totalWorkHoursYearly.toLocaleString()} total hours)
 - Computed Equivalent Rates:
   • Hourly Wage: $${result.hourlyRate.toFixed(2)}/hr
-  • Monthly Pay: $${result.monthlySalary.toLocaleString()}
-  • Bi-Weekly Pay: $${result.biWeeklySalary.toLocaleString()}
   • Daily Wage: $${result.dailyWage.toLocaleString()}
-Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiation benchmarks for this compensation band.`;
+  • Weekly Pay: $${Math.round(result.weeklySalary).toLocaleString()}
+  • Bi-Weekly Pay (26x): $${Math.round(result.biWeeklySalary).toLocaleString()}
+  • Semi-Monthly Pay (24x): $${Math.round(result.semiMonthlySalary).toLocaleString()}
+  • Monthly Pay (12x): $${Math.round(result.monthlySalary).toLocaleString()}
+Provide practical personal budgeting ratios (50/30/20 rule), emergency fund guidelines, and salary negotiation benchmarks for this compensation band.`;
   }, [annualSalary, hoursPerWeek, weeksPerYear, result]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 pb-24 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
       {/* 2-Column Responsive Layout */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         {/* Left Column: Interactive Inputs */}
@@ -80,6 +152,8 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
           <CalcCard
             title="Annual Compensation & Work Schedule"
             subtitle="Enter your yearly salary to instantly find out what it converts to on an hourly and per-paycheck basis."
+            icon={Briefcase}
+            badge="Updated for 2026 Compensation"
           >
             <div className="space-y-6">
               {/* Annual Salary */}
@@ -109,7 +183,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                       key={p.label}
                       type="button"
                       onClick={() => setAnnualSalary(p.val)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                      className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
                         annualSalary === p.val
                           ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                           : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -119,9 +193,10 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                     </button>
                   ))}
                 </div>
-                <ModernSlider
+                <CalcSlider
                   id="annualSalarySlider"
-                  label="Annual Salary"
+                  label="Annual Salary Slider"
+                  ariaLabel="Annual Salary Slider"
                   value={annualSalary}
                   min={20000}
                   max={250000}
@@ -144,14 +219,15 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                   step={1}
                   helpText="Standard full-time is 40 hours per week"
                 />
-                <ModernSlider
+                <CalcSlider
                   id="hoursPerWeekSlider"
-                  label="Hours Per Week"
+                  label="Hours Per Week Slider"
+                  ariaLabel="Hours Per Week Slider"
                   value={hoursPerWeek}
                   min={10}
                   max={60}
                   step={1}
-                  suffix="h"
+                  unit="hrs"
                   onChange={setHoursPerWeek}
                 />
               </div>
@@ -169,14 +245,15 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                   step={1}
                   helpText="52 weeks (including paid time off) or fewer for unpaid leave"
                 />
-                <ModernSlider
+                <CalcSlider
                   id="weeksPerYearSlider"
-                  label="Weeks Worked Per Year"
+                  label="Weeks Worked Per Year Slider"
+                  ariaLabel="Weeks Worked Per Year Slider"
                   value={weeksPerYear}
                   min={40}
                   max={52}
                   step={1}
-                  suffix="wks"
+                  unit="wks"
                   onChange={setWeeksPerYear}
                 />
               </div>
@@ -220,7 +297,7 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                   </span>
                 </div>
 
-                <div className="rounded-2xl border border-zinc-200 bg-white p-5 text-center shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <div className="rounded-2xl border border-zinc-200 bg-white p-5 text-center shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
                   <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     Monthly Gross Pay
                   </span>
@@ -265,28 +342,68 @@ Provide practical personal budgeting ratios (50/30/20 rule) and salary negotiati
                 </div>
               </div>
 
-              {/* Action Buttons: Export & AI Prompt & Quick Copy */}
-              <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+              {/* Action Buttons: Save, Share, AI Prompt, Export & Quick Copy */}
+              <div className="flex flex-wrap items-center gap-2.5 pt-4 border-t border-zinc-100 dark:border-zinc-800">
                 <button
                   type="button"
                   onClick={() => {
                     const str = `$${annualSalary.toLocaleString()}/yr = $${result.hourlyRate.toFixed(2)}/hr ($${Math.round(result.monthlySalary).toLocaleString()}/mo, $${Math.round(result.biWeeklySalary).toLocaleString()} bi-weekly)`;
                     navigator.clipboard.writeText(str);
                   }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors"
+                  className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors"
                 >
                   <span>📋 Copy Summary</span>
                 </button>
-                <CalcExportButton
-                  data={exportData}
-                  filename={`annual_salary_${annualSalary}_breakdown.xlsx`}
-                  sheetName="Paycheck Breakdown"
+                <CalcSaveButton
+                  toolSlug="annual-to-hourly-calculator"
+                  toolName="Annual to Hourly Calculator"
+                  summaryTitle={`Salary: $${annualSalary.toLocaleString()} ($${result.hourlyRate.toFixed(2)}/hr)`}
+                  summaryMetrics={[
+                    { label: "Hourly Wage", value: `$${result.hourlyRate.toFixed(2)}/hr` },
+                    { label: "Monthly Gross", value: `$${Math.round(result.monthlySalary).toLocaleString()}` },
+                    { label: "Bi-Weekly Pay", value: `$${Math.round(result.biWeeklySalary).toLocaleString()}` },
+                    { label: "Annual Hours", value: `${result.totalWorkHoursYearly.toLocaleString()} hrs` },
+                  ]}
+                />
+                <CalcShareButton
+                  state={{
+                    annualSalary,
+                    hoursPerWeek,
+                    weeksPerYear,
+                    unpaidLeaveDays,
+                  }}
+                  label="Share Calculation"
                 />
                 <CalcPromptButton promptText={aiPrompt} />
+                <button
+                  type="button"
+                  onClick={handleExportExcel}
+                  className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-black text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white shadow-xs transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Export to Excel</span>
+                </button>
               </div>
             </div>
           </CalcCard>
         </div>
+      </div>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Hourly Wage</span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            ${result.hourlyRate.toFixed(2)}/hr
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors"
+        >
+          Export Excel
+        </button>
       </div>
     </div>
   );
