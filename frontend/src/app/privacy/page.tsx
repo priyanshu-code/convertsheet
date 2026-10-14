@@ -31,7 +31,7 @@ export default function PrivacyPage() {
           </strong>{" "}
           We believe the best privacy guarantee is not a promise, but technical impossibility.
         </p>
-        <p className="text-xs text-zinc-400">Last updated: September 2026</p>
+        <p className="text-xs text-zinc-400">Last updated: October 2026</p>
       </div>
 
       {/* Core Privacy Pillars */}
@@ -129,7 +129,7 @@ export default function PrivacyPage() {
       <div className="space-y-8 text-sm text-zinc-600 dark:text-zinc-400">
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-            3. Analytics &amp; Cookies
+            3. Analytics &amp; Performance Cookies
           </h2>
           <p className="leading-relaxed">
             ConvertSheet uses minimal, privacy-friendly analytics to track high-level traffic metrics (such as page views, visitor country, and device type). We do not record user session inputs, file names, column headers, cell values, or personal identifiers.
@@ -138,7 +138,51 @@ export default function PrivacyPage() {
 
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-            4. Local Storage &amp; Preferences
+            4. Third-Party Advertising &amp; Google AdSense
+          </h2>
+          <p className="leading-relaxed">
+            To support the free availability of our in-browser converters and financial tools without charging subscription fees, ConvertSheet displays advertisements served by third-party advertising partners, including <strong>Google AdSense</strong>.
+          </p>
+          <ul className="space-y-2 pl-5 list-disc leading-relaxed">
+            <li>
+              <strong>Third-Party Vendor Cookies:</strong> Third-party vendors, including Google, use cookies, web beacons, and similar tracking technologies to serve ads based on a user&apos;s prior visits to ConvertSheet or other websites on the internet.
+            </li>
+            <li>
+              <strong>Personalized Advertising:</strong> Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visits to our website and/or other sites across the internet.
+            </li>
+            <li>
+              <strong>Opting Out of Personalized Ads:</strong> Users may opt out of personalized advertising at any time by visiting{" "}
+              <a
+                href="https://adssettings.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+              >
+                Google Ads Settings
+              </a>
+              . Alternatively, users can opt out of a third-party vendor&apos;s use of cookies for personalized advertising by visiting the Network Advertising Initiative / Digital Advertising Alliance consumer choice portal at{" "}
+              <a
+                href="https://www.aboutads.info"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+              >
+                www.aboutads.info
+              </a>
+              .
+            </li>
+            <li>
+              <strong>Non-Personalized Ads:</strong> If personalized advertising is disabled, ads displayed on ConvertSheet will be contextual (based on the general topic of the tool or page being viewed) rather than tailored to your past browsing history.
+            </li>
+          </ul>
+          <p className="leading-relaxed text-xs text-zinc-500 dark:text-zinc-400">
+            <strong>Important Privacy Distinction:</strong> While third-party advertising partners manage ad delivery cookies, your actual spreadsheet contents, JSON files, loan figures, and confidential file data are processed exclusively inside your device&apos;s client-side browser memory and are <em>never</em> accessible to or shared with advertisers or third-party networks.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+            5. Local Storage &amp; Preferences
           </h2>
           <p className="leading-relaxed">
             We store non-sensitive UI preferences (such as your chosen light or dark theme) in your browser&apos;s local storage (`localStorage`). This data never leaves your browser and can be cleared at any time in your browser settings.
@@ -147,7 +191,7 @@ export default function PrivacyPage() {
 
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-            5. Contact &amp; Inquiries
+            6. Contact &amp; Inquiries
           </h2>
           <p className="leading-relaxed">
             If you have questions or security inquiries regarding ConvertSheet&apos;s architectural design or privacy practices, please contact us at{" "}

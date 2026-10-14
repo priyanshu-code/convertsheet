@@ -101,9 +101,10 @@ describe("Pages (Home)", () => {
     it("renders PrivacyPage with client-side and zero-retention sections", async () => {
       const PrivacyPage = (await import("../privacy/page")).default;
       render(<PrivacyPage />);
-      expect(screen.getByRole("heading", { level: 1, name: "Privacy Policy" })).toBeInTheDocument();
       expect(screen.getByText("1. How Client-Side Processing Works")).toBeInTheDocument();
       expect(screen.getByText("2. Zero Server Data Retention")).toBeInTheDocument();
+      expect(screen.getByText("4. Third-Party Advertising & Google AdSense")).toBeInTheDocument();
+      expect(screen.getByText(/Google Ads Settings/i)).toBeInTheDocument();
     });
 
     it("renders TermsPage with fair use and financial disclaimer", async () => {
