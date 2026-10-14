@@ -1,6 +1,6 @@
 {
   "lastUpdated": "2026-10-14",
-  "totalBlogs": 24,
+  "totalBlogs": 25,
   "totalTools": 18,
   "blogs": [
     {
@@ -41,21 +41,21 @@
     },
     {
       "slug": "rbi-repo-rate-hike-25-bps-home-loan-emi-impact",
-      "title": "RBI Repo Rate Hike to 5.5%: Exact EMI Increase on ₹30L, ₹50L & ₹1Cr Loans",
+      "title": "RBI Repo Rate Hike to 5.5%: Exact EMI Increase on \u20b930L, \u20b950L & \u20b91Cr Loans",
       "category": "Financial Planning",
-      "description": "RBI raised repo rate by 25 bps to 5.50%. See exact monthly EMI jumps for ₹30L, ₹50L, and ₹1 Crore home loans, why banks extend tenures, and 3 proven strategies to beat the rate increase."
+      "description": "RBI raised repo rate by 25 bps to 5.50%. See exact monthly EMI jumps for \u20b930L, \u20b950L, and \u20b91 Crore home loans, why banks extend tenures, and 3 proven strategies to beat the rate increase."
     },
     {
       "slug": "the-home-loan-tenure-trap-explained",
-      "title": "The Home Loan Tenure Trap: Why Banks Don't Increase Your EMI (And How It Costs ₹5 Lakh+)",
+      "title": "The Home Loan Tenure Trap: Why Banks Don't Increase Your EMI (And How It Costs \u20b95 Lakh+)",
       "category": "Financial Planning",
       "description": "When interest rates rise, banks silently extend your loan tenure instead of hiking your monthly EMI. Uncover the compounding math behind this trap and how to protect yourself."
     },
     {
       "slug": "the-1-extra-emi-per-year-rule-home-loan-savings",
-      "title": "The 1 Extra EMI Per Year Rule: How to Save ₹9 Lakh on a ₹50 Lakh Home Loan",
+      "title": "The 1 Extra EMI Per Year Rule: How to Save \u20b99 Lakh on a \u20b950 Lakh Home Loan",
       "category": "Financial Planning",
-      "description": "Learn how paying just 13 EMIs instead of 12 each year slashes more than 3 years off your loan tenure and saves up to ₹9 Lakh in lifetime interest without financial strain."
+      "description": "Learn how paying just 13 EMIs instead of 12 each year slashes more than 3 years off your loan tenure and saves up to \u20b99 Lakh in lifetime interest without financial strain."
     },
     {
       "slug": "rbi-rate-hike-fixed-deposits-vs-equity-strategy",
@@ -133,19 +133,25 @@
       "slug": "h1b-visa-closed-rumors-vs-perm-pause-explained",
       "title": "Did the US Just 'Close' H-1B Visas? Why Tech Layoffs Triggered Corporate PERM Pauses (And the Truth About 2026 Caps)",
       "category": "Immigration & Career Finance",
-      "description": "Viral rumors claim the US has closed H-1B visas. Uncover the legal reality under 20 CFR § 656.17(k): why tech layoffs forced Big Tech to pause PERM labor certifications, what actually happened to the statutory 85,000 cap, and how to protect your immigration status and paycheck."
+      "description": "Viral rumors claim the US has closed H-1B visas. Uncover the legal reality under 20 CFR \u00a7 656.17(k): why tech layoffs forced Big Tech to pause PERM labor certifications, what actually happened to the statutory 85,000 cap, and how to protect your immigration status and paycheck."
     },
     {
       "slug": "mospi-cpi-inflation-surge-festive-home-loan-concessions-2026",
       "title": "MoSPI Inflation Jumps to 5.54%: The Festive Home Loan Trap Behind 7.20% Bank Offers",
       "category": "Financial Planning",
-      "description": "MoSPI's October 12, 2026 CPI data reveals retail inflation jumped 71 bps to 5.54%, driven by a 7.74% food spike. Discover why banks' promotional 7.20%–7.25% festive home loan offers mask structural EBLR reset traps."
+      "description": "MoSPI's October 12, 2026 CPI data reveals retail inflation jumped 71 bps to 5.54%, driven by a 7.74% food spike. Discover why banks' promotional 7.20%\u20137.25% festive home loan offers mask structural EBLR reset traps."
     },
     {
       "slug": "freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026",
       "title": "Freddie Mac Mortgage Rates Hit 7.40%: The Brutal Math of 15-Year (6.73%) vs. 30-Year Loans",
       "category": "Mortgage & Lending",
       "description": "Freddie Mac's October 2026 survey shows 30-year mortgages at 7.40% and 15-year loans at 6.73%. Discover the exact monthly payment jump, lifetime interest savings, and why voluntary prepayment beats locking into a 15-year contractual obligation."
+    },
+    {
+      "slug": "algo-trading-position-sizing-sharpe-ratio-guide",
+      "title": "Algorithmic Position Sizing: Why 90% of Retail Bots Blow Up (And How Kelly Solves It)",
+      "category": "Quantitative Finance",
+      "description": "An institutional mathematical breakdown for quant developers and retail algo traders on calculating fixed fractional risk, Half-Kelly position sizing, and true annualized Sharpe vs Sortino ratios."
     }
   ],
   "tools": [
@@ -374,6 +380,19 @@
       "lastAudited": null,
       "moatsAdded": [],
       "uxStatus": "pending-audit"
+    },
+    {
+      "slug": "strategy-risk-calculator",
+      "lastAudited": "2026-10-14",
+      "moatsAdded": [
+        "zero-knowledge-wasm-badge",
+        "dual-tab-position-and-backtest",
+        "url-query-permalink-sync",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
     }
   ]
 }

@@ -71,6 +71,7 @@ import { CanadaPaycheckCalculator } from "@/components/tools/CanadaPaycheckCalcu
 import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculator";
 import { AiDataPrepTool } from "@/components/tools/AiDataPrepTool";
 import { HomeLoanOverdraftCalculator } from "@/components/tools/HomeLoanOverdraftCalculator";
+import { StrategyRiskCalculator } from "@/components/tools/StrategyRiskCalculator";
 
 export interface ToolPageProps {
   params: {
@@ -439,6 +440,7 @@ export default function ToolPage({ params }: ToolPageProps) {
     "sheet-diff-checker": SheetDiffTool,
     "data-anonymizer-cleaner": DataCleanerTool,
     "csv-to-jsonl-converter": AiDataPrepTool,
+    "strategy-risk-calculator": StrategyRiskCalculator,
   };
 
   const ToolComponent = componentMap[tool.slug];

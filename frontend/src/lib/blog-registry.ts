@@ -4506,6 +4506,157 @@ const arrowResult = await conn.query(\`
         </div>
       </section>
     `.trim()
+  },
+  {
+    slug: "algo-trading-position-sizing-sharpe-ratio-guide",
+    title: "Algorithmic Position Sizing: Why 90% of Retail Bots Blow Up (And How Kelly Solves It)",
+    description: "An institutional mathematical breakdown for quant developers and retail algo traders on calculating fixed fractional risk, Half-Kelly position sizing, and true annualized Sharpe vs Sortino ratios.",
+    category: "Quantitative Finance",
+    readTimeMinutes: 7,
+    publishedAt: "2026-10-14",
+    author: FOUNDER_AUTHOR,
+    attachedToolSlug: "strategy-risk-calculator",
+    attachedToolTitle: "Quantitative Strategy Risk & Sizing Calculator",
+    clusterId: "quant-algo-trading",
+    role: "pillar",
+    tag: "Quant Guide",
+    tagTooltip: "Institutional quantitative risk management and position sizing proofs",
+    relatedSlugs: [
+      "convert-large-parquet-files-to-excel-in-browser",
+      "client-side-wasm-future-of-private-data",
+      "the-math-behind-fire-rule-of-25"
+    ],
+    faqs: [
+      {
+        question: "Why does trading without position sizing lead to eventual ruin?",
+        answer: "Due to the geometric compounding of losses, a series of consecutive drawdown trades disproportionately degrades capital. A 50% drawdown requires a 100% gain just to break even. Without fixed fractional risk or Kelly bounds, normal market regime shifts guarantee eventual bankruptcy."
+      },
+      {
+        question: "What is the difference between Full Kelly and Half Kelly?",
+        answer: "Full Kelly maximizes long-term compound capital growth but produces severe equity drawdowns (often exceeding 50% to 70%). Half Kelly cuts the allocated bet size in half, retaining roughly 75% of the growth rate while slashing portfolio volatility and max drawdown by over 50%."
+      },
+      {
+        question: "Why is the Sortino Ratio more reliable than the Sharpe Ratio for trend followers?",
+        answer: "The classic Sharpe Ratio uses standard deviation in the denominator, which treats explosive upward moves as risk. The Sortino Ratio only penalizes downside deviations below the benchmark or risk-free rate, correctly recognizing upside volatility as alpha."
+      }
+    ],
+    tableOfContents: [
+      { id: "the-asymmetry-of-loss", title: "1. The Mathematical Trap: The Asymmetry of Financial Loss" },
+      { id: "fixed-fractional-sizing", title: "2. Fixed Fractional Risk: The 1% and 2% Institutional Standard" },
+      { id: "kelly-criterion-breakdown", title: "3. The Kelly Criterion Formula & Why Full Kelly Is Dangerous" },
+      { id: "sharpe-vs-sortino", title: "4. Sharpe vs Sortino: Why Annualized Standard Deviation Lies" },
+      { id: "in-browser-quant-sandbox", title: "5. Private Client-Side Strategy Audits with ConvertSheet" }
+    ],
+    content: `
+      <section id="the-asymmetry-of-loss" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          1. The Mathematical Trap: The Asymmetry of Financial Loss
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          In algorithmic trading, retail developers obsess over entry indicators: Bollinger Bands, moving average crossovers, and RSI divergences. Yet quantitative academic research and prop firm data reveal that <strong>over 85% of automated trading bot failures are caused entirely by position sizing flaws and risk-of-ruin mechanics</strong> rather than edge erosion.
+        </p>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          The fundamental reason is the brutal geometric asymmetry of drawdowns:
+        </p>
+
+        <div class="my-6 overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-zinc-100 dark:bg-zinc-800/60 text-zinc-900 dark:text-zinc-100 font-semibold">
+              <tr>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Portfolio Loss (Drawdown)</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Return Required to Break Even</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Survival Difficulty Factor</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+              <tr class="bg-white dark:bg-zinc-900/40">
+                <td class="px-4 py-3 font-mono font-medium text-emerald-600">-10%</td>
+                <td class="px-4 py-3 font-mono font-semibold">+11.1%</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">Low (Normal variance)</td>
+              </tr>
+              <tr class="bg-zinc-50/50 dark:bg-zinc-900/80">
+                <td class="px-4 py-3 font-mono font-medium text-amber-600">-25%</td>
+                <td class="px-4 py-3 font-mono font-semibold">+33.3%</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">Moderate (Requires strict edge)</td>
+              </tr>
+              <tr class="bg-white dark:bg-zinc-900/40">
+                <td class="px-4 py-3 font-mono font-medium text-rose-600">-50%</td>
+                <td class="px-4 py-3 font-mono font-bold text-rose-600">+100.0%</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">Severe (Doubling account required)</td>
+              </tr>
+              <tr class="bg-zinc-50/50 dark:bg-zinc-900/80">
+                <td class="px-4 py-3 font-mono font-medium text-rose-700">-75%</td>
+                <td class="px-4 py-3 font-mono font-bold text-rose-700">+300.0%</td>
+                <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">Near-Certain Ruin</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="fixed-fractional-sizing" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          2. Fixed Fractional Risk: The 1% and 2% Institutional Standard
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          The foundational discipline of systematic execution is decoupling <em>trade conviction</em> from <em>dollar exposure</em>. Under the <strong>Fixed Fractional Risk Model</strong>, an algorithmic system never risks more than a fixed percentage \(f\) of total equity on any single position:
+        </p>
+        <div class="p-4 rounded-xl bg-zinc-900 text-zinc-100 font-mono text-xs sm:text-sm my-4 overflow-x-auto">
+          Position Size (Units) = (Account Equity × Risk Percentage) / |Entry Price - Stop Loss Price|
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          For example, on a $50,000 account risking 1.5% ($750 max risk) on an entry of $150 with a stop loss at $142 ($8 risk per share), the exact execution allocation is \(750 / 8 = 93\) shares ($13,950 total capital exposure).
+        </p>
+      </section>
+
+      <section id="kelly-criterion-breakdown" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          3. The Kelly Criterion Formula &amp; Why Full Kelly Is Dangerous
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Originally derived by Bell Labs researcher John L. Kelly Jr. in 1956 for telecommunication signal routing, the <strong>Kelly Criterion</strong> defines the mathematically optimal fraction of wealth to allocate to maximize the expected logarithm of capital:
+        </p>
+        <div class="p-4 rounded-xl bg-zinc-900 text-zinc-100 font-mono text-xs sm:text-sm my-4 overflow-x-auto">
+          f* = p - (1 - p) / b
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Where \(p\) is the probability of a winning trade (win rate) and \(b\) is the payoff ratio (average gain / average loss). If your backtest shows a 55% win rate (\(p = 0.55\)) and a 1.5:1 reward-to-risk ratio (\(b = 1.5\)):
+        </p>
+        <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs sm:text-sm text-emerald-900 dark:text-emerald-200 font-mono">
+          f* = 0.55 - (0.45 / 1.5) = 0.55 - 0.30 = 0.25 (25% of Portfolio Equity)
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          <strong>The Danger of Full Kelly:</strong> While Full Kelly delivers maximum growth asymptotically, it experiences gut-wrenching peak-to-trough drawdowns often exceeding 60% due to sample variance. Quantitative funds like Renaissance Technologies and Bridgewater therefore implement <strong>Half-Kelly</strong> (dividing the optimal fraction by 2), which captures roughly 75% of compound growth while cutting max drawdown by over half.
+        </p>
+      </section>
+
+      <section id="sharpe-vs-sortino" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          4. Sharpe vs Sortino: Why Annualized Standard Deviation Lies
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          When retail quants evaluate automated strategies, the default metric is the Sharpe Ratio:
+        </p>
+        <div class="p-4 rounded-xl bg-zinc-900 text-zinc-100 font-mono text-xs sm:text-sm my-4 overflow-x-auto">
+          Sharpe = (CAGR - R_f) / Annualized Standard Deviation
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          The fatal limitation of Sharpe is that <strong>standard deviation treats explosive upside jumps as undesirable risk</strong>. If your trading bot catches a +15% overnight earnings gap, your strategy's standard deviation surges, which mechanically drops your Sharpe ratio.
+        </p>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          The <strong>Sortino Ratio</strong> corrects this distortion by replacing total standard deviation with <em>downside semi-variance</em>—measuring only returns falling below the risk-free benchmark \(R_f\). For asymmetric trend-following and breakout models, Sortino provides a far cleaner depiction of genuine downside risk.
+        </p>
+      </section>
+
+      <section id="in-browser-quant-sandbox" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          5. Private Client-Side Strategy Audits with ConvertSheet
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Never paste proprietary trading records, strategy parameters, or funded account balances into third-party cloud forms. ConvertSheet's <a href="/tools/strategy-risk-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Quantitative Strategy Risk &amp; Sizing Calculator</a> runs completely inside your browser's WebAssembly sandbox. You can compute exact position sizing, Kelly fractions, Sharpe, Sortino, and Max Drawdown, and export formulaic Excel schedules locally with 100% data confidentiality.
+        </p>
+      </section>
+    `.trim()
   }
 ];
 

@@ -1022,5 +1022,81 @@ Break-Even = ₹50,00,000 × (0.40% ÷ 8.90%) = ₹2,24,719
       "mortgage-calculator",
     ],
   },
+
+  "strategy-risk-calculator": {
+    slug: "strategy-risk-calculator",
+    name: "Quantitative Strategy Risk & Sizing Calculator",
+    category: "financial",
+    title: "Quantitative Strategy Risk Calculator – Sharpe, Sortino & Position Sizing",
+    subtitle: "Calculate exact position sizing, dollar risk per trade, Kelly Criterion limits, Sharpe ratio, Sortino, and Max Drawdown locally in your browser with zero server uploads.",
+    metaDescription: "Free algorithmic trading risk calculator. Compute exact position size, risk-of-ruin percentages, Kelly Criterion fraction, Sharpe Ratio, Sortino Ratio, and Max Drawdown locally via WebAssembly.",
+    answerSummary: "Calculate optimal trading position size, dollar risk, Sharpe ratio, and Sortino ratio in your browser with 100% confidential client-side WebAssembly execution.",
+    badge: "Quant & Algo Favorite",
+    featured: true,
+    keywords: [
+      "strategy risk calculator",
+      "algo trading position sizing calculator",
+      "sharpe ratio calculator",
+      "sortino ratio calculator",
+      "kelly criterion calculator",
+      "max drawdown calculator",
+      "quantitative risk management tool",
+      "risk reward ratio calculator",
+      "trading risk of ruin calculator"
+    ],
+    formulaDescription:
+      "Sharpe = (CAGR - R_f) / Annualized_Volatility; Sortino = (CAGR - R_f) / Downside_Deviation; Position Size = (Account_Balance * Risk_Pct) / |Entry - Stop_Loss|.",
+    about:
+      "Risk management and capital preservation are the core differentiators between profitable algorithmic systems and catastrophic drawdowns. ConvertSheet's Quantitative Strategy Risk & Sizing Calculator allows algorithmic traders, portfolio managers, and quantitative researchers to calculate optimal position sizes using fixed-fractional risk and Kelly Criterion models, alongside backtest metrics including the Sharpe Ratio, Sortino Ratio, Calmar Ratio, and Max Drawdown (MDD). Designed with strict zero-knowledge security, all trade setups and proprietary equity curves are computed inside your browser's WebAssembly sandbox with zero cloud data transmission.",
+    howTo: [
+      {
+        step: 1,
+        title: "Account Capital & Risk Tolerance",
+        description:
+          "Input your total trading account equity and set your maximum allowable capital risk per trade (typically 1.0% to 2.0%).",
+      },
+      {
+        step: 2,
+        title: "Trade Execution Boundaries",
+        description:
+          "Enter your planned Entry Price, Stop Loss Price, and Take Profit target to compute the risk-to-reward ratio and exact share or contract count.",
+      },
+      {
+        step: 3,
+        title: "Backtest Performance Audit",
+        description:
+          "Switch to the Backtest tab, input periodic strategy returns, and instantly inspect your Sharpe Ratio, Sortino Ratio, Calmar Ratio, and Max Drawdown equity curve.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Why is the Sortino Ratio preferred over the Sharpe Ratio?",
+        answer:
+          "The Sharpe Ratio penalizes both upside volatility and downside volatility equally. The Sortino Ratio only penalizes downside volatility below the risk-free rate or minimum acceptable return, making it a superior metric for asymmetric trend-following and breakout trading strategies.",
+      },
+      {
+        question: "What is the Kelly Criterion in trading position sizing?",
+        answer:
+          "The Kelly Criterion (f* = p - q/b) calculates the theoretically optimal percentage of capital to allocate to maximize the geometric growth rate of capital. Because Full Kelly can result in extreme equity drawdowns, quantitative traders typically deploy 'Half-Kelly' (50% of the Kelly fraction) for safer risk of ruin buffers.",
+      },
+      {
+        question: "Are my trading strategies, account sizes, or returns uploaded to your servers?",
+        answer:
+          "No. ConvertSheet runs 100% client-side via JavaScript and WebAssembly. Your account balances, proprietary trade setups, and return arrays remain in your browser's private memory and are never uploaded or logged.",
+      },
+      {
+        question: "How is Maximum Drawdown (MDD) calculated?",
+        answer:
+          "Maximum Drawdown measures the largest peak-to-trough drop in portfolio equity before a new high is achieved: MDD = (Peak Value - Trough Value) / Peak Value. It is the primary metric institutional allocators use to assess strategy stress.",
+      },
+    ],
+    relatedConverters: ["csv-to-parquet", "parquet-to-excel", "json-to-parquet"],
+    relatedTools: [
+      "roi-calculator",
+      "compound-interest-calculator",
+      "percentage-calculator",
+      "sql-query-studio"
+    ],
+  },
 };
 
