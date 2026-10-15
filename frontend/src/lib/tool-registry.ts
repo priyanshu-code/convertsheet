@@ -202,25 +202,27 @@ export const TOOL_REGISTRY = {
     slug: "emi-calculator",
     name: "EMI Calculator",
     category: "financial",
-    title: "EMI Calculator for Home, Car & Personal Loans",
-    subtitle: "Calculate your monthly Equated Monthly Installment (EMI), total interest payable, and overall loan repayment schedule.",
-    metaDescription: "Free online EMI calculator. Determine your exact monthly loan installment, total interest paid, and principal breakdown for home, car, and personal loans.",
+    title: "EMI Calculator 2026 — Loan Payment, Amortization & Interest Schedule",
+    subtitle: "Calculate your monthly Equated Monthly Installment (EMI), total interest payable, and overall loan repayment schedule for home, car, and personal loans.",
+    metaDescription: "Free online EMI calculator (2026). Calculate monthly payments for $60k 72-month car loans, $175k-$900k mortgages, and RBI repo rate (5.50%) home loans with live amortization.",
     answerSummary: "An EMI (Equated Monthly Installment) is the fixed monthly payment made by a borrower to a lender to pay off both loan principal and accrued interest.",
     badge: "RBI 2026 Ready",
     badgeTooltip: "Updated for the RBI October 2026 Repo Rate hike (5.50%) & tenure reset calculations",
     isNew: true,
     featured: true,
-    keywords: ["emi calculator", "loan calculator", "home loan emi", "car loan emi", "monthly installment calculator", "interest calculator"],
+    keywords: ["emi calculator", "loan calculator", "home loan emi", "car loan emi", "monthly installment calculator", "interest calculator", "60000 car loan payment 72 months", "175k mortgage payment", "900000 mortgage payment 30 years", "car loan payment 72 months"],
     formulaDescription: "EMI = [P × r × (1 + r)^n] / [(1 + r)^n - 1], where P is Principal, r is monthly interest rate, and n is tenure in months.",
     about: "Before committing to a home loan, vehicle purchase, or personal loan, calculating your monthly EMI is crucial for prudent financial budgeting. ConvertSheet's EMI Calculator gives you full clarity on your payment schedule, revealing how much of your hard-earned money goes toward principal reduction versus interest expenses.",
     howTo: [
-      { step: 1, title: "Loan Amount", description: "Enter the total loan amount you are borrowing." },
+      { step: 1, title: "Loan Amount", description: "Enter the total loan amount you are borrowing (e.g. ₹50 Lakh, $60,000, or $175,000)." },
       { step: 2, title: "Interest Rate", description: "Enter the annual interest rate quoted by the financial institution." },
-      { step: 3, title: "Tenure", description: "Select the loan duration in either years or months." }
+      { step: 3, title: "Tenure", description: "Select the loan duration in either years or months (e.g. 60 to 72 months for auto, 15 to 30 years for home loans)." }
     ],
     faqs: [
       { question: "How does pre-paying principal affect my loan?", answer: "Making prepayments directly reduces your outstanding principal balance, drastically cutting down total interest paid and shortening loan duration." },
-      { question: "What is the difference between fixed and reducing interest rates?", answer: "Fixed rates charge interest on the original loan amount throughout the term, while reducing balance rates recalculate interest only on the remaining unpaid principal." }
+      { question: "What is the difference between fixed and reducing interest rates?", answer: "Fixed rates charge interest on the original loan amount throughout the term, while reducing balance rates recalculate interest only on the remaining unpaid principal." },
+      { question: "What is the monthly payment on a $60,000 car loan over 72 months?", answer: "At a standard 6.50% APR, a $60,000 car loan over 72 months requires an EMI of $1,008.21/month with total interest of $12,591. At 8.00% APR, the payment rises to $1,051.84/month ($15,732 total interest)." },
+      { question: "What is the monthly payment on a $175,000 mortgage?", answer: "At 7.00% APR over a 30-year fixed term, principal and interest on a $175,000 loan is $1,164.28/month (excluding property taxes and homeowner insurance)." }
     ],
     relatedConverters: ["tally-xml-to-excel", "excel-to-csv"],
     relatedTools: ["sip-calculator", "compound-interest-calculator"]
@@ -288,7 +290,7 @@ export const TOOL_REGISTRY = {
     answerSummary: "Calculate what percentage one number is of another, percentage growth or decline, and exact percentage values in a single utility.",
     badge: "Essential",
     featured: false,
-    keywords: ["percentage calculator", "calculate percentage", "percentage increase", "percentage decrease", "percent of number", "math calculator", "discount calculator"],
+    keywords: ["percentage calculator", "calculate percentage", "percentage increase", "percentage decrease", "percent of number", "math calculator", "discount calculator", "0.20 * 100", "0.20 percent of 100", "100 times 0.20", "20 percent of 100"],
     formulaDescription: "Percent = (Part / Whole) × 100; Percent Change = ([New - Old] / Old) × 100; Value = (Percent / 100) × Whole.",
     about: "Percentages are fundamental to understanding financial reports, test scores, discount markups, and economic metrics. ConvertSheet's Multi-Mode Percentage Calculator combines the six most common percentage queries—basic percentage, relative percent of total, percentage increase/decrease, retail discounts, sales tax, and profit margin/markup—into a clean, lightning-fast dashboard.",
     howTo: [
@@ -298,6 +300,7 @@ export const TOOL_REGISTRY = {
     ],
     faqs: [
       { question: "How do I calculate what is X percent of Y?", answer: "Multiply the percentage by the number and divide by 100. Formula: Value = (X / 100) × Y. For example, 20% of 150 is (20 / 100) × 150 = 30." },
+      { question: "How do I calculate 0.20 * 100 or 0.20 percent of 100?", answer: "0.20 * 100 equals 20 (converting the decimal 0.20 to a percentage gives 20%). On the other hand, 0.20 percent of 100 is (0.20 / 100) * 100 = 0.20." },
       { question: "How do I calculate what percent X is of Y?", answer: "Divide X by Y and multiply by 100. Formula: Percentage = (X / Y) × 100. For example, 25 out of 200 is (25 / 200) × 100 = 12.5%." },
       { question: "How do I calculate a percentage increase or decrease?", answer: "Subtract the original value from the new value, divide by the original value, and multiply by 100. Formula: Percent Change = ((New - Old) / Old) × 100. A positive result is an increase; a negative result represents a decrease." },
       { question: "What does percentage point difference mean?", answer: "Percentage points measure the arithmetic difference between two percentages (e.g. going from 10% to 12% is a 2 percentage point increase, but a 20% relative increase)." },

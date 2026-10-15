@@ -69,11 +69,20 @@ All financial exports created via `xlsx` (SheetJS) must embed:
 1. Model Title & Date Stamp.
 2. Canonical recalculation hyperlink back to ConvertSheet (`https://www.convertsheet.com/tools/...`).
 3. Complete parameter breakdown section followed by computational intervals.
+4. Active Excel formulas (`=PMT(...)`, `=FV(...)`, `=SUM(...)`) so financial analysts and underwriters can inspect the underlying mechanics in Excel.
 
-### E. Swipeable Bottom Sheets & Drawers
+### E. Virtual Keyboard & Safe Area Inset Ergonomics (Apple HIG & Android 14)
+- Mobile browsers frequently obscure input rows when the soft keyboard opens.
+- Bottom summary bars and drawers must utilize CSS `env(safe-area-inset-bottom)`:
+  ```tsx
+  className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between"
+  ```
+- Parent containers must provide generous clearance (`pb-28 sm:pb-0`) ensuring that scrollable content, preset pills, and action drawers never collide with the sticky bar or virtual keyboard.
+
+### F. Swipeable Bottom Sheets & Drawers
 For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket overrides), employ slide-over drawers or bottom sheets with natural swipe-to-dismiss behavior rather than desktop pop-up modals.
 
-### F. Data Density & Visual Amortization
+### G. Data Density & Visual Amortization
 - Accompany amortization tables with stacked bar or area charts (Equity Paid vs Remaining Balance vs Total Interest).
 - Restrict initial table view to 60 rows on client devices to prevent DOM rendering lag, with instant full export to Excel.
 
@@ -84,3 +93,5 @@ Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`:
 - **2026-10-12:** `mortgage-calculator`, `car-loan-calculator`, `home-loan-overdraft-calculator`
 - **2026-10-13:** `rate-hike-calculator`, `savings-cd-calculator`, `balance-transfer-calculator`
 - **2026-10-14:** `annual-to-hourly-calculator`, `canada-paycheck-calculator`, `salary-calculator`
+- **2026-10-15:** `income-tax-calculator`, `emi-calculator`, `sip-calculator`
+

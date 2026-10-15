@@ -111,7 +111,7 @@ describe("Blog Registry & Content Layer", () => {
   it("verifies pillar and branches topic cluster architecture integrity", () => {
     // Cluster: indian-home-loans
     const homeLoanPosts = getBlogPostsByCluster("indian-home-loans");
-    expect(homeLoanPosts.length).toBe(16);
+    expect(homeLoanPosts.length).toBe(17);
 
     const pillar = getPillarPost("indian-home-loans");
     expect(pillar).toBeDefined();
@@ -119,7 +119,7 @@ describe("Blog Registry & Content Layer", () => {
     expect(pillar?.role).toBe("pillar");
 
     const branches = getBranchPosts(pillar!.slug);
-    expect(branches.length).toBe(15);
+    expect(branches.length).toBe(16);
     const branchSlugs = branches.map((b: { slug: string }) => b.slug);
     expect(branchSlugs).toContain("how-to-reduce-home-loan-car-loan-after-repo-rate-hike");
     expect(branchSlugs).toContain("pnb-bob-indian-bank-sbi-rate-hikes-after-repo-revision");
@@ -136,6 +136,16 @@ describe("Blog Registry & Content Layer", () => {
     expect(branchSlugs).toContain("rbi-cva-and-sa-ccr-counterparty-risk-explained");
     expect(branchSlugs).toContain("sbi-maxgain-vs-prepayment-home-loan-overdraft-guide");
     expect(branchSlugs).toContain("mospi-cpi-inflation-surge-festive-home-loan-concessions-2026");
+    expect(branchSlugs).toContain("rbi-99-percent-daily-crr-liquidity-drain-october-16-2026");
+
+    // Verify detailed schema and content for the Oct 16 CRR mandate guide
+    const crrArticle = getBlogPostBySlug("rbi-99-percent-daily-crr-liquidity-drain-october-16-2026");
+    expect(crrArticle).toBeDefined();
+    expect(crrArticle?.attachedToolSlug).toBe("emi-calculator");
+    expect(crrArticle?.content).toContain("RBI/2026-27/290");
+    expect(crrArticle?.content).toContain("₹1.8 Lakh Crore");
+    expect(crrArticle?.tableOfContents).toHaveLength(5);
+    expect(crrArticle?.faqs).toHaveLength(4);
 
     // Verify detailed schema and content for the MoSPI inflation surge & festive concessions guide
     const mospiArticle = getBlogPostBySlug("mospi-cpi-inflation-surge-festive-home-loan-concessions-2026");

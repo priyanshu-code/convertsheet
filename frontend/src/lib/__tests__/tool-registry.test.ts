@@ -122,7 +122,7 @@ describe("TOOL_REGISTRY & Helper Functions", () => {
 
     const taxTool = getToolBySlug("income-tax-calculator");
     expect(taxTool).toBeDefined();
-    expect(taxTool?.title).toBe("Income Tax Calculator (US Federal & India Slabs) - Instant Tax Bracket Breakdown");
+    expect(taxTool?.title).toBe("Income Tax Calculator 2026 (US Federal & India Slabs) — Accurate Take-Home & Bracket Math");
     expect(taxTool?.keywords).toContain("federal tax calculator");
     expect(taxTool?.keywords).toContain("india tax calculator");
   });

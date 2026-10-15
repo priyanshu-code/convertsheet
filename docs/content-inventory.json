@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-14",
-  "totalBlogs": 25,
+  "lastUpdated": "2026-10-15",
+  "totalBlogs": 26,
   "totalTools": 18,
   "blogs": [
     {
@@ -152,6 +152,12 @@
       "title": "Algorithmic Position Sizing: Why 90% of Retail Bots Blow Up (And How Kelly Solves It)",
       "category": "Quantitative Finance",
       "description": "An institutional mathematical breakdown for quant developers and retail algo traders on calculating fixed fractional risk, Half-Kelly position sizing, and true annualized Sharpe vs Sortino ratios."
+    },
+    {
+      "slug": "rbi-99-percent-daily-crr-liquidity-drain-october-16-2026",
+      "title": "RBI's 99% Daily CRR Mandate Takes Effect October 16: The Treasury Squeeze Ending Festive Loan Discounts",
+      "category": "Financial Planning",
+      "description": "Starting October 16, 2026, RBI Circular RBI/2026-27/290 mandates scheduled banks maintain 99% of required CRR daily, up from 90%. Uncover the ₹1.8 Lakh Crore treasury drain ending 7.20% festive home loan spreads."
     }
   ],
   "tools": [
@@ -353,21 +359,42 @@
     },
     {
       "slug": "income-tax-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-15",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "dual-range-sliders-44px",
+        "url-query-permalink-sync",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "emi-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-15",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "triple-range-sliders-44px",
+        "url-query-permalink-sync",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "sip-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-15",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "triple-range-sliders-44px",
+        "url-query-permalink-sync",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "compound-interest-calculator",

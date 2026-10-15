@@ -31,23 +31,25 @@ export const PHASE2_TOOLS: Record<string, ToolConfig> = {
     slug: "income-tax-calculator",
     name: "Income Tax Slab Calculator",
     category: "financial",
-    title: "Income Tax Calculator (US Federal & India Slabs) - Instant Tax Bracket Breakdown",
-    subtitle: "Calculate your exact income tax liability across progressive US Federal brackets (Single / Married) and Indian Income Tax slabs (New Regime FY 2024-25).",
-    metaDescription: "Free online income tax calculator. Compare federal tax brackets, standard deductions, and progressive slabs for US and India with 100% privacy.",
+    title: "Income Tax Calculator 2026 (US Federal & India Slabs) — Accurate Take-Home & Bracket Math",
+    subtitle: "Calculate your exact income tax liability across progressive US Federal brackets (Single / Married) and Indian Income Tax slabs (New Regime FY 2024-25 / FY 2025-26).",
+    metaDescription: "Free online income tax calculator 2026. Calculate $100k after taxes in California vs Texas, 18 LPA in-hand salary under India's New Regime, and progressive bracket breakdowns with 100% privacy.",
     answerSummary: "Our Income Tax Calculator applies progressive slab rates to taxable income, computing total tax payable including standard cess.",
     badge: "Tax Ready",
     featured: true,
-    keywords: ["income tax calculator", "federal tax calculator", "us tax calculator", "india tax calculator", "tax slab calculator", "effective tax rate"],
+    keywords: ["income tax calculator", "federal tax calculator", "us tax calculator", "india tax calculator", "tax slab calculator", "effective tax rate", "100k after tax", "100k after taxes california", "100k salary after taxes texas", "18 lpa in hand salary", "take home pay"],
     formulaDescription: "Taxable Income = Gross Income - Standard Deduction. Tax is computed across incremental brackets + 4% Health & Education Cess.",
     about: "Filing taxes requires clear visibility into how progressive brackets apply to your earnings. ConvertSheet's Income Tax Calculator computes tax slab-by-slab, showing your effective tax rate and post-tax retained earnings.",
     howTo: [
       { step: 1, title: "Annual Income", description: "Enter your gross total annual earnings from salary, freelance, or business." },
-      { step: 2, title: "Standard Deductions", description: "Apply statutory standard deductions (e.g. ₹75,000 standard deduction)." },
-      { step: 3, title: "Review Bracket Breakdown", description: "See the exact tax owed per progressive bracket and overall effective rate." }
+      { step: 2, title: "Standard Deductions", description: "Apply statutory standard deductions (e.g. ₹75,000 standard deduction in India or standard deduction in US)." },
+      { step: 3, title: "Review Bracket Breakdown", description: "See the exact tax owed per progressive bracket, take-home pay, and overall effective rate." }
     ],
     faqs: [
       { question: "What is an effective tax rate?", answer: "Your effective tax rate is total tax paid divided by total income, which is always lower than your highest marginal tax slab bracket." },
-      { question: "How does progressive taxation work?", answer: "Each tax percentage only applies to the portion of income falling within that specific bracket, not your entire income." }
+      { question: "How does progressive taxation work?", answer: "Each tax percentage only applies to the portion of income falling within that specific bracket, not your entire income." },
+      { question: "How much is $100k after taxes in California vs Texas?", answer: "In Texas (zero state income tax), a single filer taking the standard deduction retains approximately $78,500 after federal income tax and FICA. In California, state income tax claims an additional ~$6,200, yielding approximately $72,300 in net take-home pay." },
+      { question: "What is the monthly in-hand salary for 18 LPA under India's New Tax Regime?", answer: "For an 18 LPA CTC under the New Regime (FY 2024-25 / 2025-26) with the ₹75,000 standard deduction, total annual tax and cess is approximately ₹2,36,600, yielding an annual net post-tax income of ~₹15.63 Lakh (around ₹1,30,280/month before voluntary EPF/NPS deductions)." }
     ],
     relatedConverters: ["tally-xml-to-excel"],
     relatedTools: ["salary-calculator", "gst-calculator"]

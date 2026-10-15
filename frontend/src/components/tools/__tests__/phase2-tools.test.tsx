@@ -50,7 +50,7 @@ describe("Phase 2 Calculators and Tools", () => {
       render(<IncomeTaxCalculator initialValues={{ grossIncomeUs: 100000, filingStatus: "single" }} />);
       expect(screen.getByText(/US Federal Income Tax Bracket Calculator/i)).toBeInTheDocument();
       expect(screen.getByText("Total Federal Tax Payable")).toBeInTheDocument();
-      expect(screen.getByText("$13,841")).toBeInTheDocument();
+      expect(screen.getAllByText("$13,841").length).toBeGreaterThan(0);
       expect(screen.getByText("Net After-Tax Income")).toBeInTheDocument();
       expect(screen.getByText("$86,159")).toBeInTheDocument();
       expect(screen.getByText("United States (Federal)")).toBeInTheDocument();
@@ -72,7 +72,7 @@ describe("Phase 2 Calculators and Tools", () => {
       );
       expect(screen.getByText(/Income Tax Slab Calculator \(India FY 2024-25\)/i)).toBeInTheDocument();
       expect(screen.getByText("Total Tax Payable")).toBeInTheDocument();
-      expect(screen.getByText(/119,600/)).toBeInTheDocument();
+      expect(screen.getAllByText(/119,600/).length).toBeGreaterThan(0);
       expect(screen.getByText("Health & Edu Cess (4%)")).toBeInTheDocument();
       expect(screen.getByText(/4,600/)).toBeInTheDocument();
     });

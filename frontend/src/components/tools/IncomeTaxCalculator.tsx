@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Receipt } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { Receipt, ShieldCheck, Download } from "lucide-react";
+import * as XLSX from "xlsx";
 import {
   CalcCard,
   CalcInput,
   CalcSelect,
+  CalcSlider,
   CalcResult,
   CalcChart,
   CalcPromptButton,
@@ -319,225 +321,351 @@ Please evaluate tax reduction strategies (Traditional IRA / 401(k), HSA contribu
 Please evaluate whether the Old Regime or New Regime is better for this income level, and suggest tax optimization maneuvers.`;
   }, [regime, usTaxResult, filingStatus, inTaxResult, standardDeductionIn, otherDeductionsIn]);
 
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("regime", regime);
+    if (regime === "US") {
+      params.set("grossIncomeUs", grossIncomeUs.toString());
+      params.set("filingStatus", filingStatus);
+      params.set("customDeductionsUs", customDeductionsUs.toString());
+      params.delete("annualIncome");
+      params.delete("standardDeduction");
+      params.delete("otherDeductions");
+    } else {
+      params.set("annualIncome", annualIncomeIn.toString());
+      params.set("standardDeduction", standardDeductionIn.toString());
+      params.set("otherDeductions", otherDeductionsIn.toString());
+      params.delete("grossIncomeUs");
+      params.delete("filingStatus");
+      params.delete("customDeductionsUs");
+    }
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [regime, grossIncomeUs, filingStatus, customDeductionsUs, annualIncomeIn, standardDeductionIn, otherDeductionsIn]);
+
+  const handleExportExcel = () => {
+    try {
+      const summaryRows: (string | number)[][] = [
+        ["ConvertSheet - Income Tax Liability & Progressive Bracket Model", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/income-tax-calculator"],
+        ["", ""],
+      ];
+
+      if (regime === "US") {
+        summaryRows.push(
+          ["--- US FEDERAL TAX PARAMETERS (TY 2024 / 2025) ---", ""],
+          ["Gross Annual Income ($)", usTaxResult.gross],
+          ["Filing Status", filingStatus === "married" ? "Married Filing Jointly" : "Single"],
+          ["Standard Deduction ($)", usTaxResult.standardDeduction],
+          ["Additional Itemized / Other Deductions ($)", usTaxResult.additionalDeductions],
+          ["Taxable Income ($)", usTaxResult.taxableIncome],
+          ["", ""],
+          ["--- PROGRESSIVE BRACKET BREAKDOWN ---", ""],
+          ...usTaxResult.slabBreakdown.map((s) => [`Bracket ${s.range} (${s.rate})`, s.tax]),
+          ["", ""],
+          ["--- FINAL TAX LIABILITY & TAKE-HOME ---", ""],
+          ["Total Federal Tax Payable ($)", usTaxResult.totalFederalTax],
+          ["Effective Tax Rate (%)", usTaxResult.effectiveTaxRate],
+          ["Marginal Tax Bracket (%)", usTaxResult.marginalRate],
+          ["Net After-Tax Income ($)", usTaxResult.netAfterTaxIncome],
+          ["Monthly Net Take-Home ($/mo)", Math.round(usTaxResult.netAfterTaxIncome / 12)]
+        );
+      } else {
+        summaryRows.push(
+          ["--- INDIA NEW TAX REGIME PARAMETERS (FY 2024-25 / AY 2025-26) ---", ""],
+          ["Gross Annual CTC (₹)", inTaxResult.gross],
+          ["Standard Deduction (₹)", standardDeductionIn],
+          ["Other Deductions (₹)", otherDeductionsIn],
+          ["Taxable Income (₹)", inTaxResult.taxableIncome],
+          ["", ""],
+          ["--- PROGRESSIVE TAX SLAB BREAKDOWN ---", ""],
+          ...inTaxResult.slabBreakdown.map((s) => [`Slab ${s.range} (${s.rate})`, s.tax]),
+          ["", ""],
+          ["--- FINAL TAX LIABILITY & NET IN-HAND ---", ""],
+          ["Base Income Tax (₹)", inTaxResult.totalBaseTax],
+          ["Section 87A Tax Rebate (₹)", inTaxResult.rebate87A],
+          ["4% Health & Education Cess (₹)", inTaxResult.cessAmount],
+          ["Total Tax Payable (₹)", inTaxResult.totalTaxPayable],
+          ["Effective Tax Rate (%)", inTaxResult.effectiveTaxRate],
+          ["Net Annual Post-Tax Income (₹)", inTaxResult.netAfterTaxIncome],
+          ["Net Monthly In-Hand (₹/mo)", Math.round(inTaxResult.netAfterTaxIncome / 12)]
+        );
+      }
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "TaxSchedule");
+      XLSX.writeFile(
+        wb,
+        regime === "US"
+          ? `ConvertSheet_US_Federal_Tax_${grossIncomeUs}_${filingStatus}.xlsx`
+          : `ConvertSheet_India_Tax_${annualIncomeIn}_NewRegime.xlsx`
+      );
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    }
+  };
+
   return (
-    <CalcCard
-      title={
-        regime === "US"
-          ? "US Federal Income Tax Bracket Calculator (2024)"
-          : "Income Tax Slab Calculator (India FY 2024-25)"
-      }
-      subtitle={
-        regime === "US"
-          ? "Calculate progressive 2024 US Federal Income Tax across all 7 tax brackets with standard deduction, effective tax rate, and net after-tax income."
-          : "Calculate income tax liability under India's New Tax Regime (Section 115BAC) with ₹75,000 standard deduction, 87A rebate, progressive slabs, and 4% health & education cess."
-      }
-      icon={Receipt}
-      badge={regime === "US" ? "United States • Federal 2024" : "India • FY 2024-25"}
-    >
-      {/* Country pill switcher */}
-      <div className="flex items-center justify-start pb-2">
-        <div className="inline-flex p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
-          <button
-            type="button"
-            onClick={() => setRegime("US")}
-            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-              regime === "US"
-                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
-            }`}
-          >
-            <span>🇺🇸</span>
-            <span>United States (Federal)</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setRegime("IN")}
-            className={`px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
-              regime === "IN"
-                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
-                : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
-            }`}
-          >
-            <span>🇮🇳</span>
-            <span>India (FY 2024-25)</span>
-          </button>
-        </div>
+    <div className="space-y-6 pb-28 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Inputs */}
-        <div className="space-y-6">
-          {regime === "US" ? (
-            <>
-              <div>
-                <CalcInput
-                  id="gross-income-us"
-                  label="Gross Annual Income"
-                  value={grossIncomeUs}
-                  onChange={(val) => setGrossIncomeUs(Number(val) || 0)}
-                  prefix="$"
-                  min={0}
-                  step={5000}
-                  helpText="W-2 wages, self-employment earnings, or total annual taxable revenue"
-                />
-                <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
-                  {[
-                    { label: "$50k", val: 50000 },
-                    { label: "$75k", val: 75000 },
-                    { label: "$100k", val: 100000 },
-                    { label: "$150k", val: 150000 },
-                    { label: "$250k", val: 250000 },
-                  ].map((p) => (
-                    <button
-                      key={p.label}
-                      type="button"
-                      onClick={() => setGrossIncomeUs(p.val)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
-                        grossIncomeUs === p.val
-                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                      }`}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <CalcSelect
-                id="filing-status"
-                label="Filing Status"
-                value={filingStatus}
-                onChange={(val) => setFilingStatus(val as "single" | "married")}
-                options={[
-                  { value: "single", label: "Single ($14,600 Std Deduction)" },
-                  { value: "married", label: "Married Filing Jointly ($29,200 Std Deduction)" },
-                ]}
-                helperText="Determines statutory standard deduction and tax bracket boundaries"
-              />
-              <CalcInput
-                id="custom-deductions-us"
-                label="Custom Itemized / Additional Deductions"
-                value={customDeductionsUs}
-                onChange={(val) => setCustomDeductionsUs(Number(val) || 0)}
-                prefix="$"
-                min={0}
-                step={1000}
-                helpText="Optional additional adjustments (e.g. IRA, HSA, or excess itemized deductions above standard)"
-              />
-            </>
-          ) : (
-            <>
-              <div>
-                <CalcInput
-                  id="annual-income-in"
-                  label="Gross Annual Income"
-                  value={annualIncomeIn}
-                  onChange={(val) => setAnnualIncomeIn(Number(val) || 0)}
-                  prefix="₹"
-                  min={100000}
-                  step={50000}
-                  helpText="Total gross annual CTC or total taxable income"
-                />
-                <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
-                  {[
-                    { label: "₹8L", val: 800000 },
-                    { label: "₹12L", val: 1200000 },
-                    { label: "₹15L", val: 1500000 },
-                    { label: "₹20L", val: 2000000 },
-                    { label: "₹30L", val: 3000000 },
-                  ].map((p) => (
-                    <button
-                      key={p.label}
-                      type="button"
-                      onClick={() => setAnnualIncomeIn(p.val)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
-                        annualIncomeIn === p.val
-                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                      }`}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <CalcInput
-                id="standard-deduction-in"
-                label="Standard Deduction"
-                value={standardDeductionIn}
-                onChange={(val) => setStandardDeductionIn(Number(val) || 0)}
-                prefix="₹"
-                min={0}
-                step={5000}
-                helpText="Statutory deduction (₹75,000 for salaried under Budget 2024)"
-              />
-              <CalcInput
-                id="other-deductions-in"
-                label="Other Exemptions / Deductions"
-                value={otherDeductionsIn}
-                onChange={(val) => setOtherDeductionsIn(Number(val) || 0)}
-                prefix="₹"
-                min={0}
-                step={5000}
-                helpText="Employer NPS (80CCD(2)) or other permissible deductions"
-              />
-            </>
-          )}
-
-          {/* Action buttons */}
-          <div className="pt-2 flex flex-wrap gap-3">
-            <CalcSaveButton
-              toolSlug="income-tax-calculator"
-              toolName="Income Tax Calculator"
-              summaryTitle={
+      <CalcCard
+        title={
+          regime === "US"
+            ? "US Federal Income Tax Bracket Calculator (2024)"
+            : "Income Tax Slab Calculator (India FY 2024-25)"
+        }
+        subtitle={
+          regime === "US"
+            ? "Calculate progressive 2024 US Federal Income Tax across all 7 tax brackets with standard deduction, effective tax rate, and net after-tax income."
+            : "Calculate income tax liability under India's New Tax Regime (Section 115BAC) with ₹75,000 standard deduction, 87A rebate, progressive slabs, and 4% health & education cess."
+        }
+        icon={Receipt}
+        badge={regime === "US" ? "United States • Federal 2024" : "India • FY 2024-25"}
+      >
+        {/* Country pill switcher */}
+        <div className="flex items-center justify-start pb-2">
+          <div className="inline-flex p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
+            <button
+              type="button"
+              onClick={() => setRegime("US")}
+              className={`min-h-[44px] px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
                 regime === "US"
-                  ? `US Tax: $${usTaxResult.gross.toLocaleString()} Income (Payable: $${usTaxResult.totalFederalTax.toLocaleString()})`
-                  : `India Tax: ₹${inTaxResult.gross.toLocaleString()} Income (Payable: ₹${inTaxResult.totalTaxPayable.toLocaleString()})`
-              }
-              summaryMetrics={
-                regime === "US"
-                  ? [
-                      { label: "Federal Tax", value: `$${usTaxResult.totalFederalTax.toLocaleString()}` },
-                      { label: "Effective Rate", value: `${usTaxResult.effectiveTaxRate}%` },
-                      { label: "Taxable Income", value: `$${usTaxResult.taxableIncome.toLocaleString()}` },
-                      { label: "After-Tax Income", value: `$${usTaxResult.netAfterTaxIncome.toLocaleString()}` },
-                    ]
-                  : [
-                      { label: "Tax Payable", value: `₹${inTaxResult.totalTaxPayable.toLocaleString()}` },
-                      { label: "Effective Rate", value: `${inTaxResult.effectiveTaxRate}%` },
-                      { label: "Taxable Income", value: `₹${inTaxResult.taxableIncome.toLocaleString()}` },
-                      { label: "Cess (4%)", value: `₹${inTaxResult.cessAmount.toLocaleString()}` },
-                    ]
-              }
-            />
-            <CalcShareButton
-              state={
-                regime === "US"
-                  ? {
-                      regime: "US",
-                      grossIncomeUs,
-                      filingStatus,
-                      customDeductionsUs,
-                    }
-                  : {
-                      regime: "IN",
-                      annualIncome: annualIncomeIn,
-                      standardDeduction: standardDeductionIn,
-                      otherDeductions: otherDeductionsIn,
-                    }
-              }
-              label="Share Tax Scenario"
-            />
-            <CalcPromptButton promptText={llmPrompt} />
-            <CalcExportButton
-              data={exportSchedule}
-              filename={regime === "US" ? "us-federal-tax-schedule" : "india-income-tax-schedule"}
-              sheetName="Tax Calculation"
-            />
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+              }`}
+            >
+              <span>🇺🇸</span>
+              <span>United States (Federal)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRegime("IN")}
+              className={`min-h-[44px] px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
+                regime === "IN"
+                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+              }`}
+            >
+              <span>🇮🇳</span>
+              <span>India (FY 2024-25)</span>
+            </button>
           </div>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Inputs */}
+          <div className="space-y-6">
+            {regime === "US" ? (
+              <>
+                <div className="space-y-3">
+                  <CalcInput
+                    id="gross-income-us"
+                    label="Gross Annual Income"
+                    value={grossIncomeUs}
+                    onChange={(val) => setGrossIncomeUs(Number(val) || 0)}
+                    prefix="$"
+                    min={0}
+                    step={5000}
+                    helpText="W-2 wages, self-employment earnings, or total annual taxable revenue"
+                  />
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                    {[
+                      { label: "$50k", val: 50000 },
+                      { label: "$75k", val: 75000 },
+                      { label: "$100k", val: 100000 },
+                      { label: "$150k", val: 150000 },
+                      { label: "$250k", val: 250000 },
+                    ].map((p) => (
+                      <button
+                        key={p.label}
+                        type="button"
+                        onClick={() => setGrossIncomeUs(p.val)}
+                        className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                          grossIncomeUs === p.val
+                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                  <CalcSlider
+                    id="gross-income-us-slider"
+                    label="Gross Annual Income Slider"
+                    ariaLabel="Gross Annual Income Slider"
+                    value={grossIncomeUs}
+                    min={10000}
+                    max={500000}
+                    step={5000}
+                    prefix="$"
+                    onChange={setGrossIncomeUs}
+                  />
+                </div>
+                <CalcSelect
+                  id="filing-status"
+                  label="Filing Status"
+                  value={filingStatus}
+                  onChange={(val) => setFilingStatus(val as "single" | "married")}
+                  options={[
+                    { value: "single", label: "Single ($14,600 Std Deduction)" },
+                    { value: "married", label: "Married Filing Jointly ($29,200 Std Deduction)" },
+                  ]}
+                  helperText="Determines statutory standard deduction and tax bracket boundaries"
+                />
+                <CalcInput
+                  id="custom-deductions-us"
+                  label="Custom Itemized / Additional Deductions"
+                  value={customDeductionsUs}
+                  onChange={(val) => setCustomDeductionsUs(Number(val) || 0)}
+                  prefix="$"
+                  min={0}
+                  step={1000}
+                  helpText="Optional additional adjustments (e.g. IRA, HSA, or excess itemized deductions above standard)"
+                />
+              </>
+            ) : (
+              <>
+                <div className="space-y-3">
+                  <CalcInput
+                    id="annual-income-in"
+                    label="Gross Annual Income"
+                    value={annualIncomeIn}
+                    onChange={(val) => setAnnualIncomeIn(Number(val) || 0)}
+                    prefix="₹"
+                    min={100000}
+                    step={50000}
+                    helpText="Total gross annual CTC or total taxable income"
+                  />
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                    {[
+                      { label: "₹8L", val: 800000 },
+                      { label: "₹12L", val: 1200000 },
+                      { label: "₹15L", val: 1500000 },
+                      { label: "₹20L", val: 2000000 },
+                      { label: "₹30L", val: 3000000 },
+                    ].map((p) => (
+                      <button
+                        key={p.label}
+                        type="button"
+                        onClick={() => setAnnualIncomeIn(p.val)}
+                        className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                          annualIncomeIn === p.val
+                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                  <CalcSlider
+                    id="annual-income-in-slider"
+                    label="Gross Annual CTC Slider"
+                    ariaLabel="Gross Annual CTC Slider"
+                    value={annualIncomeIn}
+                    min={250000}
+                    max={5000000}
+                    step={50000}
+                    prefix="₹"
+                    onChange={setAnnualIncomeIn}
+                  />
+                </div>
+                <CalcInput
+                  id="standard-deduction-in"
+                  label="Standard Deduction"
+                  value={standardDeductionIn}
+                  onChange={(val) => setStandardDeductionIn(Number(val) || 0)}
+                  prefix="₹"
+                  min={0}
+                  step={5000}
+                  helpText="Statutory deduction (₹75,000 for salaried under Budget 2024)"
+                />
+                <CalcInput
+                  id="other-deductions-in"
+                  label="Other Exemptions / Deductions"
+                  value={otherDeductionsIn}
+                  onChange={(val) => setOtherDeductionsIn(Number(val) || 0)}
+                  prefix="₹"
+                  min={0}
+                  step={5000}
+                  helpText="Employer NPS (80CCD(2)) or other permissible deductions"
+                />
+              </>
+            )}
+
+            {/* Action buttons */}
+            <div className="pt-2 flex flex-wrap gap-3">
+              <CalcSaveButton
+                toolSlug="income-tax-calculator"
+                toolName="Income Tax Calculator"
+                summaryTitle={
+                  regime === "US"
+                    ? `US Tax: $${usTaxResult.gross.toLocaleString()} Income (Payable: $${usTaxResult.totalFederalTax.toLocaleString()})`
+                    : `India Tax: ₹${inTaxResult.gross.toLocaleString()} Income (Payable: ₹${inTaxResult.totalTaxPayable.toLocaleString()})`
+                }
+                summaryMetrics={
+                  regime === "US"
+                    ? [
+                        { label: "Federal Tax", value: `$${usTaxResult.totalFederalTax.toLocaleString()}` },
+                        { label: "Effective Rate", value: `${usTaxResult.effectiveTaxRate}%` },
+                        { label: "Taxable Income", value: `$${usTaxResult.taxableIncome.toLocaleString()}` },
+                        { label: "After-Tax Income", value: `$${usTaxResult.netAfterTaxIncome.toLocaleString()}` },
+                      ]
+                    : [
+                        { label: "Tax Payable", value: `₹${inTaxResult.totalTaxPayable.toLocaleString()}` },
+                        { label: "Effective Rate", value: `${inTaxResult.effectiveTaxRate}%` },
+                        { label: "Taxable Income", value: `₹${inTaxResult.taxableIncome.toLocaleString()}` },
+                        { label: "Cess (4%)", value: `₹${inTaxResult.cessAmount.toLocaleString()}` },
+                      ]
+                }
+              />
+              <CalcShareButton
+                state={
+                  regime === "US"
+                    ? {
+                        regime: "US",
+                        grossIncomeUs,
+                        filingStatus,
+                        customDeductionsUs,
+                      }
+                    : {
+                        regime: "IN",
+                        annualIncome: annualIncomeIn,
+                        standardDeduction: standardDeductionIn,
+                        otherDeductions: otherDeductionsIn,
+                      }
+                }
+                label="Share Tax Scenario"
+              />
+              <CalcPromptButton promptText={llmPrompt} />
+              <button
+                type="button"
+                onClick={handleExportExcel}
+                className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-black text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white shadow-xs transition-colors"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Export Formulaic Excel</span>
+              </button>
+              <CalcExportButton
+                data={exportSchedule}
+                filename={regime === "US" ? "us-federal-tax-schedule" : "india-income-tax-schedule"}
+                sheetName="Tax Calculation"
+              />
+            </div>
+          </div>
 
         {/* Right Results */}
         <div className="space-y-4">
@@ -706,5 +834,32 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
         </div>
       )}
     </CalcCard>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
+            {regime === "US" ? "Federal Tax Payable" : "Total Tax Liability"}
+          </span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {regime === "US"
+              ? `$${usTaxResult.totalFederalTax.toLocaleString()}`
+              : `₹${inTaxResult.totalTaxPayable.toLocaleString()}`}
+          </span>
+          <span className="text-[11px] text-zinc-500 block">
+            {regime === "US"
+              ? `Effective: ${usTaxResult.effectiveTaxRate}%`
+              : `Effective: ${inTaxResult.effectiveTaxRate}%`}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors"
+        >
+          Export Excel
+        </button>
+      </div>
+    </div>
   );
 }
