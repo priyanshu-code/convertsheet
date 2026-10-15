@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Percent, Download, Table, TrendingUp, Tag, Receipt, DollarSign, Sparkles } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { Percent, Download, Table, Sparkles, ShieldCheck } from "lucide-react";
 import * as XLSX from "xlsx";
 import { roundTo } from "@/lib/math-utils";
 import {
@@ -10,6 +10,8 @@ import {
   CalcToggle,
   CalcResult,
   CalcSelect,
+  CalcShareButton,
+  CalcPromptButton,
 } from "@/components/calculator";
 
 export type PercentageCalcMode =
@@ -39,45 +41,193 @@ export interface PercentageCalculatorProps {
 const MATRIX_PERCENTAGES = [1, 5, 10, 15, 20, 25, 30, 33.333, 50, 75, 100, 150, 200];
 
 export function PercentageCalculator({ initialValues }: PercentageCalculatorProps = {}) {
-  const [calcMode, setCalcMode] = useState<PercentageCalcMode>(initialValues?.mode || "whatIs");
+  const [calcMode, setCalcMode] = useState<PercentageCalcMode>(() => {
+    if (initialValues?.mode) return initialValues.mode;
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("mode");
+      if (q && ["whatIs", "isWhatPercent", "change", "discount", "tax", "marginMarkup"].includes(q)) {
+        return q as PercentageCalcMode;
+      }
+    }
+    return "whatIs";
+  });
 
   // Mode 1: What is X% of Y?
-  const [valX1, setValX1] = useState<number>(Number(initialValues?.valX) || 15);
-  const [valY1, setValY1] = useState<number>(Number(initialValues?.valY) || 200);
+  const [valX1, setValX1] = useState<number>(() => {
+    if (initialValues?.valX !== undefined) return Number(initialValues.valX);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("valX");
+      if (q) return Number(q);
+    }
+    return 15;
+  });
+  const [valY1, setValY1] = useState<number>(() => {
+    if (initialValues?.valY !== undefined) return Number(initialValues.valY);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("valY");
+      if (q) return Number(q);
+    }
+    return 200;
+  });
 
   // Mode 2: X is what % of Y?
-  const [valX2, setValX2] = useState<number>(Number(initialValues?.valX) || 30);
-  const [valY2, setValY2] = useState<number>(Number(initialValues?.valY) || 150);
+  const [valX2, setValX2] = useState<number>(() => {
+    if (initialValues?.valX !== undefined) return Number(initialValues.valX);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("valX");
+      if (q) return Number(q);
+    }
+    return 30;
+  });
+  const [valY2, setValY2] = useState<number>(() => {
+    if (initialValues?.valY !== undefined) return Number(initialValues.valY);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("valY");
+      if (q) return Number(q);
+    }
+    return 150;
+  });
 
   // Mode 3: Percentage increase/decrease from X to Y
-  const [valX3, setValX3] = useState<number>(Number(initialValues?.valX) || 100);
-  const [valY3, setValY3] = useState<number>(Number(initialValues?.valY) || 125);
+  const [valX3, setValX3] = useState<number>(() => {
+    if (initialValues?.valX !== undefined) return Number(initialValues.valX);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("valX");
+      if (q) return Number(q);
+    }
+    return 100;
+  });
+  const [valY3, setValY3] = useState<number>(() => {
+    if (initialValues?.valY !== undefined) return Number(initialValues.valY);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("valY");
+      if (q) return Number(q);
+    }
+    return 125;
+  });
 
   // Mode 4: Discount & Sale
-  const [originalPrice, setOriginalPrice] = useState<number>(
-    Number(initialValues?.originalPrice ?? (initialValues?.mode === "discount" ? initialValues?.valY : undefined)) || 80
-  );
-  const [discountPercent, setDiscountPercent] = useState<number>(
-    Number(initialValues?.discountPercent ?? (initialValues?.mode === "discount" ? initialValues?.valX : undefined)) || 25
-  );
+  const [originalPrice, setOriginalPrice] = useState<number>(() => {
+    const raw = initialValues?.originalPrice ?? (initialValues?.mode === "discount" ? initialValues?.valY : undefined);
+    if (raw !== undefined) return Number(raw);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("originalPrice");
+      if (q) return Number(q);
+    }
+    return 80;
+  });
+  const [discountPercent, setDiscountPercent] = useState<number>(() => {
+    const raw = initialValues?.discountPercent ?? (initialValues?.mode === "discount" ? initialValues?.valX : undefined);
+    if (raw !== undefined) return Number(raw);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("discountPercent");
+      if (q) return Number(q);
+    }
+    return 25;
+  });
 
   // Mode 5: Sales Tax / VAT
-  const [taxBasePrice, setTaxBasePrice] = useState<number>(
-    Number(initialValues?.taxBasePrice ?? (initialValues?.mode === "tax" ? initialValues?.valY : undefined)) || 120
-  );
-  const [taxPercent, setTaxPercent] = useState<number>(
-    Number(initialValues?.taxPercent ?? (initialValues?.mode === "tax" ? initialValues?.valX : undefined)) || 8.25
-  );
-  const [taxMode, setTaxMode] = useState<"add" | "extract">(initialValues?.taxMode || "add");
+  const [taxBasePrice, setTaxBasePrice] = useState<number>(() => {
+    const raw = initialValues?.taxBasePrice ?? (initialValues?.mode === "tax" ? initialValues?.valY : undefined);
+    if (raw !== undefined) return Number(raw);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("taxBasePrice");
+      if (q) return Number(q);
+    }
+    return 120;
+  });
+  const [taxPercent, setTaxPercent] = useState<number>(() => {
+    const raw = initialValues?.taxPercent ?? (initialValues?.mode === "tax" ? initialValues?.valX : undefined);
+    if (raw !== undefined) return Number(raw);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("taxPercent");
+      if (q) return Number(q);
+    }
+    return 8.25;
+  });
+  const [taxMode, setTaxMode] = useState<"add" | "extract">(() => {
+    if (initialValues?.taxMode) return initialValues.taxMode;
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("taxMode");
+      if (q === "add" || q === "extract") return q;
+    }
+    return "add";
+  });
 
   // Mode 6: Margin vs Markup
-  const [costPrice, setCostPrice] = useState<number>(
-    Number(initialValues?.costPrice ?? (initialValues?.mode === "marginMarkup" ? initialValues?.valY : undefined)) || 100
-  );
-  const [marginMarkupPercent, setMarginMarkupPercent] = useState<number>(
-    Number(initialValues?.marginMarkupPercent ?? (initialValues?.mode === "marginMarkup" ? initialValues?.valX : undefined)) || 30
-  );
-  const [marginMarkupType, setMarginMarkupType] = useState<"margin" | "markup">(initialValues?.marginMarkupType || "markup");
+  const [costPrice, setCostPrice] = useState<number>(() => {
+    const raw = initialValues?.costPrice ?? (initialValues?.mode === "marginMarkup" ? initialValues?.valY : undefined);
+    if (raw !== undefined) return Number(raw);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("costPrice");
+      if (q) return Number(q);
+    }
+    return 100;
+  });
+  const [marginMarkupPercent, setMarginMarkupPercent] = useState<number>(() => {
+    const raw = initialValues?.marginMarkupPercent ?? (initialValues?.mode === "marginMarkup" ? initialValues?.valX : undefined);
+    if (raw !== undefined) return Number(raw);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("marginMarkupPercent");
+      if (q) return Number(q);
+    }
+    return 30;
+  });
+  const [marginMarkupType, setMarginMarkupType] = useState<"margin" | "markup">(() => {
+    if (initialValues?.marginMarkupType) return initialValues.marginMarkupType;
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("marginMarkupType");
+      if (q === "margin" || q === "markup") return q;
+    }
+    return "markup";
+  });
+
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("mode", calcMode);
+    if (calcMode === "whatIs") {
+      params.set("valX", valX1.toString());
+      params.set("valY", valY1.toString());
+    } else if (calcMode === "isWhatPercent") {
+      params.set("valX", valX2.toString());
+      params.set("valY", valY2.toString());
+    } else if (calcMode === "change") {
+      params.set("valX", valX3.toString());
+      params.set("valY", valY3.toString());
+    } else if (calcMode === "discount") {
+      params.set("originalPrice", originalPrice.toString());
+      params.set("discountPercent", discountPercent.toString());
+    } else if (calcMode === "tax") {
+      params.set("taxBasePrice", taxBasePrice.toString());
+      params.set("taxPercent", taxPercent.toString());
+      params.set("taxMode", taxMode);
+    } else if (calcMode === "marginMarkup") {
+      params.set("costPrice", costPrice.toString());
+      params.set("marginMarkupPercent", marginMarkupPercent.toString());
+      params.set("marginMarkupType", marginMarkupType);
+    }
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [
+    calcMode,
+    valX1,
+    valY1,
+    valX2,
+    valY2,
+    valX3,
+    valY3,
+    originalPrice,
+    discountPercent,
+    taxBasePrice,
+    taxPercent,
+    taxMode,
+    costPrice,
+    marginMarkupPercent,
+    marginMarkupType,
+  ]);
 
   // Reference Matrix Base Value
   const matrixBase = useMemo(() => {
@@ -226,8 +376,67 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
     XLSX.writeFile(wb, `percentage-reference-sheet-${matrixBase}.xlsx`);
   };
 
+  const shareState = useMemo(() => {
+    switch (calcMode) {
+      case "whatIs":
+        return { mode: "whatIs", valX: valX1, valY: valY1 };
+      case "isWhatPercent":
+        return { mode: "isWhatPercent", valX: valX2, valY: valY2 };
+      case "change":
+        return { mode: "change", valX: valX3, valY: valY3 };
+      case "discount":
+        return { mode: "discount", originalPrice, discountPercent };
+      case "tax":
+        return { mode: "tax", taxBasePrice, taxPercent, taxMode };
+      case "marginMarkup":
+        return { mode: "marginMarkup", costPrice, marginMarkupPercent, marginMarkupType };
+    }
+  }, [calcMode, valX1, valY1, valX2, valY2, valX3, valY3, originalPrice, discountPercent, taxBasePrice, taxPercent, taxMode, costPrice, marginMarkupPercent, marginMarkupType]);
+
+  const aiPrompt = useMemo(() => {
+    switch (calcMode) {
+      case "whatIs":
+        return `Explain step-by-step how to compute ${valX1}% of ${valY1} (Result: ${result1.value}) and provide real-world financial or business applications of this calculation.`;
+      case "isWhatPercent":
+        return `Explain how to calculate what percentage ${valX2} is of ${valY2} (Result: ${result2.value}) and provide practical examples.`;
+      case "change":
+        return `Analyze a percentage change from ${valX3} to ${valY3} (Result: ${result3.value}) and explain what this metric indicates in inflation, sales growth, or investment returns.`;
+      case "discount":
+        return `Evaluate a discount of ${discountPercent}% on an item originally priced at $${originalPrice} (Final: $${result4.finalPrice}, Savings: $${result4.savings}) and discuss pricing psychology.`;
+      case "tax":
+        return `Explain the breakdown of $${taxBasePrice} with ${taxPercent}% sales tax / VAT under mode "${taxMode}" (Total: $${result5.total}, Tax: $${result5.taxAmount}).`;
+      case "marginMarkup":
+        return `Compare the commercial difference between a ${marginMarkupPercent}% ${marginMarkupType} on a cost price of $${costPrice} (Selling price: $${result6.sellingPrice}, Profit: $${result6.profit}).`;
+    }
+  }, [calcMode, valX1, valY1, result1, valX2, valY2, result2, valX3, valY3, result3, originalPrice, discountPercent, result4, taxBasePrice, taxPercent, taxMode, result5, costPrice, marginMarkupPercent, marginMarkupType, result6]);
+
+  const { currentSummaryLabel, currentSummaryValue } = useMemo(() => {
+    switch (calcMode) {
+      case "whatIs":
+        return { currentSummaryLabel: `${valX1}% of ${valY1}`, currentSummaryValue: result1.value };
+      case "isWhatPercent":
+        return { currentSummaryLabel: `${valX2} of ${valY2}`, currentSummaryValue: result2.value };
+      case "change":
+        return { currentSummaryLabel: `% Change (${valX3} → ${valY3})`, currentSummaryValue: result3.value };
+      case "discount":
+        return { currentSummaryLabel: "Final Sale Price", currentSummaryValue: `$${result4.finalPrice}` };
+      case "tax":
+        return { currentSummaryLabel: "Total with Tax", currentSummaryValue: `$${result5.total}` };
+      case "marginMarkup":
+        return { currentSummaryLabel: "Selling Price", currentSummaryValue: `$${result6.sellingPrice}` };
+      default:
+        return { currentSummaryLabel: "Result", currentSummaryValue: "0" };
+    }
+  }, [calcMode, valX1, valY1, result1, valX2, valY2, result2, valX3, valY3, result3, result4, result5, result6]);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-28 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Privacy Reassurance Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side Privacy — Zero Math or Input Data Leaves Your Device</span>
+      </div>
+
       <CalcCard
         title="Percentage Calculator"
         subtitle="Solve all percentage problems: find a percent of a number, percentage ratios, price changes, discounts, sales tax, and margins."
@@ -335,26 +544,27 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <CalcInput
                 id="val-x3"
-                label="Initial Value (From)"
+                label="Initial / Old Value (X)"
                 value={valX3}
                 onChange={(v) => setValX3(Number(v) || 0)}
               />
               <CalcInput
                 id="val-y3"
-                label="Final Value (To)"
+                label="Final / New Value (Y)"
                 value={valY3}
                 onChange={(v) => setValY3(Number(v) || 0)}
               />
             </div>
 
             <CalcResult
-              title="Relative Change"
+              title="Change Analysis"
               primaryLabel={`Percentage change from ${valX3} to ${valY3}`}
               primaryValue={result3.value}
-              copyValue={`From ${valX3} to ${valY3} is a ${result3.value} (${result3.type})`}
+              copyValue={`Change from ${valX3} to ${valY3} = ${result3.value}`}
               items={[
-                { label: "Absolute Difference", value: result3.diff || "0" },
-                { label: "Trend Direction", value: result3.type === "increase" ? "Growth (Increase)" : "Decline (Decrease)", highlight: true },
+                { label: "Direction", value: result3.type === "increase" ? "Growth (Increase)" : "Decline (Decrease)" },
+                { label: "Absolute Difference", value: result3.diff },
+                { label: "Formula Applied", value: result3.formula },
               ]}
             />
 
@@ -362,9 +572,9 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-xs text-emerald-950 dark:text-emerald-200 flex items-start gap-2.5">
               <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <strong className="font-bold">Direct Answer:</strong> Changing from {valX3} to {valY3} represents a <strong className="font-bold">{result3.value}</strong>.
+                <strong className="font-bold">Direct Answer:</strong> Changing from {valX3} to {valY3} is a <strong className="font-bold">{result3.value}</strong> {result3.type}.
                 <span className="block text-[11px] text-zinc-600 dark:text-zinc-400 mt-0.5">
-                  Calculation: [({valY3} - {valX3}) ÷ {valX3}] × 100 = {result3.value}.
+                  Formula: {result3.formula}.
                 </span>
               </div>
             </div>
@@ -376,14 +586,14 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <CalcInput
                 id="orig-price"
-                label="Original Price"
+                label="Original List Price"
                 prefix="$"
                 value={originalPrice}
                 onChange={(v) => setOriginalPrice(Number(v) || 0)}
               />
               <CalcInput
                 id="disc-pct"
-                label="Discount Rate"
+                label="Discount Percentage"
                 suffix="%"
                 value={discountPercent}
                 onChange={(v) => setDiscountPercent(Number(v) || 0)}
@@ -391,13 +601,14 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             </div>
 
             <CalcResult
-              title="Discount Breakdown"
+              title="Sale Pricing Output"
               primaryLabel={`Final Sale Price (${discountPercent}% off)`}
               primaryValue={`$${result4.finalPrice}`}
-              copyValue={`$${originalPrice} with ${discountPercent}% discount = $${result4.finalPrice} (Saved: $${result4.savings})`}
+              copyValue={`Original $${originalPrice} with ${discountPercent}% off = $${result4.finalPrice} (Saved $${result4.savings})`}
               items={[
-                { label: "Total Amount Saved", value: `$${result4.savings}`, highlight: true },
-                { label: "Calculation Formula", value: result4.formula },
+                { label: "You Save", value: `$${result4.savings}`, highlight: true },
+                { label: "Original Price", value: `$${originalPrice}` },
+                { label: "Formula", value: result4.formula },
               ]}
             />
 
@@ -405,7 +616,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             <div className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/40 text-xs text-emerald-950 dark:text-emerald-200 flex items-start gap-2.5">
               <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <strong className="font-bold">Direct Answer:</strong> A {discountPercent}% discount on ${originalPrice} saves <strong className="font-bold">${result4.savings}</strong>, leaving a final price of <strong className="font-bold">${result4.finalPrice}</strong>.
+                <strong className="font-bold">Direct Answer:</strong> A {discountPercent}% discount on ${originalPrice} saves <strong className="font-bold">${result4.savings}</strong>, paying <strong className="font-bold">${result4.finalPrice}</strong>.
               </div>
             </div>
           </div>
@@ -416,7 +627,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <CalcInput
                 id="tax-base"
-                label={taxMode === "add" ? "Pre-Tax Amount" : "Gross Amount (With Tax)"}
+                label="Base Price"
                 prefix="$"
                 value={taxBasePrice}
                 onChange={(v) => setTaxBasePrice(Number(v) || 0)}
@@ -429,24 +640,24 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
                 onChange={(v) => setTaxPercent(Number(v) || 0)}
               />
               <CalcSelect
-                id="tax-mode-select"
-                label="Tax Mode"
+                id="tax-mode"
+                label="Calculation Direction"
                 value={taxMode}
                 options={[
-                  { value: "add", label: "Add Tax to Price" },
-                  { value: "extract", label: "Extract Tax from Total" },
+                  { value: "add", label: "Add Tax to Net Price" },
+                  { value: "extract", label: "Extract Tax from Gross" },
                 ]}
                 onChange={(v) => setTaxMode(v as "add" | "extract")}
               />
             </div>
 
             <CalcResult
-              title="Sales Tax / VAT Breakdown"
+              title="Tax Breakdown"
               primaryLabel={taxMode === "add" ? "Total Price (Including Tax)" : "Net Price (Excluding Tax)"}
               primaryValue={`$${taxMode === "add" ? result5.total : result5.preTax}`}
-              copyValue={`${taxMode === "add" ? "Pre-Tax" : "Gross"}: $${taxBasePrice} at ${taxPercent}% tax = Final: $${taxMode === "add" ? result5.total : result5.preTax} (Tax: $${result5.taxAmount})`}
+              copyValue={`Base: $${taxBasePrice} at ${taxPercent}% tax = Total: $${result5.total} (Tax: $${result5.taxAmount})`}
               items={[
-                { label: "Tax Amount Collected", value: `$${result5.taxAmount}`, highlight: true },
+                { label: "Tax Amount", value: `$${result5.taxAmount}`, highlight: true },
                 { label: taxMode === "add" ? "Pre-Tax Base" : "Gross Total", value: `$${taxMode === "add" ? result5.preTax : result5.total}` },
                 { label: "Formula Applied", value: result5.formula },
               ]}
@@ -507,6 +718,15 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             </div>
           </div>
         )}
+
+        {/* Action Buttons Strip */}
+        <div className="flex flex-wrap items-center gap-3 pt-2">
+          <CalcShareButton
+            state={shareState}
+            label="Share Calculation"
+          />
+          <CalcPromptButton promptText={aiPrompt} label="Copy Scenario for ChatGPT / Claude" />
+        </div>
       </CalcCard>
 
       {/* Live Percentage Reference Grid */}
@@ -525,7 +745,7 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
           </div>
           <button
             onClick={handleDownloadCheatSheet}
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50 rounded-lg transition-colors border border-emerald-200 dark:border-emerald-800/60"
+            className="min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50 rounded-xl transition-colors border border-emerald-200 dark:border-emerald-800/60"
           >
             <Download className="h-3.5 w-3.5" />
             Download .xlsx Reference Sheet
@@ -552,6 +772,23 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">{currentSummaryLabel}</span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {currentSummaryValue}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleDownloadCheatSheet}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors"
+        >
+          Export Excel
+        </button>
       </div>
     </div>
   );

@@ -398,15 +398,30 @@
     },
     {
       "slug": "compound-interest-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-15",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "url-query-permalink-sync",
+        "gsc-20yr-direct-answer-box",
+        "inflation-purchasing-power",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "percentage-calculator",
-      "lastAudited": null,
-      "moatsAdded": [],
-      "uxStatus": "pending-audit"
+      "lastAudited": "2026-10-15",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "url-query-permalink-sync",
+        "multi-mode-permalinks",
+        "save-share-prompt-actions",
+        "matrix-xlsx-download",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
     },
     {
       "slug": "strategy-risk-calculator",
