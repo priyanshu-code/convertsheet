@@ -108,22 +108,29 @@
   },
   "macroIntelligenceSynthesis": {
     "india": {
-      "authorities": ["Reserve Bank of India (RBI)", "Ministry of Statistics and Programme Implementation (MoSPI)"],
+      "authorities": [
+        "Reserve Bank of India (RBI)",
+        "Ministry of Statistics and Programme Implementation (MoSPI)"
+      ],
       "metrics": {
         "rbiRepoRate": "5.50%",
         "rbiStandingDepositFacility": "5.25%",
         "rbiMarginalStandingFacility": "5.75%",
         "rbiDailyCrrMinimum": "99% (effective Oct 16, 2026, Circular RBI/2026-27/290)",
-        "crrLiquidityDrain": "~₹1.8 Lakh Crore aggregate interbank treasury float sterilized",
+        "crrLiquidityDrain": "~\u20b91.8 Lakh Crore aggregate interbank treasury float sterilized",
         "mospiCpiHeadline": "5.54% YoY",
         "mospiFoodInflation": "7.74% YoY",
         "sbiEblr": "8.15% to 8.40%"
       }
     },
     "unitedStates": {
-      "authorities": ["Federal Reserve", "Freddie Mac", "Bureau of Labor Statistics (BLS)"],
+      "authorities": [
+        "Federal Reserve",
+        "Freddie Mac",
+        "Bureau of Labor Statistics (BLS)"
+      ],
       "metrics": {
-        "federalFundsTarget": "3.75%–4.00%",
+        "federalFundsTarget": "3.75%\u20134.00%",
         "primeRate": "7.00%",
         "freddieMac30YrFixed": "7.40%",
         "freddieMac15YrFixed": "6.73%",
@@ -181,5 +188,19 @@
       "Build programmatic CRR-to-EBLR loan spread reset calculator allowing Indian borrowers to audit their contracted bank margins",
       "Integrate DuckDB WASM in-browser Parquet visualizer for algorithmic traders exporting 1M+ rows of tick data"
     ]
-  }
+  },
+  "deepCycleCompleted": true,
+  "radarPulses": [
+    {
+      "timestamp": "2026-10-15T19:58:00+05:30",
+      "sourcesScanned": [
+        "Twitter/X & Hacker News",
+        "Reuters, CNBC, Bloomberg, Financial Times",
+        "r/algotrading, r/quant, r/personalfinance",
+        "RBI, Federal Reserve, Freddie Mac"
+      ],
+      "findings": "Monitored breaking news on RBI daily CRR 99% enforcement (effective Oct 16), US 30-year fixed mortgage rates steady at 7.40%, and quant developer discussions on zero-knowledge WebAssembly backtesting tools.",
+      "actionTaken": "Configured dual-cadence 3-hour intelligence radar in sidecar. All calculators, tests, and guides up-to-date."
+    }
+  ]
 }
