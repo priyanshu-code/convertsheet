@@ -86,6 +86,11 @@ For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket 
 - Accompany amortization tables with stacked bar or area charts (Equity Paid vs Remaining Balance vs Total Interest).
 - Restrict initial table view to 60 rows on client devices to prevent DOM rendering lag, with instant full export to Excel.
 
+### H. Prevent Mobile Auto-Zoom & Touch Target Accessibility (iOS & Android)
+- **16px Font Minimum on Inputs:** iOS Safari automatically zooms into the viewport when focusing an `<input>` element with `font-size < 16px`, distorting the mobile layout and hiding navigation controls. Always enforce `text-base` (16px) or larger on interactive text and numeric inputs on mobile viewports (`text-base sm:text-sm`).
+- **44px Hit Targets on Micro-Pills:** Quick preset buttons (e.g. `+$50/mo`, `40h FT`, `30 yrs`) must maintain a minimum touch target bounding box of at least 44px (`min-h-[44px] min-w-[44px] touch-manipulation`) regardless of their visual typography size.
+- **Accessible Slider Knobs:** Slider thumbs must feature high visual contrast (`border-2 border-emerald-500 bg-white shadow-md`) and explicit `aria-label` tags with numeric values to comply with WCAG 2.1 AA screen reader standards.
+
 ---
 
 ## 3. Rotational Improvement Tracking
@@ -94,4 +99,6 @@ Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`:
 - **2026-10-13:** `rate-hike-calculator`, `savings-cd-calculator`, `balance-transfer-calculator`
 - **2026-10-14:** `annual-to-hourly-calculator`, `canada-paycheck-calculator`, `salary-calculator`
 - **2026-10-15:** `income-tax-calculator`, `emi-calculator`, `sip-calculator`
+- **2026-10-16:** `debt-payoff-calculator`, `hourly-to-salary-calculator`, `retirement-calculator`
+
 

@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-15",
-  "totalBlogs": 26,
+  "lastUpdated": "2026-10-16",
+  "totalBlogs": 27,
   "totalTools": 18,
   "blogs": [
     {
@@ -158,6 +158,12 @@
       "title": "RBI's 99% Daily CRR Mandate Takes Effect October 16: The Treasury Squeeze Ending Festive Loan Discounts",
       "category": "Financial Planning",
       "description": "Starting October 16, 2026, RBI Circular RBI/2026-27/290 mandates scheduled banks maintain 99% of required CRR daily, up from 90%. Uncover the ₹1.8 Lakh Crore treasury drain ending 7.20% festive home loan spreads."
+    },
+    {
+      "slug": "federal-reserve-g19-credit-card-debt-avalanche-math-2026",
+      "title": "The 22.15% APR Compounding Trap: How the Fed's G.19 Benchmark Destroys Household Wealth (and the Exact Math to Break Free)",
+      "category": "Financial Engineering",
+      "description": "Federal Reserve G.19 data reveals commercial bank credit card interest rates averaging 22.15%. Discover the exact daily compounding math behind minimum payment traps, compare Avalanche vs. Snowball payoff velocity, and calculate your debt-free date."
     }
   ],
   "tools": [
@@ -430,6 +436,45 @@
         "zero-knowledge-wasm-badge",
         "dual-tab-position-and-backtest",
         "url-query-permalink-sync",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "debt-payoff-calculator",
+      "lastAudited": "2026-10-16",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "hourly-to-salary-calculator",
+      "lastAudited": "2026-10-16",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "retirement-calculator",
+      "lastAudited": "2026-10-16",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
         "save-share-prompt-actions",
         "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar"

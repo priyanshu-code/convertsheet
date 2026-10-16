@@ -457,8 +457,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15 vs 30 Year Mortgage Calculator — Compare Monthly Payments & Interest (2026)",
-    "metaDescription": "Compare 15-year vs 30-year mortgage payments side by side. Calculate exact monthly payment differences, lifetime interest savings ($248k+), and amortization schedules.",
+    "title": "15 vs 30 Year Mortgage Calculator: Monthly Payment & Interest Comparison (2026)",
+    "metaDescription": "Calculate exact monthly payment differences, lifetime interest savings ($248k+), and amortization between a 15-year and 30-year mortgage with live 2026 rates.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {
@@ -471,8 +471,12 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     },
     "faqs": [
       {
-        "question": "What is the difference between a 15-year and a 30-year mortgage payment?",
-        "answer": "For a $320,000 loan balance, the 15-year monthly principal and interest payment is approximately $2,666/month (at 5.8%) compared to $2,023/month for a 30-year mortgage (at 6.5%)—an increase of $643 per month in exchange for saving $248,282 in lifetime interest."
+        "question": "How does a 15-year vs 30-year mortgage calculator work?",
+        "answer": "This calculator compares your monthly principal and interest payments, total loan costs, and cumulative interest paid over 15 years versus 30 years. For a $320,000 loan balance, the 15-year payment is approximately $2,666/month (at 5.8%) versus $2,023/month for a 30-year mortgage (at 6.5%)—an increase of $643 per month in exchange for saving $248,282 in lifetime interest."
+      },
+      {
+        "question": "What is the monthly payment difference between a 15-year and a 30-year mortgage?",
+        "answer": "A 15-year mortgage payment is typically 25% to 35% higher each month than a 30-year mortgage for the same loan balance. However, because principal is retired twice as fast and carries a lower interest rate, you eliminate over 60% of total lifetime interest charges."
       },
       {
         "question": "How much interest do you save choosing a 15-year mortgage over a 30-year mortgage?",

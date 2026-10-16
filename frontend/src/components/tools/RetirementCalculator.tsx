@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { PiggyBank, Table as TableIcon, Sparkles, SlidersHorizontal } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { PiggyBank, Table as TableIcon, Sparkles, SlidersHorizontal, ShieldCheck } from "lucide-react";
+import * as XLSX from "xlsx";
 import {
   CalcCard,
   CalcResult,
@@ -235,6 +236,71 @@ export function RetirementCalculator({ initialValues }: RetirementCalculatorProp
       }));
   }, [retirement.yearlyProjection, retirementAge, currentAge]);
 
+  // Dynamic State Serialization (URL Permalink Engine)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (currentAge > 0) params.set("currentAge", currentAge.toString());
+    if (retirementAge > 0) params.set("retirementAge", retirementAge.toString());
+    if (currentSavings >= 0) params.set("currentSavings", currentSavings.toString());
+    if (monthlyContribution >= 0) params.set("monthlyContribution", monthlyContribution.toString());
+    if (annualReturn > 0) params.set("annualReturn", annualReturn.toString());
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [currentAge, retirementAge, currentSavings, monthlyContribution, annualReturn]);
+
+  // Branded SheetJS Excel Export with live recalculation retention hook
+  const handleExportExcel = () => {
+    try {
+      const summaryRows: (string | number)[][] = [
+        ["ConvertSheet - Retirement Portfolio Nest Egg & Longevity Model", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/retirement-calculator"],
+        ["", ""],
+        ["--- RETIREMENT PLANNING PARAMETERS ---", ""],
+        ["Current Age", currentAge],
+        ["Target Retirement Age", retirementAge],
+        ["Years to Retirement", workingYears],
+        [`Current Retirement Savings (${currencySymbol})`, currentSavings],
+        [`Monthly Contribution (${currencySymbol})`, monthlyContribution],
+        ["Employer Match (%)", employerMatchPercent],
+        ["Pre-Retirement Annual Return (%)", annualReturn],
+        ["Post-Retirement Annual Return (%)", postRetirementReturn],
+        ["Expected Inflation Rate (%)", inflationRate],
+        [`Desired Annual Spend in Retirement (${currencySymbol})`, postRetirementAnnualSpend],
+        ["", ""],
+        ["--- NEST EGG & WITHDRAWAL OUTCOMES ---", ""],
+        [`Nominal Nest Egg at Retirement (${currencySymbol})`, retirement.nestEggAtRetirement],
+        [`Inflation-Adjusted Nest Egg (${currencySymbol})`, retirement.inflationAdjustedNestEgg],
+        [`Total Personal Contributions (${currencySymbol})`, personalPrincipal],
+        [`Employer Match Contributions (${currencySymbol})`, employerMatchAmount],
+        [`Total Compound Growth Earned (${currencySymbol})`, retirement.totalInterestEarned],
+        [`Sustainable 4% Rule Monthly Income (${currencySymbol})`, retirement.monthlyRetirementIncome],
+        ["Portfolio Longevity (Years in Retirement)", retirement.yearsNestEggLasts],
+        ["", ""],
+        ["--- YEAR-BY-YEAR ACCUMULATION & DRAWDOWN SCHEDULE ---", "", "", ""],
+        ["Age", "Phase", `Total Invested (${currencySymbol})`, `Portfolio Balance (${currencySymbol})`],
+        ...retirement.yearlyProjection.map((r) => [
+          `Age ${r.age}`,
+          r.phase === "accumulation" ? "Accumulation" : "Drawdown",
+          r.totalContributed,
+          r.balance,
+        ]),
+      ];
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "RetirementPlan");
+      XLSX.writeFile(
+        wb,
+        `ConvertSheet_Retirement_Plan_Age${currentAge}_to_${retirementAge}.xlsx`
+      );
+    } catch (err) {
+      console.error("Retirement Excel export failed:", err);
+    }
+  };
+
   // Exportable schedule for SheetJS
   const exportData = useMemo(() => {
     return retirement.yearlyProjection.map((row) => ({
@@ -279,7 +345,13 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
   ]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-28 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Reassurance Badge */}
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs font-medium text-emerald-800 dark:text-emerald-300 w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>Zero-Knowledge Client-Side Engine • No net worth or retirement data sent to servers • 100% Private</span>
+      </div>
+
       {/* Mode Switcher Banner */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/60 backdrop-blur-sm">
         <div className="flex items-center gap-2 px-2 text-xs font-semibold text-zinc-600 dark:text-zinc-400">
@@ -291,7 +363,7 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
           <button
             type="button"
             onClick={() => setMode("playground")}
-            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all ${
+            className={`flex-1 sm:flex-initial min-h-[44px] inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all touch-manipulation cursor-pointer ${
               mode === "playground"
                 ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm"
                 : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
@@ -304,7 +376,7 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
           <button
             type="button"
             onClick={() => setMode("wizard")}
-            className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all ${
+            className={`flex-1 sm:flex-initial min-h-[44px] inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all touch-manipulation cursor-pointer ${
               mode === "wizard"
                 ? "bg-emerald-600 text-white shadow-sm"
                 : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
@@ -531,11 +603,13 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
             {/* Action Buttons: SheetJS Export & AI Prompt */}
             <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
               <div className="flex flex-wrap items-center gap-2">
-                <CalcExportButton
-                  data={exportData}
-                  filename={`retirement-plan-age-${retirementAge}`}
-                  sheetName="Retirement Projection"
-                />
+                <button
+                  type="button"
+                  onClick={handleExportExcel}
+                  className="min-h-[44px] px-4 py-2 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors flex items-center gap-1.5 touch-manipulation cursor-pointer"
+                >
+                  <span>Export to Excel (.xlsx)</span>
+                </button>
 
                 <CalcPdfReportButton
                   filename={`retirement_dossier_age_${retirementAge}.pdf`}
@@ -659,6 +733,26 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
       )}
 
       <RetirementAccountsCard monthlySavings={monthlyContribution} />
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Nest Egg at Age {retirementAge}</span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {formatCurrency(retirement.nestEggAtRetirement)}
+          </span>
+          <span className="text-[11px] text-zinc-500 block">
+            Safe Income: {formatCurrency(retirement.monthlyRetirementIncome)}/mo
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors touch-manipulation cursor-pointer"
+        >
+          Export Excel
+        </button>
+      </div>
     </div>
   );
 }

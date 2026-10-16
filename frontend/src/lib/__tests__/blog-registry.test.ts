@@ -192,14 +192,24 @@ describe("Blog Registry & Content Layer", () => {
 
     // Cluster: contractor-tax-finance
     const contractorPosts = getBlogPostsByCluster("contractor-tax-finance");
-    expect(contractorPosts.length).toBe(3);
+    expect(contractorPosts.length).toBe(4);
     const contractorPillar = getPillarPost("contractor-tax-finance");
     expect(contractorPillar?.slug).toBe("1099-vs-w2-true-hourly-rate-calculation");
     const contractorBranches = getBranchPosts("1099-vs-w2-true-hourly-rate-calculation");
-    expect(contractorBranches.length).toBe(2);
+    expect(contractorBranches.length).toBe(3);
     const contractorBranchSlugs = contractorBranches.map((b: { slug: string }) => b.slug);
     expect(contractorBranchSlugs).toContain("h1b-visa-closed-rumors-vs-perm-pause-explained");
     expect(contractorBranchSlugs).toContain("uk-contractor-inside-vs-outside-ir35-calculator-guide");
+    expect(contractorBranchSlugs).toContain("federal-reserve-g19-credit-card-debt-avalanche-math-2026");
+
+    // Verify schema and content for the Fed G.19 credit card debt guide
+    const fedDebtArticle = getBlogPostBySlug("federal-reserve-g19-credit-card-debt-avalanche-math-2026");
+    expect(fedDebtArticle).toBeDefined();
+    expect(fedDebtArticle?.attachedToolSlug).toBe("debt-payoff-calculator");
+    expect(fedDebtArticle?.content).toContain("22.15%");
+    expect(fedDebtArticle?.content).toContain("Statistical Release G.19");
+    expect(fedDebtArticle?.tableOfContents).toHaveLength(5);
+    expect(fedDebtArticle?.faqs).toHaveLength(4);
   });
 
   it("retrieves the H-1B rumors vs PERM pause factual guide", () => {

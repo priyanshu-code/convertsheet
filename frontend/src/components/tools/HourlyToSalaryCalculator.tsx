@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { DollarSign, Clock, Calendar, Briefcase, Table as TableIcon, Wallet } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { DollarSign, Clock, Calendar, Briefcase, Table as TableIcon, Wallet, ShieldCheck } from "lucide-react";
+import * as XLSX from "xlsx";
 import {
   CalcCard,
   CalcInput,
   CalcResult,
   CalcExportButton,
   CalcPromptButton,
+  CalcSaveButton,
   CalcShareButton,
   ModernSlider,
 } from "@/components/calculator";
@@ -100,6 +102,65 @@ export function HourlyToSalaryCalculator({
     });
   }, [result.annualSalary]);
 
+  // Dynamic State Serialization (URL Permalink Engine)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (hourlyRate > 0) params.set("hourlyRate", hourlyRate.toString());
+    if (hoursPerWeek > 0) params.set("hoursPerWeek", hoursPerWeek.toString());
+    if (weeksPerYear > 0) params.set("weeksPerYear", weeksPerYear.toString());
+    if (overtimeHours > 0) params.set("overtimeHours", overtimeHours.toString());
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [hourlyRate, hoursPerWeek, weeksPerYear, overtimeHours]);
+
+  // Branded SheetJS Excel Export with live recalculation retention hook
+  const handleExportExcel = () => {
+    try {
+      const summaryRows: (string | number)[][] = [
+        ["ConvertSheet - Hourly Wage to Salary Payroll Conversion", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/hourly-to-salary-calculator"],
+        ["", ""],
+        ["--- HOURLY & WORK SCHEDULE PARAMETERS ---", ""],
+        ["Base Hourly Rate ($/hr)", hourlyRate],
+        ["Regular Hours Per Week", hoursPerWeek],
+        ["Weeks Worked Per Year", weeksPerYear],
+        ["Unpaid Leave Days Per Year", unpaidLeaveDays],
+        ["Overtime Hours Per Week", overtimeHours],
+        ["Overtime Pay Multiplier", `${overtimeMultiplier}x`],
+        ["Total Work Hours Yearly", result.totalWorkHoursYearly],
+        ["", ""],
+        ["--- GROSS EARNINGS CONVERSION BY PAYROLL INTERVAL ---", "", ""],
+        ["Interval", "Gross Earnings ($)", "Payroll Frequency"],
+        ["Hourly Rate", result.hourlyRate, "Per billable hour"],
+        ["Daily Pay (8h)", result.dailyPay, "Standard workday"],
+        ["Weekly Pay (52x)", result.weeklyPay, "Every week"],
+        ["Bi-Weekly Pay (26x)", result.biWeeklyPay, "Every two weeks"],
+        ["Semi-Monthly Pay (24x)", result.semiMonthlyPay, "Twice a month"],
+        ["Monthly Pay (12x)", result.monthlyPay, "Per calendar month"],
+        ["Annual Gross Salary", result.annualSalary, "Full year gross"],
+        ["", ""],
+        ["--- ESTIMATED NET TAKE-HOME PAY (US FED + FICA) ---", "", ""],
+        ["Net Annual Take-Home ($)", Math.round(netPayEst.netAnnualTakeHome), "Estimated take-home in pocket"],
+        ["Net Monthly Take-Home ($)", Math.round(netPayEst.netMonthlyTakeHome), "Monthly cash flow"],
+        ["Net Bi-Weekly Take-Home ($)", Math.round(netPayEst.netBiWeeklyTakeHome), "Typical paycheck amount"],
+        ["Effective Tax Rate", `${netPayEst.effectiveTaxRate}%`, "Federal Tax + FICA (Single Filer)"],
+      ];
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "PayrollConversion");
+      XLSX.writeFile(
+        wb,
+        `ConvertSheet_Hourly_Salary_${hourlyRate}_per_hr_${hoursPerWeek}hrs.xlsx`
+      );
+    } catch (err) {
+      console.error("Hourly to salary Excel export failed:", err);
+    }
+  };
+
   // SheetJS formatted export rows
   const exportData = useMemo(() => {
     return [
@@ -136,7 +197,13 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
   }, [hourlyRate, hoursPerWeek, weeksPerYear, overtimeHours, overtimeMultiplier, result, netPayEst]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-28 sm:pb-0">
+      {/* Zero-Knowledge Client-Side Reassurance Badge */}
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs font-medium text-emerald-800 dark:text-emerald-300 w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>Zero-Knowledge Client-Side Engine • No salary data sent to servers • 100% Private &amp; Free</span>
+      </div>
+
       {/* 2-Column Responsive Layout */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         {/* Left Column: Interactive Inputs */}
@@ -159,16 +226,16 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                   step={0.5}
                   helpText="Standard base rate per hour before taxes"
                 />
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
                   {[15, 20, 25, 35, 50, 75, 100].map((rate) => (
                     <button
                       key={rate}
                       type="button"
                       onClick={() => setHourlyRate(rate)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                      className={`min-h-[44px] px-3.5 py-2 text-xs font-semibold rounded-xl border transition-colors touch-manipulation cursor-pointer ${
                         hourlyRate === rate
-                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold shadow-xs"
                           : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                       }`}
                     >
@@ -213,7 +280,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                 />
 
                 {/* Workweek Quick Presets (35h vs 40h) */}
-                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                <div className="flex flex-wrap items-center gap-2 pt-1">
                   {[
                     { hours: 40, label: "40h (Standard FT)" },
                     { hours: 35, label: "35h (35h Workweek)" },
@@ -224,7 +291,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                       key={preset.hours}
                       type="button"
                       onClick={() => setHoursPerWeek(preset.hours)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all cursor-pointer touch-manipulation flex items-center justify-center ${
                         hoursPerWeek === preset.hours
                           ? "bg-emerald-600 text-white shadow-xs"
                           : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700"
@@ -428,21 +495,35 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
               )}
 
               {/* Action Buttons: Export & AI Prompt & Quick Copy */}
-              <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+              <div className="flex flex-wrap items-center gap-2.5 pt-4 border-t border-zinc-100 dark:border-zinc-800">
                 <button
                   type="button"
                   onClick={() => {
                     const str = `$${hourlyRate}/hr = $${Math.round(result.annualSalary).toLocaleString()}/yr ($${Math.round(result.monthlyPay).toLocaleString()}/mo gross, ~$${Math.round(netPayEst.netMonthlyTakeHome).toLocaleString()}/mo take-home)`;
                     navigator.clipboard.writeText(str);
                   }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors"
+                  className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors touch-manipulation cursor-pointer"
                 >
                   <span>📋 Copy Summary</span>
                 </button>
-                <CalcExportButton
-                  data={exportData}
-                  filename={`hourly_salary_${hourlyRate}_per_hr.xlsx`}
-                  sheetName="Salary Breakdown"
+                <button
+                  type="button"
+                  onClick={handleExportExcel}
+                  className="min-h-[44px] px-4 py-2 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors flex items-center gap-1.5 touch-manipulation cursor-pointer"
+                >
+                  <span>Export to Excel (.xlsx)</span>
+                </button>
+                <CalcSaveButton
+                  toolSlug="hourly-to-salary-calculator"
+                  path="/tools/hourly-to-salary-calculator"
+                  toolName="Hourly to Salary Converter"
+                  summaryTitle={`$${hourlyRate}/hr -> $${Math.round(result.annualSalary).toLocaleString()}/yr`}
+                  summaryMetrics={[
+                    { label: "Annual Salary", value: `$${Math.round(result.annualSalary).toLocaleString()}` },
+                    { label: "Monthly Gross", value: `$${Math.round(result.monthlyPay).toLocaleString()}` },
+                    { label: "Bi-Weekly", value: `$${Math.round(result.biWeeklyPay).toLocaleString()}` },
+                    { label: "Net Take-Home", value: `~$${Math.round(netPayEst.netMonthlyTakeHome).toLocaleString()}/mo` },
+                  ]}
                 />
                 <CalcShareButton
                   state={{
@@ -460,6 +541,26 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
             </div>
           </CalcCard>
         </div>
+      </div>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Annual Salary ($)</span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            ${Math.round(result.annualSalary).toLocaleString()}/yr
+          </span>
+          <span className="text-[11px] text-zinc-500 block">
+            Take-Home: ~${Math.round(netPayEst.netMonthlyTakeHome).toLocaleString()}/mo
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors touch-manipulation cursor-pointer"
+        >
+          Export Excel
+        </button>
       </div>
     </div>
   );
