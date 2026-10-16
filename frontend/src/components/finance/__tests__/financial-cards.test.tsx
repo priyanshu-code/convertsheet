@@ -144,8 +144,8 @@ describe("Pillar 4: Financial Lead-Gen & Contextual Comparison Cards", () => {
       expect(screen.getAllByText(/Certificate of Deposit \(CD\)/i).length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText(/Traditional Brick & Mortar/i)).toBeInTheDocument();
 
-      // Interest calculations check
-      expect(screen.getByText(/\$1,150\/yr/i)).toBeInTheDocument();
+      // Interest calculations check (4.20% APY on $25,000 = $1,050/yr)
+      expect(screen.getByText(/\$1,050\/yr/i)).toBeInTheDocument();
       expect(screen.getByText(/Advertising & Affiliate Disclosure/i)).toBeInTheDocument();
     });
   });

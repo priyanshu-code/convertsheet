@@ -97,10 +97,11 @@ For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket 
   ```tsx
   <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
     <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
-    <span className="font-medium">Updated for October 2026 Freddie Mac PMMS: 30-Year Fixed at 7.40%, 15-Year Fixed at 6.71%</span>
+    <span className="font-medium">Updated for October 2026: Top Online HYSAs 4.15%–4.25% APY • 1-Year CDs 4.25%–4.35% APY (Fed Funds Target 3.75%–4.00%)</span>
   </div>
   ```
-- Couple the freshness signal with 44px 1-click rate preset buttons (e.g., `[7.40% (30Y Fixed)]`, `[6.71% (15Y Fixed)]`) so users do not have to manually research or key in current institutional benchmarks.
+- Couple the freshness signal with 44px 1-click rate preset buttons (e.g., `[4.15% (Top HYSA)]`, `[4.25% (1-Yr CD)]`, `[3.75% (T-Bill)]`, `[4.50% (Promo APY)]`) so users do not have to manually research or key in current institutional benchmarks.
+- For floating debt and mortgage tools, cite the exact regulatory mandate (e.g., October 16, 2026 RBI 99% daily minimum CRR maintenance setting the prime bank home loan floor at 8.15%–8.40%, and Fed FOMC target range at 3.75%–4.00%).
 
 ---
 
@@ -112,5 +113,7 @@ Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`:
 - **2026-10-15:** `income-tax-calculator`, `emi-calculator`, `sip-calculator`
 - **2026-10-16:** `debt-payoff-calculator`, `hourly-to-salary-calculator`, `retirement-calculator`
 - **2026-10-16 (18:15 IST Radar Pulse):** `mortgage-calculator` & `car-loan-calculator` (Freddie Mac PMMS 7.40%/6.71% & Experian 2026 6.35%/11.19% rate freshness signals, 44px 1-click rate presets, safe area inset padding on sticky mobile summary bars)
+- **2026-10-16 (21:15 IST Radar Pulse):** `savings-cd-calculator`, `rate-hike-calculator`, & `balance-transfer-calculator` (Fed 3.75%–4.00% & RBI 99% CRR rate freshness signals, 44px 1-click rate/deposit/MODT presets, regional savings rate card updates, and safe area inset padding on sticky mobile summary bars)
+
 
 

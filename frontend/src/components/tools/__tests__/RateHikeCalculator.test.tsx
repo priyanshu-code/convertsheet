@@ -90,5 +90,28 @@ describe("RateHikeCalculator", () => {
 
     // Mobile sticky bar
     expect(screen.getAllByText("Monthly EMI Hike").length).toBeGreaterThanOrEqual(1);
+
+    // Market rate freshness signal badge
+    expect(screen.getByText(/Updated for October 2026 Central Bank Policy Rates/i)).toBeInTheDocument();
+  });
+
+  it("applies negative rate cut preset dynamically", () => {
+    render(
+      <CurrencyProvider>
+        <RateHikeCalculator
+          initialValues={{
+            loanAmount: 5000000,
+            oldRate: 8.50,
+            newRate: 8.50,
+            tenureYears: 20,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    const cutBtn = screen.getByRole("button", { name: "-50 bps (-0.50%)" });
+    fireEvent.click(cutBtn);
+
+    expect(screen.getByText(/Current Delta: -50 bps \(-0.5%\)/i)).toBeInTheDocument();
   });
 });

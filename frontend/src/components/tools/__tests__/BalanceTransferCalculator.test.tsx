@@ -93,5 +93,8 @@ describe("BalanceTransferCalculator", () => {
 
     // Mobile sticky bar
     expect(screen.getAllByText("Net Lifetime Savings").length).toBeGreaterThanOrEqual(2);
+
+    // Market rate freshness signal badge
+    expect(screen.getByText(/Updated for October 16, 2026 RBI Policy: 99% Daily CRR Mandate/i)).toBeInTheDocument();
   });
 });

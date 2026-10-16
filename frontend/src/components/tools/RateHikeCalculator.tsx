@@ -221,11 +221,19 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
   };
 
   return (
-    <div className="space-y-6 pb-24 sm:pb-0">
+    <div className="space-y-6 pb-32 sm:pb-0">
       {/* Zero-Knowledge Client-Side Privacy Badge */}
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
         <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          Updated for October 2026 Central Bank Policy Rates: Fed Funds 3.75%–4.00%, BoE 3.75%, ECB 2.50%, RBI Repo 5.50% (99% CRR Mandate)
+        </span>
       </div>
 
       <CalcCard
@@ -238,14 +246,16 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
         <div className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 p-3.5 border border-zinc-200/80 dark:border-zinc-700/80 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-              Quick Rate Hike Presets:
+              Quick Rate Hike &amp; Cut Presets:
             </span>
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-              Current Delta: +{impact.rateDeltaBps} bps (+{impact.rateDelta}%)
+              Current Delta: {impact.rateDeltaBps >= 0 ? `+${impact.rateDeltaBps}` : impact.rateDeltaBps} bps ({impact.rateDelta >= 0 ? `+${impact.rateDelta}` : impact.rateDelta}%)
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {[
+              { label: "-50 bps (-0.50%)", bps: -50 },
+              { label: "-25 bps (-0.25%)", bps: -25 },
               { label: "+25 bps (+0.25%)", bps: 25 },
               { label: "+50 bps (+0.50%)", bps: 50 },
               { label: "+75 bps (+0.75%)", bps: 75 },
@@ -257,7 +267,7 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
                   key={preset.bps}
                   type="button"
                   onClick={() => handleApplyDelta(preset.bps)}
-                  className={`min-h-[44px] px-3.5 py-2 text-xs font-semibold rounded-lg border transition-all ${
+                  className={`min-h-[44px] px-3.5 py-2 text-xs font-semibold rounded-lg border transition-all touch-manipulation ${
                     isSelected
                       ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-900 dark:border-white shadow-xs"
                       : "bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300"
@@ -292,7 +302,7 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
               prefix={currencySymbol}
               onChange={setLoanAmount}
             />
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1.5">
               {(currencySymbol === "₹"
                 ? [
                     { l: "₹30L", v: 3000000 },
@@ -311,10 +321,10 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
                   key={btn.l}
                   type="button"
                   onClick={() => setLoanAmount(btn.v)}
-                  className={`text-[11px] px-2 py-0.5 rounded border min-h-[32px] sm:min-h-0 ${
+                  className={`min-h-[44px] px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all touch-manipulation ${
                     loanAmount === btn.v
-                      ? "bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-700 font-bold"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700"
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-700 font-bold shadow-xs"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                   }`}
                 >
                   {btn.l}
@@ -730,7 +740,7 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
       </section>
 
       {/* Sticky Bottom Mobile Summary Bar (<640px) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shadow-lg flex items-center justify-between">
         <div>
           <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
             Monthly EMI Hike

@@ -24,7 +24,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Top-Tier Online Bank (US)",
       accountType: "High-Yield Savings (HYSA)",
-      apy: 4.60,
+      apy: 4.20,
       highlight: true,
       termNote: "Liquid / No lockup",
       features: "FDIC Protected • Daily Compounding • No Fees",
@@ -32,14 +32,14 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Direct Bank 12-Month CD",
       accountType: "Certificate of Deposit (CD)",
-      apy: 4.85,
+      apy: 4.25,
       termNote: "1-Year Guaranteed Term",
       features: "Fixed APY • Principal Protected • Insured",
     },
     {
       institutionType: "High-Yield Cash Account",
       accountType: "Cash Sweep Portfolio",
-      apy: 4.45,
+      apy: 4.10,
       termNote: "Same-Day Transfers",
       features: "Up to $2M Multi-Bank Sweep Insurance",
     },
@@ -55,7 +55,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Top Canadian Digital Bank",
       accountType: "High-Interest Savings Account (HISA)",
-      apy: 3.85,
+      apy: 3.50,
       highlight: true,
       termNote: "Liquid / No lockup",
       features: "CDIC Protected • Daily Interest • Zero Minimums",
@@ -63,14 +63,14 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "1-Year Guaranteed Investment Cert",
       accountType: "12-Month Non-Redeemable GIC",
-      apy: 4.25,
+      apy: 3.75,
       termNote: "Fixed 1-Year Lockup",
       features: "100% Principal Guaranteed • CDIC Insured",
     },
     {
       institutionType: "Tax-Free High Yield (TFSA)",
       accountType: "TFSA High-Interest Cash",
-      apy: 3.75,
+      apy: 3.40,
       termNote: "Tax-Free Growth",
       features: "No tax on interest earnings • Canada CRA eligible",
     },
@@ -86,7 +86,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Leading UK Challenger Bank",
       accountType: "Easy Access Savings",
-      apy: 4.75,
+      apy: 4.15,
       highlight: true,
       termNote: "Instant Access",
       features: "FSCS Protected (£85k) • Unlimited Withdrawals",
@@ -94,21 +94,21 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "UK 1-Year Fixed Bond",
       accountType: "12-Month Fixed Rate Bond",
-      apy: 4.95,
+      apy: 4.30,
       termNote: "Fixed Term",
       features: "Guaranteed Return • FSCS Protected",
     },
     {
       institutionType: "Cash ISA Allowance Provider",
       accountType: "Tax-Free Cash ISA",
-      apy: 4.60,
+      apy: 4.10,
       termNote: "£20k Annual Allowance",
       features: "100% Tax-Free Interest from HMRC",
     },
     {
       institutionType: "High Street UK Bank",
       accountType: "Standard Instant Access",
-      apy: 1.25,
+      apy: 1.15,
       termNote: "Branch Baseline",
       features: "Lags Bank of England base rates",
     },
@@ -117,7 +117,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "European Digital Bank",
       accountType: "Instant Access Cash Account",
-      apy: 3.40,
+      apy: 2.45,
       highlight: true,
       termNote: "Daily Liquidity",
       features: "EU Deposit Guarantee Scheme (€100k) • Free Transfers",
@@ -125,7 +125,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Pan-European Term Deposit",
       accountType: "12-Month Fixed Deposit",
-      apy: 3.65,
+      apy: 2.65,
       termNote: "1-Year Maturity",
       features: "Fixed Yield • Principal Insured across EU",
     },
@@ -141,7 +141,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Leading Australian Digital Bank",
       accountType: "High-Interest Bonus Savings",
-      apy: 4.80,
+      apy: 4.50,
       highlight: true,
       termNote: "Monthly Bonus Rate",
       features: "Govt FCS Guaranteed ($250k AUD) • Zero Monthly Fees",
@@ -149,7 +149,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Australian 12-Month Term Deposit",
       accountType: "1-Year Fixed Term Deposit",
-      apy: 4.65,
+      apy: 4.35,
       termNote: "Fixed 12 Months",
       features: "Guaranteed RBA Yield • APRA Regulated",
     },
@@ -165,7 +165,7 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Top-Tier Private Bank (India)",
       accountType: "1-Year Fixed Deposit (FD)",
-      apy: 7.25,
+      apy: 6.85,
       highlight: true,
       termNote: "1-Year Guaranteed Term",
       features: "DICGC Insured (₹5 Lakh) • Senior Citizen +0.5% • Quarterly Compounding",
@@ -173,14 +173,14 @@ const REGIONAL_SAVINGS: Record<TargetMarket, SavingsRateRow[]> = {
     {
       institutionType: "Public Sector Bank (SBI / PNB)",
       accountType: "Fixed Deposit / Recurring Deposit",
-      apy: 6.80,
+      apy: 6.60,
       termNote: "1-Year Fixed",
       features: "Govt Backed • Sovereign Security • Loan Facility Available",
     },
     {
       institutionType: "High-Yield Savings Account",
       accountType: "Digital Savings Account",
-      apy: 7.00,
+      apy: 6.75,
       termNote: "Liquid / Daily Interest",
       features: "Zero Balance • Instant UPI • Daily Compounding on Balance",
     },

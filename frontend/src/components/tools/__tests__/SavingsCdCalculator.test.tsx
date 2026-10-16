@@ -41,6 +41,32 @@ describe("SavingsCdCalculator", () => {
     // Mobile sticky bar
     expect(screen.getAllByText("Final Balance").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByRole("button", { name: "Export Excel" })).toBeInTheDocument();
+
+    // Market rate freshness signal badge
+    expect(screen.getByText(/Updated for October 2026: Top Online HYSAs 4.15%–4.25% APY/i)).toBeInTheDocument();
+
+    // 1-Click institutional rate presets
+    expect(screen.getByRole("button", { name: "4.15% (Top HYSA)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "4.25% (1-Yr CD)" })).toBeInTheDocument();
+  });
+
+  it("updates rate when 1-click institutional preset button is clicked", () => {
+    render(
+      <CurrencyProvider>
+        <SavingsCdCalculator
+          initialValues={{
+            initialDeposit: 10000,
+            annualInterestRate: 4.5,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    const hysaPreset = screen.getByRole("button", { name: "4.15% (Top HYSA)" });
+    fireEvent.click(hysaPreset);
+
+    const rateInput = screen.getByLabelText(/Annual Interest Rate/i) as HTMLInputElement;
+    expect(rateInput.value).toBe("4.15");
   });
 
   it("switches to CD mode and reveals early withdrawal penalty rules", () => {

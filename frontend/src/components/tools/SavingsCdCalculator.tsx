@@ -174,11 +174,19 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
   }, [mode, initialDeposit, monthlyContribution, annualInterestRate, compoundingFrequency, termMonths, result]);
 
   return (
-    <div className="space-y-8 pb-24 sm:pb-0">
+    <div className="space-y-8 pb-32 sm:pb-0">
       {/* Zero-Knowledge Client-Side Privacy Badge */}
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
         <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          Updated for October 2026: Top Online HYSAs 4.15%–4.25% APY • 1-Year CDs 4.25%–4.35% APY (Fed Funds Target 3.75%–4.00%)
+        </span>
       </div>
 
       {/* Account Type Toggle */}
@@ -253,9 +261,9 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                       key={p.label}
                       type="button"
                       onClick={() => setInitialDeposit(p.val)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                      className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-all touch-manipulation ${
                         initialDeposit === p.val
-                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-bold shadow-xs"
                           : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                       }`}
                     >
@@ -295,9 +303,9 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                         key={amt}
                         type="button"
                         onClick={() => setMonthlyContribution(amt)}
-                        className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
+                        className={`min-h-[44px] min-w-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-all touch-manipulation ${
                           monthlyContribution === amt
-                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                            ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-bold shadow-xs"
                             : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                         }`}
                       >
@@ -331,19 +339,24 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                   step={0.05}
                 />
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Rates:</span>
-                  {[4.0, 4.25, 4.5, 4.75, 5.0, 5.25].map((r) => (
+                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Institutional Benchmarks:</span>
+                  {[
+                    { label: "4.15% (Top HYSA)", r: 4.15 },
+                    { label: "4.25% (1-Yr CD)", r: 4.25 },
+                    { label: "3.75% (T-Bill)", r: 3.75 },
+                    { label: "4.50% (Promo APY)", r: 4.50 },
+                  ].map((p) => (
                     <button
-                      key={r}
+                      key={p.label}
                       type="button"
-                      onClick={() => setAnnualInterestRate(r)}
-                      className={`px-2 py-0.5 text-[11px] font-medium rounded border transition-colors ${
-                        annualInterestRate === r
-                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                      onClick={() => setAnnualInterestRate(p.r)}
+                      className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-all touch-manipulation ${
+                        annualInterestRate === p.r
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-bold shadow-xs"
                           : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
                       }`}
                     >
-                      {r}%
+                      {p.label}
                     </button>
                   ))}
                 </div>
@@ -535,7 +548,7 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
       </div>
 
       {/* Sticky Bottom Mobile Summary Bar (<640px) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shadow-lg flex items-center justify-between">
         <div>
           <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
             {mode === "hysa" ? "Final Balance" : "CD Maturity Balance"}
