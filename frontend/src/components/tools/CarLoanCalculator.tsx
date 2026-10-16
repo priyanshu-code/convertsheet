@@ -175,7 +175,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
   ]);
 
   return (
-    <div className="space-y-8 pb-16 sm:pb-0">
+    <div className="space-y-8 pb-24 sm:pb-0">
       <CalcCard
         title="Auto Loan & Car Payment Calculator"
       subtitle="Calculate your monthly car payment, total interest, sales taxes, and net financed amount with visual payoff curves."
@@ -189,6 +189,12 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
           <div className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/60 text-xs text-emerald-800 dark:text-emerald-300">
             <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span className="font-medium">100% Client-Side In-Browser Computation • Zero auto loan or credit data leaves your device</span>
+          </div>
+
+          {/* Market Rate Freshness Signal */}
+          <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+            <span className="font-medium">Updated: Experian 2026 Benchmark (6.35% New Car Avg • 11.19% Used Car Avg)</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -242,7 +248,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
                     key={amt}
                     type="button"
                     onClick={() => setDownPayment(amt)}
-                    className={`min-h-[36px] px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+                    className={`min-h-[44px] px-3 py-2 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
                       downPayment === amt
                         ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                         : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -288,6 +294,27 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
                 unit="%"
                 onChange={(val) => setInterestRate(val)}
               />
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                {[
+                  { label: "6.35% (New Avg)", rate: 6.35 },
+                  { label: "11.19% (Used Avg)", rate: 11.19 },
+                  { label: "6.15% (Prime)", rate: 6.15 },
+                  { label: "4.41% (Super Prime)", rate: 4.41 },
+                ].map((preset) => (
+                  <button
+                    key={preset.rate}
+                    type="button"
+                    onClick={() => setInterestRate(preset.rate)}
+                    className={`min-h-[44px] px-2.5 py-2 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+                      interestRate === preset.rate
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-1">
@@ -310,7 +337,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
                     key={m}
                     type="button"
                     onClick={() => setLoanTermMonths(m)}
-                    className={`min-h-[36px] px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+                    className={`min-h-[44px] px-3 py-2 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
                       loanTermMonths === m
                         ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                         : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
@@ -487,7 +514,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
     <AutoLoanRatesCard financedAmount={carLoan.netLoanAmount} loanTermMonths={loanTermMonths} />
 
     {/* Sticky Bottom Mobile Summary Bar (<640px) */}
-    <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 shadow-lg flex items-center justify-between">
+    <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
       <div>
         <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Monthly Payment</span>
         <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">

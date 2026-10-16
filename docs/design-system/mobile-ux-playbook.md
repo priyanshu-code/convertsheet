@@ -91,6 +91,17 @@ For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket 
 - **44px Hit Targets on Micro-Pills:** Quick preset buttons (e.g. `+$50/mo`, `40h FT`, `30 yrs`) must maintain a minimum touch target bounding box of at least 44px (`min-h-[44px] min-w-[44px] touch-manipulation`) regardless of their visual typography size.
 - **Accessible Slider Knobs:** Slider thumbs must feature high visual contrast (`border-2 border-emerald-500 bg-white shadow-md`) and explicit `aria-label` tags with numeric values to comply with WCAG 2.1 AA screen reader standards.
 
+### I. Market Rate Freshness Signals & 1-Click Institutional Presets
+- Mobile users frequently abandon financial calculators if they suspect interest rates or benchmarks are outdated.
+- Prominently display a high-trust, pulsed freshness badge above primary inputs:
+  ```tsx
+  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+    <span className="font-medium">Updated for October 2026 Freddie Mac PMMS: 30-Year Fixed at 7.40%, 15-Year Fixed at 6.71%</span>
+  </div>
+  ```
+- Couple the freshness signal with 44px 1-click rate preset buttons (e.g., `[7.40% (30Y Fixed)]`, `[6.71% (15Y Fixed)]`) so users do not have to manually research or key in current institutional benchmarks.
+
 ---
 
 ## 3. Rotational Improvement Tracking
@@ -100,5 +111,6 @@ Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`:
 - **2026-10-14:** `annual-to-hourly-calculator`, `canada-paycheck-calculator`, `salary-calculator`
 - **2026-10-15:** `income-tax-calculator`, `emi-calculator`, `sip-calculator`
 - **2026-10-16:** `debt-payoff-calculator`, `hourly-to-salary-calculator`, `retirement-calculator`
+- **2026-10-16 (18:15 IST Radar Pulse):** `mortgage-calculator` & `car-loan-calculator` (Freddie Mac PMMS 7.40%/6.71% & Experian 2026 6.35%/11.19% rate freshness signals, 44px 1-click rate presets, safe area inset padding on sticky mobile summary bars)
 
 

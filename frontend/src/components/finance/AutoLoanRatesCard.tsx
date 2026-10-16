@@ -18,10 +18,10 @@ interface CreditTier {
 }
 
 const CREDIT_TIERS: CreditTier[] = [
-  { tierName: "Super Prime", scoreRange: "781 – 850", newCarApr: 5.38, usedCarApr: 6.8, isRecommended: true },
-  { tierName: "Prime", scoreRange: "661 – 780", newCarApr: 6.89, usedCarApr: 9.04 },
-  { tierName: "Non-Prime", scoreRange: "601 – 660", newCarApr: 9.83, usedCarApr: 13.53 },
-  { tierName: "Subprime", scoreRange: "501 – 600", newCarApr: 12.93, usedCarApr: 18.55 },
+  { tierName: "Super Prime", scoreRange: "781 – 850", newCarApr: 4.41, usedCarApr: 6.29, isRecommended: true },
+  { tierName: "Prime", scoreRange: "661 – 780", newCarApr: 6.15, usedCarApr: 8.81 },
+  { tierName: "Non-Prime", scoreRange: "601 – 660", newCarApr: 9.71, usedCarApr: 13.93 },
+  { tierName: "Subprime", scoreRange: "501 – 600", newCarApr: 13.52, usedCarApr: 19.1 },
 ];
 
 export function AutoLoanRatesCard({
@@ -69,7 +69,7 @@ export function AutoLoanRatesCard({
             <span className="font-semibold text-zinc-800 dark:text-zinc-200 font-mono">
               ${financedAmount.toLocaleString()}
             </span>{" "}
-            loan over {loanTermMonths} months.
+            loan over {loanTermMonths} months. Benchmark source: Experian Automotive Finance.
           </p>
         </div>
 

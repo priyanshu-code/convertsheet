@@ -60,6 +60,20 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(screen.getByText(/15-Year Forced Discipline vs. 30-Year Payment Flexibility/i)).toBeInTheDocument();
       expect(screen.getByText(/Export Comparison \(\.xlsx\)/i)).toBeInTheDocument();
     });
+
+    it("renders market rate freshness signal and Freddie Mac PMMS rate presets", () => {
+      render(<MortgageCalculator />);
+
+      expect(
+        screen.getByText(/Updated for October 2026 Freddie Mac PMMS/i)
+      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /7.40% \(30Y Fixed\)/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /6.71% \(15Y Fixed\)/i })).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: /7.40% \(30Y Fixed\)/i }));
+      const rateInput = screen.getByLabelText(/Interest Rate \(Annual %\)/i);
+      expect(rateInput).toHaveValue(7.4);
+    });
   });
 
   describe("CarLoanCalculator", () => {
@@ -89,6 +103,20 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       fireEvent.change(tradeInInput, { target: { value: "10000" } });
 
       expect(tradeInInput).toHaveValue(10000);
+    });
+
+    it("renders Experian 2026 market freshness signal and quick APR presets", () => {
+      render(<CarLoanCalculator />);
+
+      expect(
+        screen.getByText(/Updated: Experian 2026 Benchmark/i)
+      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /6.35% \(New Avg\)/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /11.19% \(Used Avg\)/i })).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: /6.35% \(New Avg\)/i }));
+      const rateInput = screen.getByLabelText(/Interest Rate \(APR %\)/i);
+      expect(rateInput).toHaveValue(6.35);
     });
   });
 

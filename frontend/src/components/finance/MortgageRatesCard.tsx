@@ -17,10 +17,10 @@ interface RateRow {
 }
 
 const BENCHMARK_RATES: RateRow[] = [
-  { product: "30-Year Fixed", term: "30 Years", benchmarkRate: 6.68, apr: 6.75, highlight: true },
-  { product: "15-Year Fixed", term: "15 Years", benchmarkRate: 5.92, apr: 6.04 },
-  { product: "5/1 Adj. Rate (ARM)", term: "5 Years Initial", benchmarkRate: 6.18, apr: 6.55 },
-  { product: "FHA / VA 30-Year", term: "30 Years", benchmarkRate: 6.15, apr: 6.82 },
+  { product: "30-Year Fixed", term: "30 Years", benchmarkRate: 7.4, apr: 7.48, highlight: true },
+  { product: "15-Year Fixed", term: "15 Years", benchmarkRate: 6.71, apr: 6.84 },
+  { product: "5/1 Adj. Rate (ARM)", term: "5 Years Initial", benchmarkRate: 6.65, apr: 7.15 },
+  { product: "FHA / VA 30-Year", term: "30 Years", benchmarkRate: 6.85, apr: 7.35 },
 ];
 
 export function MortgageRatesCard({ loanAmount = 320000 }: MortgageRatesCardProps) {
@@ -46,7 +46,7 @@ export function MortgageRatesCard({ loanAmount = 320000 }: MortgageRatesCardProp
         <div className="space-y-1">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>National Benchmark Rates</span>
+            <span>National Benchmark Rates • Freddie Mac PMMS (October 2026)</span>
           </div>
           <h3 className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-zinc-100">
             Compare Top Mortgage &amp; Refinance Rates
@@ -56,7 +56,7 @@ export function MortgageRatesCard({ loanAmount = 320000 }: MortgageRatesCardProp
             <span className="font-semibold text-zinc-800 dark:text-zinc-200 font-mono">
               ${loanAmount.toLocaleString()}
             </span>{" "}
-            mortgage.
+            mortgage. Primary source: Freddie Mac PMMS (October 2026).
           </p>
         </div>
 

@@ -251,25 +251,31 @@
   "calculatorAuditQueue": [
     {
       "slug": "mortgage-calculator",
-      "lastAudited": "2026-10-12",
+      "lastAudited": "2026-10-16",
       "moatsAdded": [
         "dual-range-sliders",
         "sticky-bottom-mobile-bar",
         "url-query-permalink-sync",
         "privacy-reassurance-badge",
-        "sheetjs-retention-hook"
+        "sheetjs-retention-hook",
+        "freddie-mac-pmms-rate-presets-44px",
+        "market-rate-freshness-signal",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "car-loan-calculator",
-      "lastAudited": "2026-10-12",
+      "lastAudited": "2026-10-16",
       "moatsAdded": [
         "dual-range-sliders",
         "sticky-bottom-mobile-bar",
         "url-query-permalink-sync",
         "privacy-reassurance-badge",
-        "sheetjs-retention-hook"
+        "sheetjs-retention-hook",
+        "experian-2026-rate-presets-44px",
+        "market-rate-freshness-signal",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },

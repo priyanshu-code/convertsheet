@@ -29,12 +29,16 @@ describe("ImageResizerTool", () => {
     (window as any).Image = class {
       naturalWidth = 1920;
       naturalHeight = 1080;
-      src = "";
+      _src = "";
       onload: any = null;
-      constructor() {
+      set src(val: string) {
+        this._src = val;
         setTimeout(() => {
           if (this.onload) this.onload();
-        }, 10);
+        }, 0);
+      }
+      get src() {
+        return this._src;
       }
     };
 
@@ -47,10 +51,11 @@ describe("ImageResizerTool", () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
 
     await waitFor(() => {
-      expect(screen.getByText(/Common Preset Resolutions:/i)).toBeInTheDocument();
+      expect(screen.getByDisplayValue("1920")).toBeInTheDocument();
     });
 
     // Check presets are visible
+    expect(screen.getByText(/Common Preset Resolutions:/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Instagram Square/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /YouTube Thumbnail/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Passport Photo/i })).toBeInTheDocument();
