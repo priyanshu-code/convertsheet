@@ -124,8 +124,8 @@ function auditFast(relativePath, htmlContent, existingFilesSet) {
   const title = titleMatch ? titleMatch[1].trim() : "";
   if (!title) {
     errors.push("Missing or empty <title>");
-  } else if (title.length < 10) {
-    warnings.push(`Title too short (${title.length} chars): "${title}"`);
+  } else if (title.length < 25 && !relativePath.includes("404.html")) {
+    warnings.push(`Title too short (${title.length} chars, recommended 25-75 chars): "${title}"`);
   }
 
   const metaDescMatch =
@@ -146,9 +146,30 @@ function auditFast(relativePath, htmlContent, existingFilesSet) {
     errors.push('Missing responsive <meta name="viewport">');
   }
 
-  // 3. Internal Links Check
+  // 3. Structured Data Check (JSON-LD)
+  if (
+    (relativePath.startsWith("tools/") ||
+      relativePath.startsWith("convert/") ||
+      relativePath.startsWith("blog/")) &&
+    !relativePath.includes("404.html")
+  ) {
+    if (!htmlContent.includes("application/ld+json")) {
+      errors.push('Missing structured data: <script type="application/ld+json"> required for SEO rich results');
+    }
+  }
+
+  // 4. Internal Links & Hub-and-Spoke Check
   const linkMatches = [...htmlContent.matchAll(/<a[^>]+href=["']([^"']+)["']/gi)].map((m) => m[1]);
   checkInternalLinks(linkMatches, existingFilesSet, relativePath, errors);
+
+  if (relativePath.startsWith("blog/") && !relativePath.includes("404.html")) {
+    const hasToolOrConvertLink = linkMatches.some(
+      (href) => href && (href.startsWith("/tools") || href.startsWith("/convert") || href.includes("/tools/") || href.includes("/convert/"))
+    );
+    if (!hasToolOrConvertLink) {
+      errors.push('Hub-and-spoke violation: Blog article missing internal link to /tools/ or /convert/');
+    }
+  }
 
   return { file: relativePath, errors, warnings };
 }
@@ -185,8 +206,8 @@ async function auditWithAxe(relativePath, htmlContent, existingFilesSet) {
   const title = document.querySelector("title")?.textContent?.trim();
   if (!title) {
     errors.push("Missing or empty <title>");
-  } else if (title.length < 10) {
-    warnings.push(`Title too short (${title.length} chars): "${title}"`);
+  } else if (title.length < 25 && !relativePath.includes("404.html")) {
+    warnings.push(`Title too short (${title.length} chars, recommended 25-75 chars): "${title}"`);
   }
 
   const metaDesc = document
@@ -209,7 +230,20 @@ async function auditWithAxe(relativePath, htmlContent, existingFilesSet) {
     errors.push('Missing responsive <meta name="viewport">');
   }
 
-  // 3. Image Alt Checks
+  // 3. Structured Data Check (JSON-LD)
+  if (
+    (relativePath.startsWith("tools/") ||
+      relativePath.startsWith("convert/") ||
+      relativePath.startsWith("blog/")) &&
+    !relativePath.includes("404.html")
+  ) {
+    const hasJsonLd = Boolean(document.querySelector('script[type="application/ld+json"]'));
+    if (!hasJsonLd) {
+      errors.push('Missing structured data: <script type="application/ld+json"> required for SEO rich results');
+    }
+  }
+
+  // 4. Image Alt Checks
   const images = Array.from(document.querySelectorAll("img"));
   for (const img of images) {
     const alt = img.getAttribute("alt");
@@ -219,7 +253,7 @@ async function auditWithAxe(relativePath, htmlContent, existingFilesSet) {
     }
   }
 
-  // 4. Buttons Accessible Name Check
+  // 5. Buttons Accessible Name Check
   const buttons = Array.from(document.querySelectorAll("button"));
   for (const btn of buttons) {
     const text = btn.textContent.trim();
@@ -232,13 +266,22 @@ async function auditWithAxe(relativePath, htmlContent, existingFilesSet) {
     }
   }
 
-  // 5. Internal Links Check
+  // 6. Internal Links & Hub-and-Spoke Check
   const linkElements = Array.from(document.querySelectorAll("a[href]")).map((a) =>
     a.getAttribute("href")?.trim()
   );
   checkInternalLinks(linkElements, existingFilesSet, relativePath, errors);
 
-  // 6. axe-core Accessibility Engine
+  if (relativePath.startsWith("blog/") && !relativePath.includes("404.html")) {
+    const hasToolOrConvertLink = linkElements.some(
+      (href) => href && (href.startsWith("/tools") || href.startsWith("/convert") || href.includes("/tools/") || href.includes("/convert/"))
+    );
+    if (!hasToolOrConvertLink) {
+      errors.push('Hub-and-spoke violation: Blog article missing internal link to /tools/ or /convert/');
+    }
+  }
+
+  // 7. axe-core Accessibility Engine
   if (axe) {
     try {
       const targetElement = document.querySelector("main") || document.documentElement;
