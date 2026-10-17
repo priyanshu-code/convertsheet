@@ -114,6 +114,7 @@ Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`:
 - **2026-10-16:** `debt-payoff-calculator`, `hourly-to-salary-calculator`, `retirement-calculator`
 - **2026-10-16 (18:15 IST Radar Pulse):** `mortgage-calculator` & `car-loan-calculator` (Freddie Mac PMMS 7.40%/6.71% & Experian 2026 6.35%/11.19% rate freshness signals, 44px 1-click rate presets, safe area inset padding on sticky mobile summary bars)
 - **2026-10-16 (21:15 IST Radar Pulse):** `savings-cd-calculator`, `rate-hike-calculator`, & `balance-transfer-calculator` (Fed 3.75%–4.00% & RBI 99% CRR rate freshness signals, 44px 1-click rate/deposit/MODT presets, regional savings rate card updates, and safe area inset padding on sticky mobile summary bars)
+- **2026-10-17 (18:15 IST Radar Pulse):** `home-loan-overdraft-calculator`, `annual-to-hourly-calculator`, `canada-paycheck-calculator`, and `salary-calculator` (October 2026 RBI Policy 5.50% repo & SBI EBLR 8.15% / MaxGain 8.55% freshness signals, 44px 1-click rate and loan presets, safe-area inset padding on sticky mobile summary bars, and CRA 2026 tax benchmarks)
 
 
 

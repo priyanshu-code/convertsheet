@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-16",
+  "lastUpdated": "2026-10-17",
   "totalBlogs": 27,
   "totalTools": 18,
   "blogs": [
@@ -281,10 +281,15 @@
     },
     {
       "slug": "home-loan-overdraft-calculator",
-      "lastAudited": "2026-10-12",
+      "lastAudited": "2026-10-17",
       "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signal",
+        "october-2026-rbi-rate-benchmarks-44px",
+        "spread-premium-presets-44px",
         "range-slider",
         "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar",
         "url-query-permalink-sync",
         "save-share-prompt-actions",
         "sheetjs-retention-hook"

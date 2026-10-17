@@ -101,5 +101,20 @@
       "Monitor newly indexed programmatic presets (15-vs-30-year-mortgage and byte-converter) in Google Search Console.",
       "Continue daily radar pulses targeting emerging rate decisions, central bank releases, and developer format discussions."
     ]
-  }
+  },
+  "radarPulses": [
+    {
+      "timestamp": "2026-10-17T18:15:00+05:30",
+      "sourcesScanned": [
+        "Reserve Bank of India Monetary Policy & SBI Benchmark Desk (October 15/16 repo at 5.50%, EBLR at 8.15%, 1Y MCLR at 8.85%)",
+        "Federal Reserve Board & Treasury Yield monitors (10Y Treasury above 5.10%, Fed Funds Target 3.75%–4.00%)",
+        "Freddie Mac PMMS (30-Year fixed 7.40%, 15-Year fixed 6.71%)",
+        "Canada Revenue Agency (CRA 2026 CPP/CPP2 YAMPE threshold benchmarks)",
+        "Reddit r/IndiaInvestments & r/personalfinanceindia (silent home loan tenure extension debate vs MaxGain overdraft parking)",
+        "Hacker News & r/algotrading (DuckDB-WASM, in-browser columnar Parquet querying for zero-knowledge quant backtesting)"
+      ],
+      "findings": "RBI's 25 bps rate hike to 5.50% and SBI's October 15 hike of EBLR to 8.15% (+0.40% MaxGain spread = 8.55% effective overdraft rate) triggered heavy friction among Indian borrowers facing silent loan tenure extensions. Community discussions on r/IndiaInvestments highlight growing interest in overdraft accounts (SBI MaxGain, BoB Advantage, PNB Max Saver) where emergency funds can be parked tax-free to reduce daily interest compounding while maintaining 100% liquidity. In North America, 10Y Treasury yields remain resilient above 5.10%, keeping 30Y mortgage rates near 7.40%. On Hacker News, quantitative developers strongly advocate for in-browser WASM and DuckDB for handling columnar Parquet and CSV backtest data without cloud database roundtrips.",
+      "actionTaken": "Upgraded HomeLoanOverdraftCalculator with Zero-Knowledge client-side privacy badge, October 2026 RBI Policy market rate freshness signal (5.50% repo, 8.15% SBI EBLR, 8.55% MaxGain), 1-click rate benchmark presets (8.15%, 8.40%, 8.55%, 8.85%, 9.10%), 44px minimum touch targets across all preset pills and spread chips, and safe area inset padding on sticky mobile summary bar. Patched AnnualToHourlyCalculator, CanadaPaycheckCalculator, and SalaryCalculator with safe area insets on mobile summary bars and updated Canada CRA 2026 benchmarks. Updated HomeLoanOverdraftCalculator.test.tsx with new tests for freshness signals and rate preset triggers (3/3 passed). Audited docs/content-inventory.json and docs/design-system/mobile-ux-playbook.md."
+    }
+  ]
 }

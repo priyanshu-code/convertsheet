@@ -27,6 +27,14 @@ describe("HomeLoanOverdraftCalculator", () => {
     expect(screen.getByText(/Break-Even Surplus/i)).toBeInTheDocument();
     expect(screen.getByText(/Effective Tax-Free Yield/i)).toBeInTheDocument();
 
+    // Verify privacy badge & market rate freshness signal
+    expect(screen.getByText(/Zero-Knowledge/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for October 2026 RBI Policy/i)).toBeInTheDocument();
+
+    // Verify rate presets exist
+    expect(screen.getByText("8.15% (SBI EBLR)")).toBeInTheDocument();
+    expect(screen.getByText("8.55% (SBI MaxGain)")).toBeInTheDocument();
+
     // Verify presets exist
     expect(screen.getByText("₹30 Lakh")).toBeInTheDocument();
     expect(screen.getByText("₹50 Lakh")).toBeInTheDocument();
@@ -64,5 +72,27 @@ describe("HomeLoanOverdraftCalculator", () => {
 
     const inputs = screen.getAllByRole("spinbutton") as HTMLInputElement[];
     expect(inputs[0].value).toBe("10000000");
+  });
+
+  it("updates standard rate when rate preset pill is clicked", () => {
+    render(
+      <CurrencyProvider>
+        <HomeLoanOverdraftCalculator
+          initialValues={{
+            loanAmount: 5000000,
+            standardRate: 8.50,
+            overdraftRate: 8.90,
+            tenureYears: 20,
+            parkedSurplusAmount: 1000000,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    const ratePreset = screen.getByRole("button", { name: "8.15% (SBI EBLR)" });
+    fireEvent.click(ratePreset);
+
+    const inputs = screen.getAllByRole("spinbutton") as HTMLInputElement[];
+    expect(inputs[1].value).toBe("8.15");
   });
 });

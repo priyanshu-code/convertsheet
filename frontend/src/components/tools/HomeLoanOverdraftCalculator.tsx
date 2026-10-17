@@ -128,6 +128,15 @@ Provide strategic financial advice on whether parking emergency funds in an over
     { label: "₹1 Crore", val: 10000000 },
   ];
 
+  // Current Indian home loan rate benchmarks (October 2026 RBI Policy)
+  const ratePresets = [
+    { label: "8.15% (SBI EBLR)", val: 8.15 },
+    { label: "8.40% (BoB Advantage)", val: 8.40 },
+    { label: "8.55% (SBI MaxGain)", val: 8.55 },
+    { label: "8.85% (1Y MCLR)", val: 8.85 },
+    { label: "9.10% (Private Bank)", val: 9.10 },
+  ];
+
   // Bank spread presets in India
   const bankSpreadPresets = [
     { label: "SBI MaxGain (+0.40%)", val: 0.40 },
@@ -198,7 +207,29 @@ Provide strategic financial advice on whether parking emergency funds in an over
   };
 
   return (
-    <div className="space-y-8 pb-16 sm:pb-0">
+    <div className="space-y-6 pb-20 sm:pb-0">
+      {/* Zero-Knowledge Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero-Knowledge • No Bank Accounts or Loan Balances Stored</span>
+      </div>
+
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center justify-between flex-wrap gap-2 rounded-xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 px-3.5 py-2 text-xs">
+        <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+          </span>
+          <span className="font-medium">
+            <strong>Updated for October 2026 RBI Policy:</strong> Benchmark repo rate at 5.50%. SBI EBLR updated to 8.15% (+0.40% MaxGain spread = 8.55% OD rate).
+          </span>
+        </div>
+        <span className="text-[11px] font-mono text-amber-700 dark:text-amber-400 font-semibold">
+          99% CRR Liquidity Floor
+        </span>
+      </div>
+
       {/* Header Banner */}
       <div className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -226,7 +257,7 @@ Provide strategic financial advice on whether parking emergency funds in an over
               type="button"
               onClick={handleExportExcel}
               disabled={isExportingExcel}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0 disabled:opacity-50 cursor-pointer min-h-[40px]"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0 disabled:opacity-50 cursor-pointer min-h-[44px]"
             >
               <FileSpreadsheet className="w-4 h-4" />
               <span>{isExportingExcel ? "Generating..." : "Export Excel (.xlsx)"}</span>
@@ -278,7 +309,7 @@ Provide strategic financial advice on whether parking emergency funds in an over
                       key={p.val}
                       type="button"
                       onClick={() => setLoanAmount(p.val)}
-                      className={`min-h-[36px] px-3 py-1 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
+                      className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border cursor-pointer ${
                         loanAmount === p.val
                           ? "bg-emerald-600 text-white border-emerald-600 shadow-xs"
                           : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
@@ -326,8 +357,25 @@ Provide strategic financial advice on whether parking emergency funds in an over
                   min={6.0}
                   max={15.0}
                   step={0.05}
-                  helperText="Base floating repo-linked rate for standard term loans (e.g. 8.50%)"
+                  helperText="Base floating repo-linked rate for standard term loans (e.g. 8.15% - 8.50%)"
                 />
+                {/* Rate Presets (October 2026 Benchmarks) */}
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {ratePresets.map((rp) => (
+                    <button
+                      key={rp.label}
+                      type="button"
+                      onClick={() => setStandardRate(rp.val)}
+                      className={`min-h-[44px] px-3 py-1.5 rounded-lg text-xs font-medium transition-all border cursor-pointer ${
+                        standardRate === rp.val
+                          ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                          : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                      }`}
+                    >
+                      {rp.label}
+                    </button>
+                  ))}
+                </div>
                 <CalcSlider
                   id="slider-standard-rate"
                   label="Standard Home Loan Interest Rate Slider"
@@ -350,7 +398,7 @@ Provide strategic financial advice on whether parking emergency funds in an over
                       key={sp.val}
                       type="button"
                       onClick={() => setSpreadPercent(sp.val)}
-                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all border cursor-pointer ${
+                      className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border cursor-pointer ${
                         spreadPercent === sp.val
                           ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-900 dark:border-white shadow-xs"
                           : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400"
@@ -613,7 +661,10 @@ Provide strategic financial advice on whether parking emergency funds in an over
       </div>
 
       {/* Sticky Bottom Mobile Summary Bar (<640px) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 shadow-lg flex items-center justify-between">
+      <div 
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 shadow-lg flex items-center justify-between"
+        style={{ paddingBottom: "max(0.625rem, env(safe-area-inset-bottom))" }}
+      >
         <div>
           <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Total Interest Saved</span>
           <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
@@ -624,7 +675,7 @@ Provide strategic financial advice on whether parking emergency funds in an over
           type="button"
           onClick={handleExportExcel}
           disabled={isExportingExcel}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 text-white shadow-xs cursor-pointer disabled:opacity-50"
+          className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs cursor-pointer disabled:opacity-50 transition-colors"
         >
           <FileSpreadsheet className="w-3.5 h-3.5" />
           <span>Export</span>

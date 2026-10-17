@@ -390,7 +390,10 @@ Provide practical personal budgeting ratios (50/30/20 rule), emergency fund guid
       </div>
 
       {/* Sticky Bottom Mobile Summary Bar (<640px) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between">
+      <div 
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between"
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
         <div>
           <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Hourly Wage</span>
           <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
