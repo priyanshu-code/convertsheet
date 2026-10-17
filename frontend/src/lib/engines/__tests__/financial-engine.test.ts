@@ -327,13 +327,14 @@ describe("financial-engine", () => {
   });
 
   describe("calculateUsSalary", () => {
-    it("calculates take-home pay and tax deductions for a standard $100,000 Single salary", () => {
+    it("calculates take-home pay and tax deductions for a standard $100,000 Single salary (2024 baseline)", () => {
       const res = calculateUsSalary({
         grossSalary: 100000,
         filingStatus: "single",
         stateTaxPercent: 5,
         k401ContributionPercent: 0,
         pretaxDeductionsMonthly: 0,
+        taxYear: 2024,
       });
 
       expect(res.grossSalary).toBe(100000);
@@ -361,12 +362,13 @@ describe("financial-engine", () => {
       expect(res.effectiveTaxRate).toBeCloseTo(26.49, 1);
     });
 
-    it("applies Additional Medicare Tax surtax and Social Security wage cap for high earners", () => {
+    it("applies Additional Medicare Tax surtax and Social Security wage cap for high earners (2024 baseline)", () => {
       const res = calculateUsSalary({
         grossSalary: 300000,
         filingStatus: "single",
         stateTaxPercent: 0,
         k401ContributionPercent: 0,
+        taxYear: 2024,
       });
 
       // SS wage cap $168,600: 168600 * 0.062 = 10,453.20
@@ -374,6 +376,30 @@ describe("financial-engine", () => {
       // Medicare: 1.45% of 300k = 4,350 + 0.9% on (300k - 200k = 100k) = 900 -> 5,250
       expect(res.medicareTax).toBe(5250);
       expect(res.federalTaxableIncome).toBe(300000 - 14600);
+    });
+
+    it("calculates take-home pay and tax deductions using updated 2026 IRS brackets and $184,500 SSA wage cap", () => {
+      const res = calculateUsSalary({
+        grossSalary: 200000,
+        filingStatus: "single",
+        stateTaxPercent: 0,
+        k401ContributionPercent: 0,
+        taxYear: 2026,
+      });
+
+      // 2026 Social Security cap $184,500: 184500 * 0.062 = 11,439.00
+      expect(res.socialSecurityTax).toBe(11439);
+      // Medicare: 1.45% on 200k = 2,900
+      expect(res.medicareTax).toBe(2900);
+      // 2026 Standard Deduction: $16,100 -> Federal Taxable: 200,000 - 16,100 = 183,900
+      expect(res.federalTaxableIncome).toBe(183900);
+      // 2026 Single Brackets:
+      // 10% on 12,400 = 1,240
+      // 12% on (50,400 - 12,400 = 38,000) = 4,560
+      // 22% on (105,700 - 50,400 = 55,300) = 12,166
+      // 24% on (183,900 - 105,700 = 78,200) = 18,768
+      // Total Federal Tax = 1,240 + 4,560 + 12,166 + 18,768 = 36,734
+      expect(res.federalIncomeTax).toBe(36734);
     });
 
     it("reduces taxable income when 401(k) and pre-tax deductions are present", () => {

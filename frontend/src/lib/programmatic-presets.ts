@@ -3789,6 +3789,14 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
         answer: "20% off 100 is 80. Subtract the 20 discount from 100: 100 - 20 = 80.",
       },
       {
+        question: "What is 100 - 20%?",
+        answer: "100 - 20% equals 80. First calculate 20% of 100, which is 20 (0.20 × 100 = 20), then subtract that from 100: 100 - 20 = 80. This is the standard formula for a 20% sales discount.",
+      },
+      {
+        question: "Is 100 * 0.20 the same as 0.20 * 100?",
+        answer: "Yes. Due to the commutative property of multiplication, 100 × 0.20 = 0.20 × 100 = 20. Both expressions represent taking twenty hundredths of 100.",
+      },
+      {
         question: "What is a fast mental math trick for 20%?",
         answer: "To find 20% of any number quickly in your head, divide the number by 10 (which gives 10%), then double that result (10% × 2 = 20%). For 100: 100 ÷ 10 = 10; 10 × 2 = 20.",
       },
@@ -5314,7 +5322,7 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
       },
       {
         question: "How much can maxing out a 401(k) save in taxes on $150k?",
-        answer: "Contributing the $23,000 401(k) maximum reduces your taxable income from $135,400 to $112,400, saving approximately $5,520 in federal income taxes.",
+        answer: "Contributing the $24,500 401(k) maximum (2026 IRS limit) reduces your taxable income significantly, saving approximately $5,880 in federal income taxes.",
       },
     ],
   },
@@ -5322,10 +5330,10 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "salary-calculator",
     presetSlug: "us-take-home-200k",
     name: "$200k Salary Take-Home Pay Calculator (US)",
-    title: "$200k Salary Take-Home Pay Calculator - Net Paycheck & Tax Deductions",
-    metaDescription: "Calculate take-home pay on a $200,000 salary in the US. Social Security wage base cap, Medicare additional tax, and monthly net paycheck.",
-    answerSummary: "On a $200,000 annual salary in the US for a single filer, your estimated net take-home pay is approximately $138,200 per year ($11,516 per month or $5,315 bi-weekly). Federal tax accounts for roughly $36,800, FICA for $13,380 (capping Social Security at the $168,600 wage base), and state tax.",
-    about: "At $200,000 per year, payroll tax calculations change because your earnings exceed the annual Social Security wage base cap ($168,600 for 2024), meaning no further 6.2% Social Security tax is deducted on dollars earned above that threshold.",
+    title: "$200k Salary Take-Home Pay Calculator - Net Paycheck & Tax Deductions (2026)",
+    metaDescription: "Calculate take-home pay on a $200,000 salary in the US for 2026. Social Security $184,500 wage base cap, Medicare additional tax, and monthly net paycheck.",
+    answerSummary: "On a $200,000 annual salary in the US for a single filer, your estimated net take-home pay is approximately $138,900 per year ($11,575 per month or $5,342 bi-weekly). Federal tax accounts for roughly $36,700, FICA for $14,339 (capping Social Security at the $184,500 wage base), and state tax.",
+    about: "At $200,000 per year, payroll tax calculations change because your earnings exceed the annual Social Security wage base cap ($184,500 for 2026), meaning no further 6.2% Social Security tax is deducted on dollars earned above that threshold.",
     initialValues: {
       regime: "US",
       grossSalary: 200000,
@@ -5335,15 +5343,15 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     faqs: [
       {
         question: "What is the take-home pay on $200,000 a year?",
-        answer: "After federal taxes, FICA, and an estimated 5% state tax, a single filer takes home approximately $138,200 annually, or about $11,516 per month.",
+        answer: "After federal taxes, FICA, and an estimated 5% state tax, a single filer takes home approximately $138,900 annually, or about $11,575 per month.",
       },
       {
         question: "How does the Social Security cap affect a $200k salary?",
-        answer: "Social Security tax (6.2%) only applies up to the $168,600 wage base (max $10,453.20). Earnings above $168,600 are exempt from Social Security, giving high earners a boost in take-home pay later in the calendar year.",
+        answer: "Social Security tax (6.2%) only applies up to the $184,500 wage base (max $11,439.00 in 2026). Earnings above $184,500 are exempt from Social Security, giving high earners a boost in take-home pay later in the calendar year.",
       },
       {
         question: "What is the bi-weekly paycheck on $200,000?",
-        answer: "Assuming 26 bi-weekly pay periods, the average net paycheck is approximately $5,315.",
+        answer: "Assuming 26 bi-weekly pay periods, the average net paycheck is approximately $5,342.",
       },
     ],
   },

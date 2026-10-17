@@ -587,7 +587,7 @@ Please advise on tax saving strategies, voluntary PF benefits, and salary restru
                   {
                     label: "FICA: Social Security",
                     value: `$${usResult.socialSecurityTax.toLocaleString()}`,
-                    subtext: "6.2% up to $168,600 cap",
+                    subtext: "6.2% up to $184,500 cap (2026 SSA)",
                   },
                   {
                     label: "FICA: Medicare",

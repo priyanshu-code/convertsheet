@@ -1074,13 +1074,14 @@ export interface UsSalaryInput {
   k401ContributionPercent?: number; // 0-100%
   stateTaxPercent?: number; // Estimated state tax rate e.g. 5%
   pretaxDeductionsMonthly?: number; // Health/Dental/FSA
+  taxYear?: 2024 | 2025 | 2026;
 }
 
 export interface UsSalaryResult {
   grossSalary: number;
   monthlyGross: number;
   biWeeklyGross: number;
-  socialSecurityTax: number; // 6.2% up to $168,600 wage base cap (2024)
+  socialSecurityTax: number; // 6.2% up to $184,500 wage base cap (2026) or $168,600 (2024)
   medicareTax: number; // 1.45% (+ 0.9% additional for wages > $200,000 single / $250,000 married)
   k401Deduction: number;
   federalTaxableIncome: number;
@@ -1100,13 +1101,14 @@ export function calculateUsSalary(input: UsSalaryInput): UsSalaryResult {
   const k401Percent = Math.max(0, Math.min(100, input.k401ContributionPercent || 0));
   const stateTaxPercent = Math.max(0, Math.min(100, input.stateTaxPercent || 0));
   const pretaxDeductionsMonthly = Math.max(0, input.pretaxDeductionsMonthly || 0);
+  const taxYear = input.taxYear ?? 2026;
 
   const monthlyGross = roundTo(grossSalary / 12, 2);
   const biWeeklyGross = roundTo(grossSalary / 26, 2);
 
   // FICA Taxes
-  // Social Security: 6.2% up to $168,600 wage base cap (2024)
-  const ssWageCap = 168600;
+  // Social Security: 6.2% up to wage base cap ($184,500 in 2026, $168,600 in 2024)
+  const ssWageCap = taxYear === 2024 ? 168600 : 184500;
   const socialSecurityTax = roundTo(Math.min(grossSalary, ssWageCap) * 0.062, 2);
 
   // Medicare: 1.45% + 0.9% additional for wages > $200k single / $250k married
@@ -1120,8 +1122,15 @@ export function calculateUsSalary(input: UsSalaryInput): UsSalaryResult {
   const k401Deduction = roundTo(grossSalary * (k401Percent / 100), 2);
   const annualPretaxDeductions = roundTo(pretaxDeductionsMonthly * 12, 2);
 
-  // Standard deduction 2024
-  const standardDeduction = filingStatus === "married" ? 29200 : 14600;
+  // Standard deduction: 2026 ($16,100 single, $32,200 married) vs 2024 ($14,600 single, $29,200 married)
+  const standardDeduction =
+    taxYear === 2024
+      ? filingStatus === "married"
+        ? 29200
+        : 14600
+      : filingStatus === "married"
+      ? 32200
+      : 16100;
 
   // Federal taxable income: gross minus 401k, pretax deductions, and standard deduction
   const federalTaxableIncome = Math.max(
@@ -1129,8 +1138,8 @@ export function calculateUsSalary(input: UsSalaryInput): UsSalaryResult {
     roundTo(grossSalary - k401Deduction - annualPretaxDeductions - standardDeduction, 2)
   );
 
-  // 2024 Federal Tax Brackets
-  const singleBrackets = [
+  // Federal Tax Brackets
+  const singleBrackets2024 = [
     { min: 0, max: 11600, rate: 0.10 },
     { min: 11600, max: 47150, rate: 0.12 },
     { min: 47150, max: 100525, rate: 0.22 },
@@ -1140,7 +1149,7 @@ export function calculateUsSalary(input: UsSalaryInput): UsSalaryResult {
     { min: 609350, max: Infinity, rate: 0.37 },
   ];
 
-  const marriedBrackets = [
+  const marriedBrackets2024 = [
     { min: 0, max: 23200, rate: 0.10 },
     { min: 23200, max: 94300, rate: 0.12 },
     { min: 94300, max: 201050, rate: 0.22 },
@@ -1150,6 +1159,28 @@ export function calculateUsSalary(input: UsSalaryInput): UsSalaryResult {
     { min: 731200, max: Infinity, rate: 0.37 },
   ];
 
+  const singleBrackets2026 = [
+    { min: 0, max: 12400, rate: 0.10 },
+    { min: 12400, max: 50400, rate: 0.12 },
+    { min: 50400, max: 105700, rate: 0.22 },
+    { min: 105700, max: 201775, rate: 0.24 },
+    { min: 201775, max: 256225, rate: 0.32 },
+    { min: 256225, max: 640600, rate: 0.35 },
+    { min: 640600, max: Infinity, rate: 0.37 },
+  ];
+
+  const marriedBrackets2026 = [
+    { min: 0, max: 24800, rate: 0.10 },
+    { min: 24800, max: 100800, rate: 0.12 },
+    { min: 100800, max: 211400, rate: 0.22 },
+    { min: 211400, max: 403550, rate: 0.24 },
+    { min: 403550, max: 512450, rate: 0.32 },
+    { min: 512450, max: 768700, rate: 0.35 },
+    { min: 768700, max: Infinity, rate: 0.37 },
+  ];
+
+  const singleBrackets = taxYear === 2024 ? singleBrackets2024 : singleBrackets2026;
+  const marriedBrackets = taxYear === 2024 ? marriedBrackets2024 : marriedBrackets2026;
   const brackets = filingStatus === "married" ? marriedBrackets : singleBrackets;
 
   let federalIncomeTaxCalc = 0;

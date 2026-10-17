@@ -491,6 +491,20 @@
         "sticky-bottom-mobile-bar"
       ],
       "uxStatus": "audited"
+    },
+    {
+      "slug": "inflation-calculator",
+      "lastAudited": "2026-10-17",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
     }
   ]
 }

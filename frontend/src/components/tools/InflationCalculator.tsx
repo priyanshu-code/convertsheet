@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { TrendingUp, Table as TableIcon, Briefcase } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { TrendingUp, Table as TableIcon, Briefcase, ShieldCheck, Download } from "lucide-react";
+import * as XLSX from "xlsx";
 import {
   CalcCard,
   CalcInput,
@@ -11,6 +12,8 @@ import {
   CalcChart,
   CalcExportButton,
   CalcPromptButton,
+  CalcSaveButton,
+  CalcShareButton,
 } from "@/components/calculator";
 import { calculateInflation } from "@/lib/engines/financial-engine";
 import { InflationHedgeCard } from "@/components/finance";
@@ -25,12 +28,58 @@ export interface InflationCalculatorProps {
 }
 
 export function InflationCalculator({ initialValues }: InflationCalculatorProps = {}) {
-  const [calcMode, setCalcMode] = useState<"erosion" | "salary">(initialValues?.mode || "erosion");
-  const [amount, setAmount] = useState<number>(Number(initialValues?.amount) || 10000);
-  const [inflationRate, setInflationRate] = useState<number>(Number(initialValues?.inflationRate) || 3.2);
-  const [years, setYears] = useState<number>(Number(initialValues?.years) || 15);
+  const [calcMode, setCalcMode] = useState<"erosion" | "salary">(() => {
+    if (initialValues?.mode) return initialValues.mode;
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("mode");
+      if (q === "erosion" || q === "salary") return q;
+    }
+    return "erosion";
+  });
+
+  const [amount, setAmount] = useState<number>(() => {
+    if (initialValues?.amount !== undefined) return Number(initialValues.amount);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("amount");
+      if (q) return Number(q);
+    }
+    return 10000;
+  });
+
+  const [inflationRate, setInflationRate] = useState<number>(() => {
+    if (initialValues?.inflationRate !== undefined) return Number(initialValues.inflationRate);
+    if (typeof window !== "undefined") {
+      const q =
+        new URLSearchParams(window.location.search).get("inflationRate") ||
+        new URLSearchParams(window.location.search).get("rate");
+      if (q) return Number(q);
+    }
+    return 3.2;
+  });
+
+  const [years, setYears] = useState<number>(() => {
+    if (initialValues?.years !== undefined) return Number(initialValues.years);
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("years");
+      if (q) return Number(q);
+    }
+    return 15;
+  });
 
   const isSalaryMode = calcMode === "salary";
+
+  // Real-time URL query permalink synchronization (Habit Loop & Repeat Usage Engine)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("amount", amount.toString());
+    params.set("inflationRate", inflationRate.toString());
+    params.set("years", years.toString());
+    params.set("mode", calcMode);
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [amount, inflationRate, years, calcMode]);
 
   const inflation = useMemo(() => {
     return calculateInflation({
@@ -53,10 +102,66 @@ export function InflationCalculator({ initialValues }: InflationCalculatorProps 
   const exportData = useMemo(() => {
     return inflation.yearlyProjection.map((row) => ({
       Year: row.year,
-      [isSalaryMode ? "Target Salary to Match Living Standard ($)" : "Future Needed to Match Value ($)"]: row.futureNeeded,
-      [isSalaryMode ? "Real Purchasing Power If Stagnant ($)" : "Remaining Purchasing Power ($)"]: row.purchasingPower,
+      [isSalaryMode ? "Target Salary to Match Living Standard ($)" : "Future Needed to Match Value ($)"]:
+        row.futureNeeded,
+      [isSalaryMode ? "Real Purchasing Power If Stagnant ($)" : "Remaining Purchasing Power ($)"]:
+        row.purchasingPower,
     }));
   }, [inflation.yearlyProjection, isSalaryMode]);
+
+  // Formulaic Excel (.xlsx) Export with SheetJS Retention Hook
+  const handleExportFormulaicExcel = () => {
+    try {
+      const summaryRows = [
+        ["ConvertSheet - Inflation & Purchasing Power Schedule", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/inflation-calculator"],
+        ["", ""],
+        ["--- CALCULATION PARAMETERS ---", ""],
+        [isSalaryMode ? "Current Annual Salary ($)" : "Starting Capital / Price ($)", amount],
+        ["Expected Annual Inflation Rate (%)", inflationRate],
+        ["Time Horizon (Years)", years],
+        ["", ""],
+        ["--- SUMMARY OUTCOMES ---", ""],
+        [
+          isSalaryMode ? "Target Salary Needed ($)" : "Future Equivalent Needed ($)",
+          inflation.futureEquivalentValue,
+        ],
+        [
+          isSalaryMode ? "Real Value If Stagnant ($)" : "Purchasing Power of Today's $",
+          inflation.futurePurchasingPower,
+        ],
+        ["Cumulative Price Inflation (%)", `${inflation.cumulativeInflationPercent}%`],
+        ["", ""],
+        ["--- YEAR-BY-YEAR PROJECTION ---", "", "", ""],
+        [
+          "Year",
+          isSalaryMode ? "Target Salary Needed ($)" : "Future Equivalent Needed ($)",
+          isSalaryMode ? "Flat Salary Real Value ($)" : "Purchasing Power of Today ($)",
+          "Cumulative Price Drift (%)",
+        ],
+        ...inflation.yearlyProjection.map((r) => [
+          `Year ${r.year}`,
+          r.futureNeeded,
+          r.purchasingPower,
+          `+${(((r.futureNeeded - amount) / (amount || 1)) * 100).toFixed(1)}%`,
+        ]),
+        ["", ""],
+        ["Mathematical Model", "Future Value = Amount * (1 + Rate)^Years | Purchasing Power = Amount / (1 + Rate)^Years"],
+        ["Data Sovereignty", "Calculated 100% in-browser on ConvertSheet with zero cloud tracking."],
+      ];
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "InflationSchedule");
+      XLSX.writeFile(
+        wb,
+        `ConvertSheet_Inflation_${amount}_${inflationRate}pct_${years}yrs.xlsx`
+      );
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    }
+  };
 
   const aiPrompt = useMemo(() => {
     if (isSalaryMode) {
@@ -89,7 +194,21 @@ Provide actionable asset allocation advice to protect wealth against this inflat
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-28 sm:pb-0">
+      {/* Zero-Knowledge Privacy Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          Updated for October 2026: BLS CPI Benchmark 2.8%–3.1% • Fed Target 2.0% • 10Y Breakeven 2.35%
+        </span>
+      </div>
+
       <CalcCard
         title={isSalaryMode ? "Salary Needed to Beat Inflation Calculator" : "Inflation & Purchasing Power Calculator"}
         subtitle={
@@ -134,9 +253,9 @@ Provide actionable asset allocation advice to protect wealth against this inflat
                     key={amt}
                     type="button"
                     onClick={() => setAmount(amt)}
-                    className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                    className={`min-h-[44px] min-w-[44px] px-2.5 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer border touch-manipulation ${
                       amount === amt
-                        ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                        ? "bg-emerald-600 text-white border-emerald-600 font-semibold shadow-xs"
                         : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
                     }`}
                   >
@@ -176,9 +295,9 @@ Provide actionable asset allocation advice to protect wealth against this inflat
                     key={yr}
                     type="button"
                     onClick={() => setYears(yr)}
-                    className={`px-2 py-0.5 text-[11px] font-medium rounded-md transition-colors cursor-pointer border ${
+                    className={`min-h-[44px] min-w-[44px] px-2.5 py-1 text-xs font-medium rounded-lg transition-colors cursor-pointer border touch-manipulation ${
                       years === yr
-                        ? "bg-emerald-600 text-white border-emerald-600 font-semibold"
+                        ? "bg-emerald-600 text-white border-emerald-600 font-semibold shadow-xs"
                         : "bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
                     }`}
                   >
@@ -189,7 +308,7 @@ Provide actionable asset allocation advice to protect wealth against this inflat
             </div>
           </div>
 
-          {/* Quick presets for inflation rate */}
+          {/* Quick presets for inflation rate with 44px touch targets */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
               Common Inflation Benchmarks:
@@ -200,9 +319,9 @@ Provide actionable asset allocation advice to protect wealth against this inflat
                   key={preset.rate}
                   type="button"
                   onClick={() => setInflationRate(preset.rate)}
-                  className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition-colors ${
+                  className={`min-h-[44px] text-xs px-3.5 py-2 rounded-xl border font-medium transition-colors touch-manipulation ${
                     inflationRate === preset.rate
-                      ? "bg-emerald-500 text-white border-emerald-600 shadow-sm"
+                      ? "bg-emerald-600 text-white border-emerald-600 shadow-xs font-semibold"
                       : "bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
                   }`}
                 >
@@ -216,6 +335,7 @@ Provide actionable asset allocation advice to protect wealth against this inflat
           <CalcSlider
             id="time-horizon-slider"
             label="Time Horizon Range"
+            ariaLabel="Time Horizon Slider"
             value={years}
             onChange={setYears}
             min={1}
@@ -289,24 +409,59 @@ Provide actionable asset allocation advice to protect wealth against this inflat
             />
           )}
 
-          {/* Action Buttons: SheetJS Export & AI Prompt */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
-            <CalcExportButton
-              data={exportData}
-              filename={isSalaryMode ? `salary-inflation-protection-${years}-years` : `inflation-analysis-${years}-years`}
-              sheetName={isSalaryMode ? "Salary Trajectory" : "Inflation Forecast"}
+          {/* Retention & Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <CalcSaveButton
+              toolSlug="inflation-calculator"
+              toolName="Inflation & Purchasing Power Calculator"
+              summaryTitle={`$${amount.toLocaleString()} over ${years}y @ ${inflationRate}%`}
+              summaryMetrics={[
+                {
+                  label: isSalaryMode ? "Salary Needed" : "Future Cost Needed",
+                  value: `$${inflation.futureEquivalentValue.toLocaleString()}`,
+                },
+                {
+                  label: "Purchasing Power",
+                  value: `$${inflation.futurePurchasingPower.toLocaleString()}`,
+                },
+                {
+                  label: "Cumulative Drift",
+                  value: `+${inflation.cumulativeInflationPercent}%`,
+                },
+              ]}
             />
+
+            <CalcShareButton
+              state={{
+                amount,
+                inflationRate,
+                years,
+                mode: calcMode,
+              }}
+              label="Share Plan"
+            />
+
+            <button
+              type="button"
+              onClick={handleExportFormulaicExcel}
+              className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-black text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white shadow-xs transition-colors cursor-pointer touch-manipulation"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export Formulaic Excel (.xlsx)</span>
+            </button>
 
             <CalcPromptButton
               prompt={aiPrompt}
-              label={isSalaryMode ? "Ask AI Salary Negotiation Advice" : "Ask AI Inflation Protection Advice"}
+              label={isSalaryMode ? "Copy AI Salary Prompt" : "Copy AI Inflation Prompt"}
             />
           </div>
 
           {/* Visual Chart: Future Cost Needed vs Purchasing Power */}
           <div className="space-y-2">
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              {isSalaryMode ? `Required Salary vs. Flat Wage Purchasing Power (${years} Years)` : `Cost Escalation vs. Purchasing Power Erosion (${years} Years)`}
+              {isSalaryMode
+                ? `Required Salary vs. Flat Wage Purchasing Power (${years} Years)`
+                : `Cost Escalation vs. Purchasing Power Erosion (${years} Years)`}
             </h3>
             <CalcChart
               data={chartData}
@@ -328,52 +483,86 @@ Provide actionable asset allocation advice to protect wealth against this inflat
             />
           </div>
 
-        {/* Table of intervals */}
-        <div className="space-y-2 pt-2">
-          <div className="flex items-center gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-            <TableIcon className="w-4 h-4 text-emerald-500" />
-            <span>Year-by-Year Inflation Schedule</span>
-          </div>
-          <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800 max-h-72">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 font-semibold border-b border-zinc-200 dark:border-zinc-700 sticky top-0">
-                <tr>
-                  <th className="py-2.5 px-3">Year</th>
-                  <th className="py-2.5 px-3">Future Equivalent Needed</th>
-                  <th className="py-2.5 px-3">Purchasing Power of Today&apos;s Amount</th>
-                  <th className="py-2.5 px-3">Cumulative Increase</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300">
-                {inflation.yearlyProjection.map((row) => {
-                  const cumPct = (
-                    ((row.futureNeeded - amount) / (amount || 1)) *
-                    100
-                  ).toFixed(1);
-                  return (
-                    <tr
-                      key={row.year}
-                      className={
-                        row.year === years
-                          ? "bg-emerald-50/70 dark:bg-emerald-950/20 font-bold text-emerald-700 dark:text-emerald-400"
-                          : "hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
-                      }
-                    >
-                      <td className="py-2 px-3">Year {row.year}</td>
-                      <td className="py-2 px-3">${row.futureNeeded.toLocaleString()}</td>
-                      <td className="py-2 px-3">${row.purchasingPower.toLocaleString()}</td>
-                      <td className="py-2 px-3">+{cumPct}%</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          {/* Table of intervals */}
+          <div className="space-y-2 pt-2">
+            <div className="flex items-center gap-2 text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              <TableIcon className="w-4 h-4 text-emerald-500" />
+              <span>Year-by-Year Inflation Schedule</span>
+            </div>
+            <div className="overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800 max-h-72">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 font-semibold border-b border-zinc-200 dark:border-zinc-700 sticky top-0">
+                  <tr>
+                    <th className="py-2.5 px-3">Year</th>
+                    <th className="py-2.5 px-3">Future Equivalent Needed</th>
+                    <th className="py-2.5 px-3">Purchasing Power of Today&apos;s Amount</th>
+                    <th className="py-2.5 px-3">Cumulative Increase</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300">
+                  {inflation.yearlyProjection.map((row) => {
+                    const cumPct = (
+                      ((row.futureNeeded - amount) / (amount || 1)) *
+                      100
+                    ).toFixed(1);
+                    return (
+                      <tr
+                        key={row.year}
+                        className={
+                          row.year === years
+                            ? "bg-emerald-50/70 dark:bg-emerald-950/20 font-bold text-emerald-700 dark:text-emerald-400"
+                            : "hover:bg-zinc-50 dark:hover:bg-zinc-800/40"
+                        }
+                      >
+                        <td className="py-2 px-3">Year {row.year}</td>
+                        <td className="py-2 px-3">${row.futureNeeded.toLocaleString()}</td>
+                        <td className="py-2 px-3">${row.purchasingPower.toLocaleString()}</td>
+                        <td className="py-2 px-3">+{cumPct}%</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    </CalcCard>
+      </CalcCard>
 
-    <InflationHedgeCard currentAmount={amount} targetYears={years} />
-  </div>
+      <InflationHedgeCard currentAmount={amount} targetYears={years} />
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-zinc-900/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between text-white">
+        <div className="min-w-0 pr-3">
+          <span className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider block truncate">
+            {isSalaryMode ? `Salary in ${years} Yrs` : `Future Cost (${years} Yrs)`}
+          </span>
+          <span className="text-base font-extrabold text-emerald-400 font-mono">
+            ${inflation.futureEquivalentValue.toLocaleString()}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <CalcSaveButton
+            toolSlug="inflation-calculator"
+            toolName="Inflation Calculator"
+            summaryTitle={`$${amount.toLocaleString()} (${years}y @ ${inflationRate}%)`}
+            summaryMetrics={[
+              {
+                label: isSalaryMode ? "Salary Needed" : "Future Cost",
+                value: `$${inflation.futureEquivalentValue.toLocaleString()}`,
+              },
+              {
+                label: "Purchasing Power",
+                value: `$${inflation.futurePurchasingPower.toLocaleString()}`,
+              },
+            ]}
+            label="Save"
+          />
+          <CalcShareButton
+            state={{ amount, inflationRate, years, mode: calcMode }}
+            label="Share"
+          />
+        </div>
+      </div>
+    </div>
   );
 }

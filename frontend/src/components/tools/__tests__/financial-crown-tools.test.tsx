@@ -171,7 +171,7 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
   });
 
   describe("InflationCalculator", () => {
-    it("renders inflation and purchasing power calculator with preset buttons", () => {
+    it("renders inflation and purchasing power calculator with preset buttons and MOAT features", () => {
       render(<InflationCalculator />);
 
       expect(
@@ -181,9 +181,15 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(screen.getByText(/Salary Protection/i)).toBeInTheDocument();
       expect(screen.getByText(/Common Inflation Benchmarks:/i)).toBeInTheDocument();
 
+      // Zero-knowledge privacy badge & market rate freshness signal
+      expect(screen.getByText(/100% Client-Side • Zero Server Storage/i)).toBeInTheDocument();
+      expect(screen.getByText(/Updated for October 2026/i)).toBeInTheDocument();
+
       expect(screen.getByRole("button", { name: /Fed Target \(2\.0%\)/i })).toBeInTheDocument();
-      expect(screen.getByText(/Export to Excel/i)).toBeInTheDocument();
-      expect(screen.getByText(/Ask AI Inflation Protection Advice/i)).toBeInTheDocument();
+      expect(screen.getByText(/Export.*Excel/i)).toBeInTheDocument();
+      expect(screen.getByText(/AI Inflation/i)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Save Scenario/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Share Plan/i })).toBeInTheDocument();
     });
 
     it("clicking a benchmark preset updates the inflation rate", () => {
