@@ -19,10 +19,16 @@ This log tracks all live directory submissions, approval statuses, and incoming 
 | 11 | **Alternative.me** | **75** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted & Pending Approval** ([Submissions](https://alternative.me/account/submissions)) | `https://www.convertsheet.com` |
 | 12 | **TinyLaunch** | **73** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Launch Scheduled (Pending Review)** ([Launch #26149](https://www.tinylaunch.com/dashboard/launches/26149/success)) | `https://www.convertsheet.com` |
 | 13 | **LaunchIgniter** | **74** | Profile Live / Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Product Created & Pending Approval** ([Product](https://launchigniter.com/product/convertsheet)) | `https://www.convertsheet.com` |
-| 14 | **Super Launch** | **62** | Nofollow / Dofollow Review | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted & In Review Queue** ([Product](https://www.superlaun.ch/products/3909)) | `https://www.convertsheet.com` |
-| 15 | **BuildVoyage** | **42** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Review Unlocked (3/3 Cheers Done)** ([Product](https://buildvoyage.com/products/convertsheet)) | `https://www.convertsheet.com` |
+| 14 | **Super Launch** | **62** | Nofollow / Dofollow Review | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted & In Review Queue** ([Product #3909](https://www.superlaun.ch/products/3909)) | `https://www.convertsheet.com` |
+| 15 | **BuildVoyage** | **42** | Dofollow | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **Review Unlocked (3/3 Cheers Done)** ([Product](https://buildvoyage.com/products/convertsheet)) | `https://www.convertsheet.com` |
 | 16 | **AI Tools (aitools.inc)** | **54** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted via Free Typeform** ([aitools.inc](https://aitools.inc)) | `https://www.convertsheet.com` |
 | 17 | **Tiny Startups** | **71** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted / In Review Queue** ([Tiny Startups](https://www.tinystartups.com)) | `https://www.convertsheet.com` |
+| 18 | **PeerPush** | **73** | Dofollow | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **100% Verified Live Badge** ([Product](https://peerpush.com/p/convertsheet)) | `https://www.convertsheet.com` |
+| 19 | **We Like Tools** | **52** | Dofollow | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **Submission Received & Badge Verified** ([Listing](https://weliketools.com/tool/convertsheet)) | `https://www.convertsheet.com` |
+| 20 | **Huzzler** | **63** | Dofollow | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **Queued for Publishing (Dec 29, 2026)** ([Product](https://huzzler.so/products/caEQ4i0Ll7/convertsheet)) | `https://www.convertsheet.com` |
+| 21 | **Findly.tools** | **81** | Dofollow | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **Listing Saved & Badge Deployed** ([Product](https://findly.tools/tools/convertsheet)) | `https://www.convertsheet.com` |
+| 22 | **SaaSBison** | **52** | Dofollow | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **Badge Verified & AI Autofilled** ([SaaSBison](https://saasbison.com/submit)) | `https://www.convertsheet.com` |
+| 23 | **DodoDirectory** | **51** | Dofollow | Free (Reciprocal Badge) | 2026-10-18 | `genshingamer2024@gmail.com` | **Badge Verified (Step 1 Complete)** ([DodoDirectory](https://dododirectory.com/submit)) | `https://www.convertsheet.com` |
 
 ---
 
@@ -168,40 +174,69 @@ This log tracks all live directory submissions, approval statuses, and incoming 
 
 ---
 
-## 3. Audited Directories Skipped (Paywalls & Reciprocal Badge Rules)
+## 3. Audited Directories Skipped (Strict Paywalls & Incompatible Requirements)
 
-In accordance with strict zero-cost guidelines and avoiding reciprocal backlink footprints on convertsheet.com:
+The following directories were audited and skipped due to paid submission paywalls or technical login barriers:
 
 | Directory | DR | Reason Skipped |
 | :--- | :---: | :--- |
 | **BetaList** | 76 | Free queue eliminated; minimum submission tier is $39 (Lite) up to $299 |
-| **Findly.tools** | 81 | $0 tier requires embedding badge on convertsheet.com; otherwise $29 |
-| **Startup Fast** | 72 | Dofollow backlink requires displaying badge on site or paying $19 |
-| **Aura++** | 72 | Free listing requires displaying badge for backlink; otherwise $29 |
-| **PeerPush** | 73 | Free publishing requires embedding badge for verification; otherwise $39 |
-| **Awesome Tools** | 42 | Free listing requires reciprocal backlink verified on homepage; otherwise $49 |
-| **Dang AI** | 82 | Requires crawlable reciprocal backlink to dang.ai; otherwise $49 |
+| **Startup Fast** | 72 | Dofollow backlink requires paying $19 or reciprocal badge |
+| **Aura++** | 72 | Free listing requires paying $29 |
+| **Awesome Tools** | 42 | Free listing requires $49 payment |
+| **Dang AI** | 82 | Requires $49 payment for listing |
 | **Open Launch** | 72 | Free launches booked out past 2027; requires $12 payment |
-| **Fazier** | 83 | Free tier requires embedding reciprocal backlink badge; otherwise $29–$39 |
-| **Twelve Tools** | 82 | Free tier requires embedding reciprocal backlink badge; otherwise $25.20 |
-| **StartupBase** | 73 | Free tier requires embedding badge; otherwise $39 |
-| **Acidtools** | 67 | Free tier requires reciprocal backlink on convertsheet.com; otherwise $25+ |
-| **Unite List** | 58 | Free tier requires reciprocal link badge |
-| **Firsto** | 55 | 180-day queue; dofollow backlink only given if reciprocal badge embedded |
-| **StartupTrusted** | 54 | Free tier requires reciprocal badge on our website |
-| **Toolfio** | 62 | Enforces minimum DR 20+ requirement and requires reciprocal badge |
-| **SaasHunt** | 58 | Free queue enforces minimum DR 20+ requirement |
-| **SaaSBison** | 52 | Free tier requires embedding reciprocal badge on website |
-| **We Like Tools** | 52 | Free tier requires embedding reciprocal badge on website |
-| **DodoDirectory** | 51 | Free tier requires embedding reciprocal badge on website |
-| **Micro SaaS Examples** | 49 | Paid ($3 or $29) and $3 tier requires permanent reciprocal badge |
+| **Fazier** | 83 | Minimum submission tier is $29–$39 |
+| **Twelve Tools** | 82 | Minimum submission fee is $25.20 |
+| **StartupBase** | 73 | Minimum submission fee is $39 |
+| **Acidtools** | 67 | Minimum submission fee is $25+ |
+| **Firsto** | 55 | 180-day queue |
+| **StartupTrusted** | 54 | Minimum submission fee |
+| **Toolfio** | 62 | Enforces minimum external DR 20+ requirement |
+| **SaasHunt** | 58 | Free queue enforces minimum external DR 20+ requirement |
+| **Micro SaaS Examples** | 49 | Paid plan required ($3 or $29) |
 | **MagicBox.tools** | 68 | No free tier; minimum submission plan is $15.90 |
 | **NxGn Tools** | 56 | No free tier; all launch plans are paid |
-| **Huzzler** | 63 | Free publication requires embedding Huzzler badge on website |
-| **OpenHunts** | 50 | Free queue requires reciprocal badge; otherwise $9.90–$20 paid |
+| **OpenHunts** | 50 | Requires $9.90–$20 paid launch plan |
 | **Startup Stash** | 66 | No self-serve free submission form |
 | **MicroLaunch** | 63 | No free tier exists; minimum paid plan is $39 |
 | **TrustMRR** | 71 | Requires live Stripe API key revenue connection and $19+ fee |
 | **toolsfine** | 64 | Minimum submission fee is $16 |
 | **Product Hunt** | 91 | Only supports OAuth via LinkedIn, GitHub, or X (no Google login option) |
 | **Indiehunt** | 62 | Google OAuth callback returned backend configuration error on their server |
+
+---
+
+## 4. Reciprocal Badge Tracker & Verification Schedule
+
+In accordance with user approval, ConvertSheet displays clean, discrete badges in `frontend/src/components/layout/Footer.tsx` under `"Recognized & Featured On"`.
+
+### Live Reciprocal Badges Deployed on `https://www.convertsheet.com`:
+
+| # | Directory | DR | Badge Link on convertsheet.com | Crawler Verification Status | Expected Public Listing / Backlink URL | Expected Live / Audit Date |
+| :-: | :--- | :---: | :--- | :---: | :--- | :--- |
+| 1 | **PeerPush** | **73** | `https://peerpush.com/p/convertsheet` | **100% VERIFIED LIVE** ("Found on convertsheet.com - badge is live") | `https://peerpush.com/p/convertsheet` | **LIVE NOW (Dofollow)** |
+| 2 | **Super Launch** | **62** | `https://www.superlaun.ch/products/3909` | **VERIFIED (Product #3909 Free Tier Saved)** | `https://www.superlaun.ch/products/3909` | **LIVE NOW (In Queue)** |
+| 3 | **Huzzler** | **63** | `https://huzzler.so/products/caEQ4i0Ll7/convertsheet` | **QUEUED ($0 Free Publication Queue Confirmed)** | `https://huzzler.so/products/caEQ4i0Ll7/convertsheet` | **Dec 29, 2026 (DR 69+ Dofollow)** |
+| 4 | **We Like Tools** | **52** | `https://weliketools.com/tool/convertsheet` | **100% SUBMISSION RECEIVED (Step 3 Complete)** | `https://weliketools.com/tool/convertsheet` | **~24-48 Hours (Dofollow)** |
+| 5 | **BuildVoyage** | **42** | `https://buildvoyage.com/products/convertsheet?ref=badge` | **100% REVIEW UNLOCKED (3/3 Community Cheers Completed)** | `https://buildvoyage.com/products/convertsheet` | **Live / Community Review** |
+| 6 | **Findly.tools** | **81** | `https://findly.tools/tools/convertsheet` | **LISTING DETAILS SAVED (Badge Code Deployed)** | `https://findly.tools/tools/convertsheet` | **Review Queue** |
+| 7 | **SaaSBison** | **52** | `https://saasbison.com` | **BADGE VERIFIED (Step 1 Passed & AI Autofilled)** | `https://saasbison.com/tool/convertsheet` | **Pending Image Selection** |
+| 8 | **DodoDirectory** | **51** | `https://dododirectory.com` | **BADGE VERIFIED (Step 1 Passed, URL Validated)** | `https://dododirectory.com/tool/convertsheet` | **Pending Review** |
+
+---
+
+## 5. Automated Backlink Audit System
+
+An automated verification script has been created to poll and verify incoming backlinks:
+
+```bash
+# Run from repository root:
+node scripts/audit-backlinks.js
+
+# Or via npm script in frontend:
+cd frontend && npm run audit:backlinks
+```
+
+The script fetches each directory listing page with full User-Agent headers, inspects the DOM for anchor tags pointing to `convertsheet.com`, and reports whether the link is `DOFOLLOW`, `NOFOLLOW`, or still in the review queue.
+
