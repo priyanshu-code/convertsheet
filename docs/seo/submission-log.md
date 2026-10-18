@@ -1,31 +1,135 @@
 # ConvertSheet Directory Submission Log
 
-This log tracks all live directory submissions, approval statuses, and incoming backlink verification.
+This log tracks all live directory submissions, approval statuses, and incoming backlink verification for [ConvertSheet](https://www.convertsheet.com).
+
+## 1. Verified Free Submissions (Live & In Review Queue)
 
 | # | Directory | Ahrefs DR | Link Type | Cost | Date Submitted | Account / Profile | Status / Submission ID | Target URL |
 | :-: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
 | 1 | **AlternativeTo** | **80** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Live in Review Queue** ([Page](https://alternativeto.net/software/convertsheet/)) | `https://www.convertsheet.com` |
 | 2 | **Peerlist** | **77** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **100% Live & Published** ([Project](https://peerlist.io/genshing2024/project/convertsheet)) | `https://www.convertsheet.com/?ref=peerlist` |
 | 3 | **Uneed** | **68** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Saved & Queued** ([Tool](https://www.uneed.best/edit/waiting-line/61848)) | `https://www.convertsheet.com` |
+| 4 | **SaaSHub** | **80** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Verified & Submitted** ([Page](https://www.saashub.com/convertsheet)) | `https://www.convertsheet.com` |
+| 5 | **SideProjectors** | **70** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted Successfully** ([ID: 101796](https://www.sideprojectors.com/submit/done/101796) + ComingUp) | `https://www.convertsheet.com` |
+| 6 | **Future Tools** | **69** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted to Review Queue** ([Form](https://futuretools.io/submit-a-tool)) | `https://www.convertsheet.com` |
+| 7 | **Pitchwall** | **70** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Under Review** ([Status Page](https://pitchwall.co/product/convertsheet-browser-based-data-converter/status)) | `https://www.convertsheet.com` |
+| 8 | **DevHunt** | **65** | Live (Nofollow Free) | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **100% Live Public URL** ([Tool](https://devhunt.org/tool/convertsheet)) | `https://www.convertsheet.com/?ref=devhunt` |
+| 9 | **FoundrList** | **72** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Profile & Product Saved** ([Product](https://www.foundrlist.com/product/convertsheet)) | `https://www.convertsheet.com` |
+| 10 | **Launching Next** | **54** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted to Queue** ([ID: 163024](https://www.launchingnext.com/thanks/?i=163024)) | `https://www.convertsheet.com` |
+| 11 | **Alternative.me** | **75** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted & Pending Approval** ([Submissions](https://alternative.me/account/submissions)) | `https://www.convertsheet.com` |
 
 ---
 
-### AlternativeTo Submission Details
+## 2. Detailed Submission Breakdown
+
+### 1. AlternativeTo (DR 80)
 * **App Name:** ConvertSheet
-* **Live Page:** `https://alternativeto.net/software/convertsheet/`
-* **URL:** `https://www.convertsheet.com`
-* **Category:** File Converter, Spreadsheet, Calculator
+* **Live Public Queue Page:** `https://alternativeto.net/software/convertsheet/`
+* **Target URL:** `https://www.convertsheet.com`
+* **Categories:** File Converter, Spreadsheet, Calculator
 * **Platform:** Online / Web
 * **License:** Free (Proprietary SaaS)
-* **Linked Alternatives:** CloudConvert, Convertio, FreeConvert, +48 more file converters
+* **Mapped Alternatives:** CloudConvert, Convertio, FreeConvert, +48 more file converters
 * **Icon:** `icon-512.png` attached
 * **Submission Queue ID:** `40fcfc8a-a3a7-43f7-a1d6-89361536941c`
 
----
-
-### Peerlist Submission Details
+### 2. Peerlist (DR 77)
 * **Project Name:** ConvertSheet
 * **Live Public URL:** `https://peerlist.io/genshing2024/project/convertsheet`
 * **Target Backlink:** `https://www.convertsheet.com/?ref=peerlist&utm_source=peerlist`
 * **Profile:** `https://peerlist.io/genshing2024`
 * **Status:** 100% Publicly Indexed & Published (DR 77 Dofollow Link)
+
+### 3. Uneed (DR 68)
+* **Tool Name:** ConvertSheet
+* **Live Queue Page:** `https://www.uneed.best/edit/waiting-line/61848`
+* **Target URL:** `https://www.convertsheet.com`
+* **Account:** `genshingamer2024-e1ee`
+* **Status:** Waiting line ID 61848
+
+### 4. SaaSHub (DR 80)
+* **Software Name:** ConvertSheet
+* **Live Slug:** `https://www.saashub.com/convertsheet`
+* **Target URL:** `https://www.convertsheet.com`
+* **Categories:** Developer Tools, Spreadsheets, Productivity
+* **Status:** Email verified via `genshingamer2024@gmail.com` confirmation link; live product profile created
+
+### 5. SideProjectors (DR 70) + ComingUp
+* **Project Name:** ConvertSheet
+* **Submission ID:** `101796`
+* **Confirmation URL:** `https://www.sideprojectors.com/submit/done/101796`
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Categories:** Developer Tools, Web Tools, SaaS
+* **Bonus Exposure:** Partnered with ComingUp for automatic cross-listing upon approval
+
+### 6. Future Tools (DR 69)
+* **Tool Name:** ConvertSheet
+* **Confirmation:** "Tool Submitted! Thanks for submitting your tool. Matt will review it and, if approved, it will appear in the database soon."
+* **Submission URL:** `https://futuretools.io/submit-a-tool`
+* **Category:** Productivity
+* **Pricing Tier:** Free
+* **Target Backlink:** `https://www.convertsheet.com`
+
+### 7. Pitchwall (DR 70)
+* **Product Name:** ConvertSheet
+* **Status URL:** `https://pitchwall.co/product/convertsheet-browser-based-data-converter/status`
+* **Status:** Under Review (Free Launch Plan)
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Account:** `@convertsheet` (`genshingamer2024@gmail.com`)
+* **Tags:** data conversion, Developer Tools, Spreadsheet Tools
+
+### 8. DevHunt (DR 65)
+* **Product Name:** ConvertSheet
+* **Live Public URL:** `https://devhunt.org/tool/convertsheet`
+* **Target Link:** `https://www.convertsheet.com/?ref=devhunt`
+* **Status:** 100% Live on DevHunt directory
+* **Maker Profile:** `genshingamer`
+
+### 9. FoundrList (DR 72)
+* **Product Name:** ConvertSheet
+* **Live Product Preview:** `https://www.foundrlist.com/product/convertsheet`
+* **Public Profile:** `https://www.foundrlist.com/@genshingamer`
+* **Status:** Listing saved and drafted via AI agent Ghosty
+* **Target Backlink:** `https://www.convertsheet.com`
+
+### 10. Launching Next (DR 54)
+* **Startup Name:** ConvertSheet
+* **Submission ID:** `163024`
+* **Confirmation URL:** `https://www.launchingnext.com/thanks/?i=163024`
+* **Status:** Submitted & In Queue
+* **Target Backlink:** `https://www.convertsheet.com`
+
+### 11. Alternative.me (DR 75)
+* **Software Name:** ConvertSheet
+* **Status:** 100% Submitted & Pending Approval
+* **Submissions Dashboard:** `https://alternative.me/account/submissions`
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Account:** `genshingamer2024@gmail.com`
+* **Category:** Web > Tools (`software/web/tools`)
+* **Platform:** Browser
+* **Pricing Tier:** Free
+* **License / Type:** Online / SaaS (Released)
+
+---
+
+## 3. Audited Directories Skipped (Paywalls & Reciprocal Badge Rules)
+
+In accordance with strict zero-cost guidelines and avoiding reciprocal backlink footprints on convertsheet.com:
+
+| Directory | DR | Reason Skipped |
+| :--- | :---: | :--- |
+| **Open Launch** | 72 | Free launches closed / fully booked into 2027; requires $12 payment |
+| **Fazier** | 83 | Free basic tier requires embedding reciprocal backlink badge on our homepage/footer; otherwise $29–$39 |
+| **Twelve Tools** | 82 | Free tier requires embedding reciprocal backlink badge on our site; otherwise $25.20 |
+| **StartupBase** | 73 | Free tier requires embedding StartupBase badge on our site; otherwise $39 |
+| **Acidtools** | 67 | Free tier requires reciprocal backlink on convertsheet.com; otherwise $25+ |
+| **MicroLaunch** | 63 | No free tier exists; minimum paid plan is $39 |
+| **TrustMRR** | 71 | Requires live Stripe API key revenue connection and $19+ fee |
+| **toolsfine** | 64 | Minimum submission fee is $16 |
+| **Unite List** | 58 | Submitmatic clone; free tier requires reciprocal link badge |
+| **Firsto** | 55 | 180-day queue; dofollow backlink only given if reciprocal badge embedded |
+| **StartupTrusted** | 54 | Free tier requires reciprocal badge on our website |
+| **Dang AI** | 82 | Free tier requires embedding reciprocal crawlable backlink to dang.ai; otherwise $49 |
+| **BetaList** | 76 | Free queue eliminated; minimum submission tier is $39 (Lite) up to $299 |
+| **Product Hunt** | 91 | Only supports OAuth via LinkedIn, GitHub, or X (no Google login option) |
+| **Indiehunt** | 62 | Google OAuth callback returned backend configuration error on their server |
