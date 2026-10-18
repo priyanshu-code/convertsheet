@@ -17,6 +17,7 @@ This log tracks all live directory submissions, approval statuses, and incoming 
 | 9 | **FoundrList** | **72** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Profile & Product Saved** ([Product](https://www.foundrlist.com/product/convertsheet)) | `https://www.convertsheet.com` |
 | 10 | **Launching Next** | **54** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted to Queue** ([ID: 163024](https://www.launchingnext.com/thanks/?i=163024)) | `https://www.convertsheet.com` |
 | 11 | **Alternative.me** | **75** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted & Pending Approval** ([Submissions](https://alternative.me/account/submissions)) | `https://www.convertsheet.com` |
+| 12 | **TinyLaunch** | **73** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Launch Scheduled (Pending Review)** ([Launch #26149](https://www.tinylaunch.com/dashboard/launches/26149/success)) | `https://www.convertsheet.com` |
 
 ---
 
@@ -109,6 +110,16 @@ This log tracks all live directory submissions, approval statuses, and incoming 
 * **Platform:** Browser
 * **Pricing Tier:** Free
 * **License / Type:** Online / SaaS (Released)
+
+### 12. TinyLaunch (DR 73)
+* **Startup Name:** ConvertSheet
+* **Status:** 100% Free Launch Scheduled & Pending Review (<24h)
+* **Launch Confirmation URL:** `https://www.tinylaunch.com/dashboard/launches/26149/success`
+* **Scheduled Launch Date:** Mon, Nov 16
+* **Startup ID:** `28672` | **Launch ID:** `26149`
+* **Category:** Developer Tools
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Account:** `@convertsheet` (`genshingamer2024@gmail.com`)
 
 ---
 
