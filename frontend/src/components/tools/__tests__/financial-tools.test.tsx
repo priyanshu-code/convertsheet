@@ -78,7 +78,7 @@ describe("Financial Calculators Suite", () => {
     expect(screen.getByText("Download .xlsx Reference Sheet")).toBeInTheDocument();
   });
 
-  it("DiscountCalculator computes single and stacked discounts", () => {
+  it("DiscountCalculator computes single and stacked discounts with ConvertSheet MOAT features", () => {
     localStorage.setItem("convertsheet-target-market", "IN");
     render(
       <CurrencyProvider>
@@ -86,10 +86,12 @@ describe("Financial Calculators Suite", () => {
       </CurrencyProvider>
     );
     expect(screen.getByText(/Discount & Sale Price Calculator/i)).toBeInTheDocument();
+    expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for 2026 Retail/i)).toBeInTheDocument();
 
-    // 20% off on 2,000 = final 1,600 and savings 400
-    expect(screen.getByText("₹1,600")).toBeInTheDocument();
-    expect(screen.getByText("₹400")).toBeInTheDocument();
+    // 20% off on 2,000 = final 1,600 and savings 400 (present in CalcResult and sticky bottom mobile bar)
+    expect(screen.getAllByText("₹1,600").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("₹400").length).toBeGreaterThanOrEqual(1);
   });
 
   it("Dynamic currency switching updates symbols when market changes", () => {
@@ -101,7 +103,7 @@ describe("Financial Calculators Suite", () => {
     );
 
     // In US mode, 20% off on $2,000 = final $1,600
-    expect(screen.getByText("$1,600")).toBeInTheDocument();
-    expect(screen.getByText("$400")).toBeInTheDocument();
+    expect(screen.getAllByText("$1,600").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("$400").length).toBeGreaterThanOrEqual(1);
   });
 });

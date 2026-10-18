@@ -123,21 +123,26 @@ describe("Phase 2 Calculators and Tools", () => {
   });
 
   describe("MarginCalculator", () => {
-    it("renders profit margin and markup metrics", () => {
+    it("renders profit margin and markup metrics with ConvertSheet MOAT features", () => {
       render(<MarginCalculator />);
       expect(screen.getByText("Profit Margin & Markup Calculator")).toBeInTheDocument();
-      expect(screen.getByText("Gross Profit")).toBeInTheDocument();
+      expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
+      expect(screen.getByText(/Updated for 2026 E-Commerce/i)).toBeInTheDocument();
+      expect(screen.getAllByText("Gross Profit").length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText("Profit Margin")).toBeInTheDocument();
       expect(screen.getByText("Markup")).toBeInTheDocument();
+      expect(screen.getAllByText(/Export/i).length).toBeGreaterThanOrEqual(1);
     });
   });
 
   describe("RoiCalculator", () => {
-    it("renders ROI metrics and compound growth trajectory with quick chips", () => {
+    it("renders ROI metrics and compound growth trajectory with quick chips and MOAT features", () => {
       render(<RoiCalculator />);
       expect(screen.getByText("Return on Investment (ROI) Calculator")).toBeInTheDocument();
+      expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
+      expect(screen.getByText(/Updated for 2026 Asset Benchmarks/i)).toBeInTheDocument();
       expect(screen.getByText("Total Return on Investment")).toBeInTheDocument();
-      expect(screen.getByText("Net Capital Gain")).toBeInTheDocument();
+      expect(screen.getAllByText("Net Capital Gain").length).toBeGreaterThanOrEqual(1);
 
       // Test quick investment preset
       const chip25k = screen.getByRole("button", { name: "$25k" });
@@ -151,7 +156,7 @@ describe("Phase 2 Calculators and Tools", () => {
 
       // Investment = 25,000, Return = 50,000 -> ROI = +100%, Net Gain = $25,000
       expect(screen.getByText("+100%")).toBeInTheDocument();
-      expect(screen.getByText("$25,000")).toBeInTheDocument();
+      expect(screen.getAllByText("$25,000").length).toBeGreaterThanOrEqual(1);
       expect(screen.getAllByRole("button", { name: /copy/i }).length).toBeGreaterThanOrEqual(1);
     });
   });

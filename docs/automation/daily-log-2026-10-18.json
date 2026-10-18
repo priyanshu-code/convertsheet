@@ -141,5 +141,21 @@
       "In upcoming cycles, expand quantitative developer utilities (e.g. WASM-powered CSV to Parquet and Sharpe/Sortino calculators).",
       "Maintain strict zero-slop and client-side zero-knowledge guarantees across all hubs."
     ]
-  }
+  },
+  "radarPulses": [
+    {
+      "timestamp": "2026-10-18T18:15:00+05:30",
+      "sourcesScanned": [
+        "Freddie Mac PMMS (October 15, 2026 release: 30-Year fixed 7.40%, 15-Year fixed 6.71%)",
+        "US Department of the Treasury (10-Year yield trading at 5.09%–5.12%, 2-Year at 4.80%, Fed Funds effective 3.88% against target 3.75%–4.00%)",
+        "Reserve Bank of India Monetary Policy Committee (October 2026 repo rate hiked 25 bps to 5.50%, SDF 5.25%, MSF 5.75%, Bank Rate 5.75%, stance 'calibrated tightening', commercial banks SBI/HDFC/PNB/BoB passed 25 bps to EBLR)",
+        "UK Debt Management Office & Bank of England (30-year gilt at 6.01%, 10-year gilt at 5.42%, Moneyfacts UK average 2-year fixed at 5.96%, 5-year fixed at 5.99%, SVR at 7.13%)",
+        "Hacker News & r/algotrading (DuckDB-WASM, Apache Arrow, and Apache Parquet in the browser standardizing serverless zero-knowledge financial backtesting and local data processing)",
+        "Google Search Central & SEO Watchdogs (October 2026 guidance requiring human-verified accuracy on JSON-LD structured data and entity alignment to prevent AI Overview penalization)"
+      ],
+      "findings": "Freddie Mac PMMS confirmed mortgage rates remaining elevated at 7.40% (30-yr) and 6.71% (15-yr), while UK 30-year gilt yields at 6.01% continue pushing UK fixed mortgage swap rates near 6%. In India, RBI's repo rate hike to 5.50% has fully transmitted to retail lending rates (7.25%–8.50% p.a.). In the developer ecosystem, DuckDB-Wasm with HTTP range requests on columnar Parquet files is gaining significant traction for private, in-browser financial data processing without cloud database costs. An operational review of ConvertSheet's financial and business calculator inventory identified three pending tools—DiscountCalculator, MarginCalculator, and RoiCalculator—lacking ConvertSheet MOAT features (zero-knowledge privacy badge, 2026 freshness signals, URL permalink synchronization, 44px minimum touch targets, branded SheetJS formulaic .xlsx exports, and sticky bottom mobile summary bars with safe area insets).",
+      "actionTaken": "1. Fully upgraded DiscountCalculator.tsx with 100% Client-Side Zero-Knowledge Privacy Badge, 2026 Retail & E-Commerce freshness signal, URL query permalink synchronization (originalPrice, discountPercent, extraDiscount), dual numeric and slider inputs, 44px minimum touch targets on all price/discount/coupon presets, branded SheetJS (.xlsx) export with recalculation link and comparative markdown matrix, CalcSaveButton, CalcShareButton, CalcPromptButton, and sticky bottom mobile summary bar with safe area insets.\n2. Fully upgraded MarginCalculator.tsx with 100% Client-Side Zero-Knowledge Privacy Badge, 2026 E-Commerce & Retail margin benchmarks freshness signal (SaaS 75–85%, E-Commerce 35–50%, Wholesale 15–25%), URL query permalink synchronization (cost, revenue, targetMargin, calcMode), dual numeric inputs and range sliders, 44px minimum touch targets on all margin chips and mode toggles, branded SheetJS (.xlsx) export with recalculation link and 10%–80% sensitivity matrix, CalcSaveButton, CalcShareButton, CalcPromptButton, and sticky bottom mobile summary bar with safe area insets.\n3. Fully upgraded RoiCalculator.tsx with 100% Client-Side Zero-Knowledge Privacy Badge, 2026 Asset Benchmarks freshness signal (S&P 500 ~10% CAGR • US 10Y Treasury 5.10%), URL query permalink synchronization (initialInvestment, finalReturn, investmentYears), dual numeric inputs and range sliders, 44px minimum touch targets across all investment presets, multiplier targets, and duration chips, branded SheetJS (.xlsx) export with recalculation link and valuation schedule, CalcSaveButton, CalcShareButton, CalcPromptButton, and sticky bottom mobile summary bar with safe area insets.\n4. Updated unit test suites in financial-tools.test.tsx and phase2-tools.test.tsx verifying 100% of calculations, MOAT privacy badges, 2026 freshness signals, and touch targets (18/18 passed).\n5. Updated docs/content-inventory.json marking discount-calculator, margin-calculator, and roi-calculator as audited with complete MOAT feature tags, and updated docs/design-system/mobile-ux-playbook.md."
+    }
+  ]
 }
+

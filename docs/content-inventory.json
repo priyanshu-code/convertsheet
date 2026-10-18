@@ -559,6 +559,54 @@
         "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
+    },
+    {
+      "slug": "discount-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "margin-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "roi-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
     }
   ]
 }
