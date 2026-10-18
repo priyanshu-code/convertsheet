@@ -1,7 +1,7 @@
 {
   "lastUpdated": "2026-10-18",
   "totalBlogs": 28,
-  "totalTools": 18,
+  "totalTools": 28,
   "blogs": [
     {
       "slug": "convert-json-to-excel-privately",
@@ -601,6 +601,54 @@
         "url-query-permalink-sync",
         "44px-touch-targets",
         "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "tip-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "date-difference-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "quick-range-presets-44px",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "age-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "quick-dob-presets-44px",
+        "generational-cohort-engine",
         "save-share-prompt-actions",
         "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",

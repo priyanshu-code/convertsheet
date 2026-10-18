@@ -1,28 +1,73 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { CalendarRange } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { CalendarRange, ArrowLeftRight, ShieldCheck, Sparkles, FileSpreadsheet, Download, Calendar } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
   CalcToggle,
   CalcResult,
+  CalcSaveButton,
+  CalcShareButton,
+  CalcPromptButton,
 } from "@/components/calculator";
+import * as XLSX from "xlsx";
 
-export function DateDifferenceCalculator() {
+export interface DateDifferenceCalculatorProps {
+  initialValues?: Partial<{
+    startDate: string;
+    endDate: string;
+    includeEndDay: "no" | "yes";
+  }>;
+}
+
+export function DateDifferenceCalculator({ initialValues }: DateDifferenceCalculatorProps = {}) {
   const [startDate, setStartDate] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("startDate");
+      if (q) return q;
+    }
+    if (initialValues?.startDate) return initialValues.startDate;
     const d = new Date();
     d.setDate(d.getDate() - 30);
     return d.toISOString().slice(0, 10);
   });
+
   const [endDate, setEndDate] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("endDate");
+      if (q) return q;
+    }
+    if (initialValues?.endDate) return initialValues.endDate;
     return new Date().toISOString().slice(0, 10);
   });
-  const [includeEndDay, setIncludeEndDay] = useState<"no" | "yes">("no");
+
+  const [includeEndDay, setIncludeEndDay] = useState<"no" | "yes">(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("includeEndDay");
+      if (q === "yes" || q === "no") return q;
+    }
+    return initialValues?.includeEndDay || "no";
+  });
+
+  const [isExportingExcel, setIsExportingExcel] = useState(false);
+
+  // Sharable State Permalinks: smoothly sync parameters into URL query params
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("startDate", startDate);
+    params.set("endDate", endDate);
+    params.set("includeEndDay", includeEndDay);
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [startDate, endDate, includeEndDay]);
 
   const swapDates = () => {
+    const temp = startDate;
     setStartDate(endDate);
-    setEndDate(startDate);
+    setEndDate(temp);
   };
 
   const applyPreset = (preset: "7d" | "30d" | "90d" | "thisMonth" | "thisYear" | "untilNewYear") => {
@@ -97,6 +142,9 @@ export function DateDifferenceCalculator() {
     const copySummary = `Duration: ${calendarDays.toLocaleString()} Days (${weeks} weeks, ${remainingDays} days) | Business Days: ${businessDays.toLocaleString()} | Weekends: ${weekends.toLocaleString()} | ${startDate} to ${endDate}`;
 
     return {
+      rawCalendarDays: calendarDays,
+      rawBusinessDays: businessDays,
+      rawWeekends: weekends,
       calendarDays: calendarDays.toLocaleString(),
       businessDays: businessDays.toLocaleString(),
       weekends: weekends.toLocaleString(),
@@ -106,99 +154,230 @@ export function DateDifferenceCalculator() {
     };
   }, [startDate, endDate, includeEndDay]);
 
+  const llmPrompt = diffData
+    ? `Analyze this calendar duration and business schedule:
+- Start Date: ${startDate}
+- End Date: ${endDate}
+- End Date Included: ${includeEndDay === "yes" ? "Yes (+1 inclusive day)" : "No (exclusive)"}
+- Total Calendar Duration: ${diffData.calendarDays} Days (${diffData.breakdown})
+- Working Business Days: ${diffData.businessDays} Days
+- Weekend Days: ${diffData.weekends} Days
+- Total Elapsed Hours: ${diffData.totalHours} Hours
+
+Please evaluate this project timeline against standard 2026 sprint milestones and statutory bank holidays.`
+    : "";
+
+  const handleExportExcel = () => {
+    if (!diffData) return;
+    try {
+      setIsExportingExcel(true);
+      const wb = XLSX.utils.book_new();
+
+      const summaryData = [
+        ["ConvertSheet - Date Difference & Project Duration Calculation", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["Recalculate Online", "https://www.convertsheet.com/tools/date-difference-calculator"],
+        ["", ""],
+        ["--- TIMELINE PARAMETERS ---", ""],
+        ["Start Date", startDate],
+        ["End Date", endDate],
+        ["Include End Date in Duration", includeEndDay === "yes" ? "Yes" : "No"],
+        ["", ""],
+        ["--- DURATION METRICS ---", ""],
+        ["Total Calendar Days", diffData.rawCalendarDays],
+        ["Working Business Days (Mon-Fri)", diffData.rawBusinessDays],
+        ["Weekend Days (Sat-Sun)", diffData.rawWeekends],
+        ["Weeks and Days Breakdown", diffData.breakdown],
+        ["Total Hours", diffData.rawCalendarDays * 24],
+        ["Total Minutes", diffData.rawCalendarDays * 1440],
+      ];
+
+      const ws = XLSX.utils.aoa_to_sheet(summaryData);
+      ws["!cols"] = [{ wch: 38 }, { wch: 24 }];
+      XLSX.utils.book_append_sheet(wb, ws, "Duration Summary");
+
+      XLSX.writeFile(wb, `ConvertSheet_Date_Diff_${startDate}_to_${endDate}.xlsx`);
+    } catch (err) {
+      console.error("Failed to export Excel", err);
+    } finally {
+      setIsExportingExcel(false);
+    }
+  };
+
   return (
-    <CalcCard
-      title="Date Difference & Duration Calculator"
-      subtitle="Calculate exact days, weeks, and business days (excluding weekends) between any two calendar dates."
-      icon={CalendarRange}
-      badge="Work & Calendar"
-    >
-      {/* Quick Range Presets */}
-      <div className="flex flex-wrap items-center gap-1.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
-        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 mr-1">Quick Presets:</span>
-        {[
-          { label: "Last 7 Days", preset: "7d" as const },
-          { label: "Last 30 Days", preset: "30d" as const },
-          { label: "Last 90 Days", preset: "90d" as const },
-          { label: "This Month", preset: "thisMonth" as const },
-          { label: "This Year", preset: "thisYear" as const },
-          { label: "Countdown to Dec 31", preset: "untilNewYear" as const },
-        ].map((p) => (
-          <button
-            key={p.label}
-            type="button"
-            onClick={() => applyPreset(p.preset)}
-            className="px-2.5 py-1 text-xs font-medium rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-slate-700 shadow-sm transition-colors"
-          >
-            {p.label}
-          </button>
-        ))}
+    <div className="space-y-6">
+      {/* 100% Client-Side Privacy Reassurance Badge */}
+      <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
+        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span>
+          <strong className="font-semibold">100% Client-Side Privacy:</strong> Calendar calculations run entirely inside your browser. Zero dates or project timelines are transmitted.
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-4 items-end">
-        <CalcInput
-          id="start-date"
-          label="Start Date"
-          type="date"
-          value={startDate}
-          onChange={setStartDate}
-        />
-        <div className="flex justify-center pb-1">
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs">
+        <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+        <span>
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">2026 Calendar Standards:</strong> 365 Days (Common Year) • 261 Standard Business Days • Accurate Mon–Fri Working Day Math
+        </span>
+      </div>
+
+      <CalcCard
+        title="Date Difference & Duration Calculator"
+        subtitle="Calculate exact days, weeks, and business days (excluding weekends) between any two calendar dates."
+        icon={CalendarRange}
+        badge="Work & Calendar"
+      >
+        {/* Quick Range Presets with 44px minimum touch targets */}
+        <div className="space-y-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+            <Calendar className="w-3.5 h-3.5 text-zinc-500" />
+            <span>Quick Range Presets:</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: "Last 7 Days", preset: "7d" as const },
+              { label: "Last 30 Days", preset: "30d" as const },
+              { label: "Last 90 Days", preset: "90d" as const },
+              { label: "This Month", preset: "thisMonth" as const },
+              { label: "This Year", preset: "thisYear" as const },
+              { label: "Until New Year 2027", preset: "untilNewYear" as const },
+            ].map((p) => (
+              <button
+                key={p.label}
+                type="button"
+                onClick={() => applyPreset(p.preset)}
+                className="min-h-[44px] px-3.5 py-2 text-xs font-medium rounded-lg bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400 border border-zinc-200 dark:border-zinc-700 shadow-xs transition-colors touch-manipulation cursor-pointer flex items-center justify-center"
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr,auto,1fr] gap-4 items-end pt-2">
+          <CalcInput
+            id="start-date"
+            label="Start Date"
+            type="date"
+            value={startDate}
+            onChange={setStartDate}
+          />
+          <div className="flex justify-center pb-0.5">
+            <button
+              type="button"
+              onClick={swapDates}
+              title="Swap Start and End Dates"
+              className="min-h-[44px] min-w-[44px] px-3.5 py-2 text-xs font-semibold rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 transition-colors flex items-center gap-1.5 shadow-xs touch-manipulation cursor-pointer"
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5" />
+              <span>Swap</span>
+            </button>
+          </div>
+          <CalcInput
+            id="end-date"
+            label="End Date"
+            type="date"
+            value={endDate}
+            onChange={setEndDate}
+          />
+        </div>
+
+        <div className="pt-2">
+          <CalcToggle
+            label="Include End Day in Calculation (+1 day)?"
+            value={includeEndDay}
+            options={[
+              { value: "no", label: "Exclude End Date" },
+              { value: "yes", label: "Include End Date" },
+            ]}
+            onChange={(v) => setIncludeEndDay(v as "no" | "yes")}
+          />
+        </div>
+
+        {/* Action Buttons: Save, Share, Prompt, Excel Export */}
+        {diffData && (
+          <div className="pt-4 flex flex-wrap items-center gap-3 border-t border-zinc-100 dark:border-zinc-800">
+            <CalcSaveButton
+              calculationType="Date Difference Calculation"
+              inputs={{ startDate, endDate, includeEndDay }}
+              outputs={{
+                calendarDays: diffData.calendarDays,
+                businessDays: diffData.businessDays,
+                weekends: diffData.weekends,
+              }}
+            />
+            <CalcShareButton
+              title="ConvertSheet Date Difference & Duration Calculation"
+              text={diffData.copySummary}
+            />
+            <CalcPromptButton promptText={llmPrompt} />
+            <button
+              type="button"
+              onClick={handleExportExcel}
+              disabled={isExportingExcel}
+              className="min-h-[44px] px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 text-xs font-semibold hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors flex items-center gap-2 cursor-pointer shadow-xs disabled:opacity-50 touch-manipulation"
+            >
+              <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>{isExportingExcel ? "Generating .xlsx..." : "Export to Excel (.xlsx)"}</span>
+            </button>
+          </div>
+        )}
+
+        {diffData && (
+          <CalcResult
+            title="Duration Calculation"
+            primaryLabel="Total Calendar Duration"
+            primaryValue={`${diffData.calendarDays} Days`}
+            copyValue={diffData.copySummary}
+            items={[
+              {
+                label: "Working Business Days",
+                value: `${diffData.businessDays} days`,
+                highlight: true,
+              },
+              {
+                label: "Weekend Days",
+                value: `${diffData.weekends} days`,
+              },
+              {
+                label: "Weeks Breakdown",
+                value: diffData.breakdown,
+              },
+              {
+                label: "Total Duration in Hours",
+                value: `${diffData.totalHours} hrs`,
+              },
+            ]}
+          />
+        )}
+      </CalcCard>
+
+      {/* Sticky Bottom Mobile Summary Bar (<640px) */}
+      {diffData && (
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
+          <div>
+            <span className="text-[10px] font-semibold text-zinc-500 uppercase block">
+              Total Calendar Duration
+            </span>
+            <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
+              {diffData.calendarDays} Days
+            </span>
+            <span className="text-[10px] text-zinc-500 dark:text-zinc-400 block">
+              {diffData.businessDays} working days ({diffData.weekends} weekends)
+            </span>
+          </div>
           <button
             type="button"
-            onClick={swapDates}
-            title="Swap Start and End Dates"
-            className="px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition-colors flex items-center gap-1.5 shadow-sm"
+            onClick={handleExportExcel}
+            disabled={isExportingExcel}
+            className="min-h-[44px] px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors flex items-center gap-1.5 shadow-xs touch-manipulation"
           >
-            <span>⇄ Swap</span>
+            <Download className="w-4 h-4" />
+            <span>Export .xlsx</span>
           </button>
         </div>
-        <CalcInput
-          id="end-date"
-          label="End Date"
-          type="date"
-          value={endDate}
-          onChange={setEndDate}
-        />
-      </div>
-
-      <CalcToggle
-        label="Include End Day in Calculation (+1 day)?"
-        value={includeEndDay}
-        options={[
-          { value: "no", label: "Exclude End Date" },
-          { value: "yes", label: "Include End Date" },
-        ]}
-        onChange={(v) => setIncludeEndDay(v as any)}
-      />
-
-      {diffData && (
-        <CalcResult
-          title="Duration Calculation"
-          primaryLabel="Total Calendar Duration"
-          primaryValue={`${diffData.calendarDays} Days`}
-          copyValue={diffData.copySummary}
-          items={[
-            {
-              label: "Working Business Days",
-              value: `${diffData.businessDays} days`,
-              highlight: true,
-            },
-            {
-              label: "Weekend Days",
-              value: `${diffData.weekends} days`,
-            },
-            {
-              label: "Weeks Breakdown",
-              value: diffData.breakdown,
-            },
-            {
-              label: "Total Duration in Hours",
-              value: `${diffData.totalHours} hrs`,
-            },
-          ]}
-        />
       )}
-    </CalcCard>
+    </div>
   );
 }
