@@ -10,11 +10,13 @@ export const CONVERTER_REGISTRY = {
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["application/json", "text/json"],
     category: "spreadsheets",
-    title: "Convert JSON to Excel Online - Fast, Free & Private",
+    title: "Convert JSON to Excel Online (2026) — Free, 100% Private (.xlsx)",
     subtitle:
       "Transform JSON data, nested objects, and API arrays into formatted Microsoft Excel (.xlsx) spreadsheets. Just paste the JSON or upload a file — 100% private in your browser.",
     metaDescription:
-      "Free online JSON to Excel converter. Just paste the JSON or upload a .json file. Flattens nested objects into clean XLSX worksheets with zero data uploaded to external servers.",
+      "Free online JSON to Excel converter (2026). Just paste the JSON or upload a .json file. Flattens nested objects into clean XLSX worksheets with zero data uploaded to external servers.",
+    answerSummary:
+      "Convert JSON arrays and deeply nested objects into Microsoft Excel (.xlsx) workbooks instantly in your browser. All parsing and column unrolling executes client-side with zero server uploads, keeping sensitive credentials and records 100% confidential.",
     engineId: "json-to-excel",
     isClientSide: true,
     featured: true,
@@ -78,11 +80,13 @@ export const CONVERTER_REGISTRY = {
     targetExtension: ".xlsx",
     acceptedMimeTypes: ["application/xml", "text/xml"],
     category: "spreadsheets",
-    title: "Convert XML to Excel Online (.xlsx) - Fast In-Browser Tool",
+    title: "Convert XML to Excel Online (2026) — Free (.xlsx), 100% Private",
     subtitle:
       "Parse XML trees, feeds, and attribute structures into clean, multi-column Excel workbooks. Just paste the XML or upload an XML file.",
     metaDescription:
-      "Convert XML files to Excel spreadsheets (.xlsx) online for free. Just paste the XML or upload a file. Auto-detects repeating nodes with zero server uploads.",
+      "Convert XML files to Excel spreadsheets (.xlsx) online for free (2026). Just paste the XML or upload a file. Auto-detects repeating nodes with zero server uploads.",
+    answerSummary:
+      "Convert complex XML trees, feeds, and invoices into clean Microsoft Excel (.xlsx) workbooks directly in your browser. Automatically identifies repeating node hierarchies with zero server data retention.",
     engineId: "xml-to-excel",
     isClientSide: true,
     featured: true,
@@ -144,6 +148,8 @@ export const CONVERTER_REGISTRY = {
       "Convert CSV, TSV, semicolon, and pipe-delimited text files into authentic Microsoft Excel spreadsheets. Just paste the CSV or upload a file.",
     metaDescription:
       "Convert CSV to Excel online in one click (2026). Just paste the CSV or upload a file. 100% private, free, and instant in your browser with zero server uploads.",
+    answerSummary:
+      "Convert CSV, TSV, semicolon, and pipe-delimited datasets into native Microsoft Excel (.xlsx) spreadsheets instantly in your browser. Preserves leading zeros, prevents scientific notation truncation, and runs 100% client-side with zero data uploaded to servers.",
     engineId: "csv-to-excel",
     isClientSide: true,
     featured: true,
@@ -226,11 +232,13 @@ export const CONVERTER_REGISTRY = {
       "application/vnd.ms-excel",
     ],
     category: "spreadsheets",
-    title: "Convert Excel to JSON Online (.xlsx to .json) - Array of Objects",
+    title: "Convert Excel to JSON Online (2026) — Free (.json), 100% Private",
     subtitle:
       "Transform Excel spreadsheets (.xlsx and .xls) into clean, API-ready JSON arrays of objects with optional prettified indentation.",
     metaDescription:
-      "Convert Excel to JSON online for free. Extracts XLSX and XLS worksheet rows into JSON arrays of objects with zero data retention and instant client-side download.",
+      "Convert Excel to JSON online for free (2026). Extracts XLSX and XLS worksheet rows into JSON arrays of objects with zero data retention and instant client-side download.",
+    answerSummary:
+      "Transform Microsoft Excel (.xlsx and .xls) workbooks into validated JSON arrays of objects in your browser. Features configurable 2-space indentation or minified output, with 100% confidential client-side execution.",
     engineId: "excel-to-json",
     isClientSide: true,
     featured: true,

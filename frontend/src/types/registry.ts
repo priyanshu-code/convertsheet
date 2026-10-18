@@ -28,6 +28,7 @@ export interface BaseConverterConfig {
   faqs: FAQItem[];
   howTo: HowToStep[];
   about?: string;
+  answerSummary?: string;
 }
 
 export type ConverterConfig = BaseConverterConfig & (

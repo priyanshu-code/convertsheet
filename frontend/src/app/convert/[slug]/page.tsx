@@ -238,6 +238,18 @@ export default function ConverterPage({ params }: ConverterPageProps) {
         {renderConverter(config)}
       </div>
 
+      {/* AEO Speakable Direct Answer Box */}
+      {config.answerSummary && (
+        <div className="max-w-4xl mx-auto w-full">
+          <div className="border-l-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 px-3.5 py-2.5 rounded-r-xl text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 converter-answer-summary">
+            <p>
+              <span className="font-semibold text-emerald-800 dark:text-emerald-300">Direct Answer:</span>{" "}
+              {config.answerSummary}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Leaderboard Ad Slot */}
       <div className="flex justify-center w-full my-4 sm:my-6">
         <AdBanner format="leaderboard" />

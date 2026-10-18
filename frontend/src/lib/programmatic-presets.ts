@@ -497,6 +497,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       {
         "question": "Can I refinance from a 30-year mortgage into a 15-year mortgage later?",
         "answer": "Yes. Homeowners frequently start with a 30-year mortgage for cash flow flexibility and refinance into a 15-year fixed term once their household income increases or when interest rates drop."
+      },
+      {
+        "question": "How do I calculate a 15-year mortgage vs 30-year mortgage step by step?",
+        "answer": "To calculate the 15-year vs 30-year difference: Step 1: Determine loan principal (Home Price minus Down Payment). Step 2: Calculate monthly interest rate r = annual APR / 12. Step 3: Compute monthly P&I payment using M = P × [r(1+r)^n] / [(1+r)^n - 1] with n=180 for 15 years and n=360 for 30 years. Step 4: Multiply monthly payment by n to obtain total loan payout, then subtract principal to reveal lifetime interest savings. ConvertSheet automates these exact calculations in real time."
       }
     ]
   },
@@ -4400,6 +4404,10 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
       {
         question: "What is the payment on a $35k car for 72 months?",
         answer: "At 6.9% interest with 10% down ($3,500), the payment on a $35,000 car is approximately $585/month with $7,736 in total interest charges.",
+      },
+      {
+        question: "How does a 72-month auto loan calculator compute monthly financing costs?",
+        answer: "A 72-month auto loan calculator computes monthly payments using the formula M = P × [r(1+r)^72] / [(1+r)^72 - 1], where P is the financed vehicle balance (including state sales tax and dealer doc fees minus down payment) and r is the monthly interest rate (APR ÷ 12). ConvertSheet models exact amortization curves, compares 72-month terms against 48 and 60 months, and exports full payment schedules directly to Excel.",
       },
     ],
   },
