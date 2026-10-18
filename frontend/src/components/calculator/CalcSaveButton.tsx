@@ -5,10 +5,13 @@ import { Bookmark, Check } from "lucide-react";
 import { saveCalculation } from "@/lib/calculation-history";
 
 export interface CalcSaveButtonProps {
-  toolSlug: string;
-  toolName: string;
-  summaryTitle: string;
-  summaryMetrics: { label: string; value: string }[];
+  toolSlug?: string;
+  toolName?: string;
+  summaryTitle?: string;
+  summaryMetrics?: { label: string; value: string }[];
+  calculationType?: string;
+  inputs?: Record<string, unknown>;
+  outputs?: Record<string, unknown>;
   path?: string;
   label?: string;
   className?: string;
@@ -19,19 +22,42 @@ export function CalcSaveButton({
   toolName,
   summaryTitle,
   summaryMetrics,
-  path = `/tools/${toolSlug}`,
+  calculationType,
+  inputs,
+  outputs,
+  path,
   label = "Save Scenario",
   className = "",
 }: CalcSaveButtonProps) {
   const [saved, setSaved] = useState(false);
 
+  const resolvedName = toolName || calculationType || "Calculation";
+  const resolvedSlug =
+    toolSlug ||
+    resolvedName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  const resolvedPath = path || `/tools/${resolvedSlug}`;
+  const resolvedTitle = summaryTitle || `${resolvedName} Scenario`;
+  const resolvedMetrics =
+    summaryMetrics ||
+    (outputs
+      ? Object.entries(outputs)
+          .filter(([_, val]) => val !== undefined && val !== null && val !== "")
+          .map(([k, v]) => ({
+            label: k.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()),
+            value: String(v),
+          }))
+      : []);
+
   const handleSave = () => {
     saveCalculation({
-      toolSlug,
-      toolName,
-      summaryTitle,
-      summaryMetrics,
-      path,
+      toolSlug: resolvedSlug,
+      toolName: resolvedName,
+      summaryTitle: resolvedTitle,
+      summaryMetrics: resolvedMetrics,
+      path: resolvedPath,
     });
     setSaved(true);
     setTimeout(() => setSaved(false), 2200);

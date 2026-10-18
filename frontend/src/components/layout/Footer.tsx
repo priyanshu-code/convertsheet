@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import React from "react";
 import Link from "next/link";
@@ -211,8 +212,121 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Featured On & Directory Partners */}
+        <div className="border-t border-zinc-200 dark:border-zinc-800/80 pt-8 pb-4">
+          <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-4 text-center sm:text-left">
+            Recognized &amp; Featured On
+          </p>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 justify-center sm:justify-start">
+            <a
+              href="https://findly.tools/tools/convertsheet"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://findly.tools/badges/findly-tools-badge-light.svg"
+                alt="Featured on Findly.tools"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://peerpush.com/p/convertsheet"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://peerpush.com/p/convertsheet/badge.png"
+                alt="ConvertSheet on PeerPush"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://huzzler.so/products/caEQ4i0Ll7/convertsheet?utm_source=huzzler_product_website&utm_medium=badge&utm_campaign=badge"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://huzzler.so/assets/images/embeddable-badges/featured-light.png"
+                alt="Featured on Huzzler"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://www.superlaun.ch/products/3909"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://www.superlaun.ch/badge.png"
+                alt="Featured on Super Launch"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://saasbison.com"
+              target="_blank"
+              rel="dofollow noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://saasbison.com/badge.png"
+                alt="Featured on SaaSBison"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://weliketools.com/tool/convertsheet"
+              target="_blank"
+              rel="dofollow noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://weliketools.com/assets/images/badge.png"
+                alt="We Like Tools"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://dododirectory.com"
+              target="_blank"
+              rel="dofollow noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://dododirectory.com/badge-light.png"
+                alt="Featured on DodoDirectory"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+            <a
+              href="https://buildvoyage.com/products/convertsheet?ref=badge"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://buildvoyage.com/images/featured_badge.png"
+                alt="Featured on BuildVoyage"
+                className="h-9 w-auto object-contain"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        </div>
+
         {/* Bottom Bar / Copyright */}
-        <div className="border-t border-zinc-200 dark:border-zinc-800/80 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="border-t border-zinc-200 dark:border-zinc-800/80 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400">
           <p>© {currentYear} ConvertSheet (convertsheet.com). All rights reserved.</p>
           <p className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
             Built for developers, analysts, and privacy-conscious teams.

@@ -4,13 +4,17 @@ import React, { useState, memo, useCallback } from "react";
 import { Share2, Check } from "lucide-react";
 
 export interface CalcShareButtonProps {
-  state: Record<string, string | number | boolean | undefined | null>;
+  state?: Record<string, string | number | boolean | undefined | null>;
+  title?: string;
+  text?: string;
   label?: string;
   className?: string;
 }
 
 export const CalcShareButton = memo(function CalcShareButton({
   state,
+  title,
+  text,
   label = "Share Calculation",
   className = "",
 }: CalcShareButtonProps) {
@@ -20,12 +24,33 @@ export const CalcShareButton = memo(function CalcShareButton({
     if (typeof window === "undefined") return;
 
     try {
-      const searchParams = new URLSearchParams();
-      Object.entries(state).forEach(([key, val]) => {
-        if (val !== undefined && val !== null && val !== "") {
-          searchParams.set(key, String(val));
+      if (text) {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: title || document.title,
+              text: text,
+              url: window.location.href,
+            });
+            return;
+          } catch {
+            // User cancelled or failed share API; fallback to clipboard
+          }
         }
-      });
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+        return;
+      }
+
+      const searchParams = new URLSearchParams();
+      if (state) {
+        Object.entries(state).forEach(([key, val]) => {
+          if (val !== undefined && val !== null && val !== "") {
+            searchParams.set(key, String(val));
+          }
+        });
+      }
 
       const queryString = searchParams.toString();
       const url = `${window.location.origin}${window.location.pathname}${
@@ -38,19 +63,9 @@ export const CalcShareButton = memo(function CalcShareButton({
     } catch {
       // Fallback mechanism
       try {
-        const searchParams = new URLSearchParams();
-        Object.entries(state).forEach(([key, val]) => {
-          if (val !== undefined && val !== null && val !== "") {
-            searchParams.set(key, String(val));
-          }
-        });
-        const queryString = searchParams.toString();
-        const url = `${window.location.origin}${window.location.pathname}${
-          queryString ? `?${queryString}` : ""
-        }`;
-
+        const contentToCopy = text || window.location.href;
         const textarea = document.createElement("textarea");
-        textarea.value = url;
+        textarea.value = contentToCopy;
         document.body.appendChild(textarea);
         textarea.select();
         document.execCommand("copy");
@@ -58,10 +73,10 @@ export const CalcShareButton = memo(function CalcShareButton({
         setCopied(true);
         setTimeout(() => setCopied(false), 2500);
       } catch (err) {
-        console.error("Failed to copy share link:", err);
+        console.error("Failed to copy share content:", err);
       }
     }
-  }, [state]);
+  }, [state, title, text]);
 
   return (
     <button
