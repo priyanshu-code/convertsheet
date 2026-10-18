@@ -42,7 +42,7 @@ describe("UkSalaryCalculator UI Component", () => {
     // NI = 8% on (£45,000 - £12,570 = £32,430) = £2,594.40
     // Total deductions = 6036 + 2594.40 + 2250 = 10,880.40
     // Take-home annual = £34,119.60 -> monthly = £2,843.30
-    expect(screen.getByText("£2,843.30")).toBeInTheDocument();
+    expect(screen.getAllByText("£2,843.30").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("£34,119.60")).toBeInTheDocument();
     expect(screen.getByText("£6,036.00")).toBeInTheDocument();
     expect(screen.getByText("£2,594.40")).toBeInTheDocument();
@@ -59,7 +59,7 @@ describe("UkSalaryCalculator UI Component", () => {
       />
     );
 
-    expect(screen.getByText("£2,843.30")).toBeInTheDocument();
+    expect(screen.getAllByText("£2,843.30").length).toBeGreaterThanOrEqual(1);
 
     // Change student loan plan to Plan 2 (threshold £27,295, 9% on £17,705 = £1,593.45/yr)
     const select = screen.getByLabelText(/Student Loan Plan/i);
@@ -67,7 +67,7 @@ describe("UkSalaryCalculator UI Component", () => {
 
     // With £1,593.45 student loan repayment, net take home reduces:
     // Annual take home = 34,119.60 - 1593.45 = 32,526.15 -> monthly = £2,710.51
-    expect(screen.getByText("£2,710.51")).toBeInTheDocument();
+    expect(screen.getAllByText("£2,710.51").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("£1,593.45")).toBeInTheDocument();
   });
 
@@ -86,6 +86,15 @@ describe("UkSalaryCalculator UI Component", () => {
       "href",
       "/tools/australia-pay-calculator"
     );
+  });
+
+  it("renders privacy badge, 2026/27 HMRC freshness signal, and mobile summary bar", () => {
+    render(<UkSalaryCalculator initialValues={{ grossSalary: 60000, pensionPercent: 5 }} />);
+
+    expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for 2026\/27 HMRC/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Export/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Net Monthly Pay")).toBeInTheDocument();
   });
 });
 
@@ -222,7 +231,7 @@ describe("AustraliaPayCalculator UI Component", () => {
     // Net Fortnightly Take Home = $2,838.92
     // Net Weekly Take Home = $1,419.46
     // Employer Superannuation (11.5%) = $10,925.00
-    expect(screen.getByText("$2,838.92")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,838.92").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("$73,812.00")).toBeInTheDocument();
     expect(screen.getByText("$6,151.00")).toBeInTheDocument();
     expect(screen.getByText("$1,419.46")).toBeInTheDocument();
@@ -243,7 +252,7 @@ describe("AustraliaPayCalculator UI Component", () => {
       />
     );
 
-    expect(screen.getByText("$2,838.92")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,838.92").length).toBeGreaterThanOrEqual(1);
 
     // Toggle HELP/HECS debt ON
     const helpToggle = screen.getByLabelText(/HELP \/ HECS Student Debt/i);
@@ -254,7 +263,7 @@ describe("AustraliaPayCalculator UI Component", () => {
     // Net Annual = $68,587.00
     // Net Fortnightly = 68587 / 26 = $2,637.96
     expect(screen.getByText("$5,225.00")).toBeInTheDocument();
-    expect(screen.getByText("$2,637.96")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,637.96").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("$68,587.00")).toBeInTheDocument();
   });
 
@@ -286,7 +295,7 @@ describe("AustraliaPayCalculator UI Component", () => {
     // Net Annual = 95,000 - 19,288 = $75,712.00
     // Net Fortnightly = 75,712 / 26 = $2,912.00
     expect(screen.getByText("$75,712.00")).toBeInTheDocument();
-    expect(screen.getByText("$2,912.00")).toBeInTheDocument();
+    expect(screen.getAllByText("$2,912.00").length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders country cross-link navigation hub", () => {
@@ -304,5 +313,14 @@ describe("AustraliaPayCalculator UI Component", () => {
       "href",
       "/tools/canada-paycheck-calculator"
     );
+  });
+
+  it("renders privacy badge, 2026 ATO freshness signal, and mobile summary bar", () => {
+    render(<AustraliaPayCalculator initialValues={{ grossSalary: 120000 }} />);
+
+    expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for 2026 ATO Tax Year/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Export/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Net Fortnightly Pay")).toBeInTheDocument();
   });
 });

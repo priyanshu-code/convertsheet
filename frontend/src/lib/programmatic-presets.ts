@@ -457,7 +457,7 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15 vs 30 Year Mortgage Calculator: Monthly Payment & Interest Comparison (2026)",
+    "title": "15 vs 30 Year Mortgage Calculator (2026) — Payment & Interest Math",
     "metaDescription": "Calculate exact monthly payment differences, lifetime interest savings ($248k+), and amortization between a 15-year and 30-year mortgage with live 2026 rates.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
@@ -470,6 +470,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       "homeInsuranceYearly": 1200
     },
     "faqs": [
+      {
+        "question": "How do you calculate 15-year vs 30-year mortgage monthly payments?",
+        "answer": "To calculate payments, use the monthly amortization equation M = P[r(1+r)^n]/[(1+r)^n - 1]. For a $320,000 loan balance: at 5.8% for 15 years (n=180), M = $2,666/month with $159,860 in total interest. At 6.5% for 30 years (n=360), M = $2,023/month with $408,142 in total interest. The 15-year mortgage requires $643 more per month but saves $248,282 in lifetime interest charges."
+      },
       {
         "question": "How does a 15-year vs 30-year mortgage calculator work?",
         "answer": "This calculator compares your monthly principal and interest payments, total loan costs, and cumulative interest paid over 15 years versus 30 years. For a $320,000 loan balance, the 15-year payment is approximately $2,666/month (at 5.8%) versus $2,023/month for a 30-year mortgage (at 6.5%)—an increase of $643 per month in exchange for saving $248,282 in lifetime interest."
@@ -4367,7 +4371,7 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "car-loan-calculator",
     presetSlug: "72-month-car-loan",
     name: "72-Month (6-Year) Auto Loan Payment Calculator",
-    title: "72-Month Car Loan Calculator (2026) — Monthly Payment on $15k, $25k & $35k Loans",
+    title: "72-Month Car Loan Calculator (2026) — $15k, $25k & $35k Math",
     metaDescription: "Calculate your monthly car loan payment for 72 months on $15k, $25k, and $35k auto loans. Compare total interest costs, calculate APR impact, and export to Excel.",
     answerSummary: "On a $25,000 car loan at 6.9% APR over 72 months, your monthly payment is $425/month with $5,526 in total interest. On a $15,000 loan, your payment is $255/month ($3,315 interest). On a $35,000 vehicle with 10% down ($3,500) at 6.9% APR, the monthly payment is $585/month ($7,736 total interest).",
     about: "The 72-month (6-year) auto loan has become the most common financing term in the United States. Understand the trade-offs: lower monthly cash outflow in exchange for extended interest payments and higher risk of negative equity (being underwater).",
@@ -6227,12 +6231,16 @@ Living in Florida allows $50,000 earners to retain nearly 84% of their gross pay
     toolSlug: "car-loan-calculator",
     presetSlug: "10k-used-car-loan",
     name: "$10,000 Used Car Loan Calculator",
-    title: "$10,000 Used Car Loan Calculator – Monthly Payment & Total Interest (2026) | ConvertSheet",
+    title: "$10,000 Car Payment Calculator (2026) — 36, 48 & 60 Mo Math",
     metaDescription: "Calculate monthly payments on a $10,000 used car loan. Compare 36, 48, and 60-month terms at 7.5% APR. View total interest and Excel amortization schedule.",
     answerSummary: "On a $10,000 used car loan with 10% down ($1,000) at 7.5% APR for 48 months, the monthly payment is roughly $218/month. Total interest paid over 4 years is $1,444, making total financing payments $10,444.",
     about: "Calculate affordable payments for an entry-level or used vehicle purchase. Understand the impact of short loan terms on used vehicle depreciation and minimize borrowing costs.",
     initialValues: { vehiclePrice: 10000, downPayment: 1000, interestRate: 7.5, loanTermMonths: 48, salesTaxPercent: 6.0, dealerFees: 300 },
     faqs: [
+      {
+        question: "What is the monthly payment on a $10,000 car loan over 3, 4, or 5 years?",
+        answer: "On a $10,000 car with $1,000 down (financing $9,000) at 7.5% APR: A 36-month loan is $280/month ($1,079 total interest); a 48-month loan is $218/month ($1,444 total interest); and a 60-month (5-year) loan is $180/month ($1,824 total interest).",
+      },
       {
         question: "What is the monthly payment on a $10,000 car loan?",
         answer: "Financing $9,000 at 7.5% APR results in approximately $218/month for 48 months or $180/month for 60 months.",

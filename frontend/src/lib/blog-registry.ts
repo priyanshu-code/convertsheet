@@ -217,7 +217,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "1099-vs-w2-true-hourly-rate-calculation",
-    title: "1099 Hourly Rate Calculator: How to Convert W2 Salary After Self-Employment Tax (2026)",
+    title: "1099 Hourly Rate Calculator (2026) — Convert W2 Salary to 1099",
     description: "Use our 1099 hourly rate calculator guide to convert W2 salary into equivalent 1099 hourly consulting rates, factoring in FICA, SE tax, healthcare, and PTO.",
     category: "Financial Engineering",
     readTimeMinutes: 7,
@@ -658,7 +658,8 @@ const arrowResult = await conn.query(\`
     role: "branch",
     pillarSlug: "1099-vs-w2-true-hourly-rate-calculation",
     relatedSlugs: [
-      "1099-vs-w2-true-hourly-rate-calculation"
+      "1099-vs-w2-true-hourly-rate-calculation",
+      "bank-of-england-base-rate-gilt-yields-uk-mortgage-math-2026"
     ],
     tableOfContents: [
       { id: "what-is-ir35", title: "1. What is IR35 (Off-Payroll Working Rules)?" },
@@ -750,6 +751,9 @@ const arrowResult = await conn.query(\`
         </h2>
         <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
           As a rule of thumb, an Inside IR35 day rate must be <strong>20% to 25% higher</strong> than an Outside IR35 rate to match the same after-tax take-home pay. For example, a £500/day Outside role requires approximately £615/day Inside IR35 to break even.
+        </p>
+        <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 pt-2">
+          Planning a UK remortgage or property purchase? Understand how current bond market yields affect contractor affordability in our research report: <a href="/blog/bank-of-england-base-rate-gilt-yields-uk-mortgage-math-2026" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">BoE Rate Shock: Why 30-Year Gilts at 6% Push UK Mortgages to 6%</a>.
         </p>
       </section>
     `.trim()
@@ -5026,6 +5030,172 @@ const arrowResult = await conn.query(\`
           <li><strong>Audit Every Account APR:</strong> Pull your monthly statements and identify your exact contracted APRs. Do not guess—store cards often hide 29.99% or 31.99% penalty rates.</li>
           <li><strong>Run the ConvertSheet Accelerator:</strong> Use our 100% private, client-side <a href="/tools/debt-payoff-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Debt Payoff &amp; Accelerator Calculator</a> to model your custom debts and download a formulaic Excel amortization schedule.</li>
           <li><strong>Lock in a Fixed Monthly Outflow:</strong> As debts reach zero balance, do not reduce your total monthly payment. Roll the freed minimum into the next targeted account to maintain compounding acceleration.</li>
+        </ol>
+      </section>
+    `.trim()
+  },
+  {
+    slug: "bank-of-england-base-rate-gilt-yields-uk-mortgage-math-2026",
+    title: "BoE Rate Shock: Why 30-Year Gilts at 6% Push UK Mortgages to 6%",
+    description: "Bank of England base rate sits at 3.75% with MPC markets pricing a hike to 4.00%. Discover why 30-year gilt yields at 6% drive 2-year and 5-year fixed mortgages to 6%.",
+    category: "Mortgage & Lending",
+    readTimeMinutes: 8,
+    publishedAt: "2026-10-18",
+    author: FOUNDER_AUTHOR,
+    attachedToolSlug: "uk-salary-calculator",
+    attachedToolTitle: "UK Salary & Take-Home Calculator",
+    clusterId: "uk-germany-property-finance",
+    role: "branch",
+    pillarSlug: "uk-contractor-inside-vs-outside-ir35-calculator-guide",
+    relatedSlugs: [
+      "uk-contractor-inside-vs-outside-ir35-calculator-guide",
+      "freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026",
+      "the-home-loan-tenure-trap-explained"
+    ],
+    tag: "BoE & Gilt Desk • Oct 2026",
+    tagTooltip: "Verified data from Bank of England Monetary Policy Committee, UK Debt Management Office (DMO), and Moneyfacts UK",
+    tableOfContents: [
+      { id: "boe-base-rate-inflation-split", title: "1. The Bank of England Base Rate Dilemma: 3.75% Base & 3.1% CPI Inflation" },
+      { id: "gilt-yield-spike-swap-rates", title: "2. The 30-Year Gilt Surge to 6%: How SONIA Swap Rates Dictate Mortgage Pricing" },
+      { id: "exact-remortgage-jump-tables", title: "3. The Remortgage Cliff: Monthly Payment Increases on £200k, £350k & £500k Loans" },
+      { id: "salary-affordability-stress-test", title: "4. UK Take-Home Pay vs. 6% Mortgage Stress Checks" },
+      { id: "actionable-uk-borrower-playbook", title: "5. The UK Homeowner Playbook: Overpayments, Trackers & Offset Mortgages" }
+    ],
+    faqs: [
+      {
+        question: "What is the current Bank of England base rate in October 2026?",
+        answer: "The Bank of England Bank Rate sits at 3.75%, following a 6–3 split vote by the Monetary Policy Committee (MPC) in September where three members voted for an immediate increase to 4.00%. Financial markets price in a high probability of a 25 bps hike to 4.00% at the November 5, 2026 meeting due to headline CPI inflation rising to 3.1%."
+      },
+      {
+        question: "Why do UK government gilt yields affect fixed-rate mortgages?",
+        answer: "UK residential mortgage lenders do not fund fixed-rate loans directly from customer deposits; they fund them through Sterling Overnight Index Average (SONIA) interest rate swap markets. Swap rates closely track UK government gilt yields. When 10-year and 30-year gilt yields rise toward 5.5% and 6.0%, lenders' wholesale hedging costs surge, forcing them to reprice 2-year and 5-year fixed products upward."
+      },
+      {
+        question: "What are average UK fixed mortgage rates in October 2026?",
+        answer: "According to Moneyfacts UK benchmark data, the average 2-year fixed residential mortgage rate is 5.96%, the average 5-year fixed rate is 5.99%, and the average lender Standard Variable Rate (SVR) sits at 7.13%."
+      },
+      {
+        question: "How much more does a £300,000 mortgage cost coming off a 2% fixed rate to 6%?",
+        answer: "On a £300,000 repayment mortgage over 25 years, a 2.0% fixed rate results in a monthly payment of £1,271.60. At a 6.0% remortgage rate, the monthly payment increases to £1,932.90—an immediate monthly jump of £661.30 (+52%) or £7,935.60 in additional after-tax annual payments."
+      }
+    ],
+    content: `
+      <section id="boe-base-rate-inflation-split" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          1. The Bank of England Base Rate Dilemma: 3.75% Base &amp; 3.1% CPI Inflation
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          The <strong>Bank of England (BoE)</strong> currently holds the official Bank Rate at <strong>3.75%</strong> following the Monetary Policy Committee (MPC) September review, which revealed a sharp 6–3 vote split with three external members voting for an immediate 25 bps rate hike to 4.00%. With UK headline CPI inflation climbing to <strong>3.1%</strong> (well above the statutory 2.0% remit), money markets are pricing a heavy probability of a rate rise at the upcoming November 5, 2026 decision.
+        </p>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          For UK homeowners and contractors evaluating take-home pay, mortgage payments are colliding with frozen HMRC tax thresholds (£12,570 Personal Allowance and 8% employee NICs). You can calculate your exact net disposable cashflow using our client-side <a href="/tools/uk-salary-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">UK Salary &amp; Take-Home Calculator</a>, or model lifetime principal amortization across varying terms with our <a href="/tools/mortgage-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Mortgage &amp; Amortization Calculator</a>.
+        </p>
+        <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-800 dark:text-zinc-200">
+          <strong>Key UK Institutional Benchmarks (October 2026):</strong>
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li><strong>Bank of England Base Rate:</strong> 3.75% (November MPC hike probability: &gt;75%)</li>
+            <li><strong>Headline CPI Inflation (ONS):</strong> 3.10% (Target: 2.00%)</li>
+            <li><strong>10-Year UK Gilt Yield:</strong> 5.42%</li>
+            <li><strong>30-Year UK Gilt Yield:</strong> 6.01% (Surpassing 6% for the first time since 1998)</li>
+            <li><strong>Average 2-Year Fixed Mortgage (Moneyfacts):</strong> 5.96%</li>
+            <li><strong>Average 5-Year Fixed Mortgage (Moneyfacts):</strong> 5.99%</li>
+            <li><strong>Average Standard Variable Rate (SVR):</strong> 7.13%</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="gilt-yield-spike-swap-rates" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          2. The 30-Year Gilt Surge to 6%: How SONIA Swap Rates Dictate Mortgage Pricing
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          A common misconception among British mortgage borrowers is that fixed-rate mortgages are priced directly from the Bank of England Base Rate. While variable tracker mortgages move in direct lockstep with the BoE rate, 2-year and 5-year fixed deals are priced off <strong>Sterling Overnight Index Average (SONIA) interest rate swaps</strong>.
+        </p>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          In October 2026, persistent fiscal borrowing requirements, combined with global bond yields rising above 5.10% (US 10-Year Treasury), pushed the UK 30-year gilt yield above <strong>6.00%</strong> for the first time since 1998, with the 10-year gilt hovering near 5.42%. As financial institutions hedge fixed borrowing obligations against sovereign paper, 2-year and 5-year swap curves have stabilized above 5.15% to 5.25%. Adding lenders' standard 75–85 bps operational and credit spread brings consumer mortgage rates directly to the <strong>5.96%–5.99% threshold</strong>.
+        </p>
+      </section>
+
+      <section id="exact-remortgage-jump-tables" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          3. The Remortgage Cliff: Monthly Payment Increases on £200k, £350k &amp; £500k Loans
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Hundreds of thousands of UK borrowers who locked in 5-year fixed mortgages between 2020 and 2022 at sub-2.5% rates are now confronting the remortgage cliff. The table below illustrates the exact monthly principal and interest payment changes on a 25-year repayment schedule across loan tiers:
+        </p>
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold">
+              <tr>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Mortgage Balance</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Expiring 2.0% Fix</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">3.75% BoE Base Tracker</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">5.99% 5-Yr Fix (2026)</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Monthly Jump (£)</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Annual After-Tax Cost</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300">
+              <tr class="bg-white dark:bg-zinc-900/40">
+                <td class="px-4 py-3 font-semibold">£200,000</td>
+                <td class="px-4 py-3 font-mono">£847.71/mo</td>
+                <td class="px-4 py-3 font-mono">£1,029.07/mo</td>
+                <td class="px-4 py-3 font-mono font-bold text-rose-600">£1,287.97/mo</td>
+                <td class="px-4 py-3 font-mono font-semibold text-rose-600">+£440.26/mo</td>
+                <td class="px-4 py-3 font-mono text-rose-600">+£5,283.12/yr</td>
+              </tr>
+              <tr class="bg-zinc-50/50 dark:bg-zinc-900/80">
+                <td class="px-4 py-3 font-semibold">£350,000</td>
+                <td class="px-4 py-3 font-mono">£1,483.50/mo</td>
+                <td class="px-4 py-3 font-mono">£1,800.87/mo</td>
+                <td class="px-4 py-3 font-mono font-bold text-rose-600">£2,253.94/mo</td>
+                <td class="px-4 py-3 font-mono font-semibold text-rose-600">+£770.44/mo</td>
+                <td class="px-4 py-3 font-mono text-rose-600">+£9,245.28/yr</td>
+              </tr>
+              <tr class="bg-white dark:bg-zinc-900/40">
+                <td class="px-4 py-3 font-semibold">£500,000</td>
+                <td class="px-4 py-3 font-mono">£2,119.29/mo</td>
+                <td class="px-4 py-3 font-mono">£2,572.67/mo</td>
+                <td class="px-4 py-3 font-mono font-bold text-rose-600">£3,219.92/mo</td>
+                <td class="px-4 py-3 font-mono font-semibold text-rose-600">+£1,100.63/mo</td>
+                <td class="px-4 py-3 font-mono text-rose-600">+£13,207.56/yr</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          On an average Southeast England mortgage balance of £350,000, refinancing from 2.0% into today's 5.99% product adds <strong>£770.44 per month</strong> in after-tax interest and principal costs. To fund this additional payment under higher-rate (40%) PAYE income tax, a borrower must earn an extra <strong>£15,400 in gross pre-tax salary</strong>.
+        </p>
+      </section>
+
+      <section id="salary-affordability-stress-test" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          4. UK Take-Home Pay vs. 6% Mortgage Stress Checks
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Under Financial Conduct Authority (FCA) mortgage affordability regulations, lenders must stress-test prospective borrowers and remortgage applicants against rates significantly above reversionary levels:
+        </p>
+        <ul class="list-disc pl-5 space-y-2 text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
+          <li><strong>Loan-to-Income (LTI) Cap:</strong> Regulated lenders restrict mortgages exceeding 4.5× gross household income to no more than 15% of total residential loan originations.</li>
+          <li><strong>Reversion Stress Floor:</strong> When testing affordability on variable or short-term fixes, lenders stress applicants at SVR + 1% to 2% (often testing repayment capacity at 8.00% to 9.00%).</li>
+          <li><strong>Take-Home Ratio:</strong> Financial advisers generally recommend keeping total mortgage obligations below 35% to 40% of net monthly take-home pay to guard against council tax rises, energy spikes, and food inflation.</li>
+        </ul>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          For contractors operating via umbrella arrangements or personal service companies, IR35 classification directly affects how mortgage underwriters assess your qualifying baseline. Review our guide on <a href="/blog/uk-contractor-inside-vs-outside-ir35-calculator-guide" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Inside vs Outside IR35 Take-Home Pay Calculations</a> to ensure your dividend and salary structures satisfy underwriter stress audits.
+        </p>
+      </section>
+
+      <section id="actionable-uk-borrower-playbook" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          5. The UK Homeowner Playbook: Overpayments, Trackers &amp; Offset Mortgages
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          If your mortgage fix expires over the next 6 to 12 months, execute these three strategic defenses:
+        </p>
+        <ol class="list-decimal list-inside space-y-3 text-sm sm:text-base text-zinc-700 dark:text-zinc-300 ml-2">
+          <li><strong>Exploit the 10% Annual Overpayment Allowance:</strong> Most UK fixed mortgages permit penalty-free capital overpayments of up to 10% of the outstanding loan balance per calendar year. Prepaying even £200 to £300 per month while still on a low rate directly shrinks the principal balance before the remortgage reset occurs.</li>
+          <li><strong>Evaluate Offset Mortgages for Emergency Liquidity:</strong> If you maintain significant cash reserves or self-employed tax provisions, an offset mortgage allows you to park savings against your loan balance, reducing daily compounding interest at 6% without triggering tax on savings interest.</li>
+          <li><strong>Model Voluntary Prepayment vs. Contractual Lock-in:</strong> Avoid over-extending into long contractual obligations without running the math. Review our comparative study on <a href="/blog/freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">15-Year vs 30-Year Mortgage Math and Prepayment Flexibility</a> to maintain emergency budget headroom.</li>
         </ol>
       </section>
     `.trim()

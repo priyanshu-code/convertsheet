@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { DollarSign } from "lucide-react";
+import { DollarSign, ShieldCheck, FileSpreadsheet } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
   CalcSlider,
   CalcResult,
   CalcChart,
-  CalcExportButton,
   CalcShareButton,
   CalcSaveButton,
   CalcPromptButton,
@@ -18,6 +17,7 @@ import {
   calculateAustraliaSalary,
   AustraliaSalaryResult,
 } from "@/lib/engines/financial-engine";
+import * as XLSX from "xlsx";
 
 export interface AustraliaPayCalculatorProps {
   initialValues?: Partial<{
@@ -86,6 +86,22 @@ export function AustraliaPayCalculator({
     return false;
   });
 
+  const [isExportingExcel, setIsExportingExcel] = useState<boolean>(false);
+
+  // Real-time URL query parameter synchronization
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      params.set("grossSalary", grossSalary.toString());
+      params.set("superannuationPercent", superannuationPercent.toString());
+      params.set("hasHelpDebt", hasHelpDebt ? "true" : "false");
+      params.set("medicareExempt", medicareExempt ? "true" : "false");
+      const query = params.toString();
+      const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+      window.history.replaceState(null, "", newUrl);
+    }
+  }, [grossSalary, superannuationPercent, hasHelpDebt, medicareExempt]);
+
   const result: AustraliaSalaryResult = useMemo(() => {
     return calculateAustraliaSalary({
       grossSalary,
@@ -108,69 +124,6 @@ export function AustraliaPayCalculator({
     return data;
   }, [result]);
 
-  const exportSchedule = useMemo(() => {
-    return [
-      {
-        Category: "Gross Salary",
-        "Annual ($ AUD)": result.grossSalary,
-        Monthly: result.monthlyGross,
-        "Fortnightly (26x)": result.fortnightlyGross,
-        "Weekly (52x)": result.weeklyGross,
-      },
-      {
-        Category: "ATO Income Tax",
-        "Annual ($ AUD)": result.incomeTax,
-        Monthly: Math.round((result.incomeTax / 12) * 100) / 100,
-        "Fortnightly (26x)": Math.round((result.incomeTax / 26) * 100) / 100,
-        "Weekly (52x)": Math.round((result.incomeTax / 52) * 100) / 100,
-      },
-      {
-        Category: "Medicare Levy (2%)",
-        "Annual ($ AUD)": result.medicareLevy,
-        Monthly: Math.round((result.medicareLevy / 12) * 100) / 100,
-        "Fortnightly (26x)": Math.round((result.medicareLevy / 26) * 100) / 100,
-        "Weekly (52x)": Math.round((result.medicareLevy / 52) * 100) / 100,
-      },
-      ...(result.helpRepayment > 0
-        ? [
-            {
-              Category: "HELP / HECS Repayment",
-              "Annual ($ AUD)": result.helpRepayment,
-              Monthly: Math.round((result.helpRepayment / 12) * 100) / 100,
-              "Fortnightly (26x)":
-                Math.round((result.helpRepayment / 26) * 100) / 100,
-              "Weekly (52x)":
-                Math.round((result.helpRepayment / 52) * 100) / 100,
-            },
-          ]
-        : []),
-      {
-        Category: "Total Deductions",
-        "Annual ($ AUD)": result.totalDeductions,
-        Monthly: Math.round((result.totalDeductions / 12) * 100) / 100,
-        "Fortnightly (26x)":
-          Math.round((result.totalDeductions / 26) * 100) / 100,
-        "Weekly (52x)": Math.round((result.totalDeductions / 52) * 100) / 100,
-      },
-      {
-        Category: "Net Take-Home Pay",
-        "Annual ($ AUD)": result.netAnnualTakeHome,
-        Monthly: result.netMonthlyTakeHome,
-        "Fortnightly (26x)": result.netFortnightlyTakeHome,
-        "Weekly (52x)": result.netWeeklyTakeHome,
-      },
-      {
-        Category: `Employer Superannuation (${superannuationPercent}%)`,
-        "Annual ($ AUD)": result.superannuationAmount,
-        Monthly: Math.round((result.superannuationAmount / 12) * 100) / 100,
-        "Fortnightly (26x)":
-          Math.round((result.superannuationAmount / 26) * 100) / 100,
-        "Weekly (52x)":
-          Math.round((result.superannuationAmount / 52) * 100) / 100,
-      },
-    ];
-  }, [result, superannuationPercent]);
-
   const formatCurrency = (val: number): string => {
     return `$${val.toLocaleString("en-AU", {
       minimumFractionDigits: 2,
@@ -178,8 +131,68 @@ export function AustraliaPayCalculator({
     })}`;
   };
 
+  const handleExportExcel = () => {
+    try {
+      setIsExportingExcel(true);
+      const wb = XLSX.utils.book_new();
+
+      const summaryData = [
+        ["ConvertSheet - Australia Pay & Take-Home Audit", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", `https://www.convertsheet.com/tools/australia-pay-calculator?grossSalary=${grossSalary}&superannuationPercent=${superannuationPercent}&hasHelpDebt=${hasHelpDebt}&medicareExempt=${medicareExempt}`],
+        ["ATO Tax Regime", "2024-25 & 2026 Stage 3 Tax Cuts (Australian Taxation Office)"],
+        ["", ""],
+        ["--- COMPENSATION & DEDUCTION PARAMETERS ---", ""],
+        ["Gross Annual Base Salary ($ AUD)", grossSalary],
+        ["Employer Superannuation Guarantee (%)", `${superannuationPercent}%`],
+        ["Annual Statutory Superannuation Contribution ($ AUD)", result.superannuationAmount],
+        ["Compulsory HELP / HECS Debt Repayments ($ AUD)", result.helpRepayment],
+        ["Medicare Levy Status", medicareExempt ? "Exempt (0%)" : "Standard 2%"],
+        ["Medicare Levy Amount ($ AUD)", result.medicareLevy],
+        ["Total Compulsory Deductions ($ AUD)", result.totalDeductions],
+        ["", ""],
+        ["--- NET TAKE-HOME PAY RESULTS ---", ""],
+        ["Net Annual Take-Home ($ AUD)", result.netAnnualTakeHome],
+        ["Net Monthly Take-Home ($ AUD)", result.netMonthlyTakeHome],
+        ["Net Fortnightly Take-Home ($ AUD)", result.netFortnightlyTakeHome],
+        ["Net Weekly Take-Home ($ AUD)", result.netWeeklyTakeHome],
+        ["Total ATO Income Tax ($ AUD)", result.incomeTax],
+        ["Effective Tax Rate (%)", `${result.effectiveTaxRate}%`],
+      ];
+
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      XLSX.utils.book_append_sheet(wb, wsSummary, "Australia Pay Summary");
+
+      // Pay frequency breakdown table
+      const scheduleHeader = [
+        "Component",
+        "Weekly (52x)",
+        "Fortnightly (26x)",
+        "Monthly (12x)",
+        "Annual",
+      ];
+      const scheduleRows = [
+        ["Gross Base Salary", result.weeklyGross, result.fortnightlyGross, result.monthlyGross, result.grossSalary],
+        ["ATO Income Tax", Math.round((result.incomeTax / 52) * 100) / 100, Math.round((result.incomeTax / 26) * 100) / 100, Math.round((result.incomeTax / 12) * 100) / 100, result.incomeTax],
+        ["Medicare Levy (2%)", Math.round((result.medicareLevy / 52) * 100) / 100, Math.round((result.medicareLevy / 26) * 100) / 100, Math.round((result.medicareLevy / 12) * 100) / 100, result.medicareLevy],
+        ["HELP / HECS Repayment", Math.round((result.helpRepayment / 52) * 100) / 100, Math.round((result.helpRepayment / 26) * 100) / 100, Math.round((result.helpRepayment / 12) * 100) / 100, result.helpRepayment],
+        ["Total Deductions", Math.round((result.totalDeductions / 52) * 100) / 100, Math.round((result.totalDeductions / 26) * 100) / 100, Math.round((result.totalDeductions / 12) * 100) / 100, result.totalDeductions],
+        ["Net Take-Home Pay", result.netWeeklyTakeHome, result.netFortnightlyTakeHome, result.netMonthlyTakeHome, result.netAnnualTakeHome],
+        ["Employer Superannuation", Math.round((result.superannuationAmount / 52) * 100) / 100, Math.round((result.superannuationAmount / 26) * 100) / 100, Math.round((result.superannuationAmount / 12) * 100) / 100, result.superannuationAmount],
+      ];
+      const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+      XLSX.utils.book_append_sheet(wb, wsSchedule, "Pay Frequency Matrix");
+
+      XLSX.writeFile(wb, `ConvertSheet_Australia_Pay_${grossSalary}.xlsx`);
+    } catch (err) {
+      console.error("Failed to generate Excel export:", err);
+    } finally {
+      setIsExportingExcel(false);
+    }
+  };
+
   const llmPrompt = useMemo(() => {
-    return `Analyze my Australian Pay & Take-Home breakdown (2024-25 ATO Stage 3 Tax Cuts):
+    return `Analyze my Australian Pay & Take-Home breakdown (2024-25 & 2026 ATO Stage 3 Tax Cuts):
 - Gross Annual Salary: $${result.grossSalary.toLocaleString()} AUD
 - Employer Superannuation: ${superannuationPercent}% ($${result.superannuationAmount.toLocaleString()}/yr)
 - HELP / HECS Debt Repayment: ${hasHelpDebt ? `$${result.helpRepayment.toLocaleString()}/yr` : "None"}
@@ -201,236 +214,288 @@ Please advise on Australian tax strategies (concessional super contributions, sa
       icon={DollarSign}
       badge="ATO 2024-25 Stage 3 Tax Cuts"
     >
-      {/* Country cross-link navigation hub */}
-      <div className="flex items-center justify-start pb-2">
-        <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
-          <Link
-            href="/tools/salary-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇺🇸</span>
-            <span>US Paycheck</span>
-          </Link>
-          <Link
-            href="/tools/uk-salary-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇬🇧</span>
-            <span>UK Salary</span>
-          </Link>
-          <Link
-            href="/tools/canada-paycheck-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇨🇦</span>
-            <span>Canada Paycheck</span>
-          </Link>
-          <div className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs flex items-center gap-1.5">
-            <span>🇦🇺</span>
-            <span>Australia Pay</span>
+      <div className="space-y-6 pb-28 sm:pb-0">
+        {/* Zero-Knowledge Privacy Badge & Freshness Signal */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 text-xs font-medium">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>100% Client-Side • No server data transfer • Private &amp; Free Forever</span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span>Updated for 2026 ATO Tax Year: Stage 3 Tax Cuts in full effect, Super Guarantee statutory benchmark 11.5% (scaling to 12%), Medicare Levy 2%</span>
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Inputs */}
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <CalcInput
-              id="gross-salary"
-              label="Gross Annual Salary"
-              value={grossSalary}
-              onChange={(val) => setGrossSalary(Number(val) || 0)}
-              prefix="$"
-              min={0}
-              max={2000000}
-              step={1000}
-              helpText="Your total annual base taxable income in Australian Dollars ($ AUD)"
+        {/* Country cross-link navigation hub */}
+        <div className="flex items-center justify-start pb-2">
+          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
+            <Link
+              href="/tools/salary-calculator"
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇺🇸</span>
+              <span>US Paycheck</span>
+            </Link>
+            <Link
+              href="/tools/uk-salary-calculator"
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇬🇧</span>
+              <span>UK Salary</span>
+            </Link>
+            <Link
+              href="/tools/canada-paycheck-calculator"
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇨🇦</span>
+              <span>Canada Paycheck</span>
+            </Link>
+            <div className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs flex items-center gap-1.5">
+              <span>🇦🇺</span>
+              <span>Australia Pay</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Inputs */}
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <CalcInput
+                id="gross-salary"
+                label="Gross Annual Salary"
+                value={grossSalary}
+                onChange={(val) => setGrossSalary(Number(val) || 0)}
+                prefix="$"
+                min={0}
+                max={2000000}
+                step={1000}
+                helpText="Your total annual base taxable income in Australian Dollars ($ AUD)"
+              />
+              <CalcSlider
+                id="gross-salary-slider"
+                label="Explore Salary Range ($30k – $300k)"
+                value={Math.min(300000, Math.max(30000, grossSalary))}
+                onChange={setGrossSalary}
+                min={30000}
+                max={300000}
+                step={1000}
+                unit="$"
+                ariaLabel="Gross Annual Base Salary Slider"
+              />
+              {/* Quick presets */}
+              <div className="space-y-1.5 pt-1">
+                <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block">Common Salary Benchmarks:</span>
+                <div className="flex flex-wrap gap-2">
+                  {PRESET_SALARIES.map((preset) => (
+                    <button
+                      key={preset.value}
+                      type="button"
+                      onClick={() => setGrossSalary(preset.value)}
+                      className={`min-h-[44px] min-w-[44px] px-3.5 py-2 text-xs font-semibold rounded-xl border transition-colors cursor-pointer touch-manipulation ${
+                        grossSalary === preset.value
+                          ? "bg-emerald-600 text-white border-emerald-600 dark:border-emerald-500 shadow-xs"
+                          : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <CalcSlider
+              id="superannuation-percent"
+              label="Employer Superannuation Guarantee"
+              value={superannuationPercent}
+              onChange={setSuperannuationPercent}
+              min={9}
+              max={15}
+              step={0.5}
+              unit="%"
+              helpText="Statutory employer superannuation contribution (standard 11.5% for 2024-25, scaling to 12%)"
             />
-            {/* Quick presets */}
-            <div className="flex items-center gap-2 pt-1">
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">Presets:</span>
-              {PRESET_SALARIES.map((preset) => (
-                <button
-                  key={preset.value}
-                  type="button"
-                  onClick={() => setGrossSalary(preset.value)}
-                  className={`px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors ${
-                    grossSalary === preset.value
-                      ? "bg-emerald-500 text-white border-emerald-500 dark:border-emerald-600"
-                      : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300"
-                  }`}
-                >
-                  {preset.label}
-                </button>
-              ))}
+
+            <div className="space-y-4 pt-1">
+              {/* HELP / HECS Student Debt Toggle */}
+              <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 shadow-xs">
+                <div className="space-y-0.5">
+                  <label
+                    htmlFor="has-help-debt"
+                    className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                  >
+                    HELP / HECS Student Debt
+                  </label>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Include compulsory Higher Education Loan repayment
+                  </p>
+                </div>
+                <input
+                  id="has-help-debt"
+                  type="checkbox"
+                  checked={hasHelpDebt}
+                  onChange={(e) => setHasHelpDebt(e.target.checked)}
+                  className="w-5 h-5 text-emerald-600 rounded-sm border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                />
+              </div>
+
+              {/* Medicare Levy Exemption Toggle */}
+              <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 shadow-xs">
+                <div className="space-y-0.5">
+                  <label
+                    htmlFor="medicare-exempt"
+                    className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                  >
+                    Exempt from 2% Medicare Levy
+                  </label>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    Full exemption for eligible medical, diplomatic, or non-resident status
+                  </p>
+                </div>
+                <input
+                  id="medicare-exempt"
+                  type="checkbox"
+                  checked={medicareExempt}
+                  onChange={(e) => setMedicareExempt(e.target.checked)}
+                  className="w-5 h-5 text-emerald-600 rounded-sm border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
+                />
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={handleExportExcel}
+                disabled={isExportingExcel}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0 disabled:opacity-50 cursor-pointer min-h-[44px] touch-manipulation"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                <span>{isExportingExcel ? "Generating..." : "Export Excel (.xlsx)"}</span>
+              </button>
+              <CalcSaveButton
+                toolSlug="australia-pay-calculator"
+                toolName="Australia Pay Calculator"
+                summaryTitle={`Salary: $${grossSalary.toLocaleString()} AUD`}
+                summaryMetrics={[
+                  { label: "Fortnightly Pay", value: formatCurrency(result.netFortnightlyTakeHome) },
+                  { label: "Monthly Pay", value: formatCurrency(result.netMonthlyTakeHome) },
+                  { label: "Annual Take-Home", value: formatCurrency(result.netAnnualTakeHome) },
+                  { label: "Income Tax", value: formatCurrency(result.incomeTax) },
+                  { label: "Medicare Levy", value: formatCurrency(result.medicareLevy) },
+                  { label: "Super (11.5%)", value: formatCurrency(result.superannuationAmount) },
+                ]}
+              />
+              <CalcShareButton
+                state={{
+                  grossSalary,
+                  superannuationPercent,
+                  hasHelpDebt,
+                  medicareExempt,
+                }}
+                label="Share Australia Pay Plan"
+              />
+              <CalcPromptButton promptText={llmPrompt} />
             </div>
           </div>
 
-          <CalcSlider
-            id="superannuation-percent"
-            label="Employer Superannuation Guarantee"
-            value={superannuationPercent}
-            onChange={setSuperannuationPercent}
-            min={9}
-            max={15}
-            step={0.5}
-            unit="%"
-            helpText="Statutory employer superannuation contribution (standard 11.5% for 2024-25)"
-          />
-
-          <div className="space-y-4 pt-1">
-            {/* HELP / HECS Student Debt Toggle */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 shadow-xs">
-              <div className="space-y-0.5">
-                <label
-                  htmlFor="has-help-debt"
-                  className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 cursor-pointer"
-                >
-                  HELP / HECS Student Debt
-                </label>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Include compulsory Higher Education Loan repayment
-                </p>
-              </div>
-              <input
-                id="has-help-debt"
-                type="checkbox"
-                checked={hasHelpDebt}
-                onChange={(e) => setHasHelpDebt(e.target.checked)}
-                className="w-4 h-4 text-emerald-600 rounded-sm border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 cursor-pointer"
-              />
-            </div>
-
-            {/* Medicare Levy Exemption Toggle */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 shadow-xs">
-              <div className="space-y-0.5">
-                <label
-                  htmlFor="medicare-exempt"
-                  className="text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-300 cursor-pointer"
-                >
-                  Exempt from 2% Medicare Levy
-                </label>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Full exemption for eligible medical, diplomatic, or non-resident status
-                </p>
-              </div>
-              <input
-                id="medicare-exempt"
-                type="checkbox"
-                checked={medicareExempt}
-                onChange={(e) => setMedicareExempt(e.target.checked)}
-                className="w-4 h-4 text-emerald-600 rounded-sm border-zinc-300 dark:border-zinc-600 focus:ring-emerald-500 cursor-pointer"
-              />
-            </div>
-          </div>
-
-          <div className="pt-2 flex flex-wrap gap-3">
-            <CalcSaveButton
-              toolSlug="australia-pay-calculator"
-              toolName="Australia Pay Calculator"
-              summaryTitle={`Salary: $${grossSalary.toLocaleString()} AUD`}
-              summaryMetrics={[
-                { label: "Fortnightly Pay", value: formatCurrency(result.netFortnightlyTakeHome) },
-                { label: "Monthly Pay", value: formatCurrency(result.netMonthlyTakeHome) },
-                { label: "Annual Take-Home", value: formatCurrency(result.netAnnualTakeHome) },
-                { label: "Income Tax", value: formatCurrency(result.incomeTax) },
-                { label: "Medicare Levy", value: formatCurrency(result.medicareLevy) },
-                { label: "Super (11.5%)", value: formatCurrency(result.superannuationAmount) },
+          {/* Right Results */}
+          <div className="space-y-4">
+            <CalcResult
+              title="Australian Take-Home Pay Summary"
+              primaryLabel="Net Fortnightly Take-Home"
+              primaryValue={formatCurrency(result.netFortnightlyTakeHome)}
+              primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+              copyValue={`Australia Take-Home Pay: ${formatCurrency(result.netFortnightlyTakeHome)}/fortnight (${formatCurrency(result.netMonthlyTakeHome)}/mo, ${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: $${grossSalary.toLocaleString()} | Tax: ${formatCurrency(result.incomeTax)} | Medicare: ${formatCurrency(result.medicareLevy)} | Effective Rate: ${result.effectiveTaxRate}%`}
+              columns={2}
+              items={[
+                {
+                  label: "Net Annual Take-Home",
+                  value: formatCurrency(result.netAnnualTakeHome),
+                  subtext: "Total net salary in pocket after all ATO income taxes and levies",
+                  highlight: true,
+                },
+                {
+                  label: "Net Monthly Take-Home",
+                  value: formatCurrency(result.netMonthlyTakeHome),
+                  subtext: "Monthly net salary payment",
+                },
+                {
+                  label: "Net Weekly Take-Home",
+                  value: formatCurrency(result.netWeeklyTakeHome),
+                  subtext: "Weekly net salary (52 weeks)",
+                },
+                {
+                  label: "ATO Income Tax",
+                  value: formatCurrency(result.incomeTax),
+                  subtext: "Stage 3 tax cuts (effective July 2024)",
+                },
+                {
+                  label: "Medicare Levy (2%)",
+                  value: formatCurrency(result.medicareLevy),
+                  subtext: medicareExempt ? "Exempt" : "Standard 2% levy for public health cover",
+                },
+                ...(result.helpRepayment > 0
+                  ? [
+                      {
+                        label: "HELP / HECS Repayment",
+                        value: formatCurrency(result.helpRepayment),
+                        subtext: "Compulsory higher education loan repayment",
+                      },
+                    ]
+                  : []),
+                {
+                  label: `Employer Superannuation (${superannuationPercent}%)`,
+                  value: formatCurrency(result.superannuationAmount),
+                  subtext: "Statutory employer super contribution into your chosen super fund",
+                },
+                {
+                  label: "Effective Tax Rate",
+                  value: `${result.effectiveTaxRate}%`,
+                  subtext: "(Total Tax + Medicare + HELP) / Gross Salary",
+                },
               ]}
             />
-            <CalcShareButton
-              state={{
-                grossSalary,
-                superannuationPercent,
-                hasHelpDebt,
-                medicareExempt,
-              }}
-              label="Share Australia Pay Plan"
-            />
-            <CalcPromptButton promptText={llmPrompt} />
-            <CalcExportButton
-              data={exportSchedule}
-              filename="australia-pay-take-home-breakdown"
-              sheetName="Australia Pay Breakdown"
-            />
           </div>
         </div>
 
-        {/* Right Results */}
-        <div className="space-y-4">
-          <CalcResult
-            title="Australian Take-Home Pay Summary"
-            primaryLabel="Net Fortnightly Take-Home"
-            primaryValue={formatCurrency(result.netFortnightlyTakeHome)}
-            primarySubtext={`Monthly: ${formatCurrency(result.netMonthlyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
-            copyValue={`Australia Take-Home Pay: ${formatCurrency(result.netFortnightlyTakeHome)}/fortnight (${formatCurrency(result.netMonthlyTakeHome)}/mo, ${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: $${grossSalary.toLocaleString()} | Tax: ${formatCurrency(result.incomeTax)} | Medicare: ${formatCurrency(result.medicareLevy)} | Effective Rate: ${result.effectiveTaxRate}%`}
-            columns={2}
-            items={[
+        <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+          <CalcChart
+            title="Australia Pay & Tax Breakdown"
+            data={chartData}
+            series={[
               {
-                label: "Net Annual Take-Home",
-                value: formatCurrency(result.netAnnualTakeHome),
-                subtext: "Total net salary in pocket after all ATO income taxes and levies",
-                highlight: true,
-              },
-              {
-                label: "Net Monthly Take-Home",
-                value: formatCurrency(result.netMonthlyTakeHome),
-                subtext: "Monthly net salary payment",
-              },
-              {
-                label: "Net Weekly Take-Home",
-                value: formatCurrency(result.netWeeklyTakeHome),
-                subtext: "Weekly net salary (52 weeks)",
-              },
-              {
-                label: "ATO Income Tax",
-                value: formatCurrency(result.incomeTax),
-                subtext: "Stage 3 tax cuts (effective July 2024)",
-              },
-              {
-                label: "Medicare Levy (2%)",
-                value: formatCurrency(result.medicareLevy),
-                subtext: medicareExempt ? "Exempt" : "Standard 2% levy for public health cover",
-              },
-              ...(result.helpRepayment > 0
-                ? [
-                    {
-                      label: "HELP / HECS Repayment",
-                      value: formatCurrency(result.helpRepayment),
-                      subtext: "Compulsory higher education loan repayment",
-                    },
-                  ]
-                : []),
-              {
-                label: `Employer Superannuation (${superannuationPercent}%)`,
-                value: formatCurrency(result.superannuationAmount),
-                subtext: "Statutory employer super contribution into your chosen super fund",
-              },
-              {
-                label: "Effective Tax Rate",
-                value: `${result.effectiveTaxRate}%`,
-                subtext: "(Total Tax + Medicare + HELP) / Gross Salary",
+                key: "amount",
+                name: "Amount ($ AUD)",
+                color: "#10b981",
+                gradientId: "australiaSalaryGrad",
               },
             ]}
+            valuePrefix="$"
           />
         </div>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-        <CalcChart
-          title="Australia Pay & Tax Breakdown"
-          data={chartData}
-          series={[
-            {
-              key: "amount",
-              name: "Amount ($ AUD)",
-              color: "#10b981",
-              gradientId: "australiaSalaryGrad",
-            },
-          ]}
-          valuePrefix="$"
-        />
+      {/* Mobile Sticky Bottom Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block tracking-wider">
+            Net Fortnightly Pay
+          </span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {formatCurrency(result.netFortnightlyTakeHome)}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          disabled={isExportingExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors flex items-center gap-1.5 touch-manipulation disabled:opacity-50"
+        >
+          <FileSpreadsheet className="w-4 h-4" />
+          <span>{isExportingExcel ? "Exporting..." : "Export .xlsx"}</span>
+        </button>
       </div>
     </CalcCard>
   );

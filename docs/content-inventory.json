@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-17",
-  "totalBlogs": 27,
+  "lastUpdated": "2026-10-18",
+  "totalBlogs": 28,
   "totalTools": 18,
   "blogs": [
     {
@@ -164,6 +164,12 @@
       "title": "The 22.15% APR Compounding Trap: How the Fed's G.19 Benchmark Destroys Household Wealth (and the Exact Math to Break Free)",
       "category": "Financial Engineering",
       "description": "Federal Reserve G.19 data reveals commercial bank credit card interest rates averaging 22.15%. Discover the exact daily compounding math behind minimum payment traps, compare Avalanche vs. Snowball payoff velocity, and calculate your debt-free date."
+    },
+    {
+      "slug": "bank-of-england-base-rate-gilt-yields-uk-mortgage-math-2026",
+      "title": "BoE Rate Shock: Why 30-Year Gilts at 6% Push UK Mortgages to 6%",
+      "category": "Mortgage & Lending",
+      "description": "Bank of England base rate sits at 3.75% with MPC markets pricing a hike to 4.00%. Discover why 30-year gilt yields at 6% drive 2-year and 5-year fixed mortgages to 6%."
     }
   ],
   "tools": [
@@ -503,6 +509,54 @@
         "save-share-prompt-actions",
         "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "uk-salary-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "australia-pay-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "gst-calculator",
+      "lastAudited": "2026-10-18",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     }

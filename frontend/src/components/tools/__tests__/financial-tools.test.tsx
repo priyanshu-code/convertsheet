@@ -61,8 +61,11 @@ describe("Financial Calculators Suite", () => {
     expect(screen.getByText("GST Calculator")).toBeInTheDocument();
 
     // In 18% mode on 10,000 base, total is 11,800 and GST is 1,800
-    expect(screen.getByText("₹11,800")).toBeInTheDocument();
-    expect(screen.getByText("₹1,800")).toBeInTheDocument();
+    expect(screen.getAllByText("₹11,800").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("₹1,800").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for 2026 GST Council/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Export/i).length).toBeGreaterThanOrEqual(1);
   });
 
   it("PercentageCalculator computes all 6 percentage problem types and renders matrix", () => {

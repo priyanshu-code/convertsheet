@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { PoundSterling } from "lucide-react";
+import { PoundSterling, ShieldCheck, FileSpreadsheet } from "lucide-react";
 import {
   CalcCard,
   CalcInput,
@@ -10,12 +10,12 @@ import {
   CalcSelect,
   CalcResult,
   CalcChart,
-  CalcExportButton,
   CalcShareButton,
   CalcSaveButton,
   CalcPromptButton,
 } from "@/components/calculator";
 import { calculateUkSalary, UkSalaryResult } from "@/lib/engines/financial-engine";
+import * as XLSX from "xlsx";
 
 export interface UkSalaryCalculatorProps {
   initialValues?: Partial<{
@@ -82,6 +82,20 @@ export function UkSalaryCalculator({ initialValues }: UkSalaryCalculatorProps = 
     return "none";
   });
 
+  const [isExportingExcel, setIsExportingExcel] = useState<boolean>(false);
+
+  // Real-time URL query parameter synchronization
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("grossSalary", grossSalary.toString());
+    params.set("pensionPercent", pensionPercent.toString());
+    params.set("studentLoanPlan", studentLoanPlan);
+    const query = params.toString();
+    const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+    window.history.replaceState(null, "", newUrl);
+  }, [grossSalary, pensionPercent, studentLoanPlan]);
+
   const result: UkSalaryResult = useMemo(() => {
     return calculateUkSalary({
       grossSalary,
@@ -101,51 +115,6 @@ export function UkSalaryCalculator({ initialValues }: UkSalaryCalculatorProps = 
     ];
   }, [result]);
 
-  const exportSchedule = useMemo(() => {
-    return [
-      {
-        Component: "Gross Salary",
-        Monthly: result.monthlyGross,
-        Annual: result.grossSalary,
-      },
-      {
-        Component: "Personal Allowance (Tax-free)",
-        Monthly: Math.round((result.personalAllowance / 12) * 100) / 100,
-        Annual: result.personalAllowance,
-      },
-      {
-        Component: "Income Tax (PAYE)",
-        Monthly: Math.round((result.incomeTax / 12) * 100) / 100,
-        Annual: result.incomeTax,
-      },
-      {
-        Component: "National Insurance (NIC)",
-        Monthly: Math.round((result.nationalInsurance / 12) * 100) / 100,
-        Annual: result.nationalInsurance,
-      },
-      {
-        Component: "Pension Contribution",
-        Monthly: Math.round((result.pensionContribution / 12) * 100) / 100,
-        Annual: result.pensionContribution,
-      },
-      {
-        Component: "Student Loan Repayment",
-        Monthly: Math.round((result.studentLoanRepayment / 12) * 100) / 100,
-        Annual: result.studentLoanRepayment,
-      },
-      {
-        Component: "Net Weekly Take-Home",
-        Monthly: Math.round((result.netWeeklyTakeHome * 4.3333) * 100) / 100,
-        Annual: Math.round(result.netWeeklyTakeHome * 52 * 100) / 100,
-      },
-      {
-        Component: "Net Take-Home Pay",
-        Monthly: result.netMonthlyTakeHome,
-        Annual: result.netAnnualTakeHome,
-      },
-    ];
-  }, [result]);
-
   const formatCurrency = (val: number): string => {
     return `£${val.toLocaleString("en-GB", {
       minimumFractionDigits: 2,
@@ -153,8 +122,67 @@ export function UkSalaryCalculator({ initialValues }: UkSalaryCalculatorProps = 
     })}`;
   };
 
+  const handleExportExcel = () => {
+    try {
+      setIsExportingExcel(true);
+      const wb = XLSX.utils.book_new();
+
+      const summaryData = [
+        ["ConvertSheet - UK Salary & Take-Home Pay Audit", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", `https://www.convertsheet.com/tools/uk-salary-calculator?grossSalary=${grossSalary}&pensionPercent=${pensionPercent}&studentLoanPlan=${studentLoanPlan}`],
+        ["HMRC Tax Baseline", "2024/25 & 2026/27 HMRC Standards (England, Wales, NI)"],
+        ["", ""],
+        ["--- SALARY & DEDUCTIONS PARAMETERS ---", ""],
+        ["Gross Annual Base Salary (£)", grossSalary],
+        ["Employee Pension Contribution (%)", `${pensionPercent}%`],
+        ["Annual Pension Salary Sacrifice (£)", result.pensionContribution],
+        ["Student Loan Plan", studentLoanPlan === "none" ? "None" : studentLoanPlan.toUpperCase()],
+        ["Student Loan Repayments (£)", result.studentLoanRepayment],
+        ["Personal Allowance (Tax-Free) (£)", result.personalAllowance],
+        ["Taxable Income (£)", result.taxableIncome],
+        ["", ""],
+        ["--- NET TAKE-HOME PAY RESULTS ---", ""],
+        ["Net Annual Take-Home (£)", result.netAnnualTakeHome],
+        ["Net Monthly Take-Home (£)", result.netMonthlyTakeHome],
+        ["Net Weekly Take-Home (£)", result.netWeeklyTakeHome],
+        ["Total Income Tax (PAYE) (£)", result.incomeTax],
+        ["National Insurance (Class 1 NIC) (£)", result.nationalInsurance],
+        ["Effective Combined Tax Rate (%)", `${result.effectiveTaxRate}%`],
+      ];
+
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      XLSX.utils.book_append_sheet(wb, wsSummary, "UK Salary Summary");
+
+      // Pay frequency comparison table
+      const scheduleHeader = [
+        "Component",
+        "Weekly (52x)",
+        "Monthly (12x)",
+        "Annual",
+      ];
+      const scheduleRows = [
+        ["Gross Base Salary", Math.round((grossSalary / 52) * 100) / 100, result.monthlyGross, grossSalary],
+        ["Personal Allowance (Tax-Free)", Math.round((result.personalAllowance / 52) * 100) / 100, Math.round((result.personalAllowance / 12) * 100) / 100, result.personalAllowance],
+        ["Income Tax (PAYE)", Math.round((result.incomeTax / 52) * 100) / 100, Math.round((result.incomeTax / 12) * 100) / 100, result.incomeTax],
+        ["National Insurance (NIC)", Math.round((result.nationalInsurance / 52) * 100) / 100, Math.round((result.nationalInsurance / 12) * 100) / 100, result.nationalInsurance],
+        ["Pension Contribution", Math.round((result.pensionContribution / 52) * 100) / 100, Math.round((result.pensionContribution / 12) * 100) / 100, result.pensionContribution],
+        ["Student Loan Repayment", Math.round((result.studentLoanRepayment / 52) * 100) / 100, Math.round((result.studentLoanRepayment / 12) * 100) / 100, result.studentLoanRepayment],
+        ["Net Take-Home Pay", result.netWeeklyTakeHome, result.netMonthlyTakeHome, result.netAnnualTakeHome],
+      ];
+      const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+      XLSX.utils.book_append_sheet(wb, wsSchedule, "Pay Frequency Matrix");
+
+      XLSX.writeFile(wb, `ConvertSheet_UK_Salary_${grossSalary}.xlsx`);
+    } catch (err) {
+      console.error("Failed to generate Excel export:", err);
+    } finally {
+      setIsExportingExcel(false);
+    }
+  };
+
   const llmPrompt = useMemo(() => {
-    return `Analyze my UK Salary & Take-Home breakdown (2024/25 HMRC tax year):
+    return `Analyze my UK Salary & Take-Home breakdown (2024/25 & 2026/27 HMRC tax rules):
 - Gross Annual Salary: £${result.grossSalary.toLocaleString()}
 - Pension Contribution: ${pensionPercent}% (£${result.pensionContribution.toLocaleString()}/yr)
 - Student Loan Plan: ${studentLoanPlan} (£${result.studentLoanRepayment.toLocaleString()}/yr)
@@ -175,182 +203,234 @@ Please advise on salary sacrifice pension contributions, ISA allowances, tax bra
       icon={PoundSterling}
       badge="United Kingdom • 2024/25 HMRC"
     >
-      {/* Country cross-link navigation hub */}
-      <div className="flex items-center justify-start pb-2">
-        <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
-          <Link
-            href="/tools/salary-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇺🇸</span>
-            <span>US Paycheck</span>
-          </Link>
-          <div className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs flex items-center gap-1.5">
-            <span>🇬🇧</span>
-            <span>UK Salary</span>
+      <div className="space-y-6 pb-28 sm:pb-0">
+        {/* Zero-Knowledge Privacy Badge & Freshness Signal */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 text-xs font-medium">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>100% Client-Side • No server data transfer • Private &amp; Free Forever</span>
           </div>
-          <Link
-            href="/tools/canada-paycheck-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇨🇦</span>
-            <span>Canada Paycheck</span>
-          </Link>
-          <Link
-            href="/tools/australia-pay-calculator"
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
-          >
-            <span>🇦🇺</span>
-            <span>Australia Pay</span>
-          </Link>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span>Updated for 2026/27 HMRC: £12,570 Personal Allowance frozen, 8% Class 1 Employee NIC, £100k taper threshold</span>
+          </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Inputs */}
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <CalcInput
-              id="gross-salary"
-              label="Gross Annual Salary"
-              value={grossSalary}
-              onChange={(val) => setGrossSalary(Number(val) || 0)}
-              prefix="£"
+        {/* Country cross-link navigation hub */}
+        <div className="flex items-center justify-start pb-2">
+          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700">
+            <Link
+              href="/tools/salary-calculator"
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇺🇸</span>
+              <span>US Paycheck</span>
+            </Link>
+            <div className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs flex items-center gap-1.5">
+              <span>🇬🇧</span>
+              <span>UK Salary</span>
+            </div>
+            <Link
+              href="/tools/canada-paycheck-calculator"
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇨🇦</span>
+              <span>Canada Paycheck</span>
+            </Link>
+            <Link
+              href="/tools/australia-pay-calculator"
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5"
+            >
+              <span>🇦🇺</span>
+              <span>Australia Pay</span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Inputs */}
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <CalcInput
+                id="gross-salary"
+                label="Gross Annual Salary"
+                value={grossSalary}
+                onChange={(val) => setGrossSalary(Number(val) || 0)}
+                prefix="£"
+                min={0}
+                step={1000}
+                helpText="Your total annual pre-tax base salary before deductions"
+              />
+              <CalcSlider
+                id="gross-salary-slider"
+                label="Explore Salary Range (£10k – £250k)"
+                value={Math.min(250000, Math.max(10000, grossSalary))}
+                onChange={setGrossSalary}
+                min={10000}
+                max={250000}
+                step={1000}
+                unit="£"
+                ariaLabel="Gross Annual Base Salary Slider"
+              />
+              {/* Quick presets */}
+              <div className="space-y-1.5 pt-1">
+                <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block">Common Salary Benchmarks:</span>
+                <div className="flex flex-wrap gap-2">
+                  {PRESET_SALARIES.map((preset) => (
+                    <button
+                      key={preset.value}
+                      type="button"
+                      onClick={() => setGrossSalary(preset.value)}
+                      className={`min-h-[44px] min-w-[44px] px-3.5 py-2 text-xs font-semibold rounded-xl border transition-colors cursor-pointer touch-manipulation ${
+                        grossSalary === preset.value
+                          ? "bg-emerald-600 text-white border-emerald-600 dark:border-emerald-500 shadow-xs"
+                          : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <CalcSlider
+              id="pension-percent"
+              label="Pension Contribution"
+              value={pensionPercent}
+              onChange={setPensionPercent}
               min={0}
-              step={1000}
-              helpText="Your total annual pre-tax base salary before deductions"
+              max={15}
+              step={1}
+              unit="%"
+              helpText="Auto-enrolment employee pension contribution (typically pre-tax salary sacrifice)"
             />
-            {/* Quick presets */}
-            <div className="flex items-center gap-2 pt-1">
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">Presets:</span>
-              {PRESET_SALARIES.map((preset) => (
-                <button
-                  key={preset.value}
-                  type="button"
-                  onClick={() => setGrossSalary(preset.value)}
-                  className={`px-2.5 py-1 text-xs font-medium rounded-lg border transition-colors ${
-                    grossSalary === preset.value
-                      ? "bg-emerald-500 text-white border-emerald-500 dark:border-emerald-600"
-                      : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300"
-                  }`}
-                >
-                  {preset.label}
-                </button>
-              ))}
+
+            <CalcSelect
+              id="student-loan-plan"
+              label="Student Loan Plan"
+              value={studentLoanPlan}
+              onChange={(val) =>
+                setStudentLoanPlan(val as "none" | "plan1" | "plan2" | "plan4" | "plan5" | "postgrad")
+              }
+              options={STUDENT_LOAN_OPTIONS}
+              helperText="UK Student Loans Company repayments (deducted above income thresholds)"
+            />
+
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={handleExportExcel}
+                disabled={isExportingExcel}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0 disabled:opacity-50 cursor-pointer min-h-[44px] touch-manipulation"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                <span>{isExportingExcel ? "Generating..." : "Export Excel (.xlsx)"}</span>
+              </button>
+              <CalcSaveButton
+                toolSlug="uk-salary-calculator"
+                toolName="UK Salary & Take-Home Calculator"
+                summaryTitle={`Salary: £${grossSalary.toLocaleString()} (Take-Home: ${formatCurrency(result.netMonthlyTakeHome)}/mo)`}
+                summaryMetrics={[
+                  { label: "Monthly Take-Home", value: formatCurrency(result.netMonthlyTakeHome) },
+                  { label: "Annual Take-Home", value: formatCurrency(result.netAnnualTakeHome) },
+                  { label: "Income Tax", value: formatCurrency(result.incomeTax) },
+                  { label: "National Insurance", value: formatCurrency(result.nationalInsurance) },
+                ]}
+              />
+              <CalcShareButton
+                state={{
+                  grossSalary,
+                  pensionPercent,
+                  studentLoanPlan,
+                }}
+                label="Share UK Salary Plan"
+              />
+              <CalcPromptButton promptText={llmPrompt} />
             </div>
           </div>
 
-          <CalcSlider
-            id="pension-percent"
-            label="Pension Contribution"
-            value={pensionPercent}
-            onChange={setPensionPercent}
-            min={0}
-            max={15}
-            step={1}
-            unit="%"
-            helpText="Auto-enrolment employee pension contribution (typically pre-tax salary sacrifice)"
-          />
-
-          <CalcSelect
-            id="student-loan-plan"
-            label="Student Loan Plan"
-            value={studentLoanPlan}
-            onChange={(val) =>
-              setStudentLoanPlan(val as "none" | "plan1" | "plan2" | "plan4" | "plan5" | "postgrad")
-            }
-            options={STUDENT_LOAN_OPTIONS}
-            helperText="UK Student Loans Company repayments (deducted above income thresholds)"
-          />
-
-          <div className="pt-2 flex flex-wrap gap-3">
-            <CalcSaveButton
-              toolSlug="uk-salary-calculator"
-              toolName="UK Salary & Take-Home Calculator"
-              summaryTitle={`Salary: £${grossSalary.toLocaleString()} (Take-Home: ${formatCurrency(result.netMonthlyTakeHome)}/mo)`}
-              summaryMetrics={[
-                { label: "Monthly Take-Home", value: formatCurrency(result.netMonthlyTakeHome) },
-                { label: "Annual Take-Home", value: formatCurrency(result.netAnnualTakeHome) },
-                { label: "Income Tax", value: formatCurrency(result.incomeTax) },
-                { label: "National Insurance", value: formatCurrency(result.nationalInsurance) },
+          {/* Right Results */}
+          <div className="space-y-4">
+            <CalcResult
+              title="UK Take-Home Pay Summary"
+              primaryLabel="Net Monthly Take-Home"
+              primaryValue={formatCurrency(result.netMonthlyTakeHome)}
+              primarySubtext={`Weekly: ${formatCurrency(result.netWeeklyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
+              copyValue={`UK Take-Home: ${formatCurrency(result.netMonthlyTakeHome)}/mo (${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: £${grossSalary.toLocaleString()} | Tax: ${formatCurrency(result.incomeTax)} | NI: ${formatCurrency(result.nationalInsurance)} | Effective Rate: ${result.effectiveTaxRate}%`}
+              columns={2}
+              items={[
+                {
+                  label: "Annual Take-Home",
+                  value: formatCurrency(result.netAnnualTakeHome),
+                  subtext: "Total net pay after all taxes & deductions",
+                  highlight: true,
+                },
+                {
+                  label: "Total Income Tax (PAYE)",
+                  value: formatCurrency(result.incomeTax),
+                  subtext: `Taxable Income: £${result.taxableIncome.toLocaleString()}`,
+                },
+                {
+                  label: "National Insurance (NIC)",
+                  value: formatCurrency(result.nationalInsurance),
+                  subtext: "Class 1 employee rate (8% / 2%)",
+                },
+                {
+                  label: "Pension Contribution",
+                  value: formatCurrency(result.pensionContribution),
+                  subtext: `${pensionPercent}% employee deduction`,
+                },
+                {
+                  label: "Student Loan Repayment",
+                  value: formatCurrency(result.studentLoanRepayment),
+                  subtext: studentLoanPlan === "none" ? "No repayments active" : `Plan: ${studentLoanPlan.toUpperCase()}`,
+                },
+                {
+                  label: "Effective Tax Rate",
+                  value: `${result.effectiveTaxRate}%`,
+                  subtext: "(Income Tax + NIC) / Gross",
+                },
               ]}
-            />
-            <CalcShareButton
-              state={{
-                grossSalary,
-                pensionPercent,
-                studentLoanPlan,
-              }}
-              label="Share UK Salary Plan"
-            />
-            <CalcPromptButton promptText={llmPrompt} />
-            <CalcExportButton
-              data={exportSchedule}
-              filename="uk-salary-take-home-breakdown"
-              sheetName="UK Salary Breakdown"
             />
           </div>
         </div>
 
-        {/* Right Results */}
-        <div className="space-y-4">
-          <CalcResult
-            title="UK Take-Home Pay Summary"
-            primaryLabel="Net Monthly Take-Home"
-            primaryValue={formatCurrency(result.netMonthlyTakeHome)}
-            primarySubtext={`Weekly: ${formatCurrency(result.netWeeklyTakeHome)} • Annual: ${formatCurrency(result.netAnnualTakeHome)}`}
-            copyValue={`UK Take-Home: ${formatCurrency(result.netMonthlyTakeHome)}/mo (${formatCurrency(result.netAnnualTakeHome)}/yr) | Gross: £${grossSalary.toLocaleString()} | Tax: ${formatCurrency(result.incomeTax)} | NI: ${formatCurrency(result.nationalInsurance)} | Effective Rate: ${result.effectiveTaxRate}%`}
-            columns={2}
-            items={[
+        <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+          <CalcChart
+            title="UK Salary & Progressive Tax Breakdown"
+            data={chartData}
+            series={[
               {
-                label: "Annual Take-Home",
-                value: formatCurrency(result.netAnnualTakeHome),
-                subtext: "Total net pay after all taxes & deductions",
-                highlight: true,
-              },
-              {
-                label: "Total Income Tax (PAYE)",
-                value: formatCurrency(result.incomeTax),
-                subtext: `Taxable Income: £${result.taxableIncome.toLocaleString()}`,
-              },
-              {
-                label: "National Insurance (NIC)",
-                value: formatCurrency(result.nationalInsurance),
-                subtext: "Class 1 employee rate (8% / 2%)",
-              },
-              {
-                label: "Pension Contribution",
-                value: formatCurrency(result.pensionContribution),
-                subtext: `${pensionPercent}% employee deduction`,
-              },
-              {
-                label: "Student Loan Repayment",
-                value: formatCurrency(result.studentLoanRepayment),
-                subtext: studentLoanPlan === "none" ? "No repayments active" : `Plan: ${studentLoanPlan.toUpperCase()}`,
-              },
-              {
-                label: "Effective Tax Rate",
-                value: `${result.effectiveTaxRate}%`,
-                subtext: "(Income Tax + NIC) / Gross",
+                key: "amount",
+                name: "Amount (£)",
+                color: "#10b981",
+                gradientId: "ukSalaryGrad",
               },
             ]}
           />
         </div>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-        <CalcChart
-          title="UK Salary & Progressive Tax Breakdown"
-          data={chartData}
-          series={[
-            {
-              key: "amount",
-              name: "Amount (£)",
-              color: "#10b981",
-              gradientId: "ukSalaryGrad",
-            },
-          ]}
-        />
+      {/* Mobile Sticky Bottom Summary Bar (<640px) */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-lg flex items-center justify-between">
+        <div>
+          <span className="text-[10px] font-semibold text-zinc-500 uppercase block tracking-wider">
+            Net Monthly Pay
+          </span>
+          <span className="text-base font-extrabold text-emerald-600 dark:text-emerald-400">
+            {formatCurrency(result.netMonthlyTakeHome)}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleExportExcel}
+          disabled={isExportingExcel}
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-colors flex items-center gap-1.5 touch-manipulation disabled:opacity-50"
+        >
+          <FileSpreadsheet className="w-4 h-4" />
+          <span>{isExportingExcel ? "Exporting..." : "Export .xlsx"}</span>
+        </button>
       </div>
     </CalcCard>
   );
