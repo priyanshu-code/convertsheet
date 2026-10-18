@@ -18,6 +18,11 @@ This log tracks all live directory submissions, approval statuses, and incoming 
 | 10 | **Launching Next** | **54** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted to Queue** ([ID: 163024](https://www.launchingnext.com/thanks/?i=163024)) | `https://www.convertsheet.com` |
 | 11 | **Alternative.me** | **75** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted & Pending Approval** ([Submissions](https://alternative.me/account/submissions)) | `https://www.convertsheet.com` |
 | 12 | **TinyLaunch** | **73** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Launch Scheduled (Pending Review)** ([Launch #26149](https://www.tinylaunch.com/dashboard/launches/26149/success)) | `https://www.convertsheet.com` |
+| 13 | **LaunchIgniter** | **74** | Profile Live / Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Product Created & Pending Approval** ([Product](https://launchigniter.com/product/convertsheet)) | `https://www.convertsheet.com` |
+| 14 | **Super Launch** | **62** | Nofollow / Dofollow Review | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted & In Review Queue** ([Product](https://www.superlaun.ch/products/3909)) | `https://www.convertsheet.com` |
+| 15 | **BuildVoyage** | **42** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Review Unlocked (3/3 Cheers Done)** ([Product](https://buildvoyage.com/products/convertsheet)) | `https://www.convertsheet.com` |
+| 16 | **AI Tools (aitools.inc)** | **54** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted via Free Typeform** ([aitools.inc](https://aitools.inc)) | `https://www.convertsheet.com` |
+| 17 | **Tiny Startups** | **71** | Dofollow | Free | 2026-10-18 | `genshingamer2024@gmail.com` | **Submitted / In Review Queue** ([Tiny Startups](https://www.tinystartups.com)) | `https://www.convertsheet.com` |
 
 ---
 
@@ -121,6 +126,46 @@ This log tracks all live directory submissions, approval statuses, and incoming 
 * **Target Backlink:** `https://www.convertsheet.com`
 * **Account:** `@convertsheet` (`genshingamer2024@gmail.com`)
 
+### 13. LaunchIgniter (DR 74)
+* **Product Name:** ConvertSheet
+* **Status:** Product Profile Created & Pending Approval
+* **Live Product URL:** `https://launchigniter.com/product/convertsheet`
+* **Schedule URL:** `https://launchigniter.com/product/schedule/convertsheet`
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Account:** `genshingamer2024@gmail.com`
+* **Categories:** Data, Developer Tools, Spreadsheets
+
+### 14. Super Launch (DR 62)
+* **Product Name:** ConvertSheet
+* **Status:** Submitted for Review ($0 Free Tier)
+* **Product ID:** `3909`
+* **Live Product URL:** `https://www.superlaun.ch/products/3909`
+* **Dashboard Confirmation:** `https://www.superlaun.ch/dashboard/products?badge=1&pid=3909&plan=free`
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Account:** `genshingamer2024@gmail.com`
+* **Category:** Developer Tools
+
+### 15. BuildVoyage (DR 42)
+* **Product Name:** ConvertSheet
+* **Status:** 100% Free Review Unlocked (3/3 Community Cheers Completed)
+* **Confirmation URL:** `https://buildvoyage.com/submit/success`
+* **Live Product Page:** `https://buildvoyage.com/products/convertsheet`
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Stack:** SQLite, Vercel, REST
+* **Account:** `genshingamer` (`genshingamer2024@gmail.com`)
+
+### 16. AI Tools (aitools.inc) (DR 54)
+* **Tool Name:** ConvertSheet
+* **Status:** Free Submission Completed via Typeform; In Review
+* **Target Backlink:** `https://www.convertsheet.com`
+* **Contact:** `genshingamer2024@gmail.com` (Priyanshu Sinha)
+
+### 17. Tiny Startups (DR 71)
+* **Startup Name:** ConvertSheet
+* **Status:** Submitted & In Queue / Database
+* **Submission Portal:** `https://www.tinystartups.com/submit`
+* **Target Backlink:** `https://www.convertsheet.com`
+
 ---
 
 ## 3. Audited Directories Skipped (Paywalls & Reciprocal Badge Rules)
@@ -129,18 +174,34 @@ In accordance with strict zero-cost guidelines and avoiding reciprocal backlink 
 
 | Directory | DR | Reason Skipped |
 | :--- | :---: | :--- |
-| **Open Launch** | 72 | Free launches closed / fully booked into 2027; requires $12 payment |
-| **Fazier** | 83 | Free basic tier requires embedding reciprocal backlink badge on our homepage/footer; otherwise $29–$39 |
-| **Twelve Tools** | 82 | Free tier requires embedding reciprocal backlink badge on our site; otherwise $25.20 |
-| **StartupBase** | 73 | Free tier requires embedding StartupBase badge on our site; otherwise $39 |
+| **BetaList** | 76 | Free queue eliminated; minimum submission tier is $39 (Lite) up to $299 |
+| **Findly.tools** | 81 | $0 tier requires embedding badge on convertsheet.com; otherwise $29 |
+| **Startup Fast** | 72 | Dofollow backlink requires displaying badge on site or paying $19 |
+| **Aura++** | 72 | Free listing requires displaying badge for backlink; otherwise $29 |
+| **PeerPush** | 73 | Free publishing requires embedding badge for verification; otherwise $39 |
+| **Awesome Tools** | 42 | Free listing requires reciprocal backlink verified on homepage; otherwise $49 |
+| **Dang AI** | 82 | Requires crawlable reciprocal backlink to dang.ai; otherwise $49 |
+| **Open Launch** | 72 | Free launches booked out past 2027; requires $12 payment |
+| **Fazier** | 83 | Free tier requires embedding reciprocal backlink badge; otherwise $29–$39 |
+| **Twelve Tools** | 82 | Free tier requires embedding reciprocal backlink badge; otherwise $25.20 |
+| **StartupBase** | 73 | Free tier requires embedding badge; otherwise $39 |
 | **Acidtools** | 67 | Free tier requires reciprocal backlink on convertsheet.com; otherwise $25+ |
+| **Unite List** | 58 | Free tier requires reciprocal link badge |
+| **Firsto** | 55 | 180-day queue; dofollow backlink only given if reciprocal badge embedded |
+| **StartupTrusted** | 54 | Free tier requires reciprocal badge on our website |
+| **Toolfio** | 62 | Enforces minimum DR 20+ requirement and requires reciprocal badge |
+| **SaasHunt** | 58 | Free queue enforces minimum DR 20+ requirement |
+| **SaaSBison** | 52 | Free tier requires embedding reciprocal badge on website |
+| **We Like Tools** | 52 | Free tier requires embedding reciprocal badge on website |
+| **DodoDirectory** | 51 | Free tier requires embedding reciprocal badge on website |
+| **Micro SaaS Examples** | 49 | Paid ($3 or $29) and $3 tier requires permanent reciprocal badge |
+| **MagicBox.tools** | 68 | No free tier; minimum submission plan is $15.90 |
+| **NxGn Tools** | 56 | No free tier; all launch plans are paid |
+| **Huzzler** | 63 | Free publication requires embedding Huzzler badge on website |
+| **OpenHunts** | 50 | Free queue requires reciprocal badge; otherwise $9.90–$20 paid |
+| **Startup Stash** | 66 | No self-serve free submission form |
 | **MicroLaunch** | 63 | No free tier exists; minimum paid plan is $39 |
 | **TrustMRR** | 71 | Requires live Stripe API key revenue connection and $19+ fee |
 | **toolsfine** | 64 | Minimum submission fee is $16 |
-| **Unite List** | 58 | Submitmatic clone; free tier requires reciprocal link badge |
-| **Firsto** | 55 | 180-day queue; dofollow backlink only given if reciprocal badge embedded |
-| **StartupTrusted** | 54 | Free tier requires reciprocal badge on our website |
-| **Dang AI** | 82 | Free tier requires embedding reciprocal crawlable backlink to dang.ai; otherwise $49 |
-| **BetaList** | 76 | Free queue eliminated; minimum submission tier is $39 (Lite) up to $299 |
 | **Product Hunt** | 91 | Only supports OAuth via LinkedIn, GitHub, or X (no Google login option) |
 | **Indiehunt** | 62 | Google OAuth callback returned backend configuration error on their server |
