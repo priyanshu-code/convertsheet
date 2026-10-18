@@ -5,6 +5,12 @@
 
 ---
 
+> [!TIP] **WebsiteAuth Integration & Directory Database**  
+> We have integrated [WebsiteAuth](https://websiteauth.com) into our SEO toolchain for free live Ahrefs Domain Rating checks and weekly-monitored launch directories.  
+> See the complete extracted database: [`docs/seo/launch-directories-masterlist.md`](file:///Users/priyanshu/Desktop/convertsheet/docs/seo/launch-directories-masterlist.md) and [`docs/seo/launch-directories-websiteauth.json`](file:///Users/priyanshu/Desktop/convertsheet/docs/seo/launch-directories-websiteauth.json) (114+ high-DR dofollow launch directories).
+
+---
+
 ## Tier 1: Software Discovery & High-Authority Directory Listings (DR 70 – 94)
 
 These platforms provide immediate domain authority, entity verification in Google's Knowledge Graph, and targeted referral traffic from users actively seeking alternatives to cloud converters.
