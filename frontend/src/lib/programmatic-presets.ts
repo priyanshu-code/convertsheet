@@ -271,7 +271,7 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "750k-mortgage",
     "name": "$750,000 Mortgage Payment Calculator",
-    "title": "$750,000 Mortgage Calculator with Amortization Schedule | ConvertSheet",
+    "title": "$750,000 Mortgage Payment (30-Year Fixed) | ConvertSheet",
     "metaDescription": "Calculate monthly payment on a $750,000 mortgage at 6.5%. Full breakdown of principal, interest, taxes, insurance, and Excel amortization schedule export.",
     "answerSummary": "A $750,000 home purchase with 20% down ($150,000) leaves a loan balance of $600,000. At a 6.5% 30-year fixed rate, monthly principal & interest is $3,792. Adding property taxes (~$750/mo) and insurance (~$217/mo), the estimated total payment is $4,759/month.",
     "about": "Evaluate monthly carrying costs and amortization for a $750,000 property purchase. Compare down payment options, test extra payments to compress your loan schedule, and export the entire 360-month schedule to Microsoft Excel.",
@@ -287,6 +287,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       {
         "question": "What is the monthly payment on a $750,000 mortgage?",
         "answer": "With 20% down ($150,000) at 6.5% fixed interest for 30 years, monthly principal and interest is $3,792. Total payment with typical property taxes and homeowners insurance is approximately $4,759/month."
+      },
+      {
+        "question": "What is the payment on a $750,000 mortgage for 30 years vs 15 years?",
+        "answer": "At 6.5% interest with 20% down, the 30-year monthly principal and interest is $3,792 ($4,759/mo total with escrow). On a 15-year fixed loan at 5.75%, monthly P&I is $4,986 ($5,953/mo total). Choosing the 15-year term saves over $315,000 in total lifetime interest."
       },
       {
         "question": "How much income do I need for a $750,000 house?",
@@ -333,7 +337,7 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "900k-mortgage",
     "name": "$900,000 Mortgage Payment Calculator",
-    "title": "$900,000 Mortgage Calculator with Amortization Schedule | ConvertSheet",
+    "title": "$900,000 Mortgage Payment (30-Year Fixed) | ConvertSheet",
     "metaDescription": "Calculate monthly payment on a $900,000 mortgage at 6.5%. Full breakdown of principal, interest, taxes, insurance, and Excel amortization schedule export.",
     "answerSummary": "A $900,000 home purchase with 20% down ($180,000) leaves a loan balance of $720,000. At a 6.5% 30-year fixed rate, monthly principal & interest is $4,551. Adding property taxes (~$900/mo) and insurance (~$262/mo), the estimated total payment is $5,713/month.",
     "about": "Evaluate monthly carrying costs and amortization for a $900,000 property purchase. Compare down payment options, test extra payments to compress your loan schedule, and export the entire 360-month schedule to Microsoft Excel.",
@@ -349,6 +353,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       {
         "question": "What is the monthly payment on a $900,000 mortgage?",
         "answer": "With 20% down ($180,000) at 6.5% fixed interest for 30 years, monthly principal and interest is $4,551. Total payment with typical property taxes and homeowners insurance is approximately $5,713/month."
+      },
+      {
+        "question": "What is the payment on a $900,000 mortgage for 30 years vs 15 years?",
+        "answer": "At 6.5% interest with 20% down, the 30-year monthly principal and interest is $4,551 ($5,713/mo total with escrow). On a 15-year fixed loan at 5.75%, monthly P&I is $5,983 ($7,145/mo total). Choosing the 15-year term saves over $380,000 in total interest."
       },
       {
         "question": "How much income do I need for a $900,000 house?",
@@ -3775,7 +3783,7 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     presetSlug: "what-is-20-percent-of-100",
     name: "What is 20% of 100?",
     title: "What is 20% of 100? (0.20 × 100) — Exact Math & Steps",
-    metaDescription: "20% of 100 is 20. Solve 0.20 * 100, 100 * 0.20, and 100 - 20% with step-by-step formula, fraction math (1/5), interactive matrix, and free Excel download.",
+    metaDescription: "20% of 100 is 20. Solve 0.20 * 100, 100 * 0.20, 100 - 20% (80), and 100 + 20% (120) with step-by-step formula, fraction math (1/5), interactive matrix, and free Excel download.",
     answerSummary: "20% of 100 equals 20. To calculate this, convert 20% to a decimal by dividing by 100 (0.20), then multiply by 100: 0.20 × 100 = 20.",
     about: "Calculate percentages instantly with step-by-step mathematical breakdowns. Understand how to convert percentages to decimals, fractions, and apply them to discounts, taxes, and tips.",
     initialValues: {
@@ -3807,6 +3815,10 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
       {
         question: "What is 100 - 20%?",
         answer: "100 - 20% equals 80. First calculate 20% of 100, which is 20 (0.20 × 100 = 20), then subtract that from 100: 100 - 20 = 80. This is the standard formula for a 20% sales discount.",
+      },
+      {
+        question: "What is 100 + 20%?",
+        answer: "100 + 20% equals 120. First calculate 20% of 100, which is 20 (0.20 × 100 = 20), then add that to 100: 100 + 20 = 120. This is the standard formula for calculating a 20% markup, tip, or sales tax addition.",
       },
       {
         question: "Is 100 * 0.20 the same as 0.20 * 100?",

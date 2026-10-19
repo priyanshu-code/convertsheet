@@ -43,9 +43,9 @@ export function generateConsumerFinancialPresets(): ProgrammaticPreset[] {
       toolSlug: "mortgage-calculator",
       presetSlug: `${kLabel}-mortgage-payment`,
       name: `${formattedPrice} Mortgage Payment Calculator (30-Year Fixed)`,
-      title: `${formattedPrice} Mortgage Payment Calculator (2026) — Monthly P&I Math`,
+      title: `${formattedPrice} Mortgage Payment 30 Years Calculator | ConvertSheet`,
       subtitle: `Calculate monthly principal, interest, taxes, and insurance on a ${formattedPrice} home loan with full amortization table.`,
-      metaDescription: `What is the monthly payment on a ${formattedPrice} mortgage? At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full amortization schedule.`,
+      metaDescription: `What is the monthly payment on a ${formattedPrice} mortgage for 30 years? At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full 360-month amortization schedule.`,
       answerSummary: `On a ${formattedPrice} home purchase with 20% down ($${downPayment.toLocaleString()}), loan balance is $${loanBalance.toLocaleString()}. At a 6.5% 30-year fixed rate, monthly principal & interest is ${pi30}. With property taxes and homeowners insurance, total monthly payment is approximately ${total30}/month. Total interest paid over 30 years is ${interest30}.`,
       badge: "30-Year Fixed",
       keywords: [
@@ -55,6 +55,10 @@ export function generateConsumerFinancialPresets(): ProgrammaticPreset[] {
         `how much is a ${kLabel} mortgage a month`,
         `${formattedPrice} mortgage monthly payments`,
         `${formattedPrice} mortgage payment calculator`,
+        `${formattedPrice} mortgage payment 30 years`,
+        `${kLabel} mortgage payment 30 years`,
+        `${formattedPrice} mortgage payment 15 years`,
+        `${kLabel} mortgage payment 15 years`,
         `${kLabel} mortgage monthly payments`
       ],
       about: `### Monthly Payment Breakdown for a ${formattedPrice} Mortgage (6.5% APR)
@@ -77,8 +81,12 @@ Assuming a standard 20% down payment of $${downPayment.toLocaleString()}, privat
       },
       faqs: [
         {
-          question: `What is the monthly payment on a ${formattedPrice} mortgage?`,
-          answer: `With 20% down at 6.5% fixed interest, monthly principal and interest is ${pi30}. Total monthly payment including average property taxes and insurance is approximately ${total30}.`
+          question: `What is the monthly payment on a ${formattedPrice} mortgage for 30 years?`,
+          answer: `With 20% down ($${downPayment.toLocaleString()}) at 6.5% fixed interest on a 30-year term, monthly principal and interest is ${pi30}. Total monthly payment including typical property taxes (~$${Math.round(m30.monthlyPropertyTax).toLocaleString()}/mo) and insurance (~$${Math.round(m30.monthlyInsurance).toLocaleString()}/mo) is approximately ${total30}.`
+        },
+        {
+          question: `What is the payment on a ${formattedPrice} mortgage for 15 years?`,
+          answer: `On a 15-year fixed loan at 5.75% with 20% down ($${downPayment.toLocaleString()}), monthly principal and interest is approximately $${Math.round((loanBalance * ((0.0575/12) * Math.pow(1 + 0.0575/12, 180))) / (Math.pow(1 + 0.0575/12, 180) - 1)).toLocaleString()}. While the monthly payment is higher than the 30-year term, you pay off the home in half the time and save significantly on total lifetime interest.`
         },
         {
           question: `How are monthly payments on a ${formattedPrice} mortgage calculated?`,
@@ -177,20 +185,31 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
     const monthlyPay = Math.round((loanAmt * (monthlyRate * Math.pow(1 + monthlyRate, n))) / (Math.pow(1 + monthlyRate, n) - 1));
     const totalInterest = Math.round((monthlyPay * n) - loanAmt);
 
+    // 72-month loan at 7.5% APR
+    const monthlyRate72 = 0.075 / 12;
+    const n72 = 72;
+    const monthlyPay72 = Math.round((loanAmt * (monthlyRate72 * Math.pow(1 + monthlyRate72, n72))) / (Math.pow(1 + monthlyRate72, n72) - 1));
+    const totalInterest72 = Math.round((monthlyPay72 * n72) - loanAmt);
+
     presets.push({
       toolSlug: "car-loan-calculator",
       presetSlug: `${kCar}-car-loan-monthly-payment`,
       name: `${formattedCarPrice} Car Loan Calculator`,
-      title: `${formattedCarPrice} Car Loan Payment Calculator (60 Months @ 7%) | ConvertSheet`,
+      title: `${formattedCarPrice} Car Loan Calculator (5 & 6 Years) | ConvertSheet`,
       subtitle: `Calculate monthly auto financing payments and total interest on a ${formattedCarPrice} vehicle purchase.`,
-      metaDescription: `Monthly payment on a ${formattedCarPrice} car loan is ~$${monthlyPay}/month for 60 months with 10% down at 7% APR. See full amortization and interest costs.`,
-      answerSummary: `On a ${formattedCarPrice} vehicle purchase with 10% down ($${downPay.toLocaleString()}), financing $${loanAmt.toLocaleString()} at 7.0% APR for 60 months results in a monthly payment of approximately $${monthlyPay}/month. Total interest paid over 5 years is $${totalInterest.toLocaleString()}.`,
+      metaDescription: `Monthly payment on a ${formattedCarPrice} car loan is ~$${monthlyPay}/mo for 60 months (5 years) or ~$${monthlyPay72}/mo for 72 months (6 years) with 10% down. Full payment comparison & interest math.`,
+      answerSummary: `On a ${formattedCarPrice} vehicle purchase with 10% down ($${downPay.toLocaleString()}), financing $${loanAmt.toLocaleString()} at 7.0% APR for 60 months results in a monthly payment of approximately $${monthlyPay}/month. Total interest paid over 5 years is $${totalInterest.toLocaleString()}. For a 72-month term at 7.5% APR, monthly payment is ~$${monthlyPay72}/month with $${totalInterest72.toLocaleString()} total interest.`,
       badge: "Auto Financing",
       keywords: [
         `${kCar} car loan`,
         `${formattedCarPrice} car payment`,
         `monthly payment on ${kCar} car`,
-        `${formattedCarPrice} auto loan 60 months`
+        `${formattedCarPrice} auto loan 60 months`,
+        `${formattedCarPrice} car loan payment 72 months`,
+        `${kCar} car loan payment 72 months`,
+        `${formattedCarPrice} car loan over 5 years calculator`,
+        `${kCar} car loan over 5 years`,
+        `${formattedCarPrice} car loan calculator`
       ],
       about: `### ${formattedCarPrice} Vehicle Financing Overview (7.0% APR Example)
 
@@ -199,7 +218,7 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
 | **36 Months (3 yrs)** | ~$${Math.round((loanAmt * ((0.065/12) * Math.pow(1 + 0.065/12, 36))) / (Math.pow(1 + 0.065/12, 36) - 1))} | ~$${Math.round(((loanAmt * ((0.065/12) * Math.pow(1 + 0.065/12, 36))) / (Math.pow(1 + 0.065/12, 36) - 1) * 36) - loanAmt)} | ~$${carPrice + Math.round(((loanAmt * ((0.065/12) * Math.pow(1 + 0.065/12, 36))) / (Math.pow(1 + 0.065/12, 36) - 1) * 36) - loanAmt)} |
 | **48 Months (4 yrs)** | ~$${Math.round((loanAmt * ((0.068/12) * Math.pow(1 + 0.068/12, 48))) / (Math.pow(1 + 0.068/12, 48) - 1))} | ~$${Math.round(((loanAmt * ((0.068/12) * Math.pow(1 + 0.068/12, 48))) / (Math.pow(1 + 0.068/12, 48) - 1) * 48) - loanAmt)} | ~$${carPrice + Math.round(((loanAmt * ((0.068/12) * Math.pow(1 + 0.068/12, 48))) / (Math.pow(1 + 0.068/12, 48) - 1) * 48) - loanAmt)} |
 | **60 Months (5 yrs)** | **$${monthlyPay}** | **$${totalInterest.toLocaleString()}** | **$${(carPrice + totalInterest).toLocaleString()}** |
-| **72 Months (6 yrs)** | ~$${Math.round((loanAmt * ((0.075/12) * Math.pow(1 + 0.075/12, 72))) / (Math.pow(1 + 0.075/12, 72) - 1))} | ~$${Math.round(((loanAmt * ((0.075/12) * Math.pow(1 + 0.075/12, 72))) / (Math.pow(1 + 0.075/12, 72) - 1) * 72) - loanAmt)} | ~$${carPrice + Math.round(((loanAmt * ((0.075/12) * Math.pow(1 + 0.075/12, 72))) / (Math.pow(1 + 0.075/12, 72) - 1) * 72) - loanAmt)} |`,
+| **72 Months (6 yrs)** | ~$${monthlyPay72} | ~$${totalInterest72.toLocaleString()} | ~$${(carPrice + totalInterest72).toLocaleString()} |`,
       initialValues: {
         vehiclePrice: carPrice,
         downPayment: downPay,
@@ -210,8 +229,12 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
       },
       faqs: [
         {
-          question: `What is the monthly payment on a ${formattedCarPrice} car loan?`,
-          answer: `Financing $${loanAmt.toLocaleString()} at 7% APR for 5 years (60 months) costs approximately $${monthlyPay} per month.`
+          question: `What is the monthly payment on a ${formattedCarPrice} car loan over 5 years (60 months)?`,
+          answer: `Financing $${loanAmt.toLocaleString()} at 7% APR for 5 years (60 months) costs approximately $${monthlyPay} per month, with $${totalInterest.toLocaleString()} in total interest.`
+        },
+        {
+          question: `What is the monthly payment on a ${formattedCarPrice} car loan for 72 months (6 years)?`,
+          answer: `Financing $${loanAmt.toLocaleString()} for 72 months at 7.5% APR costs approximately $${monthlyPay72} per month. While 72 months reduces the monthly bill by $${monthlyPay - monthlyPay72}/month compared to 60 months, it increases total interest paid by $${(totalInterest72 - totalInterest).toLocaleString()} ($${totalInterest72.toLocaleString()} vs $${totalInterest.toLocaleString()}).`
         },
         {
           question: `How much down payment do I need for a ${formattedCarPrice} car?`,
@@ -219,7 +242,7 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
         },
         {
           question: `How much total interest will I pay on a ${formattedCarPrice} car loan?`,
-          answer: `Over 60 months at 7% interest, total interest paid equals roughly $${totalInterest.toLocaleString()}.`
+          answer: `Over 60 months at 7% interest, total interest paid equals roughly $${totalInterest.toLocaleString()}. Over 72 months, total interest rises to $${totalInterest72.toLocaleString()}.`
         }
       ]
     });
