@@ -43,7 +43,7 @@ export function generateConsumerFinancialPresets(): ProgrammaticPreset[] {
       toolSlug: "mortgage-calculator",
       presetSlug: `${kLabel}-mortgage-payment`,
       name: `${formattedPrice} Mortgage Payment Calculator (30-Year Fixed)`,
-      title: `${formattedPrice} Mortgage Monthly Payment Calculator (2026) | ConvertSheet`,
+      title: `${formattedPrice} Mortgage Payment Calculator (2026) — Monthly P&I Math`,
       subtitle: `Calculate monthly principal, interest, taxes, and insurance on a ${formattedPrice} home loan with full amortization table.`,
       metaDescription: `What is the monthly payment on a ${formattedPrice} mortgage? At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full amortization schedule.`,
       answerSummary: `On a ${formattedPrice} home purchase with 20% down ($${downPayment.toLocaleString()}), loan balance is $${loanBalance.toLocaleString()}. At a 6.5% 30-year fixed rate, monthly principal & interest is ${pi30}. With property taxes and homeowners insurance, total monthly payment is approximately ${total30}/month. Total interest paid over 30 years is ${interest30}.`,
@@ -52,7 +52,10 @@ export function generateConsumerFinancialPresets(): ProgrammaticPreset[] {
         `${kLabel} mortgage payment`,
         `monthly payment on ${formattedPrice} house`,
         `${kLabel} home loan payment`,
-        `how much is a ${kLabel} mortgage a month`
+        `how much is a ${kLabel} mortgage a month`,
+        `${formattedPrice} mortgage monthly payments`,
+        `${formattedPrice} mortgage payment calculator`,
+        `${kLabel} mortgage monthly payments`
       ],
       about: `### Monthly Payment Breakdown for a ${formattedPrice} Mortgage (6.5% APR)
 
@@ -76,6 +79,10 @@ Assuming a standard 20% down payment of $${downPayment.toLocaleString()}, privat
         {
           question: `What is the monthly payment on a ${formattedPrice} mortgage?`,
           answer: `With 20% down at 6.5% fixed interest, monthly principal and interest is ${pi30}. Total monthly payment including average property taxes and insurance is approximately ${total30}.`
+        },
+        {
+          question: `How are monthly payments on a ${formattedPrice} mortgage calculated?`,
+          answer: `Monthly principal and interest on a ${formattedPrice} loan ($${loanBalance.toLocaleString()} financed after 20% down) is calculated using the standard amortization formula M = P × [r(1+r)^360] / [(1+r)^360 - 1]. At 6.5% interest over 30 years, monthly P&I is ${pi30}. Adding escrow for estimated property taxes (~$${Math.round(m30.monthlyPropertyTax).toLocaleString()}/mo) and insurance (~$${Math.round(m30.monthlyInsurance).toLocaleString()}/mo) yields a total monthly payment of approximately ${total30}.`
         },
         {
           question: `How much annual income is required to afford a ${formattedPrice} house?`,
@@ -102,15 +109,19 @@ Assuming a standard 20% down payment of $${downPayment.toLocaleString()}, privat
       toolSlug: "hourly-to-salary-calculator",
       presetSlug: `${hr}-dollars-an-hour-is-how-much-a-year`,
       name: `$${hr} an Hour is How Much a Year?`,
-      title: `$${hr} an Hour is How Much a Year? (2026 Paycheck Breakdown) | ConvertSheet`,
+      title: `$${hr} an Hour is How Much a Year? — Monthly & Salary Breakdown (2026)`,
       subtitle: `Convert $${hr}/hour to annual, monthly, bi-weekly, and weekly gross earnings based on standard 40-hour workweeks.`,
-      metaDescription: `$${hr} an hour is $${annualGross.toLocaleString()} a year. See the exact gross pay breakdown: $${monthlyGross.toLocaleString()}/month, $${biWeeklyGross.toLocaleString()} bi-weekly, and $${weeklyGross.toLocaleString()}/week before taxes.`,
+      metaDescription: `$${hr} an hour is $${annualGross.toLocaleString()} a year ($${monthlyGross.toLocaleString()}/month). See the exact gross pay breakdown, bi-weekly checks, and take-home pay before taxes.`,
       answerSummary: `At $${hr} per hour working full-time (40 hours per week, 52 weeks a year), your annual salary is $${annualGross.toLocaleString()} per year. That equals $${monthlyGross.toLocaleString()} per month, $${biWeeklyGross.toLocaleString()} bi-weekly (every two weeks), and $${weeklyGross.toLocaleString()} per week.`,
       badge: "Wage Conversion",
       keywords: [
         `${hr} an hour is how much a year`,
+        `${hr} an hour is how much a month`,
         `${hr} an hour annual salary`,
+        `${hr} hourly to salary`,
+        `${hr}/hr annual salary`,
         `how much is ${hr} dollars an hour yearly`,
+        `$${hr} an hour is how much a month`,
         `${hr} per hour 40 hours a week`
       ],
       about: `### Earnings Breakdown for $${hr} Per Hour (40 Hours/Week)
@@ -135,6 +146,10 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
         {
           question: `$${hr} an hour is how much a year?`,
           answer: `$${hr} an hour is $${annualGross.toLocaleString()} a year for 40 hours per week across 52 weeks.`
+        },
+        {
+          question: `$${hr} an hour is how much a month?`,
+          answer: `At $${hr} per hour (40 hours/week), your gross monthly income is approximately $${monthlyGross.toLocaleString()} per month ($${annualGross.toLocaleString()} ÷ 12 months) before taxes.`
         },
         {
           question: `What is the monthly income for $${hr} an hour?`,
