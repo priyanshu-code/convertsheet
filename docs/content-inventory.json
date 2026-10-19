@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-18",
-  "totalBlogs": 28,
+  "lastUpdated": "2026-10-19",
+  "totalBlogs": 29,
   "totalTools": 28,
   "blogs": [
     {
@@ -170,6 +170,12 @@
       "title": "BoE Rate Shock: Why 30-Year Gilts at 6% Push UK Mortgages to 6%",
       "category": "Mortgage & Lending",
       "description": "Bank of England base rate sits at 3.75% with MPC markets pricing a hike to 4.00%. Discover why 30-year gilt yields at 6% drive 2-year and 5-year fixed mortgages to 6%."
+    },
+    {
+      "slug": "german-mortgage-rates-ecb-bund-yields-baufinanzierung-math-2026",
+      "title": "German Mortgage Math (2026): Why ECB at 2.50% & 10-Year Bunds at 3.4% Drive 4.7% Baufinanzierung",
+      "category": "Mortgage & Lending",
+      "description": "ECB deposit rate sits at 2.50% while 10-year Bund yields hold at 3.42%. Discover why German Baufinanzierung costs 4.7%, how 1% vs 2% Tilgung changes debt, and Sondertilgung leverage."
     }
   ],
   "tools": [
@@ -649,6 +655,59 @@
         "44px-touch-targets",
         "quick-dob-presets-44px",
         "generational-cohort-engine",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "byte-converter",
+      "lastAudited": "2026-10-19",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-developer-presets",
+        "dual-slider-control",
+        "developer-quick-arithmetic-box",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "unit-converter",
+      "lastAudited": "2026-10-19",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "44px-dimension-and-swap-controls",
+        "1-tap-shortcuts-44px",
+        "dual-slider-control",
+        "save-share-prompt-actions",
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
+      ],
+      "uxStatus": "audited"
+    },
+    {
+      "slug": "bmi-calculator",
+      "lastAudited": "2026-10-19",
+      "moatsAdded": [
+        "zero-knowledge-privacy-badge",
+        "clinical-freshness-signals",
+        "url-query-permalink-sync",
+        "44px-touch-targets",
+        "dual-slider-control",
+        "bmi-prime-ponderal-index-math",
+        "healthy-target-weight-ranges",
         "save-share-prompt-actions",
         "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",

@@ -234,4 +234,29 @@ describe("Blog Registry & Content Layer", () => {
     expect(post?.content).toContain("60-day grace period");
     expect(post?.content).toContain("salary-calculator");
   });
+
+  it("retrieves the German mortgage rates, Bund yields and Baufinanzierung research report", () => {
+    const post = getBlogPostBySlug("german-mortgage-rates-ecb-bund-yields-baufinanzierung-math-2026");
+    expect(post).toBeDefined();
+    expect(post?.slug).toBe("german-mortgage-rates-ecb-bund-yields-baufinanzierung-math-2026");
+    expect(post?.title).toContain("German Mortgage Math (2026)");
+    expect(post?.category).toBe("Mortgage & Lending");
+    expect(post?.attachedToolSlug).toBe("mortgage-calculator");
+    expect(post?.attachedToolTitle).toBe("Mortgage & Amortization Calculator");
+    expect(post?.clusterId).toBe("uk-germany-property-finance");
+    expect(post?.role).toBe("branch");
+    expect(post?.tableOfContents).toHaveLength(5);
+    expect(post?.faqs).toHaveLength(4);
+
+    // Citations & institutional content assertions
+    expect(post?.content).toContain("European Central Bank");
+    expect(post?.content).toContain("Deutsche Bundesbank");
+    expect(post?.content).toContain("Destatis");
+    expect(post?.content).toContain("Hypothekenpfandbriefe");
+    expect(post?.content).toContain("Tilgung");
+    expect(post?.content).toContain("Restschuld");
+    expect(post?.content).toContain("Sondertilgung");
+    expect(post?.content).toContain("KfW");
+  });
 });
+

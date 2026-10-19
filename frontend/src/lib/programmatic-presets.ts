@@ -3774,8 +3774,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "percentage-calculator",
     presetSlug: "what-is-20-percent-of-100",
     name: "What is 20% of 100?",
-    title: "What is 20% of 100? (0.20 × 100) — Exact Calculation & Formula | ConvertSheet",
-    metaDescription: "20% of 100 is 20. Solve 0.20 * 100 or 0.20 x 100 with step-by-step formula, fraction math (1/5), interactive percentage matrix, and free Excel download.",
+    title: "What is 20% of 100? (0.20 × 100) — Exact Math & Steps",
+    metaDescription: "20% of 100 is 20. Solve 0.20 * 100, 100 * 0.20, and 100 - 20% with step-by-step formula, fraction math (1/5), interactive matrix, and free Excel download.",
     answerSummary: "20% of 100 equals 20. To calculate this, convert 20% to a decimal by dividing by 100 (0.20), then multiply by 100: 0.20 × 100 = 20.",
     about: "Calculate percentages instantly with step-by-step mathematical breakdowns. Understand how to convert percentages to decimals, fractions, and apply them to discounts, taxes, and tips.",
     initialValues: {
@@ -3791,6 +3791,14 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
       {
         question: "What is 0.20 * 100 in math?",
         answer: "0.20 * 100 equals 20. In arithmetic, multiplying any decimal by 100 shifts the decimal point two places to the right, yielding 20.",
+      },
+      {
+        question: "What is 100 / 0.20 in math?",
+        answer: "100 / 0.20 equals 500. Dividing 100 by two-tenths (0.20) is equivalent to multiplying 100 by 5 (100 ÷ 1/5 = 500). This answers: 100 is 20% of what number? (500).",
+      },
+      {
+        question: "What is 0.20 / 100 in math?",
+        answer: "0.20 / 100 equals 0.002. Dividing 0.20 by 100 shifts the decimal point two places to the left, which represents 0.2% (two-tenths of one percent).",
       },
       {
         question: "What is 20 percent off 100?",
