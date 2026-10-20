@@ -1510,7 +1510,8 @@ const arrowResult = await conn.query(\`
       { id: "the-penal-interest-mechanism", title: "3. The Escalating Penal Rate: Bank Rate + 3% to + 5%" },
       { id: "liquidity-plumbing-surplus-to-deficit", title: "4. The Liquidity Vacuum: From ₹5.9 Lakh Cr Surplus to Tightening" },
       { id: "the-cva-and-sa-ccr-overhaul", title: "5. Derisking the System: CVA and SA-CCR Frameworks" },
-      { id: "what-this-means-for-the-retail-borrower", title: "6. Why This Matters to Your Personal Wallet" }
+      { id: "what-this-means-for-the-retail-borrower", title: "6. Why This Matters to Your Personal Wallet" },
+      { id: "key-rbi-rates-crr-slr-matrix-2026", title: "7. Key RBI Rates & Reserve Ratios (Repo, Bank Rate, CRR, SLR)" }
     ],
     content: `
       <section id="the-circular-nobody-talks-about" class="space-y-4">
@@ -1617,6 +1618,73 @@ const arrowResult = await conn.query(\`
         <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
           The transmission mechanism is direct: <strong>Central Bank Penal Rates $\rightarrow$ Interbank Call Rates $\rightarrow$ Deposit Rates $\rightarrow$ Your Home Loan EMI</strong>. Every basis point matters.
         </p>
+      </section>
+
+      <section id="key-rbi-rates-crr-slr-matrix-2026" class="space-y-4 pt-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+          7. Key RBI Monetary Rates, Reserve Ratios & Penal Rates Matrix (2026)
+        </h2>
+        <p class="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+          The following reference schedule summarizes all key policy interest rates, statutory reserve requirements (CRR and SLR), and liquidity facilities under the current Reserve Bank of India monetary policy framework:
+        </p>
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-zinc-100 dark:bg-zinc-800/60 font-semibold text-zinc-900 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
+              <tr>
+                <th class="p-3">Monetary Tool / Benchmark</th>
+                <th class="p-3">Current Benchmark (2026)</th>
+                <th class="p-3">Operational Purpose & Description</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 font-mono">
+              <tr>
+                <td class="p-3 font-semibold">Policy Repo Rate</td>
+                <td class="p-3 text-emerald-600 font-bold">5.50%</td>
+                <td class="p-3 font-sans text-xs">Primary rate at which commercial banks borrow short-term funds against collateral.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Bank Rate</td>
+                <td class="p-3 text-emerald-600 font-bold">5.75%</td>
+                <td class="p-3 font-sans text-xs">Long-term lending rate and statutory anchor for reserve shortfall penal interest.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Marginal Standing Facility (MSF)</td>
+                <td class="p-3 text-emerald-600 font-bold">5.75%</td>
+                <td class="p-3 font-sans text-xs">Overnight emergency liquidity borrowing facility (pegged at Bank Rate).</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Standing Deposit Facility (SDF)</td>
+                <td class="p-3 text-emerald-600 font-bold">5.25%</td>
+                <td class="p-3 font-sans text-xs">Non-collateralized overnight deposit absorption facility (Repo - 25 bps).</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Reverse Repo Rate (Fixed)</td>
+                <td class="p-3 text-emerald-600 font-bold">3.35%</td>
+                <td class="p-3 font-sans text-xs">Legacy fixed rate at which RBI absorbs surplus bank funds under LAF.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Cash Reserve Ratio (CRR)</td>
+                <td class="p-3 text-blue-600 font-bold">4.50%</td>
+                <td class="p-3 font-sans text-xs">Mandatory share of Net Demand and Time Liabilities (NDTL) kept as cash with RBI.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Statutory Liquidity Ratio (SLR)</td>
+                <td class="p-3 text-blue-600 font-bold">18.00%</td>
+                <td class="p-3 font-sans text-xs">Mandatory share of deposits invested in liquid government bonds, gold, and T-bills.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Shortfall Penalty (Day 1)</td>
+                <td class="p-3 text-rose-600 font-bold">8.75% (Bank Rate + 3%)</td>
+                <td class="p-3 font-sans text-xs">Immediate punitive rate charged on CRR or SLR reserve deficits on first calendar day.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold">Shortfall Penalty (Continued)</td>
+                <td class="p-3 text-rose-600 font-bold">10.75% (Bank Rate + 5%)</td>
+                <td class="p-3 font-sans text-xs">Escalated punitive rate applied for persistent multi-day reserve shortfalls.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     `.trim()
   },

@@ -39,28 +39,55 @@ export function generateConsumerFinancialPresets(): ProgrammaticPreset[] {
     const total30 = m30.totalMonthlyPayment.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
     const interest30 = m30.totalInterest.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
+    const isMillion = price === 1000000;
+    const customTitle = isMillion
+      ? `$1,000,000 Mortgage Payment & Commercial Real Estate Loan Calculator | ConvertSheet`
+      : `${formattedPrice} Mortgage Monthly Payments Calculator (15 & 30 Years) | ConvertSheet`;
+    const customMeta = isMillion
+      ? `Calculate $1,000,000 mortgage and commercial real estate loan payments for 15, 25, and 30-year terms. At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full 360-month amortization schedule.`
+      : `Calculate ${formattedPrice} mortgage monthly payments for 15 and 30-year terms. At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full 360-month amortization schedule.`;
+
     presets.push({
       toolSlug: "mortgage-calculator",
       presetSlug: `${kLabel}-mortgage-payment`,
-      name: `${formattedPrice} Mortgage Payment Calculator (30-Year Fixed)`,
-      title: `${formattedPrice} Mortgage Monthly Payments Calculator (15 & 30 Years) | ConvertSheet`,
-      subtitle: `Calculate monthly principal, interest, taxes, and insurance on a ${formattedPrice} home loan with full amortization table.`,
-      metaDescription: `Calculate ${formattedPrice} mortgage monthly payments for 15 and 30-year terms. At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full 360-month amortization schedule.`,
+      name: isMillion
+        ? `$1,000,000 Mortgage & Commercial Real Estate Loan Calculator`
+        : `${formattedPrice} Mortgage Payment Calculator (30-Year Fixed)`,
+      title: customTitle,
+      subtitle: isMillion
+        ? `Calculate monthly principal, interest, taxes, and insurance on a $1,000,000 residential or commercial property loan with full amortization table.`
+        : `Calculate monthly principal, interest, taxes, and insurance on a ${formattedPrice} home loan with full amortization table.`,
+      metaDescription: customMeta,
       answerSummary: `On a ${formattedPrice} home purchase with 20% down ($${downPayment.toLocaleString()}), loan balance is $${loanBalance.toLocaleString()}. At a 6.5% 30-year fixed rate, monthly principal & interest is ${pi30}. With property taxes and homeowners insurance, total monthly payment is approximately ${total30}/month. Total interest paid over 30 years is ${interest30}.`,
-      badge: "30-Year Fixed",
-      keywords: [
-        `${kLabel} mortgage payment`,
-        `monthly payment on ${formattedPrice} house`,
-        `${kLabel} home loan payment`,
-        `how much is a ${kLabel} mortgage a month`,
-        `${formattedPrice} mortgage monthly payments`,
-        `${formattedPrice} mortgage payment calculator`,
-        `${formattedPrice} mortgage payment 30 years`,
-        `${kLabel} mortgage payment 30 years`,
-        `${formattedPrice} mortgage payment 15 years`,
-        `${kLabel} mortgage payment 15 years`,
-        `${kLabel} mortgage monthly payments`
-      ],
+      badge: isMillion ? "Jumbo / Commercial" : "30-Year Fixed",
+      keywords: isMillion
+        ? [
+            "1000k mortgage payment",
+            "1 million mortgage payment",
+            "commercial real estate loan calculator",
+            "30 year mortgage 1 million",
+            "1 million dollar mortgage payment",
+            "jumbo loan calculator 1 million",
+            "$1,000,000 commercial loan calculator",
+            "monthly payment on 1 million dollar house",
+            "commercial property loan calculator",
+            "1 million commercial real estate loan",
+            "1000k mortgage payment 30 years",
+            "1000k mortgage monthly payments"
+          ]
+        : [
+            `${kLabel} mortgage payment`,
+            `monthly payment on ${formattedPrice} house`,
+            `${kLabel} home loan payment`,
+            `how much is a ${kLabel} mortgage a month`,
+            `${formattedPrice} mortgage monthly payments`,
+            `${formattedPrice} mortgage payment calculator`,
+            `${formattedPrice} mortgage payment 30 years`,
+            `${kLabel} mortgage payment 30 years`,
+            `${formattedPrice} mortgage payment 15 years`,
+            `${kLabel} mortgage payment 15 years`,
+            `${kLabel} mortgage monthly payments`
+          ],
       about: `### Monthly Payment Breakdown for a ${formattedPrice} Mortgage (6.5% APR)
 
 | Payment Component | Monthly Cost | Annual Cost | 30-Year Total |
@@ -80,6 +107,18 @@ Assuming a standard 20% down payment of $${downPayment.toLocaleString()}, privat
         homeInsuranceYearly: Math.round(price * 0.004),
       },
       faqs: [
+        ...(isMillion
+          ? [
+              {
+                question: "Can a $1,000,000 mortgage calculator be used for commercial real estate loans?",
+                answer: "Yes. For commercial real estate loans, lenders typically require a 20% to 30% down payment and calculate debt service coverage ratios (DSCR). Financed at 6.5%–7.5% over a 25 or 30-year amortization schedule, a $1,000,000 commercial loan incurs monthly principal & interest payments of approximately $5,057 to $6,992, depending on term length and down payment."
+              },
+              {
+                question: "What is the monthly payment on a 1 million dollar mortgage?",
+                answer: `With 20% down ($${downPayment.toLocaleString()} down payment, $${loanBalance.toLocaleString()} financed) at 6.5% interest on a 30-year fixed term, monthly principal and interest is ${pi30}. Adding property taxes (~$${Math.round(m30.monthlyPropertyTax).toLocaleString()}/mo) and insurance (~$${Math.round(m30.monthlyInsurance).toLocaleString()}/mo), the total monthly payment is approximately ${total30}/month.`
+              }
+            ]
+          : []),
         {
           question: `What are the monthly payments on a ${formattedPrice} mortgage?`,
           answer: `On a ${formattedPrice} mortgage with 20% down ($${downPayment.toLocaleString()}) at 6.5% interest, monthly principal and interest is ${pi30} for a 30-year term ($${total30}/mo including property taxes and insurance), or approximately $${Math.round((loanBalance * ((0.0575/12) * Math.pow(1 + 0.0575/12, 180))) / (Math.pow(1 + 0.0575/12, 180) - 1)).toLocaleString()}/mo on a 15-year fixed loan at 5.75%.`
@@ -126,16 +165,32 @@ Assuming a standard 20% down payment of $${downPayment.toLocaleString()}, privat
       metaDescription: `$${hr} an hour is $${annualGross.toLocaleString()} a year ($${monthlyGross.toLocaleString()}/month). See the exact gross pay breakdown, bi-weekly checks, and take-home pay before taxes.`,
       answerSummary: `At $${hr} per hour working full-time (40 hours per week, 52 weeks a year), your annual salary is $${annualGross.toLocaleString()} per year. That equals $${monthlyGross.toLocaleString()} per month, $${biWeeklyGross.toLocaleString()} bi-weekly (every two weeks), and $${weeklyGross.toLocaleString()} per week.`,
       badge: "Wage Conversion",
-      keywords: [
-        `${hr} an hour is how much a year`,
-        `${hr} an hour is how much a month`,
-        `${hr} an hour annual salary`,
-        `${hr} hourly to salary`,
-        `${hr}/hr annual salary`,
-        `how much is ${hr} dollars an hour yearly`,
-        `$${hr} an hour is how much a month`,
-        `${hr} per hour 40 hours a week`
-      ],
+      keywords: hr === 28
+        ? [
+            "28 an hour is how much a year",
+            "28 an hour is how much a month",
+            "28 an hour annual salary",
+            "28 hourly to salary",
+            "28/hr annual salary",
+            "28 dollars an hour is how much a year",
+            "$28 an hour is how much a month",
+            "$28 hourly to salary",
+            "$28/hr annual salary",
+            "28 hr yearly salary",
+            "28 hour annual salary",
+            "28.00 an hour is how much a year",
+            "28hr salary"
+          ]
+        : [
+            `${hr} an hour is how much a year`,
+            `${hr} an hour is how much a month`,
+            `${hr} an hour annual salary`,
+            `${hr} hourly to salary`,
+            `${hr}/hr annual salary`,
+            `how much is ${hr} dollars an hour yearly`,
+            `$${hr} an hour is how much a month`,
+            `${hr} per hour 40 hours a week`
+          ],
       about: `### Earnings Breakdown for $${hr} Per Hour (40 Hours/Week)
 
 | Timeframe | Gross Earnings | Working Hours |
@@ -159,6 +214,22 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
           question: `$${hr} an hour is how much a year?`,
           answer: `$${hr} an hour is $${annualGross.toLocaleString()} a year for 40 hours per week across 52 weeks.`
         },
+        ...(hr === 28
+          ? [
+              {
+                question: "What is $28 an hour annual salary?",
+                answer: `At 40 hours per week for 52 weeks (2,080 working hours), $28 an hour equals an annual salary of $${annualGross.toLocaleString()} before taxes.`
+              },
+              {
+                question: "How much is $28 an hour bi-weekly and weekly?",
+                answer: `At $28 an hour, your bi-weekly paycheck (every two weeks, 80 hours) is $${biWeeklyGross.toLocaleString()} gross, and your weekly paycheck (40 hours) is $${weeklyGross.toLocaleString()} gross.`
+              },
+              {
+                question: "What is $28.90 an hour annual salary?",
+                answer: "At $28.90 an hour working 40 hours per week (2,080 hours/year), your annual salary is $60,112 per year before taxes ($5,009.33 per month)."
+              }
+            ]
+          : []),
         {
           question: `$${hr} an hour is how much a month?`,
           answer: `At $${hr} per hour (40 hours/week), your gross monthly income is approximately $${monthlyGross.toLocaleString()} per month ($${annualGross.toLocaleString()} ÷ 12 months) before taxes.`

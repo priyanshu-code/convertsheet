@@ -477,7 +477,19 @@ export const TOOL_REGISTRY = {
     answerSummary: "Convert digital file sizes and network bandwidth capacities across Bytes, KB, MB, GB, TB, and PB with both Binary (1024) and Decimal (1000) standards.",
     badge: "Storage Engine",
     featured: true,
-    keywords: ["byte converter", "data size converter", "mb to gb", "gb to tb", "kb to mb", "binary vs decimal storage"],
+    keywords: [
+      "byte converter",
+      "data size converter",
+      "mb to gb",
+      "gb to tb",
+      "kb to mb",
+      "binary vs decimal storage",
+      "1048576 / 1024",
+      "1,048,576/1024",
+      "100 * 1024",
+      "1000 bytes in mb",
+      "1024 bytes to mb"
+    ],
     formulaDescription: "Binary (JEDEC/IEC): 1 KiB = 1024 Bytes; Decimal (SI): 1 KB = 1000 Bytes.",
     about: `Understanding data storage metrics is essential for software engineers, database architects, cloud DevOps teams, and system administrators. Storage calculations diverge between decimal SI standards (base 10, powers of 1,000) used by disk manufacturers and network hardware, and binary IEC standards (base 2, powers of 1,024) utilized by RAM, operating systems (Windows, Linux), and file systems.
 
@@ -500,6 +512,9 @@ export const TOOL_REGISTRY = {
       { step: 3, title: "Inspect Table", description: "Instantly view the equivalent size across all storage units and both binary/decimal bases." }
     ],
     faqs: [
+      { question: "What is 1,048,576 / 1024 in kilobytes and megabytes?", answer: "1,048,576 / 1024 = 1,024 KiB (or 1 MiB). Because 1 Kibibyte (KiB) equals 1,024 bytes and 1 Mebibyte (MiB) equals 1,024 KiB (1,048,576 bytes), dividing 1,048,576 bytes by 1,024 converts bytes to 1,024 KiB, which is exactly 1 MiB." },
+      { question: "What is 100 * 1024 in bytes and kilobytes?", answer: "100 * 1024 = 102,400 bytes (or 100 KiB). In binary computing, multiplying 100 by 1,024 yields exactly 102,400 bytes, which equals 100 Kibibytes." },
+      { question: "How many MB is 1000 bytes?", answer: "In decimal SI units (base 1000), 1,000 bytes equals 0.001 MB (1,000 ÷ 1,000,000). In binary IEC units (base 1024), 1,000 bytes equals approximately 0.0009537 MiB (1,000 ÷ 1,048,576)." },
       { question: "Why does my 1TB hard drive show as only 931 GB in Windows?", answer: "Drive manufacturers advertise 1TB as 1,000,000,000,000 bytes (decimal base 1000). Operating systems interpret 1 GiB as 1,073,741,824 bytes (binary base 1024), resulting in ~931.3 GiB." },
       { question: "What is the difference between Megabit (Mb) and Megabyte (MB)?", answer: "1 Byte = 8 bits. Internet connection speeds are typically quoted in Megabits per second (Mbps), meaning an 80 Mbps connection downloads at 10 Megabytes per second (MB/s)." },
       { question: "How many MB is 100000 bytes?", answer: "In decimal SI units (base 1000), 100,000 bytes equals exactly 0.1 MB (100,000 ÷ 1,000,000). In binary IEC units (base 1024), 100,000 bytes equals approximately 0.09537 MiB (100,000 ÷ 1,048,576 bytes)." },

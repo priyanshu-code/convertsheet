@@ -468,11 +468,11 @@ export const CONVERTER_REGISTRY = {
       "application/octet-stream",
     ],
     category: "data-engineering",
-    title: "Parquet to Excel Converter Online — Free, In-Browser DuckDB (.xlsx)",
+    title: "Parquet to Excel Converter Online — Open & Convert .parquet in Excel (.xlsx)",
     subtitle:
       "Convert Apache Parquet columnar datasets into Microsoft Excel spreadsheets directly in your browser with zero server uploads.",
     metaDescription:
-      "Convert Apache Parquet datasets into clean Excel (.xlsx) spreadsheets directly in your browser. Powered by DuckDB-Wasm — supports Snappy, GZIP, and ZSTD with 100% privacy.",
+      "Can Excel read Parquet files? Excel cannot natively open .parquet files. Convert Apache Parquet datasets into clean Excel (.xlsx) spreadsheets directly in your browser with DuckDB-Wasm — 100% private.",
     engineId: "parquet-to-excel",
     isClientSide: true,
     featured: true,
@@ -500,6 +500,11 @@ export const CONVERTER_REGISTRY = {
       },
     ],
     faqs: [
+      {
+        question: "Can Excel read Parquet files natively?",
+        answer:
+          "No, Microsoft Excel cannot open or read Apache Parquet (.parquet) files natively. Parquet is a binary columnar storage format requiring an analytical engine (such as DuckDB, PyArrow, or Polars) to deserialize. ConvertSheet provides a free, instant in-browser solution: drop your .parquet file, and our DuckDB-Wasm engine converts it directly into a clean, formatted Microsoft Excel (.xlsx) workbook without installing Python or uploading data to external servers.",
+      },
       {
         question: "How can Parquet be converted without a Python server?",
         answer:
