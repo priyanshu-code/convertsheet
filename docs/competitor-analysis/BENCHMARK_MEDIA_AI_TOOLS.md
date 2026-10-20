@@ -147,3 +147,80 @@ Based on the direct landing page assets, three distinct design & content paradig
   - **Interactive Proof Before Upload:** Users can drag the slider immediately upon landing, experiencing the value proposition before committing an upload.
   - **Trust Layer:** Explicit rating bar (4.9/5 stars, Trustpilot "Excellent", G2 Leader badges) placed directly beneath the tool preview.
   - **Freemium Hook:** Explicitly states *"save lower-resolution images for free!"*, reserving high-res or batch exports for paid tiers/app downloads.
+
+---
+
+## 7. Deep Audit of Pi7's Top 5 Traffic Pages
+
+By crawling and dissecting the live HTML and metadata of Pi7's top 5 pages, we uncovered their exact programmatic blueprint:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       PI7 PAGE TEMPLATE ANATOMY                             │
+│                                                                             │
+│  [H1] Exact Match Keyword (e.g. "Compress Image to 50KB")                   │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │ TOOL WIDGET (Drag & drop zone, pre-filled target value, instant button)│  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│  [INFOGRAPHIC IMAGE] Custom diagram for Google Image Search indexing        │
+│  [H2: HOW-TO] Exactly 4 ordered steps (triggers Google Featured Snippet)    │
+│  [USE CASES] Mentions specific exams/forms (UPSC, SSC, admissions, passport)│
+│  [SIBLING LINKS] Horizontal link grid to other KB values (20KB, 100KB, etc.)│
+│  [INVERTED SIBLING] Link to opposite action (e.g. "Need to INCREASE size?") │
+│  [PRIVACY CLAUSE] "Files automatically deleted after 20-30 minutes"         │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Page 1: `image.pi7.org/reduce-image-size-in-kb` (689.3K Visits/mo)
+* **Title:** `Reduce Image Size In KB | Pi7 Image Reducer`
+* **Meta Description:** *"Reduce image size in KB for government portals, job applications, college admissions, and more with Pi7 Image Reducer. Compress photos while maintaining quality."*
+* **Image Asset:** `static/img/reduce_image_size.jpeg` (Alt: *"Reduce Image Size With Pi7 Image Reducer"*)
+* **Structure & Tone:** General-purpose entry point. Pre-sets a default target of 100KB with an input box where users can override it to any integer. Immediately branches users to specific constraints (20KB, 50KB, 200KB).
+
+### Page 2: `image.pi7.org/compress-image-to-50kb` (287.1K Visits/mo)
+* **Title:** `Compress Image to 50KB | Pi7 Image Compressor`
+* **Meta Description:** *"Compress images to the required 50kb size effortlessly with Pi7 Image Tool. Reduce size and optimize JPEG, PNG, HEIC, WebP..."*
+* **Image Asset:** `static/img/pi750kbjpeg.png` (Alt: *"Compress Image To 50kb with pi7 image compressor"*)
+* **Specialized Copy:** Directly addresses photo vs signature upload requirements: *"Whether it's your signature, essential document photos, or any image crucial for your application..."*.
+
+### Page 3: `pdf.pi7.org/compress-pdf-to-200kb` (215.6K Visits/mo)
+* **Title:** `Compress PDF to 200kb | Pi7 PDF Compressor`
+* **Meta Description:** *"The easiest way to compress a PDF to 200KB is to simply upload and download the file. Using Pi7 Tool, you can reduce PDF file size to 200KB."*
+* **Image Asset:** `static/img/PDF_200kb.jpeg` (Alt: *"Compress PDF to 200kb"*)
+* **Unique Mechanic:** Automated DPI & quality scaling. Users don't need to fiddle with compression sliders—the algorithm calculates the exact compression ratio to land just below 200KB.
+
+### Page 4: `pdf.pi7.org/reduce-pdf-size` (163.1K Visits/mo)
+* **Title:** `Reduce PDF Size Online`
+* **Meta Description:** *"Easily reduce PDF size to an exact 100KB, 200kb, 1MB or any size with Pi7 PDF Tool. Fast, secure, and free. Shrink PDFs online..."*
+* **Image Asset:** `static/img/reduce-pdf-size.jpeg` (Alt: *"Reduce PDF Size to 100kb, 200kb, 1MB etc."*)
+* **Advanced Options & Copy:** Includes options to *"Remove embedded fonts - biggest saving on text-heavy PDFs. Text stays selectable..."*. Cross-links directly to their PDF Merger tool.
+
+### Page 5: `image.pi7.org/increase-image-size-in-kb` (155.7K Visits/mo)
+* **Title:** `Increase Image Size In KB | Pi7 Photo Size Increaser`
+* **Meta Description:** *"The PI7 Photo Size Increaser tool can increase image size in KB. Just upload an image, specify the size in kb, and download the image."*
+* **Image Asset:** `static/img/img_inc_size.jpeg` (Alt: *"Increase Image Size In KB"*)
+* **The Counter-Intuitive Hack:** Solves a huge, real pain point: government portals that give error *"File too small! Minimum size is 50KB"*. Pi7 pads image metadata/bytes to hit the minimum without distorting pixels or DPI.
+
+### Page 6: `pdf.pi7.org/pdf-to-jpg` (Browser-Only Conversion)
+* **Core Value Hook:** *"The conversion happens inside your browser, and the PDF is never uploaded - so there is no signup, no watermark and no page limit."*
+* **Friction-Reducing Educational Copy:** Explains the difference between:
+  1. *Entire Page To JPG* (photographs the full rendered sheet, text + background)
+  2. *Extract Images From Page* (extracts embedded raw bitmap assets)
+  This single explanation prevents negative user reviews and bounces.
+
+---
+
+## 8. The "Winning Combination" Playbook for Our Platform
+
+By taking the best elements of all three benchmarks, we can build a dominant product:
+
+1. **Picsart's Interactive Before/After Slider:** Placed directly on the hero of every AI tool (unblur face, enhance photo, remove background, de-AI) so users can interact and test the tech instantly before uploading.
+2. **Pi7's Image Search SEO:** Every single tool and constraint page (`/compress-image-to-20kb`, `/unblur-face`, etc.) will have an optimized custom diagram/infographic indexed with exact-match `alt` and `caption` tags to capture Google Image Search traffic.
+3. **Pi7's Exact Constraint Programmatic Formula:** 
+   - Landing pages for every target size (`20kb`, `50kb`, `100kb`, `200kb`, `500kb`).
+   - Sibling cross-linking and counter-action links (Reduce $\leftrightarrow$ Increase).
+4. **Client-Side WASM / In-Browser Processing (Zero Server Cost + Privacy):** 
+   - Basic conversions, resizing, and PDF splitting run client-side in WebAssembly/Canvas (`pdf-lib`, `sharp-wasm`).
+   - Heavy AI models (face restoration, background removal) run on our backend worker queues.
+   - Prominently advertise *"100% private: Never leaves your device"* for client-side tools and *"Deleted in 20 minutes"* for AI tools.
+
