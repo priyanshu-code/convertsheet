@@ -509,6 +509,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       {
         "question": "How do I calculate a 15-year mortgage vs 30-year mortgage step by step?",
         "answer": "To calculate the 15-year vs 30-year difference: Step 1: Determine loan principal (Home Price minus Down Payment). Step 2: Calculate monthly interest rate r = annual APR / 12. Step 3: Compute monthly P&I payment using M = P × [r(1+r)^n] / [(1+r)^n - 1] with n=180 for 15 years and n=360 for 30 years. Step 4: Multiply monthly payment by n to obtain total loan payout, then subtract principal to reveal lifetime interest savings. ConvertSheet automates these exact calculations in real time."
+      },
+      {
+        "question": "What is the formula used in a 15 vs 30 year mortgage calculator?",
+        "answer": "A 15 vs 30 year mortgage calculator evaluates the fixed monthly amortization formula M = P × [r(1+r)^n] / [(1+r)^n - 1] across two term horizons: n = 180 months (15 years) and n = 360 months (30 years). At current benchmark rates (e.g. 6.71% for 15-year vs 7.40% for 30-year under Freddie Mac PMMS), the 15-year term accelerates principal reduction, delivering over 60% total interest savings despite a higher monthly payment."
       }
     ]
   },
@@ -1237,8 +1241,8 @@ Extending a $25k loan from 60 to 72 months lowers your payment by ~$56/month but
     toolSlug: "car-loan-calculator",
     presetSlug: "15k-car-loan-5-years",
     name: "$15,000 Car Loan Over 5 Years (60 Months) Calculator",
-    title: "$15,000 Car Loan Over 5 Years Calculator (60 Months) — Monthly Payments (2026)",
-    metaDescription: "Calculate monthly payment on a $15,000 car loan over 5 years (60 months). Compare 5.49% to 8.99% APR interest rates, total loan cost, and export Excel amortization.",
+    title: "$15,000 Car Loan Over 5 Years Calculator — 60-Month Payment (2026)",
+    metaDescription: "$15,000 car loan over 5 years calculator (60 months). Monthly payment is ~$291/mo with $1,500 down at 6.75% APR. Compare 4.99%–8.99% APR, total interest ($2,698), and Excel export.",
     answerSummary: "Financing a $15,000 used car over 5 years (60 months) with $1,500 down at 6.75% APR results in a monthly payment of approximately $291/month. Total interest paid over 5 years is $2,698.",
     about: `### $15,000 Car Loan Over 5 Years (60-Month Payment Matrix)
 
@@ -1260,8 +1264,16 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     },
     faqs: [
       {
+        question: "How does a $15,000 car loan over 5 years calculator determine payments?",
+        answer: "A $15,000 car loan over 5 years calculator uses the standard monthly amortization formula M = P × [r(1+r)^60] / [(1+r)^60 - 1], where P is the financed balance (vehicle price plus sales tax and doc fees, minus down payment) and r is the monthly interest rate (APR ÷ 12). For example, at 6.75% APR with $1,500 down, the monthly payment on a $15k car is $291/month across exactly 60 monthly payments.",
+      },
+      {
         question: "How much is a monthly payment on a $15,000 car loan over 5 years?",
         answer: "At a standard 6.75% APR with 10% down ($1,500), your monthly payment is roughly $291/month for 60 months.",
+      },
+      {
+        question: "What is the monthly payment on a $15,000 car loan over 5 years with zero down?",
+        answer: "Financing $15,000 over 5 years (60 months) with $0 down payment at 6.75% APR (total loan ~$16,500 with 7% tax and $450 dealer fees) results in a monthly payment of approximately $325/month, incurring roughly $2,980 in total interest.",
       },
       {
         question: "How much interest will I pay on a $15,000 car loan over 5 years?",
@@ -3783,7 +3795,7 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     presetSlug: "what-is-20-percent-of-100",
     name: "What is 20% of 100?",
     title: "What is 20% of 100? (0.20 × 100) — Exact Math & Steps",
-    metaDescription: "20% of 100 is 20. Solve 0.20 * 100, 100 * 0.20, 100 - 20% (80), and 100 + 20% (120) with step-by-step formula, fraction math (1/5), interactive matrix, and free Excel download.",
+    metaDescription: "20% of 100 is 20. Solve 0.20 * 100, 100 * 0.20, 100/0.20 (500), 20% of $100k ($20k), 100 - 20% (80), and 100 + 20% (120) with exact formula, steps, and Excel sheet.",
     answerSummary: "20% of 100 equals 20. To calculate this, convert 20% to a decimal by dividing by 100 (0.20), then multiply by 100: 0.20 × 100 = 20.",
     about: "Calculate percentages instantly with step-by-step mathematical breakdowns. Understand how to convert percentages to decimals, fractions, and apply them to discounts, taxes, and tips.",
     initialValues: {
@@ -3801,8 +3813,16 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
         answer: "0.20 * 100 equals 20. In arithmetic, multiplying any decimal by 100 shifts the decimal point two places to the right, yielding 20.",
       },
       {
-        question: "What is 100 / 0.20 in math?",
+        question: "What is 100 / 0.20 (and 100 ÷ 0.20) in math?",
         answer: "100 / 0.20 equals 500. Dividing 100 by two-tenths (0.20) is equivalent to multiplying 100 by 5 (100 ÷ 1/5 = 500). This answers: 100 is 20% of what number? (500).",
+      },
+      {
+        question: "What is 20% of $100k ($100,000)?",
+        answer: "20% of $100,000 is $20,000 (0.20 × $100,000 = $20,000). In real estate and lending, 20% of a $100k purchase price represents the classic standard down payment ($20k) required to avoid Private Mortgage Insurance (PMI).",
+      },
+      {
+        question: "What is 20% of 100 million (100M)?",
+        answer: "20% of 100 million is 20 million (0.20 × 100,000,000 = 20,000,000). In corporate equity, a 20% ownership stake in a $100M valuation represents $20M in equity value.",
       },
       {
         question: "What is 0.20 / 100 in math?",
@@ -4406,7 +4426,7 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     title: "72-Month Car Loan Calculator (2026) — $15k, $25k & $35k Math",
     metaDescription: "Calculate your monthly car loan payment for 72 months on $15k, $25k, and $35k auto loans. Compare total interest costs, calculate APR impact, and export to Excel.",
     answerSummary: "On a $25,000 car loan at 6.9% APR over 72 months, your monthly payment is $425/month with $5,526 in total interest. On a $15,000 loan, your payment is $255/month ($3,315 interest). On a $35,000 vehicle with 10% down ($3,500) at 6.9% APR, the monthly payment is $585/month ($7,736 total interest).",
-    about: "The 72-month (6-year) auto loan has become the most common financing term in the United States. Understand the trade-offs: lower monthly cash outflow in exchange for extended interest payments and higher risk of negative equity (being underwater).",
+    about: "The 72-month (6-year) auto loan has become the most common financing term in the United States. Understand the trade-offs: lower monthly cash outflow in exchange for extended interest payments and higher risk of negative equity (being underwater). Need a shorter term on a pre-owned vehicle? Calculate 60-month payments on our [$15,000 Car Loan Over 5 Years Calculator](/tools/car-loan-calculator/15k-car-loan-5-years).",
     initialValues: {
       vehiclePrice: 35000,
       downPayment: 3500,
@@ -6270,7 +6290,7 @@ Living in Florida allows $50,000 earners to retain nearly 84% of their gross pay
     title: "$10,000 Car Payment Calculator (2026) — 36, 48 & 60 Mo Math",
     metaDescription: "Calculate monthly payments on a $10,000 used car loan. Compare 36, 48, and 60-month terms at 7.5% APR. View total interest and Excel amortization schedule.",
     answerSummary: "On a $10,000 used car loan with 10% down ($1,000) at 7.5% APR for 48 months, the monthly payment is roughly $218/month. Total interest paid over 4 years is $1,444, making total financing payments $10,444.",
-    about: "Calculate affordable payments for an entry-level or used vehicle purchase. Understand the impact of short loan terms on used vehicle depreciation and minimize borrowing costs.",
+    about: "Calculate affordable payments for an entry-level or used vehicle purchase. Understand the impact of short loan terms on used vehicle depreciation and minimize borrowing costs. For a slightly higher budget tier, see our [$15,000 Car Loan Over 5 Years Calculator](/tools/car-loan-calculator/15k-car-loan-5-years).",
     initialValues: { vehiclePrice: 10000, downPayment: 1000, interestRate: 7.5, loanTermMonths: 48, salesTaxPercent: 6.0, dealerFees: 300 },
     faqs: [
       {

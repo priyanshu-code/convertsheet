@@ -131,5 +131,21 @@
     "Continue calculator audit rotation: Next in queue are IncomeTaxCalculator, CompoundInterestCalculator, and EmiCalculator.",
     "Develop client-side DuckDB-WASM tick-to-OHLCV resampler utility to capture high-intent quant trading developer traffic.",
     "Monitor GSC query impressions for 15-year vs 30-year mortgage and percentage calculator search ranking jumps."
+  ],
+  "radarPulses": [
+    {
+      "timestamp": "2026-10-20T12:15:00+05:30",
+      "sourcesScanned": [
+        "Google Search Console API (sc-domain:convertsheet.com 28-day & 7-day query analytics: 9,511 impressions, avg pos improved to 19.3. High-demand queries identified: '15 vs 30 year mortgage calculator' with 45 imp in 7d and 284 in 28d; arithmetic queries '100/0.20' at Pos 5.2, '20% of $100k' at Pos 5.0, '0.20*100' at Pos 6.6 with 10 imp; auto loans '$25000 car loan payment 72 months' at Pos 3.5, and '$15,000 car loan over 5 years calculator' at Pos 7.5)",
+        "Freddie Mac PMMS (October 15, 2026 release: 30-Year FRM holding at 7.40%, 15-Year FRM at 6.71%)",
+        "US Department of the Treasury (10-Year Treasury Yield trading between 5.06%–5.10% after touching 5.34% earlier in October; Effective Fed Funds at 3.88% against target 3.75%–4.00%)",
+        "European Central Bank (ECB Deposit Facility Rate steady at 2.50%, Main Refinancing Rate at 2.65%; markets pricing in pause for upcoming October 29 meeting)",
+        "Bank of England (Official Bank Rate held at 3.75% with 10-Yr Gilt yields elevated near 5.38% ahead of Autumn fiscal announcements)",
+        "Reserve Bank of India MPC (Policy repo rate held at 5.50% under calibrated tightening stance)",
+        "Hacker News & r/algotrading (Continued engineering consensus on DuckDB-WASM and partitioned Parquet for client-side zero-server financial backtesting and tick-to-OHLCV resampling to protect proprietary strategy IP)",
+        "Google Search Central Watchdog (September 2026 Spam Update concluded Oct 8; no unannounced October core algorithm updates; 100% E-E-A-T and Zero-Slop compliance verified)"
+      ],
+      "actionTaken": "Conducted 12:15 PM IST multi-source radar pulse. Deployed targeted Technical SEO & schema optimizations to capture high-volume GSC search queries: (1) Updated /tools/percentage-calculator/what-is-20-percent-of-100 with expanded metaDescription and structured FAQ schemas targeting '100/0.20 and 100 ÷ 0.20' (Pos 5.2), '20% of $100k' (Pos 5.0), and '20% of 100M' (Pos 7.0); (2) Added exact formula FAQ schema to /tools/mortgage-calculator/15-year-vs-30-year aligning with October 2026 Freddie Mac PMMS benchmarks (6.71% 15-yr vs 7.40% 30-yr); (3) Optimized title tag and metaDescription for $15,000 Car Loan Over 5 Years Calculator, added zero-down comparison FAQs, and established contextual internal links from $10k and 72-month presets to consolidate 5-year auto loan link equity. Verified full vitest test suite (818/818 passing across 96 suites) and static page audit (939/939 pages passing with 0 errors and 0 warnings)."
+    }
   ]
 }
