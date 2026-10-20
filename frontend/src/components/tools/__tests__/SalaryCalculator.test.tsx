@@ -25,8 +25,9 @@ describe("SalaryCalculator", () => {
     expect(screen.getByText(/Paycheck & Take-Home Summary/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Net Monthly Take-Home/i).length).toBeGreaterThanOrEqual(1);
 
-    // Verify privacy badge
+    // Verify privacy badge and freshness signal
     expect(screen.getByText(/100% Client-Side • Zero Server Storage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for 2026 IRS Tax Brackets/i)).toBeInTheDocument();
 
     // Verify accessible sliders
     expect(screen.getByLabelText("401(k) Contribution Slider")).toBeInTheDocument();

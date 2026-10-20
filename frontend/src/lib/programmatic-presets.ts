@@ -466,7 +466,7 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
     "title": "15 vs 30 Year Mortgage Calculator (2026) — Payment & Interest Math",
-    "metaDescription": "Calculate exact monthly payment differences, lifetime interest savings ($248k+), and amortization between a 15-year and 30-year mortgage with live 2026 rates.",
+    "metaDescription": "Free 15 vs 30 year mortgage calculator. Compare 15 year vs 30 year mortgage payments, lifetime interest savings ($248k+), and amortization side-by-side with live 2026 rates.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {
@@ -3819,6 +3819,14 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
       {
         question: "What is 100 + 20%?",
         answer: "100 + 20% equals 120. First calculate 20% of 100, which is 20 (0.20 × 100 = 20), then add that to 100: 100 + 20 = 120. This is the standard formula for calculating a 20% markup, tip, or sales tax addition.",
+      },
+      {
+        question: "What is 0.20 x 100 or 100 x 0.20?",
+        answer: "0.20 × 100 (or 100 × 0.20) equals 20. In multiplication, changing the order of factors does not alter the product. 20 hundredths of 100 is 20.",
+      },
+      {
+        question: "What is 100% / 20?",
+        answer: "100% divided by 20 equals 5% (or 1 ÷ 20 = 0.05). If dividing 100 into 20 equal parts, each part equals 5.",
       },
       {
         question: "Is 100 * 0.20 the same as 0.20 * 100?",

@@ -1,6 +1,6 @@
 {
-  "lastUpdated": "2026-10-19",
-  "totalBlogs": 29,
+  "lastUpdated": "2026-10-20",
+  "totalBlogs": 30,
   "totalTools": 28,
   "blogs": [
     {
@@ -176,6 +176,12 @@
       "title": "German Mortgage Math (2026): Why ECB at 2.50% & 10-Year Bunds at 3.4% Drive 4.7% Baufinanzierung",
       "category": "Mortgage & Lending",
       "description": "ECB deposit rate sits at 2.50% while 10-year Bund yields hold at 3.42%. Discover why German Baufinanzierung costs 4.7%, how 1% vs 2% Tilgung changes debt, and Sondertilgung leverage."
+    },
+    {
+      "slug": "10-year-treasury-yield-spread-mortgage-rates-math-2026",
+      "title": "10-Year Treasury Yields at 5.10%: The 230 bps Mortgage Spread Math Keeping Borrowers Above 7.40%",
+      "category": "Mortgage & Lending",
+      "description": "The 10-year Treasury yield sits at 5.08% while 30-year mortgages average 7.40%. Discover why the 232 bps spread exceeds historical 170 bps norms, how MBS runoff and duration extension drive borrower costs, and the exact prepayment math to beat it."
     }
   ],
   "tools": [
@@ -349,40 +355,49 @@
     },
     {
       "slug": "annual-to-hourly-calculator",
-      "lastAudited": "2026-10-14",
+      "lastAudited": "2026-10-20",
       "moatsAdded": [
-        "dual-range-sliders",
-        "sticky-bottom-mobile-bar",
+        "zero-knowledge-privacy-badge",
+        "labor-market-freshness-signals",
         "url-query-permalink-sync",
-        "privacy-reassurance-badge",
+        "44px-touch-targets",
+        "dual-slider-control",
         "save-share-prompt-actions",
-        "sheetjs-retention-hook"
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "canada-paycheck-calculator",
-      "lastAudited": "2026-10-14",
+      "lastAudited": "2026-10-20",
       "moatsAdded": [
-        "rrsp-slider-44px",
-        "sticky-bottom-mobile-bar",
+        "zero-knowledge-privacy-badge",
+        "cra-tax-freshness-signals",
         "url-query-permalink-sync",
-        "privacy-reassurance-badge",
+        "44px-touch-targets",
+        "rrsp-slider-44px",
         "save-share-prompt-actions",
-        "sheetjs-retention-hook"
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "salary-calculator",
-      "lastAudited": "2026-10-14",
+      "lastAudited": "2026-10-20",
       "moatsAdded": [
-        "dual-regime-responsive-grid",
-        "sticky-bottom-mobile-bar",
+        "zero-knowledge-privacy-badge",
+        "irs-budget-freshness-signals",
         "url-query-permalink-sync",
-        "privacy-reassurance-badge",
+        "44px-touch-targets",
+        "dual-regime-responsive-grid",
         "save-share-prompt-actions",
-        "sheetjs-retention-hook"
+        "formulaic-xlsx-export",
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },

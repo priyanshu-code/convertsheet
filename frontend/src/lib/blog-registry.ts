@@ -4316,6 +4316,7 @@ const arrowResult = await conn.query(\`
     pillarSlug: "canadian-mortgage-stress-test-guide-2026",
     relatedSlugs: [
       "canadian-mortgage-stress-test-guide-2026",
+      "10-year-treasury-yield-spread-mortgage-rates-math-2026",
       "the-home-loan-tenure-trap-explained",
       "the-1-extra-emi-per-year-rule-home-loan-savings"
     ],
@@ -5219,6 +5220,7 @@ const arrowResult = await conn.query(\`
     role: "branch",
     pillarSlug: "uk-contractor-inside-vs-outside-ir35-calculator-guide",
     relatedSlugs: [
+      "10-year-treasury-yield-spread-mortgage-rates-math-2026",
       "bank-of-england-base-rate-gilt-yields-uk-mortgage-math-2026",
       "freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026",
       "the-home-loan-tenure-trap-explained"
@@ -5390,6 +5392,195 @@ const arrowResult = await conn.query(\`
           <li><strong>Always Contract a 5% Free Sondertilgung Option:</strong> Most German retail banks (Sparkassen, Volksbanken, Commerzbank, ING) offer an annual 5% unscheduled repayment clause for zero or negligible surcharge. On a €400,000 loan, injecting €5,000 to €10,000 annually directly into principal reduces lifetime interest by over €60,000 and collapses loan tenure to under 16 years.</li>
           <li><strong>Integrate KfW Subsidized Tranches:</strong> Tap state-backed <strong>KfW-Wohneigentumsprogramm (Programm 124)</strong> for up to €100,000 at subsidized rates (~3.30%) or <strong>KfW Klimafreundlicher Neubau (Programm 297/298/261)</strong> for up to €150,000 at sub-3.0% rates. Blending a €100k KfW tranche at 3.3% with a €300k bank tranche at 4.7% brings the effective combined APR down to <strong>4.35%</strong>.</li>
           <li><strong>Pre-Calculate Amortization Scenarios Locally:</strong> Always model your exact loan-to-value (Beleihungsauslauf) and interest sensitivities before signing a notary contract. You can test UK vs German loan mechanics in our research report on <a href="/blog/bank-of-england-base-rate-gilt-yields-uk-mortgage-math-2026" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">BoE Rate Shock: Why 30-Year Gilts at 6% Push UK Mortgages to 6%</a>.</li>
+        </ol>
+      </section>
+    `.trim()
+  },
+  {
+    slug: "10-year-treasury-yield-spread-mortgage-rates-math-2026",
+    title: "10-Year Treasury Yields at 5.10%: The 230 bps Mortgage Spread Math Keeping Borrowers Above 7.40%",
+    description: "The 10-year Treasury yield sits at 5.08% while 30-year mortgages average 7.40%. Discover why the 232 bps spread exceeds historical 170 bps norms, how MBS runoff and duration extension drive borrower costs, and the exact prepayment math to beat it.",
+    category: "Mortgage & Lending",
+    readTimeMinutes: 8,
+    publishedAt: "2026-10-20",
+    author: FOUNDER_AUTHOR,
+    attachedToolSlug: "mortgage-calculator",
+    attachedToolTitle: "15 vs 30 Year Mortgage Calculator",
+    clusterId: "global-mortgage-underwriting",
+    role: "branch",
+    pillarSlug: "canadian-mortgage-stress-test-guide-2026",
+    relatedSlugs: [
+      "freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026",
+      "canadian-mortgage-stress-test-guide-2026",
+      "bank-of-england-base-rate-gilt-yields-uk-mortgage-math-2026",
+      "the-home-loan-tenure-trap-explained"
+    ],
+    tag: "Treasury & MBS Desk • Oct 2026",
+    tagTooltip: "Verified primary data from Federal Reserve (FRED DGS10, MORTGAGE30US), Freddie Mac PMMS, SIFMA, and BLS",
+    tableOfContents: [
+      { id: "treasury-yield-mortgage-divergence", title: "1. The 232 bps Reality: 10-Year Treasuries at 5.08% vs. 30-Year Mortgages at 7.40%" },
+      { id: "three-structural-drivers-mbs-spread", title: "2. The 3 Structural Drivers of the Spread Blowout (QT, Convexity & Volatility)" },
+      { id: "spread-compression-sensitivity-matrix", title: "3. Mathematical Sensitivity Matrix: What If the Spread Normalizes to 170 bps?" },
+      { id: "fed-funds-vs-treasury-decoupling", title: "4. Why Waiting for Fed Rate Cuts Won't Automatically Lower Mortgage Rates" },
+      { id: "borrower-defense-prepayment-playbook", title: "5. The Borrower Playbook: 15-Year Mortgages & Monthly Principal Acceleration" }
+    ],
+    faqs: [
+      {
+        question: "Why is there a spread between the 10-year Treasury yield and 30-year mortgage rates?",
+        answer: "While a 30-year mortgage has a 30-year contractual term, the average US mortgage is paid off, refinanced, or sold in roughly 7 to 10 years. Consequently, mortgage-backed security (MBS) investors benchmark mortgage yields against the 10-year U.S. Treasury note. The spread covers credit risk, prepayment option risk, servicing costs, and liquidity premiums."
+      },
+      {
+        question: "What is the historical average spread between the 10-year Treasury and mortgage rates?",
+        answer: "From 1971 through 2021, the spread between the 10-year U.S. Treasury yield and the 30-year fixed conforming mortgage rate averaged 170 basis points (1.70 percentage points). In October 2026, with the 10-year Treasury yield hovering at 5.08% and Freddie Mac 30-year mortgages at 7.40%, the spread sits at 232 basis points—62 bps above the historical norm."
+      },
+      {
+        question: "Why has the mortgage spread remained above 230 basis points in 2026?",
+        answer: "Three structural forces maintain this elevated spread: (1) Negative Convexity & Extension Risk: as rates rose, refinance turnover collapsed, lengthening MBS portfolio duration; (2) Quantitative Tightening (QT): the Federal Reserve is passively running off up to $35 Billion/month in agency MBS without reinvestment; and (3) Primary-Secondary Pipeline Volatility: originators demand wider retail profit buffers to absorb intra-month interest rate shocks."
+      },
+      {
+        question: "Will Federal Reserve interest rate cuts automatically lower 30-year mortgage rates?",
+        answer: "Not necessarily. The Federal Reserve directly controls the overnight Federal Funds Rate (3.75%–4.00%), which influences short-term yields like credit cards and HELOCs. 30-year mortgage rates are determined by long-term 10-year Treasury yields and private secondary market MBS spreads. If market term premia and government debt supply keep 10-year yields near 5%, mortgage rates will only decline if MBS spreads compress back toward historical 170 bps levels."
+      },
+      {
+        question: "How much extra does the 62 bps excess spread cost on a $400,000 mortgage?",
+        answer: "On a $400,000 loan balance, an excess 62 bps spread (7.40% instead of 6.78%) increases monthly principal and interest payments by $166/month ($2,768 vs. $2,602). Over the full 30-year term, this structural spread premium forces the homeowner to pay an additional $59,760 in cumulative interest."
+      }
+    ],
+    content: `
+      <section id="treasury-yield-mortgage-divergence" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          1. The 232 bps Reality: 10-Year Treasuries at 5.08% vs. 30-Year Mortgages at 7.40%
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          According to daily <strong>Federal Reserve Bank of St. Louis (FRED)</strong> benchmark statistics (series <code>DGS10</code>), the yield on the <strong>10-Year U.S. Treasury Note</strong> trades at <strong>5.08%</strong> as of October 2026. Concurrently, the <strong>Freddie Mac Primary Mortgage Market Survey (PMMS)</strong> reports national average 30-year fixed conforming mortgage rates at <strong>7.40%</strong> (series <code>MORTGAGE30US</code>).
+        </p>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          This divergence produces an effective mortgage spread of <strong>232 basis points (2.32%)</strong>. Over a fifty-year historical baseline from 1971 through 2021, the spread between the 10-year Treasury yield and the 30-year fixed mortgage averaged <strong>170 basis points (1.70%)</strong>. Borrowers are currently bearing a structural <strong>62 basis point premium</strong> over historical capital market norms.
+        </p>
+        <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-800 dark:text-zinc-200">
+          <strong>Primary Institutional Benchmarks (October 2026):</strong>
+          <ul class="list-disc pl-5 mt-2 space-y-1 text-zinc-600 dark:text-zinc-400">
+            <li><strong>10-Year U.S. Treasury Constant Maturity (FRED: DGS10):</strong> 5.08%</li>
+            <li><strong>Freddie Mac 30-Year Fixed Mortgage (FRED: MORTGAGE30US):</strong> 7.40% (0.4 points)</li>
+            <li><strong>Freddie Mac 15-Year Fixed Mortgage:</strong> 6.71% (0.4 points)</li>
+            <li><strong>Current 30-Yr Mortgage vs. 10-Yr Treasury Spread:</strong> 232 bps (Historical Mean: 170 bps)</li>
+            <li><strong>Federal Reserve Balance Sheet (MBS Holdings):</strong> ~$2.28 Trillion (Passive runoff ongoing)</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="three-structural-drivers-mbs-spread" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          2. The 3 Structural Drivers of the Spread Blowout (QT, Convexity &amp; Volatility)
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Why does the spread between benchmark sovereign debt and home loans remain 62 bps wider than long-term norms? Three structural market mechanics prevent mortgage yields from compressing:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-2">
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">1. Negative Convexity &amp; Extension Risk</h3>
+            <p class="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+              When interest rates were 3%, borrowers refinanced frequently, giving Mortgage-Backed Securities (MBS) an effective duration of 3 to 5 years. At 7%+, existing mortgage pools are frozen (the lock-in effect). Expected MBS duration extends to 8–10 years, forcing institutional bondholders to demand higher yields to compensate for prolonged maturity risk.
+            </p>
+          </div>
+          <div class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-2">
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">2. Quantitative Tightening (QT) Runoff</h3>
+            <p class="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+              Under Quantitative Easing (QE), the Federal Reserve was the world's largest, price-insensitive buyer of Fannie Mae and Freddie Mac paper. Under QT, the Fed allows agency MBS to mature without reinvestment (up to $35 Billion monthly cap). Commercial banks and private asset managers must absorb this paper, demanding wider credit spreads.
+            </p>
+          </div>
+          <div class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-2">
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">3. Primary-Secondary Pipeline Volatility</h3>
+            <p class="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+              Elevated bond market volatility (tracked by the ICE BofA MOVE index) increases the cost for mortgage originators to hedge rate locks between application and loan sale. To insulate balance sheets from intra-quarter bond repricing, retail lenders pad their retail markup margins by 20 to 30 bps.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="spread-compression-sensitivity-matrix" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          3. Mathematical Sensitivity Matrix: What If the Spread Normalizes to 170 bps?
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          If secondary market liquidity improves and the 30-year mortgage spread contracts from 232 bps back to its historical 170 bps baseline (holding the 10-year Treasury constant at 5.08%), mortgage rates would drop from <strong>7.40% to 6.78%</strong> without requiring any policy rate cuts from the Federal Reserve.
+        </p>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          The table below computes the exact monthly principal and interest payment using the standard amortization formula \\(M = P \\frac{r(1+r)^n}{(1+r)^n - 1}\\) across major loan sizes:
+        </p>
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-zinc-50 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100 font-semibold">
+              <tr>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Loan Amount</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Current Rate (7.40%)</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Normal Spread (6.78%)</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">Monthly Savings</th>
+                <th class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">30-Year Interest Savings</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300">
+              <tr class="bg-white dark:bg-zinc-900/40">
+                <td class="px-4 py-3 font-semibold">$300,000</td>
+                <td class="px-4 py-3 text-rose-600 dark:text-rose-400 font-medium">$2,076/mo</td>
+                <td class="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-medium">$1,952/mo</td>
+                <td class="px-4 py-3 font-semibold">-$124/mo</td>
+                <td class="px-4 py-3 font-semibold">$44,820</td>
+              </tr>
+              <tr class="bg-emerald-50/40 dark:bg-emerald-950/20">
+                <td class="px-4 py-3 font-semibold">$400,000</td>
+                <td class="px-4 py-3 text-rose-600 dark:text-rose-400 font-medium">$2,768/mo</td>
+                <td class="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-medium">$2,602/mo</td>
+                <td class="px-4 py-3 font-semibold">-$166/mo</td>
+                <td class="px-4 py-3 font-semibold">$59,760</td>
+              </tr>
+              <tr class="bg-white dark:bg-zinc-900/40">
+                <td class="px-4 py-3 font-semibold">$500,000</td>
+                <td class="px-4 py-3 text-rose-600 dark:text-rose-400 font-medium">$3,460/mo</td>
+                <td class="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-medium">$3,253/mo</td>
+                <td class="px-4 py-3 font-semibold">-$207/mo</td>
+                <td class="px-4 py-3 font-semibold">$74,520</td>
+              </tr>
+              <tr class="bg-emerald-50/40 dark:bg-emerald-950/20">
+                <td class="px-4 py-3 font-semibold">$750,000</td>
+                <td class="px-4 py-3 text-rose-600 dark:text-rose-400 font-medium">$5,190/mo</td>
+                <td class="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-medium">$4,880/mo</td>
+                <td class="px-4 py-3 font-semibold">-$310/mo</td>
+                <td class="px-4 py-3 font-semibold">$111,600</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          On a median conforming balance of $400,000, spread normalization alone returns <strong>$166 every month</strong> to the homeowner's budget. You can model your exact loan-to-value, taxes, and insurance using our <a href="/tools/mortgage-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Mortgage &amp; Amortization Calculator</a> or compare terms side-by-side with our dedicated <a href="/tools/mortgage-calculator/15-year-vs-30-year" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">15 vs 30 Year Mortgage Calculator</a>.
+        </p>
+      </section>
+
+      <section id="fed-funds-vs-treasury-decoupling" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          4. Why Waiting for Fed Rate Cuts Won't Automatically Lower Mortgage Rates
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          A common assumption among prospective homebuyers is that when the Federal Open Market Committee (FOMC) reduces the Federal Funds target range (currently 3.75%–4.00%), mortgage rates will drop by an identical magnitude. This assumption overlooks the structural decoupling between money market rates and the long end of the yield curve:
+        </p>
+        <ul class="list-disc pl-5 space-y-2 text-sm sm:text-base text-zinc-700 dark:text-zinc-300">
+          <li><strong>Short-Term vs. Long-Term Debt:</strong> The Federal Reserve directly controls overnight interbank lending rates. 10-year Treasury yields, by contrast, are determined by global investors pricing long-term GDP growth, structural fiscal deficits, and inflation expectations 10 years into the future.</li>
+          <li><strong>The Term Premium Penalty:</strong> Heavy Treasury issuance to fund sovereign deficits expands the term premium demanded by bond auction dealers. Even if the Fed eases policy rates by 50 bps, 10-year yields can remain pinned near 5.00% if auction bid-to-cover ratios soften.</li>
+          <li><strong>Historical Evidence from Prior Easing Cycles:</strong> In late 1995 and 1998, Fed rate cuts coincided with rising long-term yields as growth expectations rebounded. Buyers waiting for sub-6% mortgage rates solely via central bank rate cuts may experience prolonged stagnation.</li>
+        </ul>
+      </section>
+
+      <section id="borrower-defense-prepayment-playbook" class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          5. The Borrower Playbook: 15-Year Mortgages &amp; Monthly Principal Acceleration
+        </h2>
+        <p class="text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+          Homeowners and buyers can deploy two mathematical strategies to neutralize the 232 bps spread penalty today:
+        </p>
+        <ol class="list-decimal list-inside space-y-3 text-sm sm:text-base text-zinc-700 dark:text-zinc-300 ml-2">
+          <li><strong>Leverage the 69 bps 15-Year Rate Discount:</strong> According to Freddie Mac, 15-year fixed loans average <strong>6.71%</strong> compared to 7.40% for 30-year loans. On a $320,000 balance ($400,000 home with 20% down), a 15-year mortgage saves <strong>$248,282 in lifetime interest</strong> and eliminates 15 years of debt obligation. Read our full mathematical comparison in <a href="/blog/freddie-mac-mortgage-rates-7-4-percent-15-vs-30-year-math-2026" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Freddie Mac Mortgage Rates Hit 7.40%: 15-Year (6.71%) vs. 30-Year Math</a>.</li>
+          <li><strong>Deploy the 1 Extra Payment Per Year Strategy:</strong> If signing a 30-year mortgage for cash flow security, voluntarily paying 1/12th extra principal each month (or one extra monthly payment per year) slashes <strong>4.2 years off a 30-year mortgage</strong> and saves over <strong>$72,000 in interest</strong> on a $400,000 loan, completely bypassing the 232 bps secondary spread penalty.</li>
+          <li><strong>Audit Rate Hike Impacts Client-Side:</strong> Test what happens to your debt service if rates adjust upward or downward using our private <a href="/tools/interest-rate-hike-calculator" class="font-semibold text-emerald-600 hover:underline dark:text-emerald-400">Interest Rate Hike Calculator</a>, where your numbers stay safely in local browser memory without server tracking.</li>
         </ol>
       </section>
     `.trim()

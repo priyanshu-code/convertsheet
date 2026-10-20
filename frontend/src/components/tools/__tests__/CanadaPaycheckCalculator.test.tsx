@@ -19,8 +19,9 @@ describe("CanadaPaycheckCalculator", () => {
     expect(screen.getByText(/Canadian Take-Home Pay Summary/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Net Bi-Weekly Take-Home/i).length).toBeGreaterThanOrEqual(1);
 
-    // Verify privacy badge
+    // Verify privacy badge and freshness signal
     expect(screen.getByText(/100% Client-Side • Zero Server Storage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for 2026 CRA Tax Rules/i)).toBeInTheDocument();
 
     // Verify accessible RRSP slider
     expect(screen.getByLabelText("RRSP Contribution Slider")).toBeInTheDocument();

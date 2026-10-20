@@ -258,5 +258,27 @@ describe("Blog Registry & Content Layer", () => {
     expect(post?.content).toContain("Sondertilgung");
     expect(post?.content).toContain("KfW");
   });
+
+  it("retrieves the 10-Year Treasury Yield vs Mortgage Spread research report", () => {
+    const post = getBlogPostBySlug("10-year-treasury-yield-spread-mortgage-rates-math-2026");
+    expect(post).toBeDefined();
+    expect(post?.slug).toBe("10-year-treasury-yield-spread-mortgage-rates-math-2026");
+    expect(post?.title).toContain("10-Year Treasury Yields at 5.10%");
+    expect(post?.category).toBe("Mortgage & Lending");
+    expect(post?.attachedToolSlug).toBe("mortgage-calculator");
+    expect(post?.attachedToolTitle).toBe("15 vs 30 Year Mortgage Calculator");
+    expect(post?.clusterId).toBe("global-mortgage-underwriting");
+    expect(post?.role).toBe("branch");
+    expect(post?.tableOfContents).toHaveLength(5);
+    expect(post?.faqs).toHaveLength(5);
+
+    // Citations & institutional content assertions
+    expect(post?.content).toContain("DGS10");
+    expect(post?.content).toContain("MORTGAGE30US");
+    expect(post?.content).toContain("232 basis points");
+    expect(post?.content).toContain("Negative Convexity");
+    expect(post?.content).toContain("Quantitative Tightening");
+    expect(post?.content).toContain("Freddie Mac");
+  });
 });
 

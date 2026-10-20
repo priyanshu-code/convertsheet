@@ -138,11 +138,19 @@ Provide practical personal budgeting ratios (50/30/20 rule), emergency fund guid
   }, [annualSalary, hoursPerWeek, weeksPerYear, result]);
 
   return (
-    <div className="space-y-6 pb-24 sm:pb-0">
+    <div className="space-y-6 pb-32 sm:pb-0">
       {/* Zero-Knowledge Client-Side Privacy Badge */}
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
         <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      </div>
+
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          Updated for 2026 Labor Benchmarks: FLSA 40-hr Standard • BLS 2,080 Working Hours Annual Baseline • Overtime Multiplier (1.5×)
+        </span>
       </div>
 
       {/* 2-Column Responsive Layout */}
@@ -391,8 +399,7 @@ Provide practical personal budgeting ratios (50/30/20 rule), emergency fund guid
 
       {/* Sticky Bottom Mobile Summary Bar (<640px) */}
       <div 
-        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 shadow-lg flex items-center justify-between"
-        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] shadow-lg flex items-center justify-between"
       >
         <div>
           <span className="text-[10px] font-semibold text-zinc-500 uppercase block">Hourly Wage</span>

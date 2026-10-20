@@ -10,7 +10,7 @@ export interface CalcInputProps {
   type?: "number" | "text" | "date";
   min?: number;
   max?: number;
-  step?: number;
+  step?: number | string;
   prefix?: string;
   suffix?: string;
   placeholder?: string;

@@ -20,8 +20,9 @@ describe("AnnualToHourlyCalculator", () => {
     expect(screen.getAllByText(/48.08/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("$8,333").length).toBeGreaterThanOrEqual(1);
 
-    // Verify privacy badge
+    // Verify privacy badge and freshness signal
     expect(screen.getByText(/100% Client-Side • Zero Server Storage/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for 2026 Labor Benchmarks/i)).toBeInTheDocument();
 
     // Verify accessible sliders
     expect(screen.getByLabelText("Annual Salary Slider")).toBeInTheDocument();
