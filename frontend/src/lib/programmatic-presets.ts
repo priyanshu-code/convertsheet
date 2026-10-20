@@ -832,6 +832,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     },
     "faqs": [
       {
+        "question": "What is a $15,000 car loan payment for 72 months?",
+        "answer": "At 6.5% APR with $0 down, a $15,000 car loan payment for 72 months is $252 per month with $3,144 in total interest. With 10% down ($1,500), your payment drops to $227/month ($2,830 interest). Choosing a 60-month term instead costs $265/month ($2,322 interest) and saves $508 in total interest charges."
+      },
+      {
         "question": "How much is a monthly payment on a $15,000 car?",
         "answer": "At 6.5% APR with 10% down ($1,500), monthly payments on a $15,000 car are: $457/mo for 36 months ($1,402 total interest), $356/mo for 48 months ($2,075 total interest), $293/mo for 60 months ($2,580 total interest), and $252/mo for 72 months ($3,144 total interest)."
       },
@@ -4424,7 +4428,7 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     presetSlug: "72-month-car-loan",
     name: "72-Month (6-Year) Auto Loan Payment Calculator",
     title: "72-Month Car Loan Calculator (2026) — $15k, $25k & $35k Math",
-    metaDescription: "Calculate your monthly car loan payment for 72 months on $15k, $25k, and $35k auto loans. Compare total interest costs, calculate APR impact, and export to Excel.",
+    metaDescription: "Calculate your $25,000 car loan payment for 72 months ($425/mo at 6.9% APR, $0 down; $382/mo with 10% down). Compare $15k, $25k, and $35k 6-year financing math with Excel export.",
     answerSummary: "On a $25,000 car loan at 6.9% APR over 72 months, your monthly payment is $425/month with $5,526 in total interest. On a $15,000 loan, your payment is $255/month ($3,315 interest). On a $35,000 vehicle with 10% down ($3,500) at 6.9% APR, the monthly payment is $585/month ($7,736 total interest).",
     about: "The 72-month (6-year) auto loan has become the most common financing term in the United States. Understand the trade-offs: lower monthly cash outflow in exchange for extended interest payments and higher risk of negative equity (being underwater). Need a shorter term on a pre-owned vehicle? Calculate 60-month payments on our [$15,000 Car Loan Over 5 Years Calculator](/tools/car-loan-calculator/15k-car-loan-5-years).",
     initialValues: {
@@ -4439,7 +4443,7 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     faqs: [
       {
         question: "What is the monthly payment on a $25,000 car loan for 72 months?",
-        answer: "At 6.9% APR with $0 down, a $25,000 car loan over 72 months costs approximately $425 per month, with $5,526 in total interest paid over the 6-year term. With 10% down ($2,500), the monthly payment drops to $382/month ($4,973 total interest).",
+        answer: "At 6.9% APR with $0 down, a $25,000 car loan payment for 72 months is exactly $425 per month, with $5,526 in total interest paid over the 6-year term. With 10% down ($2,500), the monthly payment drops to $382/month ($4,973 total interest). At 8.5% APR, payments are $445/month ($7,061 total interest).",
       },
       {
         question: "What is the monthly payment on a $15,000 car loan for 72 months?",

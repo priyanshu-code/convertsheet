@@ -43,9 +43,9 @@ export function generateConsumerFinancialPresets(): ProgrammaticPreset[] {
       toolSlug: "mortgage-calculator",
       presetSlug: `${kLabel}-mortgage-payment`,
       name: `${formattedPrice} Mortgage Payment Calculator (30-Year Fixed)`,
-      title: `${formattedPrice} Mortgage Payment 30 Years Calculator | ConvertSheet`,
+      title: `${formattedPrice} Mortgage Monthly Payments Calculator (15 & 30 Years) | ConvertSheet`,
       subtitle: `Calculate monthly principal, interest, taxes, and insurance on a ${formattedPrice} home loan with full amortization table.`,
-      metaDescription: `What is the monthly payment on a ${formattedPrice} mortgage for 30 years? At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full 360-month amortization schedule.`,
+      metaDescription: `Calculate ${formattedPrice} mortgage monthly payments for 15 and 30-year terms. At 6.5% with 20% down, monthly P&I is ${pi30} (${total30}/mo total with taxes and insurance). Full 360-month amortization schedule.`,
       answerSummary: `On a ${formattedPrice} home purchase with 20% down ($${downPayment.toLocaleString()}), loan balance is $${loanBalance.toLocaleString()}. At a 6.5% 30-year fixed rate, monthly principal & interest is ${pi30}. With property taxes and homeowners insurance, total monthly payment is approximately ${total30}/month. Total interest paid over 30 years is ${interest30}.`,
       badge: "30-Year Fixed",
       keywords: [
@@ -80,6 +80,10 @@ Assuming a standard 20% down payment of $${downPayment.toLocaleString()}, privat
         homeInsuranceYearly: Math.round(price * 0.004),
       },
       faqs: [
+        {
+          question: `What are the monthly payments on a ${formattedPrice} mortgage?`,
+          answer: `On a ${formattedPrice} mortgage with 20% down ($${downPayment.toLocaleString()}) at 6.5% interest, monthly principal and interest is ${pi30} for a 30-year term ($${total30}/mo including property taxes and insurance), or approximately $${Math.round((loanBalance * ((0.0575/12) * Math.pow(1 + 0.0575/12, 180))) / (Math.pow(1 + 0.0575/12, 180) - 1)).toLocaleString()}/mo on a 15-year fixed loan at 5.75%.`
+        },
         {
           question: `What is the monthly payment on a ${formattedPrice} mortgage for 30 years?`,
           answer: `With 20% down ($${downPayment.toLocaleString()}) at 6.5% fixed interest on a 30-year term, monthly principal and interest is ${pi30}. Total monthly payment including typical property taxes (~$${Math.round(m30.monthlyPropertyTax).toLocaleString()}/mo) and insurance (~$${Math.round(m30.monthlyInsurance).toLocaleString()}/mo) is approximately ${total30}.`
@@ -195,9 +199,9 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
       toolSlug: "car-loan-calculator",
       presetSlug: `${kCar}-car-loan-monthly-payment`,
       name: `${formattedCarPrice} Car Loan Calculator`,
-      title: `${formattedCarPrice} Car Loan Calculator (5 & 6 Years) | ConvertSheet`,
+      title: `${formattedCarPrice} Car Loan Payment Calculator — 60 & 72-Month Financing (2026) | ConvertSheet`,
       subtitle: `Calculate monthly auto financing payments and total interest on a ${formattedCarPrice} vehicle purchase.`,
-      metaDescription: `Monthly payment on a ${formattedCarPrice} car loan is ~$${monthlyPay}/mo for 60 months (5 years) or ~$${monthlyPay72}/mo for 72 months (6 years) with 10% down. Full payment comparison & interest math.`,
+      metaDescription: `${formattedCarPrice} car loan payment: ~$${monthlyPay}/mo for 60 months (5 years) or ~$${monthlyPay72}/mo for 72 months (6 years) at 7.0%–7.5% APR. Compare total interest, down payments, and amortization.`,
       answerSummary: `On a ${formattedCarPrice} vehicle purchase with 10% down ($${downPay.toLocaleString()}), financing $${loanAmt.toLocaleString()} at 7.0% APR for 60 months results in a monthly payment of approximately $${monthlyPay}/month. Total interest paid over 5 years is $${totalInterest.toLocaleString()}. For a 72-month term at 7.5% APR, monthly payment is ~$${monthlyPay72}/month with $${totalInterest72.toLocaleString()} total interest.`,
       badge: "Auto Financing",
       keywords: [
@@ -229,12 +233,12 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
       },
       faqs: [
         {
-          question: `What is the monthly payment on a ${formattedCarPrice} car loan over 5 years (60 months)?`,
-          answer: `Financing $${loanAmt.toLocaleString()} at 7% APR for 5 years (60 months) costs approximately $${monthlyPay} per month, with $${totalInterest.toLocaleString()} in total interest.`
+          question: `What is the monthly payment on a ${formattedCarPrice} car loan for 72 months?`,
+          answer: `Financing a ${formattedCarPrice} vehicle for 72 months (6 years) with 10% down ($${downPay.toLocaleString()}) at 7.5% APR costs approximately $${monthlyPay72} per month, with $${totalInterest72.toLocaleString()} in total interest charges. With zero down, monthly payments are approximately $${Math.round((carPrice * (monthlyRate72 * Math.pow(1 + monthlyRate72, n72))) / (Math.pow(1 + monthlyRate72, n72) - 1))}/month.`
         },
         {
-          question: `What is the monthly payment on a ${formattedCarPrice} car loan for 72 months (6 years)?`,
-          answer: `Financing $${loanAmt.toLocaleString()} for 72 months at 7.5% APR costs approximately $${monthlyPay72} per month. While 72 months reduces the monthly bill by $${monthlyPay - monthlyPay72}/month compared to 60 months, it increases total interest paid by $${(totalInterest72 - totalInterest).toLocaleString()} ($${totalInterest72.toLocaleString()} vs $${totalInterest.toLocaleString()}).`
+          question: `What is the monthly payment on a ${formattedCarPrice} car loan over 5 years (60 months)?`,
+          answer: `Financing $${loanAmt.toLocaleString()} at 7% APR for 5 years (60 months) costs approximately $${monthlyPay} per month, with $${totalInterest.toLocaleString()} in total interest.`
         },
         {
           question: `How much down payment do I need for a ${formattedCarPrice} car?`,
