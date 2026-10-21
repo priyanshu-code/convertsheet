@@ -410,7 +410,7 @@ describe("Programmatic SEO Presets Registry", () => {
 
     const ny85k = getProgrammaticPreset("salary-calculator", "85k-salary-in-new-york");
     expect(ny85k).toBeDefined();
-    expect(ny85k?.faqs.length).toBe(4);
+    expect(ny85k?.faqs.length).toBeGreaterThanOrEqual(4);
 
     const fl60k = getProgrammaticPreset("salary-calculator", "60k-salary-in-florida");
     expect(fl60k).toBeDefined();

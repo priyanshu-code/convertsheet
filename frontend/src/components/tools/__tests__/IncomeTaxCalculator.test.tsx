@@ -44,4 +44,10 @@ describe("IncomeTaxCalculator Moat & Mobile UX", () => {
     fireEvent.click(screen.getByText("India (FY 2024-25)"));
     expect(window.location.search).toContain("regime=IN");
   });
+
+  it("renders Market Rate & Tax Benchmark Freshness Signal and CalcSaveButton", () => {
+    render(<IncomeTaxCalculator initialValues={{ regime: "US", grossIncomeUs: 100000 }} />);
+    expect(screen.getByText(/Updated for 2026 IRS Tax Year/i)).toBeInTheDocument();
+    expect(screen.getByText("Save Calculation")).toBeInTheDocument();
+  });
 });

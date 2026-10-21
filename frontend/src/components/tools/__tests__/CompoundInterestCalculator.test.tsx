@@ -60,4 +60,18 @@ describe("CompoundInterestCalculator Component Suite", () => {
     expect(XLSX.utils.book_append_sheet).toHaveBeenCalled();
     expect(XLSX.writeFile).toHaveBeenCalled();
   });
+
+  it("renders Market Rate Freshness Signal, 44px rate presets, and CalcSaveButton", () => {
+    render(<CompoundInterestCalculator />);
+    expect(screen.getByText(/Updated for October 2026/i)).toBeInTheDocument();
+    
+    // Check 44px preset touch targets
+    const hysaPreset = screen.getByText("4.25% (HYSA)");
+    expect(hysaPreset).toHaveClass("min-h-[44px]");
+    fireEvent.click(hysaPreset);
+    expect(window.location.search).toContain("annualRate=4.25");
+
+    // Check CalcSaveButton presence
+    expect(screen.getByText("Save Calculation")).toBeInTheDocument();
+  });
 });

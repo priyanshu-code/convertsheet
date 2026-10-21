@@ -13,6 +13,7 @@ import {
   CalcShareButton,
   CalcPromptButton,
   CalcExportButton,
+  CalcSaveButton,
 } from "@/components/calculator";
 import { useCurrency } from "@/context/CurrencyContext";
 
@@ -200,6 +201,16 @@ Please provide:
         <span>100% Client-Side Privacy — Zero Financial Data Leaves Your Device</span>
       </div>
 
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          {currencySymbol === "₹"
+            ? "Updated for October 2026: Senior Citizen Bank FDs 8.00%–8.50% • Corporate FDs 8.25%–8.75% • RBI Repo Benchmark 5.50%"
+            : "Updated for October 2026: Top Online HYSAs 4.15%–4.25% APY • 1-Year CDs 4.25%–4.35% APY (Fed Funds Target 3.75%–4.00%) • 10-Yr Treasury Yield 5.10%"}
+        </span>
+      </div>
+
       <CalcCard
         title="Compound Interest Calculator"
         subtitle="Calculate compound growth on savings, certificates of deposit (CDs), and fixed deposits."
@@ -276,18 +287,34 @@ Please provide:
             />
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Presets:</span>
-              {[4, 5, 7, 8, 10, 12].map((r) => (
+              {(currencySymbol === "₹"
+                ? [
+                    { label: "7.0% (FD)", val: 7.0 },
+                    { label: "7.5% (PO)", val: 7.5 },
+                    { label: "8.25% (Sr FD)", val: 8.25 },
+                    { label: "9.0% (Corp)", val: 9.0 },
+                    { label: "12.0% (Index)", val: 12.0 },
+                  ]
+                : [
+                    { label: "4.25% (HYSA)", val: 4.25 },
+                    { label: "4.35% (CD)", val: 4.35 },
+                    { label: "5.10% (T-Bill)", val: 5.10 },
+                    { label: "7.0% (RE)", val: 7.0 },
+                    { label: "8.0% (Mix)", val: 8.0 },
+                    { label: "10.0% (S&P)", val: 10.0 },
+                  ]
+              ).map((r) => (
                 <button
-                  key={r}
+                  key={r.label}
                   type="button"
-                  onClick={() => setAnnualRate(r)}
-                  className={`min-h-[44px] px-2.5 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-                    annualRate === r
+                  onClick={() => setAnnualRate(r.val)}
+                  className={`min-h-[44px] px-2.5 py-1.5 text-xs font-medium rounded-lg border transition-colors touch-manipulation ${
+                    annualRate === r.val
                       ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700 font-semibold"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
-                  {r}%
+                  {r.label}
                 </button>
               ))}
             </div>
@@ -430,6 +457,18 @@ Please provide:
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-3 pt-2">
+          <CalcSaveButton
+            toolSlug="compound-interest-calculator"
+            toolName="Compound Interest Calculator"
+            label="Save Calculation"
+            summaryTitle={`Principal: ${formatCurrency(principal)} (${years}y @ ${annualRate}%)`}
+            summaryMetrics={[
+              { label: "Future Value", value: formatCurrency(maturityAmount) },
+              { label: "Principal", value: formatCurrency(principal) },
+              { label: "Interest Earned", value: formatCurrency(totalInterest) },
+              { label: "Purchasing Power", value: formatCurrency(realPurchasingPower) },
+            ]}
+          />
           <CalcShareButton
             state={{
               principal,

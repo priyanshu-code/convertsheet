@@ -50,4 +50,19 @@ describe("EmiCalculator Moat & Mobile UX", () => {
     fireEvent.click(presetBtn);
     expect(window.location.search).toContain("loanAmount=2500000");
   });
+
+  it("renders Market Rate Freshness Signal and handles 44px rate presets", () => {
+    localStorage.setItem("convertsheet-target-market", "IN");
+    render(
+      <CurrencyProvider>
+        <EmiCalculator />
+      </CurrencyProvider>
+    );
+
+    expect(screen.getByText(/Updated for October 2026/i)).toBeInTheDocument();
+    const sbiPreset = screen.getByText("8.15% (SBI)");
+    expect(sbiPreset).toHaveClass("min-h-[44px]");
+    fireEvent.click(sbiPreset);
+    expect(window.location.search).toContain("interestRate=8.15");
+  });
 });

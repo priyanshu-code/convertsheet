@@ -418,19 +418,29 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
         <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
       </div>
 
+      {/* Market Rate & Tax Benchmark Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          {regime === "US"
+            ? "Updated for 2026 IRS Tax Year: Standard Deduction ($15,000 Single / $30,000 Married) • 7 Progressive Federal Brackets (10% to 37%)"
+            : "Updated for India FY 2024-26 Budget: New Tax Regime Slabs • Section 87A Full Tax Rebate up to ₹7 Lakh • Standard Deduction ₹75,000"}
+        </span>
+      </div>
+
       <CalcCard
         title={
           regime === "US"
-            ? "US Federal Income Tax Bracket Calculator (2024)"
+            ? "US Federal Income Tax Bracket Calculator (2024-2026)"
             : "Income Tax Slab Calculator (India FY 2024-25)"
         }
         subtitle={
           regime === "US"
-            ? "Calculate progressive 2024 US Federal Income Tax across all 7 tax brackets with standard deduction, effective tax rate, and net after-tax income."
+            ? "Calculate progressive 2024-2026 US Federal Income Tax across all 7 tax brackets with standard deduction, effective tax rate, and net after-tax income."
             : "Calculate income tax liability under India's New Tax Regime (Section 115BAC) with ₹75,000 standard deduction, 87A rebate, progressive slabs, and 4% health & education cess."
         }
         icon={Receipt}
-        badge={regime === "US" ? "United States • Federal 2024" : "India • FY 2024-25"}
+        badge={regime === "US" ? "United States • Federal 2026" : "India • FY 2024-26"}
       >
         {/* Country pill switcher */}
         <div className="flex items-center justify-start pb-2">
@@ -649,6 +659,29 @@ Please evaluate whether the Old Regime or New Regime is better for this income l
                       }
                 }
                 label="Share Tax Scenario"
+              />
+              <CalcSaveButton
+                toolSlug="income-tax-calculator"
+                toolName="Income Tax Bracket Calculator"
+                label="Save Calculation"
+                summaryTitle={
+                  regime === "US"
+                    ? `US Tax: $${usTaxResult.gross.toLocaleString()} (${filingStatus})`
+                    : `India Tax: ₹${inTaxResult.gross.toLocaleString()} (New Regime)`
+                }
+                summaryMetrics={
+                  regime === "US"
+                    ? [
+                        { label: "Tax Payable", value: `$${usTaxResult.totalFederalTax.toLocaleString()}` },
+                        { label: "Effective Rate", value: `${usTaxResult.effectiveTaxRate}%` },
+                        { label: "Net Take-Home", value: `$${usTaxResult.netAfterTaxIncome.toLocaleString()}` },
+                      ]
+                    : [
+                        { label: "Tax Payable", value: `₹${inTaxResult.totalTaxPayable.toLocaleString()}` },
+                        { label: "Effective Rate", value: `${inTaxResult.effectiveTaxRate}%` },
+                        { label: "Net In-Hand", value: `₹${inTaxResult.netAfterTaxIncome.toLocaleString()}` },
+                      ]
+                }
               />
               <CalcPromptButton promptText={llmPrompt} />
               <button

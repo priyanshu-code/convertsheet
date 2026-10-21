@@ -284,7 +284,11 @@ Calculation assumes full-time standard employment of 2,080 working hours per cal
         `${kCar} car loan payment 72 months`,
         `${formattedCarPrice} car loan over 5 years calculator`,
         `${kCar} car loan over 5 years`,
-        `${formattedCarPrice} car loan calculator`
+        `${formattedCarPrice} car loan calculator`,
+        `${kCar} car loan calculator`,
+        `$${carPrice.toLocaleString()} car loan over 5 years calculator`,
+        `$${carPrice.toLocaleString()} car loan payment 72 months`,
+        `$${carPrice.toLocaleString()} car loan calculator`
       ],
       about: `### ${formattedCarPrice} Vehicle Financing Overview (7.0% APR Example)
 

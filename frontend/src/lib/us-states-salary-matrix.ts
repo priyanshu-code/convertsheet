@@ -157,6 +157,12 @@ export function generate50StateSalaryPresets(): StateProgrammaticPreset[] {
           `${bracket.label} in ${stateSlugPart} take home pay`,
           `${state.name} paycheck calculator ${bracket.label}`,
           `${bracket.display} after taxes in ${state.name}`,
+          `${bracket.label} after taxes ${stateSlugPart}`,
+          `${bracket.label} salary after taxes ${stateSlugPart}`,
+          `${bracket.label} salary ${stateSlugPart} after taxes`,
+          `${bracket.label} take home pay ${stateSlugPart}`,
+          `${bracket.display} after tax in ${state.name}`,
+          `${bracket.display} salary after taxes in ${state.name}`,
         ],
         about: `### ${bracket.display} Salary Breakdown in ${state.name} (2026 Tax Year)
 
@@ -178,6 +184,10 @@ ${state.notes} ${taxSummary}`,
           k401ContributionPercent: 5,
         },
         faqs: [
+          {
+            question: `How much is ${bracket.display} after taxes in ${state.name}?`,
+            answer: `On a ${bracket.display} gross salary in ${state.name} (Single filer, 2026), your net take-home pay after federal taxes (${fedTaxPaid}), FICA (${ficaPaid}), and state income taxes (${stateTaxPaid}) is approximately ${netAnnual} per year (${netMonthly}/month or ${netBiWeekly} bi-weekly).`
+          },
           {
             question: `What is the take-home pay on a ${bracket.display} salary in ${state.name}?`,
             answer: `Your estimated net take-home pay is ${netAnnual} per year, which equates to roughly ${netMonthly} per month or ${netBiWeekly} every two weeks after all taxes and standard deductions.`

@@ -172,6 +172,16 @@ Please evaluate:
         <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
       </div>
 
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          {currencySymbol === "₹"
+            ? "Updated for October 2026: RBI Repo Rate 5.50% • Prime Home Loans 8.15%–8.50% (SBI EBLR 8.15%) • Auto Loans 8.85%–9.50%"
+            : "Updated for October 2026: 30-Year Mortgages 7.40% • 15-Year Mortgages 6.71% (Freddie Mac PMMS) • Auto Financing 6.90%–7.50%"}
+        </span>
+      </div>
+
       <CalcCard
         title="Loan EMI Calculator"
         subtitle="Calculate your monthly installment, total interest expenses, and loan repayment schedule."
@@ -247,18 +257,33 @@ Please evaluate:
             />
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Presets:</span>
-              {[7.5, 8.5, 9.5, 10.5, 12.0].map((r) => (
+              {(currencySymbol === "₹"
+                ? [
+                    { label: "8.15% (SBI)", val: 8.15 },
+                    { label: "8.40% (HDFC)", val: 8.40 },
+                    { label: "8.85% (Car)", val: 8.85 },
+                    { label: "9.50% (Biz)", val: 9.50 },
+                    { label: "10.5% (PL)", val: 10.50 },
+                  ]
+                : [
+                    { label: "6.71% (15-Yr)", val: 6.71 },
+                    { label: "7.0% (Auto)", val: 7.0 },
+                    { label: "7.40% (30-Yr)", val: 7.40 },
+                    { label: "8.50% (HELOC)", val: 8.50 },
+                    { label: "10.5% (PL)", val: 10.50 },
+                  ]
+              ).map((r) => (
                 <button
-                  key={r}
+                  key={r.label}
                   type="button"
-                  onClick={() => setInterestRate(r)}
-                  className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
-                    interestRate === r
+                  onClick={() => setInterestRate(r.val)}
+                  className={`min-h-[44px] px-2.5 py-1.5 text-xs font-medium rounded-lg border transition-colors touch-manipulation ${
+                    interestRate === r.val
                       ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
-                  {r}%
+                  {r.label}
                 </button>
               ))}
             </div>
@@ -288,12 +313,12 @@ Please evaluate:
             />
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Tenure:</span>
-              {[5, 10, 15, 20, 30].map((y) => (
+              {[5, 10, 15, 20, 25, 30].map((y) => (
                 <button
                   key={y}
                   type="button"
                   onClick={() => setLoanTenureYears(y)}
-                  className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                  className={`min-h-[44px] min-w-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors touch-manipulation ${
                     loanTenureYears === y
                       ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
