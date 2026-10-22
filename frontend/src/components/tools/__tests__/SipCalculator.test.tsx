@@ -19,11 +19,15 @@ describe("SipCalculator Moat & Mobile UX", () => {
     expect(
       screen.getByText(/100% Client-Side • Zero Server Storage • Private & Free Forever/i)
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Updated for October 2026: Equity SIP CAGR/i)
+    ).toBeInTheDocument();
     expect(screen.getByText("SIP Calculator (Mutual Funds)")).toBeInTheDocument();
     expect(screen.getByText("Total Expected Maturity Value")).toBeInTheDocument();
     expect(screen.getAllByText("Export Formulaic Excel").length).toBeGreaterThan(0);
     expect(screen.getByText("Total Invested Capital")).toBeInTheDocument();
     expect(screen.getByText("Estimated Wealth Gained")).toBeInTheDocument();
+    expect(screen.getByText("Inflation-Adjusted Purchasing Power")).toBeInTheDocument();
   });
 
   it("synchronizes parameter updates to URL search params", () => {
@@ -39,7 +43,7 @@ describe("SipCalculator Moat & Mobile UX", () => {
     expect(window.location.search).toContain("timeYears=15");
   });
 
-  it("handles monthly investment quick preset buttons with 44px touch targets", () => {
+  it("handles monthly investment and asset class return presets with 44px touch targets", () => {
     localStorage.setItem("convertsheet-target-market", "IN");
     render(
       <CurrencyProvider>
@@ -51,5 +55,15 @@ describe("SipCalculator Moat & Mobile UX", () => {
     expect(presetBtn).toHaveClass("min-h-[44px]");
     fireEvent.click(presetBtn);
     expect(window.location.search).toContain("monthlyInvestment=10000");
+
+    const flexiBtn = screen.getByText("14.5% (Flexi)");
+    expect(flexiBtn).toHaveClass("min-h-[44px]");
+    fireEvent.click(flexiBtn);
+    expect(window.location.search).toContain("annualReturnRate=14.5");
+
+    const tenure30y = screen.getByText("30y");
+    expect(tenure30y).toHaveClass("min-h-[44px]");
+    fireEvent.click(tenure30y);
+    expect(window.location.search).toContain("timeYears=30");
   });
 });

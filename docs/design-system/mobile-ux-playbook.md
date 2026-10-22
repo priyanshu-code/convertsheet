@@ -103,6 +103,11 @@ For multi-field secondary inputs (e.g. saved calculations, advanced tax bracket 
 - Couple the freshness signal with 44px 1-click rate preset buttons (e.g., `[4.15% (Top HYSA)]`, `[4.25% (1-Yr CD)]`, `[3.75% (T-Bill)]`, `[4.50% (Promo APY)]`) so users do not have to manually research or key in current institutional benchmarks.
 - For floating debt and mortgage tools, cite the exact regulatory mandate (e.g., October 16, 2026 RBI 99% daily minimum CRR maintenance setting the prime bank home loan floor at 8.15%–8.40%, and Fed FOMC target range at 3.75%–4.00%).
 
+### J. Inflation Erosion & Quantitative Benchmark Visualization
+- Financial decision makers require transparency on purchasing power degradation (real vs nominal values).
+- When computing long-term investment horizon tools (SIP, retirement, compounding wealth), accompany the nominal future corpus with a prominent **Inflation-Adjusted Purchasing Power** metric (e.g. discounting at ~5.5% baseline CPI inflation).
+- For quantitative algorithmic and risk-adjusted tools, pair position sizing with institutional Risk-Free Benchmark presets (3-Month T-Bills at 4.50%, Effective Fed Funds at 3.88%, and 10-Year Treasury Yield at 5.10%) to prevent arbitrary user assumptions and ensure rigor.
+
 ---
 
 ## 3. Rotational Improvement Tracking
@@ -122,6 +127,7 @@ Tracked in `docs/content-inventory.json` under `calculatorAuditQueue`:
 - **2026-10-19 (Deep Cycle):** `byte-converter`, `unit-converter`, and `bmi-calculator` (100% Client-Side Zero-Knowledge Privacy Badges, 2026 Developer Storage Benchmarks / ISO Unit Standards / WHO & CDC Clinical fresh signals, real-time URL query permalink synchronization, 44px developer and unit conversion touch targets, dual-slider controls, branded SheetJS formulaic .xlsx exports, and sticky bottom mobile summary bars with safe area insets)
 - **2026-10-20 (Deep Cycle):** `annual-to-hourly-calculator`, `canada-paycheck-calculator`, and `salary-calculator` (100% Client-Side Zero-Knowledge Privacy Badges, FLSA 2026 / CRA 2026 / IRS 2026 freshness signals, real-time URL query permalink synchronization, 44px minimum touch targets, dual-slider controls, branded SheetJS formulaic .xlsx exports with retention links, CalcSaveButton local persistence, and safe-area inset sticky bottom mobile bars)
 - **2026-10-21 (Deep Cycle):** `income-tax-calculator`, `compound-interest-calculator`, and `emi-calculator` (100% Client-Side Zero-Knowledge Privacy Badges, 2026 IRS/India Budget / Freddie Mac PMMS 7.40% & 6.71% / RBI 5.50% repo freshness signals, real-time URL query permalink synchronization, 44px institutional rate and tenure presets, CalcSaveButton zero-login persistence, branded SheetJS formulaic .xlsx exports with canonical recalculation links, and sticky bottom mobile summary bars with safe area insets)
+- **2026-10-22 (Deep Cycle):** `sip-calculator`, `debt-payoff-calculator`, and `strategy-risk-calculator` (100% Client-Side Zero-Knowledge Privacy Badges, October 2026 Equity/Debt SIP CAGR 12.0%–14.5% / Fed G.19 24.8%–27.9% CC APR / 3-Month T-Bill 4.50% & 10-Yr 5.10% Treasury freshness signals, real-time URL query permalink synchronization, 44px asset class presets and tenure buttons, inflation-adjusted purchasing power degradation models, 44px APR benchmark chips, 44px quantitative archetype and risk tolerance presets, CalcSaveButton zero-login persistence, formulaic SheetJS .xlsx exports with active model references, and sticky bottom mobile summary bars with safe-area insets)
 
 
 

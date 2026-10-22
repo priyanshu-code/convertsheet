@@ -50,7 +50,7 @@ export function SipCalculator({ initialValues }: SipCalculatorProps = {}) {
     return 10;
   });
 
-  const { totalInvested, wealthGained, totalMaturity } = useMemo(() => {
+  const { totalInvested, wealthGained, totalMaturity, realPurchasingPower } = useMemo(() => {
     const P = Math.max(0, monthlyInvestment);
     const r = Math.max(0, annualReturnRate);
     const t = Math.max(1, timeYears);
@@ -69,11 +69,14 @@ export function SipCalculator({ initialValues }: SipCalculatorProps = {}) {
     }
 
     const gains = Math.max(0, maturity - invested);
+    const inflationRate = 0.055; // 5.5% baseline inflation
+    const realMaturity = maturity / Math.pow(1 + inflationRate, t);
 
     return {
       totalInvested: Math.round(invested),
       wealthGained: Math.round(gains),
       totalMaturity: Math.round(maturity),
+      realPurchasingPower: Math.round(realMaturity),
     };
   }, [monthlyInvestment, annualReturnRate, timeYears]);
 
@@ -117,17 +120,20 @@ export function SipCalculator({ initialValues }: SipCalculatorProps = {}) {
         ["ConvertSheet - Mutual Fund Systematic Investment Plan (SIP) Projections", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
         ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/sip-calculator"],
+        ["Formula Reference", "=FV(annualRate/12, years*12, -monthlyPmt, 0, 1)"],
         ["", ""],
         ["--- INVESTMENT PARAMETERS ---", ""],
         [`Monthly Contribution (${currencySymbol})`, monthlyInvestment],
         ["Expected Annual Return Rate (%)", annualReturnRate],
         ["Investment Horizon (Years)", timeYears],
         ["Total Investment Months", timeYears * 12],
+        ["Estimated Annual Inflation Benchmark (%)", "5.5%"],
         ["", ""],
         ["--- MATURITY & WEALTH SUMMARY ---", ""],
         [`Total Invested Capital (${currencySymbol})`, totalInvested],
         [`Estimated Wealth Gained (${currencySymbol})`, wealthGained],
-        [`Total Maturity Corpus (${currencySymbol})`, totalMaturity],
+        [`Nominal Maturity Corpus (${currencySymbol})`, totalMaturity],
+        [`Inflation-Adjusted Real Purchasing Power (${currencySymbol})`, realPurchasingPower],
         ["Wealth Multiplier", totalInvested > 0 ? `${(totalMaturity / totalInvested).toFixed(2)}x` : "1.00x"],
         ["", ""],
         ["--- YEAR-BY-YEAR COMPOUNDING TRAJECTORY ---", "", "", ""],
@@ -164,10 +170,18 @@ Please evaluate:
 
   return (
     <div className="space-y-6 pb-28 sm:pb-0">
-      {/* Zero-Knowledge Client-Side Privacy Badge */}
-      <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
-        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-        <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+      {/* Zero-Knowledge Client-Side Privacy Badge & Rate Freshness Signals */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
+          <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <span>100% Client-Side • Zero Server Storage • Private & Free Forever</span>
+        </div>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-blue-900 dark:text-blue-200 text-xs w-fit">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+          <span className="font-medium">
+            Updated for October 2026: Equity SIP CAGR (12.0%–14.5%) • Debt SIPs (7.0%–7.5%) • RBI Repo 5.50% • Fed Funds 3.75%–4.00%
+          </span>
+        </div>
       </div>
 
       <CalcCard
@@ -197,7 +211,7 @@ Please evaluate:
                   key={amt}
                   type="button"
                   onClick={() => setMonthlyInvestment(amt)}
-                  className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                  className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors touch-manipulation cursor-pointer ${
                     monthlyInvestment === amt
                       ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
@@ -234,15 +248,17 @@ Please evaluate:
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Presets:</span>
               {[
-                { rate: 8, label: "8% (Conservative)" },
+                { rate: 7.5, label: "7.5% (Debt)" },
+                { rate: 10, label: "10% (Hybrid)" },
                 { rate: 12, label: "12% (Index)" },
-                { rate: 15, label: "15% (Growth)" },
+                { rate: 14.5, label: "14.5% (Flexi)" },
+                { rate: 16, label: "16% (SmallCap)" },
               ].map((p) => (
                 <button
                   key={p.rate}
                   type="button"
                   onClick={() => setAnnualReturnRate(p.rate)}
-                  className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                  className={`min-h-[44px] px-2.5 py-1.5 text-xs font-medium rounded-lg border transition-colors touch-manipulation cursor-pointer ${
                     annualReturnRate === p.rate
                       ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
@@ -278,12 +294,12 @@ Please evaluate:
             />
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mr-1">Tenure:</span>
-              {[5, 10, 15, 20, 25].map((yr) => (
+              {[3, 5, 10, 15, 20, 25, 30].map((yr) => (
                 <button
                   key={yr}
                   type="button"
                   onClick={() => setTimeYears(yr)}
-                  className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors ${
+                  className={`min-h-[44px] px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors touch-manipulation cursor-pointer ${
                     timeYears === yr
                       ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700"
@@ -310,7 +326,7 @@ Please evaluate:
           title="Maturity Breakdown"
           primaryLabel="Total Expected Maturity Value"
           primaryValue={formatCurrency(totalMaturity)}
-          copyValue={`SIP Maturity: ${formatCurrency(totalMaturity)} | Total Invested: ${formatCurrency(totalInvested)} | Wealth Gained: ${formatCurrency(wealthGained)} (${timeYears} years at ${annualReturnRate}%)`}
+          copyValue={`SIP Maturity: ${formatCurrency(totalMaturity)} | Total Invested: ${formatCurrency(totalInvested)} | Wealth Gained: ${formatCurrency(wealthGained)} (${timeYears} years at ${annualReturnRate}%) | Real Purchasing Power (5.5% infl): ${formatCurrency(realPurchasingPower)}`}
           items={[
             {
               label: "Total Invested Capital",
@@ -325,6 +341,11 @@ Please evaluate:
               label: "Wealth Multiplier",
               value: totalInvested > 0 ? `${(totalMaturity / totalInvested).toFixed(2)}x` : "1x",
               badge: "Growth",
+            },
+            {
+              label: "Inflation-Adjusted Purchasing Power",
+              value: formatCurrency(realPurchasingPower),
+              subtext: `Real value at ~5.5% annual inflation over ${timeYears} years`,
             },
           ]}
         />

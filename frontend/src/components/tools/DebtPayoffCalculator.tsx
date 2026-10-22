@@ -128,6 +128,7 @@ export function DebtPayoffCalculator({
         ["ConvertSheet - Accelerated Debt Payoff Amortization Model", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
         ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/debt-payoff-calculator"],
+        ["Benchmark Data", "Fed G.19 Consumer Credit (Avg CC APR: 24.8%–27.9%, Fed Funds: 3.75%–4.00%)"],
         ["Strategy Mode", strategy === "avalanche" ? "Debt Avalanche (Highest APR First)" : "Debt Snowball (Lowest Balance First)"],
         ["", ""],
         ["--- EXECUTIVE PAYOFF SUMMARY ---", ""],
@@ -198,10 +199,18 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
 
   return (
     <div className="space-y-8 pb-28 sm:pb-0">
-      {/* Zero-Knowledge Client-Side Reassurance Badge */}
-      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs font-medium text-emerald-800 dark:text-emerald-300 w-fit">
-        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-        <span>Zero-Knowledge Client-Side Engine • No financial data sent to servers • 100% Private &amp; Free</span>
+      {/* Zero-Knowledge Privacy Badge & Freshness Signal */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs font-medium text-emerald-800 dark:text-emerald-300 w-fit">
+          <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <span>Zero-Knowledge Client-Side Engine • No financial data sent to servers • 100% Private &amp; Free</span>
+        </div>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-blue-900 dark:text-blue-200 text-xs w-fit">
+          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+          <span className="font-medium">
+            Updated for October 2026: Avg Credit Card APR 24.8%–27.9% (Fed G.19) • Personal Loan Refi 8.5%–12.5% • Fed Funds 3.75%–4.00%
+          </span>
+        </div>
       </div>
 
       {/* Top Strategy Selector */}
@@ -297,6 +306,28 @@ Please provide budgeting advice, emergency fund coordination, and behavioral str
                         max={99}
                         step={0.1}
                       />
+                      <div className="flex flex-wrap items-center gap-1 mt-1.5">
+                        {[
+                          { label: "24.99%", title: "Credit Card Avg", val: 24.99 },
+                          { label: "28.99%", title: "Retail/Store Card", val: 28.99 },
+                          { label: "11.5%", title: "Personal Loan", val: 11.5 },
+                          { label: "7.5%", title: "Auto Loan", val: 7.5 },
+                        ].map((chip) => (
+                          <button
+                            key={chip.val}
+                            type="button"
+                            title={chip.title}
+                            onClick={() => updateDebt(debt.id, "interestRate", chip.val)}
+                            className={`min-h-[44px] px-2 py-1 text-[11px] rounded-lg border transition-colors touch-manipulation cursor-pointer ${
+                              debt.interestRate === chip.val
+                                ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                                : "bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                            }`}
+                          >
+                            {chip.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                     <div>
                       <CalcInput

@@ -7,11 +7,14 @@ describe("DebtPayoffCalculator Moat & Mobile UX", () => {
     window.history.replaceState(null, "", "/tools/debt-payoff-calculator");
   });
 
-  it("renders with Zero-Knowledge privacy badge, strategy selector, and computes payoff schedule", () => {
+  it("renders with Zero-Knowledge privacy badge, freshness signals, strategy selector, and computes payoff schedule", () => {
     render(<DebtPayoffCalculator />);
 
     expect(
       screen.getByText(/Zero-Knowledge Client-Side Engine • No financial data sent to servers • 100% Private & Free/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Updated for October 2026: Avg Credit Card APR/i)
     ).toBeInTheDocument();
     expect(screen.getByText("Debt Elimination Summary")).toBeInTheDocument();
     expect(screen.getAllByText("Export Excel").length).toBeGreaterThan(0);
@@ -25,7 +28,7 @@ describe("DebtPayoffCalculator Moat & Mobile UX", () => {
     expect(window.location.search).toContain("extraPayment=250");
   });
 
-  it("supports switching strategies and quick boost accelerator buttons with 44px touch targets", () => {
+  it("supports switching strategies, quick APR presets, and accelerator buttons with 44px touch targets", () => {
     render(<DebtPayoffCalculator />);
 
     const avalancheBtn = screen.getByText(/Debt Avalanche/i);
@@ -35,6 +38,11 @@ describe("DebtPayoffCalculator Moat & Mobile UX", () => {
 
     fireEvent.click(snowballBtn);
     expect(window.location.search).toContain("strategy=snowball");
+
+    // Quick APR chips
+    const aprChips = screen.getAllByText("28.99%");
+    expect(aprChips[0]).toHaveClass("min-h-[44px]");
+    fireEvent.click(aprChips[0]);
 
     const boost500 = screen.getByText("+$500/mo");
     expect(boost500).toHaveClass("min-h-[44px]");

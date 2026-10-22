@@ -244,75 +244,82 @@ Provide institutional feedback on probability of ruin, position sizing prudence,
   }, [backtestResult.equityCurve, accountBalance]);
 
   return (
-    <CalcCard
-      title="Quantitative Strategy Risk & Sizing Calculator"
-      subtitle="Calculate exact position sizing, dollar risk per trade, Kelly Criterion limits, Sharpe ratio, Sortino, and Max Drawdown locally in your browser."
-      icon={LineChart}
-      badge="Quant & Algo Trading"
-    >
-      {/* Zero-Knowledge Privacy Reassurance Badge */}
-      <div className="mb-6 flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 dark:border-emerald-900/60 dark:bg-emerald-950/30">
-        <div className="flex items-center gap-2.5">
-          <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-          <span className="text-xs text-emerald-900 dark:text-emerald-200">
-            <strong>Confidential Strategy Execution:</strong> All trade sizes, account balances, and backtest returns are computed locally via WebAssembly. Zero proprietary alpha data is transmitted to any server.
-          </span>
+    <div className="space-y-6 pb-28 sm:pb-0">
+      <CalcCard
+        title="Quantitative Strategy Risk & Sizing Calculator"
+        subtitle="Calculate exact position sizing, dollar risk per trade, Kelly Criterion limits, Sharpe ratio, Sortino, and Max Drawdown locally in your browser."
+        icon={LineChart}
+        badge="Quant & Algo Trading"
+      >
+        {/* Zero-Knowledge Privacy Reassurance Badge & Freshness Signal */}
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-2">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-emerald-200 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/30 text-xs text-emerald-900 dark:text-emerald-200 w-fit">
+            <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>
+              <strong>Confidential Strategy Execution:</strong> 100% Client-Side WebAssembly. Zero alpha data or trade logs transmitted to servers.
+            </span>
+          </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-blue-900 dark:text-blue-200 text-xs w-fit">
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+            <span className="font-medium">
+              Updated for October 2026: 3-Month T-Bill Benchmark (Rf) 4.50% • Effective Fed Funds 3.88% • 10-Yr Treasury 5.10%
+            </span>
+          </div>
         </div>
-      </div>
 
-      {/* Preset Strategy Selector */}
-      <div className="mb-6">
-        <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2 block">
-          Preset Quantitative Archetypes
-        </label>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          {STRATEGY_PRESETS.map((p) => (
-            <button
-              key={p.name}
-              type="button"
-              onClick={() => {
-                setEntryPrice(p.entry);
-                setStopLossPrice(p.stop);
-                setTakeProfitPrice(p.tp);
-                setWinRatePercent(p.winRate);
-                setReturnsInput(p.returns.map((r) => (r * 100).toFixed(1)).join(", "));
-              }}
-              className="px-3 py-2 text-left rounded-lg border border-zinc-200 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500 bg-zinc-50/50 dark:bg-zinc-800/40 text-xs transition-colors"
-            >
-              <div className="font-semibold text-zinc-900 dark:text-zinc-100">{p.name}</div>
-              <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-                Entry ${p.entry} • Stop ${p.stop} • WR {p.winRate}%
-              </div>
-            </button>
-          ))}
+        {/* Preset Strategy Selector */}
+        <div className="mb-6">
+          <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-2 block">
+            Preset Quantitative Archetypes
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            {STRATEGY_PRESETS.map((p) => (
+              <button
+                key={p.name}
+                type="button"
+                onClick={() => {
+                  setEntryPrice(p.entry);
+                  setStopLossPrice(p.stop);
+                  setTakeProfitPrice(p.tp);
+                  setWinRatePercent(p.winRate);
+                  setReturnsInput(p.returns.map((r) => (r * 100).toFixed(1)).join(", "));
+                }}
+                className="min-h-[44px] px-3 py-2 text-left rounded-lg border border-zinc-200 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-500 bg-zinc-50/50 dark:bg-zinc-800/40 text-xs transition-colors touch-manipulation cursor-pointer"
+              >
+                <div className="font-semibold text-zinc-900 dark:text-zinc-100">{p.name}</div>
+                <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  Entry ${p.entry} • Stop ${p.stop} • WR {p.winRate}%
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Mode Tabs */}
-      <div className="flex border-b border-zinc-200 dark:border-zinc-700 mb-6">
-        <button
-          type="button"
-          onClick={() => setTab("position")}
-          className={`pb-3 text-sm font-semibold border-b-2 mr-6 transition-colors ${
-            tab === "position"
-              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400"
-          }`}
-        >
-          1. Position Sizing & Risk of Ruin
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab("backtest")}
-          className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${
-            tab === "backtest"
-              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
-              : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400"
-          }`}
-        >
-          2. Backtest Performance & Sharpe / Sortino
-        </button>
-      </div>
+        {/* Mode Tabs */}
+        <div className="flex border-b border-zinc-200 dark:border-zinc-700 mb-6">
+          <button
+            type="button"
+            onClick={() => setTab("position")}
+            className={`min-h-[44px] pb-3 text-sm font-semibold border-b-2 mr-6 transition-colors touch-manipulation cursor-pointer inline-flex items-center ${
+              tab === "position"
+                ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+                : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400"
+            }`}
+          >
+            1. Position Sizing & Risk of Ruin
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab("backtest")}
+            className={`min-h-[44px] pb-3 text-sm font-semibold border-b-2 transition-colors touch-manipulation cursor-pointer inline-flex items-center ${
+              tab === "backtest"
+                ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+                : "border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400"
+            }`}
+          >
+            2. Backtest Performance & Sharpe / Sortino
+          </button>
+        </div>
 
       {tab === "position" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -363,6 +370,28 @@ Provide institutional feedback on probability of ruin, position sizing prudence,
                 unit="%"
                 onChange={setRiskPercentage}
               />
+              <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Presets:</span>
+                {[
+                  { label: "0.5% (Conservative)", val: 0.5 },
+                  { label: "1.0% (Standard)", val: 1.0 },
+                  { label: "1.5% (Swing)", val: 1.5 },
+                  { label: "2.0% (Max Safe)", val: 2.0 },
+                ].map((p) => (
+                  <button
+                    key={p.val}
+                    type="button"
+                    onClick={() => setRiskPercentage(p.val)}
+                    className={`min-h-[44px] px-2.5 py-1 text-xs rounded-lg border transition-colors touch-manipulation cursor-pointer ${
+                      riskPercentage === p.val
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                        : "bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -519,6 +548,28 @@ Provide institutional feedback on probability of ruin, position sizing prudence,
                 suffix="%"
                 onChange={(v) => setRiskFreeRate(Number(v) || 0)}
               />
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mr-1">Benchmarks:</span>
+                {[
+                  { label: "4.50% (3M T-Bill)", val: 4.5 },
+                  { label: "3.88% (Fed Funds)", val: 3.88 },
+                  { label: "5.10% (10Y Note)", val: 5.1 },
+                  { label: "0.0% (Zero-Rf)", val: 0.0 },
+                ].map((b) => (
+                  <button
+                    key={b.val}
+                    type="button"
+                    onClick={() => setRiskFreeRate(b.val)}
+                    className={`min-h-[44px] px-2.5 py-1 text-xs rounded-lg border transition-colors touch-manipulation cursor-pointer ${
+                      riskFreeRate === b.val
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                        : "bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                    }`}
+                  >
+                    {b.label}
+                  </button>
+                ))}
+              </div>
               <CalcInput
                 id="quant-periods-yr"
                 label="Periods per Year"
@@ -582,7 +633,7 @@ Provide institutional feedback on probability of ruin, position sizing prudence,
       )}
 
       {/* Sticky Mobile Summary Bar (<640px) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-3 flex items-center justify-between shadow-lg">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] flex items-center justify-between shadow-lg">
         <div>
           <span className="text-[11px] text-zinc-500 dark:text-zinc-400 block">Recommended Size</span>
           <span className="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400">
@@ -592,11 +643,12 @@ Provide institutional feedback on probability of ruin, position sizing prudence,
         <button
           type="button"
           onClick={handleExportExcel}
-          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 text-white shadow-sm hover:bg-emerald-700 transition-colors"
+          className="min-h-[44px] px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors touch-manipulation cursor-pointer"
         >
           Export .xlsx
         </button>
       </div>
     </CalcCard>
+    </div>
   );
 }

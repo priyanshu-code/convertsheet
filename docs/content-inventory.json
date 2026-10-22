@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-21",
+  "lastUpdated": "2026-10-22",
   "totalBlogs": 30,
   "totalTools": 28,
   "blogs": [
@@ -437,14 +437,20 @@
     },
     {
       "slug": "sip-calculator",
-      "lastAudited": "2026-10-15",
+      "lastAudited": "2026-10-22",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
+        "market-rate-freshness-signals",
+        "equity-debt-sip-benchmarks-44px",
+        "44px-tenure-presets",
         "triple-range-sliders-44px",
+        "inflation-adjusted-purchasing-power",
         "url-query-permalink-sync",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
         "formulaic-xlsx-export",
-        "sticky-bottom-mobile-bar"
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
@@ -482,27 +488,38 @@
     },
     {
       "slug": "strategy-risk-calculator",
-      "lastAudited": "2026-10-14",
+      "lastAudited": "2026-10-22",
       "moatsAdded": [
         "zero-knowledge-wasm-badge",
+        "t-bill-fed-funds-freshness-signal",
         "dual-tab-position-and-backtest",
+        "44px-archetype-presets",
+        "44px-risk-tolerance-presets",
+        "44px-benchmark-rf-presets",
         "url-query-permalink-sync",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
         "formulaic-xlsx-export",
-        "sticky-bottom-mobile-bar"
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "debt-payoff-calculator",
-      "lastAudited": "2026-10-16",
+      "lastAudited": "2026-10-22",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
+        "fed-g19-apr-freshness-signals",
+        "44px-apr-benchmark-chips",
+        "44px-strategy-selector",
+        "44px-accelerator-boost-buttons",
         "url-query-permalink-sync",
-        "44px-touch-targets",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
         "formulaic-xlsx-export",
-        "sticky-bottom-mobile-bar"
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },

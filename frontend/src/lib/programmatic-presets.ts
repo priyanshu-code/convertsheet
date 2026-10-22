@@ -465,8 +465,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15 vs 30 Year Mortgage Calculator (2026) — Payment & Interest Math",
-    "metaDescription": "Free 15 vs 30 year mortgage calculator. Compare 15 year vs 30 year mortgage payments, lifetime interest savings ($248k+), and amortization side-by-side with live 2026 rates.",
+    "title": "15 vs 30 Year Mortgage Calculator (2026) — 15 Year vs 30 Year Comparison",
+    "metaDescription": "Free 15 vs 30 year mortgage calculator. Compare 15 year vs 30 year mortgage payments, monthly cash flow differences, lifetime interest savings ($248k+), and side-by-side amortization with live 2026 rates.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {
@@ -567,6 +567,14 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       {
         "question": "How much does a $320,000 30-year mortgage cost in total?",
         "answer": "With monthly payments of $2,023 over 30 years, total payments equal $728,142\u2014composed of $320,000 principal repayment and $408,142 in interest charges."
+      },
+      {
+        "question": "What is the monthly payment on a $175,000 mortgage for 30 years?",
+        "answer": "At a 6.5% interest rate, the monthly principal and interest payment on a $175,000 30-year mortgage is approximately $1,106 per month. Total interest paid over 360 payments equals $223,205. With average property taxes ($175/mo) and homeowners insurance ($65/mo), the full monthly PITI payment is approximately $1,346."
+      },
+      {
+        "question": "What is the monthly payment on a $225,000 mortgage calculator?",
+        "answer": "At 6.5% interest over 30 years, the monthly principal and interest on a $225,000 mortgage is $1,422. Cumulative payments over 30 years equal $511,975 ($225,000 principal + $286,975 interest). Adding estimated taxes ($225/mo) and insurance ($85/mo) brings the full monthly payment to roughly $1,732."
       }
     ]
   },
@@ -4427,9 +4435,9 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "car-loan-calculator",
     presetSlug: "72-month-car-loan",
     name: "72-Month (6-Year) Auto Loan Payment Calculator",
-    title: "72-Month Car Loan Calculator (2026) — $15k, $25k & $35k Math",
-    metaDescription: "Calculate your $25,000 car loan payment for 72 months ($425/mo at 6.9% APR, $0 down; $382/mo with 10% down). Compare $15k, $25k, and $35k 6-year financing math with Excel export.",
-    answerSummary: "On a $25,000 car loan at 6.9% APR over 72 months, your monthly payment is $425/month with $5,526 in total interest. On a $15,000 loan, your payment is $255/month ($3,315 interest). On a $35,000 vehicle with 10% down ($3,500) at 6.9% APR, the monthly payment is $585/month ($7,736 total interest).",
+    title: "72-Month Car Loan Calculator (2026) — $15k, $25k & $60k Payment Math",
+    metaDescription: "Calculate your 72-month car loan payment on $15k, $25k, $35k, and $60,000 balances ($425/mo on $25k; $1,020/mo on $60k at 6.9% APR). Free Excel amortization export.",
+    answerSummary: "On a $25,000 car loan at 6.9% APR over 72 months, your monthly payment is $425/month with $5,526 in total interest. On a $15,000 loan, your payment is $255/month ($3,315 interest). On a $60,000 vehicle at 6.9% APR over 72 months, the monthly payment is $1,020/month with $13,440 total interest ($918/mo with 10% down).",
     about: "The 72-month (6-year) auto loan has become the most common financing term in the United States. Understand the trade-offs: lower monthly cash outflow in exchange for extended interest payments and higher risk of negative equity (being underwater). Need a shorter term on a pre-owned vehicle? Calculate 60-month payments on our [$15,000 Car Loan Over 5 Years Calculator](/tools/car-loan-calculator/15k-car-loan-5-years).",
     initialValues: {
       vehiclePrice: 35000,
@@ -4456,6 +4464,10 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
       {
         question: "What is the payment on a $35k car for 72 months?",
         answer: "At 6.9% interest with 10% down ($3,500), the payment on a $35,000 car is approximately $585/month with $7,736 in total interest charges.",
+      },
+      {
+        question: "What is the monthly payment on a $60,000 car loan for 72 months?",
+        answer: "At a 6.9% APR with $0 down, a $60,000 car loan payment for 72 months is approximately $1,020 per month, with $13,440 in total interest charges over 6 years. With 10% down ($6,000 down, $54,000 financed principal), the monthly payment drops to $918 per month ($12,096 total interest). Extending to 72 months on a $60k vehicle lowers monthly cash outflow by ~$160/mo compared to a 60-month loan, while adding over $2,600 in extra interest.",
       },
       {
         question: "How does a 72-month auto loan calculator compute monthly financing costs?",
