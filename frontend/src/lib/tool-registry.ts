@@ -4,6 +4,7 @@ import { IMAGE_TOOLS } from "./image-tools-data";
 import { PDF_TOOLS } from "./pdf-tools-data";
 import { FINANCIAL_CROWN_TOOLS } from "./financial-crown-tools-data";
 import { WORKBENCH_TOOLS } from "./workbench-tools-data";
+import { AI_VISION_TOOLS } from "./ai-vision-tools-data";
 
 export const TOOL_REGISTRY = {
   // ==========================================
@@ -528,7 +529,8 @@ export const TOOL_REGISTRY = {
   ...IMAGE_TOOLS,
   ...PDF_TOOLS,
   ...FINANCIAL_CROWN_TOOLS,
-  ...WORKBENCH_TOOLS
+  ...WORKBENCH_TOOLS,
+  ...AI_VISION_TOOLS
 } as const satisfies Record<string, ToolConfig>;
 
 export type ToolSlug = keyof typeof TOOL_REGISTRY;

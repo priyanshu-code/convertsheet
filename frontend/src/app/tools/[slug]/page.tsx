@@ -72,6 +72,9 @@ import { AustraliaPayCalculator } from "@/components/tools/AustraliaPayCalculato
 import { AiDataPrepTool } from "@/components/tools/AiDataPrepTool";
 import { HomeLoanOverdraftCalculator } from "@/components/tools/HomeLoanOverdraftCalculator";
 import { StrategyRiskCalculator } from "@/components/tools/StrategyRiskCalculator";
+import { WhiteBackgroundPassportTool } from "@/components/tools/WhiteBackgroundPassportTool";
+import { FaceUnblurTool } from "@/components/tools/FaceUnblurTool";
+import { AiPhotoEnhancerTool } from "@/components/tools/AiPhotoEnhancerTool";
 
 export interface ToolPageProps {
   params: {
@@ -441,6 +444,10 @@ export default function ToolPage({ params }: ToolPageProps) {
     "data-anonymizer-cleaner": DataCleanerTool,
     "csv-to-jsonl-converter": AiDataPrepTool,
     "strategy-risk-calculator": StrategyRiskCalculator,
+    "white-background-passport-photo": WhiteBackgroundPassportTool,
+    "unblur-face": FaceUnblurTool,
+    "unblur-image": FaceUnblurTool,
+    "ai-photo-enhancer": AiPhotoEnhancerTool,
   };
 
   const ToolComponent = componentMap[tool.slug];
