@@ -9,18 +9,19 @@ import {
   Search,
   Sparkles,
   ArrowRight,
-  ShieldCheck,
-  Check,
   X,
   FileCode,
-  Zap,
+  Image as ImageIcon,
+  Mic,
+  FileText,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatBytes } from "@/lib/utils";
 import { CONVERTER_REGISTRY } from "@/lib/registry";
 import type { ConverterConfig } from "@/types/registry";
 import { getAllTools } from "@/lib/tool-registry";
 import { ConverterCardSkeleton } from "@/components/converter/ConverterCardSkeleton";
 import { HomeCalculatorSpotlight } from "./HomeCalculatorSpotlight";
+import { StudioDropZone } from "@/components/tools/StudioDropZone";
 
 const DynamicConverterCard = dynamic(
   () => import("@/components/converter/ConverterCard").then((mod) => mod.ConverterCard),
@@ -48,6 +49,7 @@ export function HomeCommandHero({
   const [mode, setMode] = useState<"converter" | "calculator">("converter");
   const [activeConverter, setActiveConverter] = useState<ConverterConfig>(defaultConverter);
   const [searchQuery, setSearchQuery] = useState("");
+  const [droppedFile, setDroppedFile] = useState<File | null>(null);
 
   const allTools = useMemo(() => getAllTools(), []);
   const allConverters = useMemo(() => Object.values(CONVERTER_REGISTRY), []);
@@ -108,49 +110,179 @@ export function HomeCommandHero({
     }
   };
 
+  const handleQuickDrop = (file: File) => {
+    setDroppedFile(file);
+    const name = file.name.toLowerCase();
+
+    // If it's a dataset, auto-switch to converter mode
+    if (name.endsWith(".json")) {
+      handleSelectPreset("json-to-excel");
+    } else if (name.endsWith(".csv")) {
+      handleSelectPreset("csv-to-excel");
+    } else if (name.endsWith(".parquet")) {
+      handleSelectPreset("parquet-to-csv");
+    } else if (name.endsWith(".xml")) {
+      handleSelectPreset("xml-to-excel");
+    }
+  };
+
+  const suggestedActions = useMemo(() => {
+    if (!droppedFile) return [];
+    const name = droppedFile.name.toLowerCase();
+    const type = droppedFile.type;
+
+    if (type.startsWith("image/") || /\.(jpe?g|png|webp|bmp|tiff)$/i.test(name)) {
+      return [
+        { label: "Compress to 50KB", href: "/tools/compress-image-to-50kb", icon: ImageIcon },
+        { label: "Passport Photo Maker", href: "/tools/passport-photo-maker", icon: ImageIcon },
+        { label: "White Background", href: "/tools/white-background-passport-photo", icon: ImageIcon },
+        { label: "Unblur Face (GFPGAN)", href: "/tools/unblur-face", icon: Sparkles },
+      ];
+    } else if (type.startsWith("audio/") || /\.(mp3|wav|m4a|ogg|flac)$/i.test(name)) {
+      return [
+        { label: "Speech to Text (Whisper)", href: "/tools/speech-to-text", icon: Mic },
+        { label: "Denoise Audio & Clean", href: "/tools/audio-noise-reducer", icon: Mic },
+      ];
+    } else if (type === "application/pdf" || name.endsWith(".pdf")) {
+      return [
+        { label: "PDF to Markdown & OCR", href: "/tools/pdf-to-markdown", icon: FileText },
+        { label: "Compress PDF", href: "/tools/pdf-compressor", icon: FileText },
+        { label: "Merge PDF", href: "/tools/pdf-merge", icon: FileText },
+      ];
+    }
+    return [];
+  }, [droppedFile]);
+
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Product Hero Header */}
+    <div className="space-y-6 sm:space-y-8">
+      {/* Clean, High-Contrast Command Hero Header */}
       <div className="text-center max-w-4xl mx-auto space-y-3 pt-2 sm:pt-4">
-        {/* Top Trust Badge */}
-        <div className="flex items-center justify-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>100% In-Browser Privacy • Zero Server Uploads</span>
-          </div>
-        </div>
-
-        {/* Main Headline */}
-        <h1 className="text-sm sm:text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 my-1">
-          Fast, Private Structured Data Converter
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+          Everyday Media, Document &amp; Data Tools
         </h1>
-
-        {/* Subtitle */}
-        <p className="text-xs sm:text-base text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Transform nested JSON, massive CSVs, and Excel spreadsheets directly in your browser memory via DuckDB WASM — 100% free, zero lag, and zero cloud uploads.
+        <p className="text-xs sm:text-base text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          High-performance in-browser tools. Drag and drop any file, search with ⌘K, or launch dedicated studios instantly.
         </p>
+      </div>
 
-        {/* Product Trust Highlights Bar */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-1 text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-          <span className="inline-flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-500" />
-            Zero Server Uploads
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-500" />
-            DuckDB-WASM Engine
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Check className="w-3.5 h-3.5 text-emerald-500" />
-            100% Free &amp; Open Utilities
-          </span>
-        </div>
+      {/* Universal File Dropzone on Homepage */}
+      <div className="w-full max-w-3xl mx-auto">
+        <StudioDropZone
+          onFileSelect={handleQuickDrop}
+          currentFile={droppedFile}
+          onClear={() => setDroppedFile(null)}
+          title="Drop any file here or click to inspect"
+          subtitle="Photos, audio, PDFs, and spreadsheets • Instant tool suggestions"
+        />
+
+        {/* Suggested 1-click tools for dropped file */}
+        {droppedFile && suggestedActions.length > 0 && (
+          <div className="mt-3 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 animate-in fade-in duration-200 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-zinc-900 dark:text-zinc-100">
+                Suggested actions for {droppedFile.name}:
+              </span>
+              <span className="text-[11px] font-mono text-zinc-500">
+                {formatBytes(droppedFile.size)}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {suggestedActions.map((action) => {
+                const Icon = action.icon;
+                return (
+                  <Link
+                    key={action.href}
+                    href={action.href}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-zinc-900 dark:hover:border-zinc-100 transition-colors shadow-xs"
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{action.label}</span>
+                    <ArrowRight className="w-3 h-3 text-zinc-400" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Hero Interactive Command Controller */}
-      <div className="w-full max-w-5xl mx-auto space-y-3">
+      <div className="w-full max-w-5xl mx-auto space-y-4">
+        {/* Quick Search & Command Bar */}
+        <div className="relative">
+          <div className="relative flex items-center">
+            <Search className="absolute left-3.5 w-4 h-4 text-zinc-400 dark:text-zinc-500 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search 100+ converters, image tools, audio & calculators..."
+              aria-label="Search 100+ converters, financial calculators, & developer utilities"
+              className="w-full pl-10 pr-10 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400 shadow-sm transition-all"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3.5 p-1 rounded-md text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                aria-label="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Search Results Dropdown */}
+          {searchQuery.trim().length > 0 && (
+            <div className="absolute left-0 right-0 top-full mt-1.5 z-30 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden divide-y divide-zinc-100 dark:divide-zinc-800">
+              {searchResults.length === 0 ? (
+                <div className="p-4 text-xs text-zinc-500 dark:text-zinc-400 text-center">
+                  No matching converters or calculators found for &ldquo;{searchQuery}&rdquo;.
+                </div>
+              ) : (
+                searchResults.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={(e) => {
+                      if (item.type === "converter" && item.config) {
+                        e.preventDefault();
+                        setActiveConverter(item.config);
+                        setMode("converter");
+                        setSearchQuery("");
+                      } else {
+                        setSearchQuery("");
+                      }
+                    }}
+                    className="flex items-center justify-between p-3.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                        {item.type === "converter" ? (
+                          <FileCode className="w-3.5 h-3.5" />
+                        ) : (
+                          <Calculator className="w-3.5 h-3.5" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                          {item.title}
+                        </div>
+                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400 capitalize">
+                          {item.subtitle}
+                        </div>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-zinc-400" />
+                  </Link>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Dual Mode Switcher Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-1.5 sm:p-2 rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/80 border border-zinc-200/80 dark:border-zinc-700/80 shadow-xs">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-2 rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/80 shadow-xs">
           {/* Segmented Mode Toggle */}
           <div className="flex items-center p-1 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/70 dark:border-zinc-800 w-full sm:w-auto shadow-xs">
             <button
@@ -160,7 +292,7 @@ export function HomeCommandHero({
               className={cn(
                 "flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer",
                 mode === "converter"
-                  ? "bg-zinc-900 text-white dark:bg-emerald-600 dark:text-white shadow-xs"
+                  ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
               )}
             >
@@ -174,15 +306,12 @@ export function HomeCommandHero({
               className={cn(
                 "flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer",
                 mode === "calculator"
-                  ? "bg-zinc-900 text-white dark:bg-emerald-600 dark:text-white shadow-xs"
+                  ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
               )}
             >
               <Calculator className="w-3.5 h-3.5" />
               <span>Financial &amp; Dev Calculators</span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300">
-                Live
-              </span>
             </button>
           </div>
 
@@ -201,8 +330,8 @@ export function HomeCommandHero({
                   className={cn(
                     "text-[11px] font-medium px-2.5 py-1 rounded-lg border transition-all shrink-0 cursor-pointer",
                     isSelected
-                      ? "bg-emerald-50 dark:bg-emerald-950/70 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 font-bold"
-                      : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700"
+                      ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-zinc-900 font-bold"
+                      : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400"
                   )}
                 >
                   {preset.label}
@@ -212,84 +341,14 @@ export function HomeCommandHero({
           </div>
         </div>
 
-        {/* Quick Search & Command Bar */}
-        <div className="relative">
-          <div className="relative flex items-center">
-            <Search className="absolute left-3.5 w-4 h-4 text-zinc-400 dark:text-zinc-500 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search 100+ converters, financial calculators, & developer utilities..."
-              aria-label="Search 100+ converters, financial calculators, & developer utilities"
-              className="w-full pl-10 pr-10 py-2 sm:py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/90 text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 shadow-xs transition-all"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 p-1 rounded-md text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
-                aria-label="Clear search"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
-
-          {/* Search Results Dropdown */}
-          {searchQuery.trim().length > 0 && (
-            <div className="absolute left-0 right-0 top-full mt-1.5 z-30 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden divide-y divide-zinc-100 dark:divide-zinc-800">
-              {searchResults.length === 0 ? (
-                <div className="p-3 text-xs text-zinc-500 dark:text-zinc-400 text-center">
-                  No matching converters or calculators found for &ldquo;{searchQuery}&rdquo;.
-                </div>
-              ) : (
-                searchResults.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => {
-                      if (item.type === "converter" && item.config) {
-                        setActiveConverter(item.config);
-                        setMode("converter");
-                      }
-                      setSearchQuery("");
-                    }}
-                    className="flex items-center justify-between p-2.5 sm:p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors group"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                        {item.type === "converter" ? (
-                          <FileCode className="w-4 h-4" />
-                        ) : (
-                          <Zap className="w-4 h-4" />
-                        )}
-                      </div>
-                      <div>
-                        <div className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                          {item.title}
-                        </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                          {item.subtitle}
-                        </div>
-                      </div>
-                    </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-emerald-500 transition-transform group-hover:translate-x-0.5" />
-                  </Link>
-                ))
-              )}
-            </div>
+        {/* Active Mode Workspace Panel */}
+        <div className="mt-3">
+          {mode === "converter" ? (
+            <DynamicConverterCard key={activeConverter.slug} config={activeConverter} />
+          ) : (
+            <HomeCalculatorSpotlight />
           )}
         </div>
-      </div>
-
-      {/* Active Workspace Showcase Container */}
-      <div className="w-full max-w-7xl mx-auto shadow-xl shadow-zinc-900/5 rounded-3xl transition-all">
-        {mode === "converter" ? (
-          <DynamicConverterCard config={activeConverter} />
-        ) : (
-          <HomeCalculatorSpotlight />
-        )}
       </div>
     </div>
   );

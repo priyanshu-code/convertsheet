@@ -210,51 +210,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Free Platform & Open Tools Suite Banner */}
-      <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-950/40 via-zinc-900 to-zinc-950 p-6 sm:p-12 text-center max-w-5xl mx-auto space-y-4 sm:space-y-6">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-          <span>100% Free • No Signups • Client-Side Privacy</span>
-        </span>
-        <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Every Converter &amp; Calculator is Free Forever
-        </h2>
-        <p className="text-sm sm:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed">
-          No credit cards, no monthly subscriptions, and no hidden file size limits. Run high-performance DuckDB transformations, financial projections, and developer formatting completely in your browser.
-        </p>
-
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-          <Link
-            href="/#tools"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 shadow-lg shadow-emerald-500/20 transition-colors"
-          >
-            <span>Explore Free Calculators</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href="/#converters"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700 transition-colors"
-          >
-            <span>Browse All Converters</span>
-          </Link>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-xs text-zinc-400">
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Zero server data retention</span>
-          </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Instant client-side execution</span>
-          </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>No account required</span>
-          </span>
-        </div>
-      </section>
-
       {/* Horizontal Ad Banner */}
       <div className="flex justify-center w-full my-6">
         <AdBanner format="horizontal" />
