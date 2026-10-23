@@ -53,7 +53,9 @@ function getConverterLabel(slug: string): string {
 export function Navbar() {
   const pathname = usePathname();
   const [isToolsOpen, setIsToolsOpen] = useState(false);
-  const [activeMenuTab, setActiveMenuTab] = useState<"converters" | "calculators">("converters");
+  const [activeMenuTab, setActiveMenuTab] = useState<
+    "converters" | "images" | "media-ai" | "calculators"
+  >("converters");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const toolsRef = useRef<HTMLDivElement>(null);
@@ -120,14 +122,14 @@ export function Navbar() {
             <div className="flex items-center gap-8 shrink-0">
               <Link
                 href="/"
-                className="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-xl shrink-0"
+                className="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-zinc-400 rounded-xl shrink-0"
                 aria-label="ConvertSheet Home"
               >
-                <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-                  <FileSpreadsheet className="w-5 h-5" />
+                <div className="p-2 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm group-hover:scale-105 transition-transform">
+                  <Layers className="w-5 h-5" />
                 </div>
                 <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
-                  Convert<span className="text-emerald-600 dark:text-emerald-400">Sheet</span>
+                  Convert<span className="text-zinc-500 dark:text-zinc-400 font-medium">Sheet</span>
                 </span>
               </Link>
 
@@ -169,35 +171,61 @@ export function Navbar() {
                       className="absolute left-0 mt-2 w-[720px] rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-100"
                     >
                       {/* Mega Menu Tabs Header */}
-                      <div className="flex items-center gap-2 pb-3 mb-3 border-b border-zinc-100 dark:border-zinc-800">
+                      <div className="flex items-center gap-1.5 pb-3 mb-3 border-b border-zinc-100 dark:border-zinc-800 overflow-x-auto">
                         <button
                           type="button"
                           onClick={() => setActiveMenuTab("converters")}
-                          className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 ${
                             activeMenuTab === "converters"
-                              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
                               : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                           }`}
                         >
-                          <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-500" />
-                          <span>File Converters ({CONVERTER_LIST.length})</span>
+                          <FileSpreadsheet className="w-3.5 h-3.5" />
+                          <span>File Converters</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setActiveMenuTab("images")}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 ${
+                            activeMenuTab === "images"
+                              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
+                              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          }`}
+                        >
+                          <Layers className="w-3.5 h-3.5" />
+                          <span>Image &amp; Photo</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setActiveMenuTab("media-ai")}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 ${
+                            activeMenuTab === "media-ai"
+                              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
+                              : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          }`}
+                        >
+                          <Terminal className="w-3.5 h-3.5" />
+                          <span>Audio, PDF &amp; AI</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setActiveMenuTab("calculators")}
-                          className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all shrink-0 ${
                             activeMenuTab === "calculators"
-                              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                              ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
                               : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                           }`}
                         >
-                          <Calculator className="w-3.5 h-3.5 text-teal-500" />
-                          <span>Calculators &amp; Tools ({allTools.length})</span>
+                          <Calculator className="w-3.5 h-3.5" />
+                          <span>Calculators &amp; Dev</span>
                         </button>
                       </div>
 
-                      {activeMenuTab === "converters" ? (
+                      {activeMenuTab === "converters" && (
                         <div className="grid grid-cols-2 gap-4">
                           {/* Column 1: Spreadsheets & Documents */}
                           <div>
@@ -220,11 +248,11 @@ export function Navbar() {
                                     className="group flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                                   >
                                     <div className="flex flex-col min-w-0">
-                                      <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
+                                      <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors truncate">
                                         {label}
                                       </span>
                                     </div>
-                                    <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.2 rounded ml-2 whitespace-nowrap shrink-0">
+                                    <span className="font-mono text-[10px] font-semibold text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-1.5 py-0.2 rounded ml-2 whitespace-nowrap shrink-0">
                                       {badge}
                                     </span>
                                   </Link>
@@ -235,9 +263,9 @@ export function Navbar() {
 
                           {/* Column 2: Data Engineering & Analytics */}
                           <div>
-                            <div className="px-2 py-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 mb-1.5">
+                            <div className="px-2 py-1 text-[11px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider flex items-center justify-between border-b border-zinc-100 dark:border-zinc-800/80 mb-1.5">
                               <span>Data Engineering (DuckDB)</span>
-                              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold">
+                              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold">
                                 {DATA_ENG_CONVERTERS.length}
                               </span>
                             </div>
@@ -254,11 +282,11 @@ export function Navbar() {
                                     className="group flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                                   >
                                     <div className="flex flex-col min-w-0">
-                                      <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
+                                      <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors truncate">
                                         {label}
                                       </span>
                                     </div>
-                                    <span className="font-mono text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.2 rounded ml-2 whitespace-nowrap shrink-0">
+                                    <span className="font-mono text-[10px] font-semibold text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-1.5 py-0.2 rounded ml-2 whitespace-nowrap shrink-0">
                                       {badge}
                                     </span>
                                   </Link>
@@ -267,68 +295,163 @@ export function Navbar() {
                             </div>
                           </div>
                         </div>
-                      ) : (
-                        <div className="grid grid-cols-3 gap-3 max-h-80 overflow-y-auto pr-1">
-                          {/* Data & Dev Tools */}
+                      )}
+
+                      {activeMenuTab === "images" && (
+                        <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block mb-1.5 sticky top-0 bg-white dark:bg-zinc-900 py-1">
-                              Data &amp; Developer ({allTools.filter((t) => t.category === "data-developer").length})
+                            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                              Official Photos &amp; Exam Dimensions
                             </span>
-                            <div className="space-y-0.5">
-                              {allTools
-                                .filter((t) => t.category === "data-developer")
-                                .map((tool) => (
-                                  <Link
-                                    key={tool.slug}
-                                    href={`/tools/${tool.slug}`}
-                                    onClick={() => setIsToolsOpen(false)}
-                                    className="block px-2 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 truncate hover:text-emerald-600"
-                                  >
-                                    {tool.name}
-                                  </Link>
-                                ))}
+                            <div className="space-y-1">
+                              {[
+                                { name: "Passport Photo Maker (3.5x4.5cm)", slug: "passport-photo-maker" },
+                                { name: "White Background Passport Photo", slug: "white-background-passport-photo" },
+                                { name: "Signature Resizer (140x60px)", slug: "signature-resizer" },
+                                { name: "SSC Photo Resizer (20-50 KB)", slug: "ssc-photo-resizer" },
+                                { name: "UPSC Photo Resizer (350x350px)", slug: "upsc-photo-resizer" },
+                                { name: "PAN Card Photo Resizer", slug: "pan-card-photo-resizer" },
+                              ].map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  href={`/tools/${item.slug}`}
+                                  onClick={() => setIsToolsOpen(false)}
+                                  className="block px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
                             </div>
                           </div>
 
-                          {/* Financial Calculators */}
                           <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-teal-600 block mb-1.5 sticky top-0 bg-white dark:bg-zinc-900 py-1">
-                              Financial Math ({allTools.filter((t) => t.category === "financial").length})
+                            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                              Target KB &amp; AI Enhancement
                             </span>
-                            <div className="space-y-0.5">
-                              {allTools
-                                .filter((t) => t.category === "financial")
-                                .map((tool) => (
-                                  <Link
-                                    key={tool.slug}
-                                    href={`/tools/${tool.slug}`}
-                                    onClick={() => setIsToolsOpen(false)}
-                                    className="block px-2 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 truncate hover:text-emerald-600"
-                                  >
-                                    {tool.name}
-                                  </Link>
-                                ))}
+                            <div className="space-y-1">
+                              {[
+                                { name: "Compress Image to 20KB", slug: "compress-image-to-20kb" },
+                                { name: "Compress Image to 50KB", slug: "compress-image-to-50kb" },
+                                { name: "Compress Image to 100KB", slug: "compress-image-to-100kb" },
+                                { name: "Compress Image to 200KB", slug: "compress-image-to-200kb" },
+                                { name: "Face Unblur (GFPGAN)", slug: "unblur-face" },
+                                { name: "AI Photo Enhancer (4x Super-Res)", slug: "ai-photo-enhancer" },
+                              ].map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  href={`/tools/${item.slug}`}
+                                  onClick={() => setIsToolsOpen(false)}
+                                  className="block px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {activeMenuTab === "media-ai" && (
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                              Voice &amp; Audio Processing
+                            </span>
+                            <div className="space-y-1">
+                              {[
+                                { name: "Speech to Text (Whisper)", slug: "speech-to-text" },
+                                { name: "Text to Speech Audio Generator", slug: "text-to-speech" },
+                                { name: "Audio Noise Reducer & Cleaner", slug: "audio-noise-reducer" },
+                                { name: "Vocal Remover & Splitter", slug: "vocal-remover" },
+                                { name: "Auto Subtitle Generator", slug: "auto-subtitle-generator" },
+                              ].map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  href={`/tools/${item.slug}`}
+                                  onClick={() => setIsToolsOpen(false)}
+                                  className="block px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
                             </div>
                           </div>
 
-                          {/* Utility Calculators */}
                           <div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-600 block mb-1.5 sticky top-0 bg-white dark:bg-zinc-900 py-1">
-                              Utility &amp; Images ({allTools.filter((t) => t.category === "utility").length})
+                            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                              PDF &amp; AI Text Tools
                             </span>
-                            <div className="space-y-0.5">
-                              {allTools
-                                .filter((t) => t.category === "utility")
-                                .map((tool) => (
-                                  <Link
-                                    key={tool.slug}
-                                    href={`/tools/${tool.slug}`}
-                                    onClick={() => setIsToolsOpen(false)}
-                                    className="block px-2 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 truncate hover:text-emerald-600"
-                                  >
-                                    {tool.name}
-                                  </Link>
-                                ))}
+                            <div className="space-y-1">
+                              {[
+                                { name: "PDF to Clean Markdown & OCR", slug: "pdf-to-markdown" },
+                                { name: "AI Content & Essay Detector", slug: "ai-content-detector" },
+                                { name: "Receipt & Invoice OCR", slug: "receipt-ocr" },
+                                { name: "PDF Merge Tool", slug: "pdf-merge" },
+                                { name: "PDF Compressor", slug: "pdf-compressor" },
+                              ].map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  href={`/tools/${item.slug}`}
+                                  onClick={() => setIsToolsOpen(false)}
+                                  className="block px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {activeMenuTab === "calculators" && (
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                              Financial Calculators
+                            </span>
+                            <div className="space-y-1 max-h-56 overflow-y-auto pr-1">
+                              {[
+                                { name: "SIP Calculator", slug: "sip-calculator" },
+                                { name: "EMI Calculator", slug: "emi-calculator" },
+                                { name: "Mortgage Calculator", slug: "mortgage-calculator" },
+                                { name: "Salary & Take-Home Calculator", slug: "salary-calculator" },
+                                { name: "Compound Interest Calculator", slug: "compound-interest-calculator" },
+                                { name: "Retirement Planner", slug: "retirement-calculator" },
+                              ].map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  href={`/tools/${item.slug}`}
+                                  onClick={() => setIsToolsOpen(false)}
+                                  className="block px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div>
+                            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-2 border-b border-zinc-100 dark:border-zinc-800 pb-1">
+                              Developer &amp; Data Utilities
+                            </span>
+                            <div className="space-y-1 max-h-56 overflow-y-auto pr-1">
+                              {[
+                                { name: "JSON Formatter & Validator", slug: "json-formatter-validator" },
+                                { name: "Base64 Encoder & Decoder", slug: "base64-encoder-decoder" },
+                                { name: "URL Encoder & Decoder", slug: "url-encoder-decoder" },
+                                { name: "Hash Generator (SHA-256/MD5)", slug: "hash-generator" },
+                                { name: "UUID Generator", slug: "uuid-generator" },
+                                { name: "JWT Decoder", slug: "jwt-decoder" },
+                              ].map((item) => (
+                                <Link
+                                  key={item.slug}
+                                  href={`/tools/${item.slug}`}
+                                  onClick={() => setIsToolsOpen(false)}
+                                  className="block px-2.5 py-1.5 rounded-lg text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-black dark:hover:text-white transition-colors"
+                                >
+                                  {item.name}
+                                </Link>
+                              ))}
                             </div>
                           </div>
                         </div>
@@ -390,24 +513,14 @@ export function Navbar() {
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Search Converters and Calculators"
-                className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-xs text-zinc-600 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors shadow-xs"
               >
                 <Search className="w-3.5 h-3.5 text-zinc-400" />
-                <span className="hidden xl:inline">Search tools...</span>
-                <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                <span className="hidden sm:inline">Search tools...</span>
+                <kbd className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold border border-zinc-300 dark:border-zinc-700">
                   ⌘K
                 </kbd>
               </button>
-
-              {/* Site-wide Privacy Value Prop Indicator */}
-              <Link
-                href="/privacy#client-side"
-                className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 transition-colors shrink-0"
-                title="100% Client-Side Processing: Your data never leaves your device"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <span>100% Private (No Uploads)</span>
-              </Link>
 
               {/* Currency & Region Selector */}
               <div className="hidden md:inline-block">
@@ -425,11 +538,11 @@ export function Navbar() {
               {/* Free Tools Suite Button */}
               <Link
                 href="/tools"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs hover:shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-zinc-400"
                 aria-label="Free Calculators and Tools"
               >
-                <Sparkles className="w-3.5 h-3.5 text-white" />
-                <span className="font-bold text-white">Free Tools</span>
+                <Sparkles className="w-3.5 h-3.5 text-white dark:text-zinc-900" />
+                <span className="font-bold">Free Tools</span>
               </Link>
 
               {/* Mobile Hamburger Toggle */}
