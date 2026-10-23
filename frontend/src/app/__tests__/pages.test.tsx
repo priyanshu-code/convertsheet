@@ -20,20 +20,19 @@ vi.mock("next/dynamic", () => ({
 
 describe("Pages (Home)", () => {
   describe("HomePage", () => {
-    it("renders headline, privacy badge, hero converter card, value props, and free platform banner", async () => {
+    it("renders headline, universal dropzone, hero converter card, value props", async () => {
       render(<HomePage />);
 
       // Headline
       const heading = screen.getByRole("heading", {
         level: 1,
-        name: "Fast, Private Structured Data Converter",
+        name: /Everyday Media, Document & Data Tools/i,
       });
       expect(heading).toBeInTheDocument();
-      expect(heading).toHaveClass("text-sm", "sm:text-2xl");
 
-      // Privacy Badge
+      // Universal Dropzone
       expect(
-        screen.getByText("100% In-Browser Privacy • Zero Server Uploads")
+        screen.getByText(/Drop any file here or click to inspect/i)
       ).toBeInTheDocument();
 
       // Above the fold converter card or command hero
@@ -86,14 +85,6 @@ describe("Pages (Home)", () => {
       expect(screen.getByText("Zero Queue Latency")).toBeInTheDocument();
       expect(screen.getByText("Zero Data Retention")).toBeInTheDocument();
       expect(screen.getByText("Developer REST API")).toBeInTheDocument();
-
-      // Free Platform & Open Tools Suite Banner
-      expect(
-        screen.getByRole("heading", {
-          level: 2,
-          name: "Every Converter & Calculator is Free Forever",
-        })
-      ).toBeInTheDocument();
     });
   });
 
