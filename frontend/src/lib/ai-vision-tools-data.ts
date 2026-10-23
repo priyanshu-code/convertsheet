@@ -380,5 +380,529 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
     ],
     relatedConverters: ["json-to-excel", "csv-to-excel"],
     relatedTools: ["audio-noise-reducer", "speech-to-text"]
+  },
+
+  "video-compressor": {
+    slug: "video-compressor",
+    name: "AI Video Compressor & Optimizer",
+    category: "data-developer",
+    title: "Video Compressor Online - Compress Video to Target MB Free",
+    subtitle: "Compress MP4, MOV, and MKV videos to exact target sizes for Discord (25MB), WhatsApp (16MB), and Email (20MB) with zero visual quality loss.",
+    metaDescription: "Free online video compressor. Reduce MP4 video size to exact MB limits for WhatsApp, Discord, and Email with two-pass hardware encoding and zero watermarks.",
+    answerSummary: "Compress video files to exact target sizes in seconds. Select Discord (25MB), WhatsApp (16MB), or custom MB targets with H.264, HEVC, and AV1 encoding.",
+    badge: "Hardware NVENC",
+    featured: true,
+    keywords: [
+      "video compressor",
+      "compress video for discord",
+      "compress video for whatsapp",
+      "reduce mp4 file size",
+      "compress video to 25mb",
+      "compress video online free",
+      "video size reducer"
+    ],
+    about: "Sharing video clips across Discord, WhatsApp, Slack, and email is constantly blocked by strict attachment limits (16MB for WhatsApp, 25MB for Discord free tier). ConvertSheet's Video Compressor uses intelligent two-pass variable bitrate encoding (VBR) with hardware NVENC acceleration. Enter any target megabyte ceiling to compress your video to fit the exact constraint while preserving crisp 1080p audio and video fidelity.",
+    howTo: [
+      { step: 1, title: "Upload Video", description: "Select any MP4, MOV, AVI, or MKV video file up to 2GB." },
+      { step: 2, title: "Choose Target Size", description: "Select a preset (Discord 25MB, WhatsApp 16MB, Email 20MB) or drag the custom MB slider." },
+      { step: 3, title: "Configure Codec", description: "Optionally cap resolution at 1080p, 720p, or switch between H.264, HEVC, and AV1." },
+      { step: 4, title: "Compress & Download", description: "Click compress to generate your stream-optimized FastStart MP4." }
+    ],
+    faqs: [
+      { question: "What is the maximum file size I can upload?", answer: "You can compress videos up to 2GB in size." },
+      { question: "Will my video have any watermark?", answer: "No. All video tools on ConvertSheet are 100% free with zero watermarks or branding." },
+      { question: "How does it hit the exact MB target?", answer: "We calculate the exact mathematical audio and video bitrate budget over the video duration, then apply two-pass rate control." }
+    ],
+    relatedConverters: ["compress-pdf", "compress-image"],
+    relatedTools: ["youtube-downloader", "auto-subtitle-generator"]
+  },
+
+  "compress-video": {
+    slug: "compress-video",
+    name: "Compress Video to Target MB",
+    category: "data-developer",
+    title: "Compress Video Online - Reduce MP4 Size Free",
+    subtitle: "Reduce video file sizes to exact target MB for Discord, WhatsApp, and Web.",
+    metaDescription: "Compress video files online for free. Hit exact file size limits for social media and messaging apps.",
+    answerSummary: "Reduce video file size online with two-pass rate control.",
+    badge: "Free Compressor",
+    featured: false,
+    keywords: ["compress video", "reduce video size", "compress mp4", "video mb reducer"],
+    about: "Fast and private video compression to fit email, WhatsApp, and messaging limits.",
+    howTo: [
+      { step: 1, title: "Upload Video", description: "Select your video file." },
+      { step: 2, title: "Set Size", description: "Pick your target megabyte size." },
+      { step: 3, title: "Download", description: "Save the compressed MP4." }
+    ],
+    faqs: [
+      { question: "Is this free?", answer: "Yes, 100% free with no limits." }
+    ],
+    relatedConverters: ["compress-image"],
+    relatedTools: ["video-compressor", "auto-subtitle-generator"]
+  },
+
+  "youtube-downloader": {
+    slug: "youtube-downloader",
+    name: "YouTube Video & MP3 Downloader",
+    category: "data-developer",
+    title: "YouTube Downloader - Download 1080p Video & MP3 Free",
+    subtitle: "Download YouTube videos, Shorts, and music in HD 1080p MP4 or high-bitrate 320kbps MP3 audio with instant metadata preview.",
+    metaDescription: "Free online YouTube downloader. Save YouTube videos and Shorts in 1080p MP4 or convert YouTube to MP3 audio in seconds without annoying popups or ads.",
+    answerSummary: "Download YouTube videos in 1080p MP4 or convert to MP3 audio. Paste any YouTube or Shorts link for instant download with zero watermarks.",
+    badge: "1080p & MP3",
+    featured: true,
+    keywords: [
+      "youtube downloader",
+      "download youtube video",
+      "youtube to mp3",
+      "download youtube shorts",
+      "youtube video saver",
+      "free youtube to mp4",
+      "convert youtube to mp3 320kbps"
+    ],
+    about: "ConvertSheet's YouTube Downloader lets you save YouTube videos, podcasts, and Shorts in pristine 1080p Full HD MP4 or extract audio tracks into 320kbps MP3. Simply paste any YouTube URL to instantly preview the video thumbnail, author, and duration, then download directly to your phone, tablet, or desktop with no intrusive popups or software installation.",
+    howTo: [
+      { step: 1, title: "Paste YouTube Link", description: "Copy and paste the URL of any YouTube video, Shorts, or music track." },
+      { step: 2, title: "Choose MP4 or MP3", description: "Select Video (1080p/720p MP4) or Audio Only (320kbps MP3)." },
+      { step: 3, title: "Download", description: "Click Download to transcode and save your media file directly to your device." }
+    ],
+    faqs: [
+      { question: "Can I download YouTube Shorts?", answer: "Yes! Simply paste the Shorts link to download high-resolution vertical MP4 videos." },
+      { question: "Can I extract MP3 audio?", answer: "Yes, choose the 'Audio Only (MP3)' option to extract crystal-clear 320kbps audio tracks." },
+      { question: "Does it work on mobile phones?", answer: "Yes, it works smoothly on iPhones (iOS Safari), Android, Mac, and Windows." }
+    ],
+    relatedConverters: ["speech-to-text"],
+    relatedTools: ["video-compressor", "vocal-remover"]
+  },
+
+  "youtube-to-mp3": {
+    slug: "youtube-to-mp3",
+    name: "YouTube to MP3 Converter",
+    category: "data-developer",
+    title: "YouTube to MP3 Converter - Free High-Bitrate Audio Ripper",
+    subtitle: "Convert YouTube videos and podcasts into high-bitrate 320kbps MP3 audio files in seconds.",
+    metaDescription: "Free YouTube to MP3 converter. Extract audio from YouTube videos in high quality 320kbps MP3 with zero registration.",
+    answerSummary: "Extract MP3 audio from any YouTube video with one click.",
+    badge: "320 kbps MP3",
+    featured: false,
+    keywords: ["youtube to mp3", "yt to mp3", "youtube audio converter", "rip audio from youtube"],
+    about: "Convert YouTube videos and lectures into high-fidelity MP3 audio files.",
+    howTo: [
+      { step: 1, title: "Paste URL", description: "Paste the YouTube link." },
+      { step: 2, title: "Select MP3", description: "Select Audio Only (MP3)." },
+      { step: 3, title: "Download", description: "Save the audio track." }
+    ],
+    faqs: [
+      { question: "Is this tool free?", answer: "Yes, completely free with unlimited conversions." }
+    ],
+    relatedConverters: ["speech-to-text"],
+    relatedTools: ["youtube-downloader", "speech-to-text"]
+  },
+
+  "instagram-downloader": {
+    slug: "instagram-downloader",
+    name: "Instagram Reel & Video Downloader",
+    category: "data-developer",
+    title: "Instagram Downloader - Download Reels, Posts & Stories Free",
+    subtitle: "Download Instagram Reels, carousel videos, and audio in high-resolution MP4 without watermarks.",
+    metaDescription: "Free online Instagram downloader. Download Instagram Reels, videos, and carousel posts in full HD MP4 with zero login required.",
+    answerSummary: "Save Instagram Reels and videos in full HD MP4. Paste any Reel link to download directly with zero watermarks.",
+    badge: "Full HD Reels",
+    featured: true,
+    keywords: [
+      "instagram downloader",
+      "download instagram reel",
+      "instagram reel saver",
+      "download instagram video free",
+      "ig video downloader",
+      "save instagram reels without watermark"
+    ],
+    about: "Save your favorite Instagram Reels, travel clips, tutorials, and carousel videos in original Full HD quality. ConvertSheet's Instagram Downloader works instantly across all modern browsers without requiring your Instagram login or third-party apps.",
+    howTo: [
+      { step: 1, title: "Paste Instagram Link", description: "Copy and paste the URL of any Instagram Reel or video post." },
+      { step: 2, title: "Preview", description: "Check the preview card and choose Video or Audio format." },
+      { step: 3, title: "Save to Device", description: "Click Download to save the MP4 video straight to your camera roll or downloads." }
+    ],
+    faqs: [
+      { question: "Do I need to log into Instagram?", answer: "No login or password is required. Simply paste the public Reel link." },
+      { question: "Are videos downloaded without watermarks?", answer: "Yes, all videos are saved in pure original quality with zero added watermarks." }
+    ],
+    relatedConverters: ["video-compressor"],
+    relatedTools: ["youtube-downloader", "video-compressor"]
+  },
+
+  "download-instagram-reels": {
+    slug: "download-instagram-reels",
+    name: "Download Instagram Reels",
+    category: "data-developer",
+    title: "Download Instagram Reels Online - Free MP4 Reel Saver",
+    subtitle: "Save Instagram Reels in high definition without watermarks or app downloads.",
+    metaDescription: "Download Instagram Reels in HD MP4. Fast, free, and private Reel downloader.",
+    answerSummary: "Download Instagram Reels in HD MP4 directly to your device.",
+    badge: "Reels Downloader",
+    featured: false,
+    keywords: ["download instagram reels", "reels saver", "instagram reel mp4", "save reels"],
+    about: "Fast online Instagram Reel saver for mobile and desktop.",
+    howTo: [
+      { step: 1, title: "Paste Reel Link", description: "Paste the Reel URL." },
+      { step: 2, title: "Download", description: "Click Download to save." }
+    ],
+    faqs: [
+      { question: "Is it free?", answer: "Yes, 100% free with unlimited downloads." }
+    ],
+    relatedConverters: ["video-compressor"],
+    relatedTools: ["instagram-downloader", "video-compressor"]
+  },
+
+  "vocal-remover": {
+    slug: "vocal-remover",
+    name: "AI Vocal Remover & Acapella Isolator",
+    category: "data-developer",
+    title: "Vocal Remover Online - Free AI Acapella & Karaoke Maker",
+    subtitle: "Separate vocals and instruments from any song using Demucs v4 neural network. Extract isolated acapellas and clean backing karaoke tracks.",
+    metaDescription: "Free online vocal remover. Separate vocals and music from any audio track using AI. Download isolated acapella and karaoke instrumental tracks in WAV/MP3.",
+    answerSummary: "Separate vocals and backing music from any song using Demucs AI. Download isolated vocals and karaoke instrumentals with zero bleed.",
+    badge: "Demucs v4 Neural",
+    featured: true,
+    keywords: [
+      "vocal remover",
+      "remove vocals from song",
+      "acapella extractor",
+      "karaoke maker online",
+      "isolate vocals from audio",
+      "free ai vocal separator",
+      "stem splitter online"
+    ],
+    about: "Creating karaoke tracks, music remixes, and acapella samples used to require complex audio engineering software. ConvertSheet's AI Vocal Remover leverages Demucs v4 deep neural models to mathematically separate vocal frequencies from drums, bass, and melodic instruments. Get studio-clean isolated vocals and pristine instrumental backing tracks in lossless quality.",
+    howTo: [
+      { step: 1, title: "Upload Audio", description: "Select any song in MP3, WAV, FLAC, or M4A format." },
+      { step: 2, title: "Choose Mode", description: "Select Vocals + Instrumental (Karaoke) or Full 4-Stem Multitrack split." },
+      { step: 3, title: "Separate Stems", description: "Click Isolate to run deep neural frequency separation." },
+      { step: 4, title: "Listen & Export", description: "Preview each stem and download your isolated Vocals and Backing Tracks in high quality." }
+    ],
+    faqs: [
+      { question: "Is there any audio bleed between vocals and instruments?", answer: "Demucs v4 is state-of-the-art in source separation, achieving near-zero vocal bleed and pristine instrumental isolation." },
+      { question: "Can I download individual stems like drums and bass?", answer: "Yes, select 'Full 4-Stem Split' to extract isolated drums, bass, vocals, and instruments." },
+      { question: "Is this tool free?", answer: "Yes, completely free with zero subscription requirements or watermarks." }
+    ],
+    relatedConverters: ["audio-noise-reducer"],
+    relatedTools: ["speech-to-text", "audio-noise-reducer"]
+  },
+
+  "isolate-vocals": {
+    slug: "isolate-vocals",
+    name: "Isolate Vocals from Audio",
+    category: "data-developer",
+    title: "Isolate Vocals Online - Free AI Acapella Extractor",
+    subtitle: "Extract pure human vocals from songs and voice recordings with Demucs AI.",
+    metaDescription: "Isolate vocals from music online for free. Clean acapella voice extractor powered by deep learning.",
+    answerSummary: "Extract isolated acapella vocals from any song.",
+    badge: "Acapella AI",
+    featured: false,
+    keywords: ["isolate vocals", "extract acapella", "vocal isolation online", "separate voice from music"],
+    about: "Extract clean vocal stems from songs and audio recordings for remixes and karaoke.",
+    howTo: [
+      { step: 1, title: "Upload", description: "Select your audio file." },
+      { step: 2, title: "Isolate", description: "Click Isolate Vocals." },
+      { step: 3, title: "Download", description: "Download the isolated vocal WAV." }
+    ],
+    faqs: [
+      { question: "Is this free?", answer: "Yes, 100% free." }
+    ],
+    relatedConverters: ["vocal-remover"],
+    relatedTools: ["vocal-remover", "audio-noise-reducer"]
+  },
+
+  "acapella-extractor": {
+    slug: "acapella-extractor",
+    name: "Acapella Extractor",
+    category: "data-developer",
+    title: "Acapella Extractor Online - Extract Vocals from Music Free",
+    subtitle: "Make studio-quality acapella tracks from songs in seconds.",
+    metaDescription: "Extract acapellas from songs online for free. AI voice isolation with zero instrumental bleed.",
+    answerSummary: "Generate studio-quality acapella vocal tracks.",
+    badge: "Acapella Maker",
+    featured: false,
+    keywords: ["acapella extractor", "make acapella", "vocal stripper", "acapella maker"],
+    about: "Create isolated acapella vocals for DJs, producers, and remix artists.",
+    howTo: [
+      { step: 1, title: "Upload Song", description: "Upload your song track." },
+      { step: 2, title: "Extract", description: "Extract vocal frequencies." },
+      { step: 3, title: "Download", description: "Download the acapella file." }
+    ],
+    faqs: [
+      { question: "Is this free?", answer: "Yes, free with zero watermarks." }
+    ],
+    relatedConverters: ["vocal-remover"],
+    relatedTools: ["vocal-remover", "isolate-vocals"]
+  },
+
+  "auto-subtitle-generator": {
+    slug: "auto-subtitle-generator",
+    name: "Auto Subtitle Generator",
+    category: "data-developer",
+    title: "Auto Subtitle Generator - Free SRT & VTT Subtitle Creator",
+    subtitle: "Generate synchronized subtitles and closed captions for videos using Whisper Large-v3. Download industry-standard .srt and .vtt files with millisecond precision.",
+    metaDescription: "Free online auto subtitle generator. Automatically generate SRT and VTT subtitles from video and audio files in 99+ languages using OpenAI Whisper.",
+    answerSummary: "Generate auto subtitles for videos in seconds. Export industry-standard .srt and .vtt caption files with millisecond word timestamps in 99+ languages.",
+    badge: "Whisper Timestamps",
+    featured: true,
+    keywords: [
+      "auto subtitle generator",
+      "generate subtitles online",
+      "video to srt converter",
+      "auto captions free",
+      "create srt from video",
+      "closed caption generator",
+      "subtitles for youtube reels"
+    ],
+    about: "Adding subtitles to videos increases engagement by over 80% on YouTube, TikTok, and Instagram Reels. ConvertSheet's Auto Subtitle Generator utilizes Whisper Large-v3 deep speech recognition models to transcribe speech and generate precision millisecond timestamps. Export ready-to-use `.srt` and `.vtt` subtitle files for Premiere Pro, DaVinci Resolve, Final Cut, and CapCut.",
+    howTo: [
+      { step: 1, title: "Upload Video", description: "Upload any MP4, MOV, MKV, or audio file up to 500MB." },
+      { step: 2, title: "Select Language", description: "Pick your spoken language or use Auto-Detect across 99+ languages." },
+      { step: 3, title: "Generate Subtitles", description: "Click Generate to transcribe speech and create synchronized timecodes." },
+      { step: 4, title: "Export .SRT or .VTT", description: "Inspect the timestamp table and download standard subtitle files or copy to clipboard." }
+    ],
+    faqs: [
+      { question: "Can I use the .srt file directly on YouTube?", answer: "Yes! YouTube, Facebook, Vimeo, and TikTok accept our generated .srt subtitle files without any modifications." },
+      { question: "What languages are supported?", answer: "Whisper supports 99+ languages including English, Spanish, French, German, Hindi, Mandarin, Portuguese, Arabic, and Japanese." },
+      { question: "Are timestamps accurate?", answer: "Yes, timestamps are calculated to exact millisecond intervals aligning with spoken words." }
+    ],
+    relatedConverters: ["speech-to-text"],
+    relatedTools: ["speech-to-text", "video-compressor"]
+  },
+
+  "generate-subtitles": {
+    slug: "generate-subtitles",
+    name: "Generate Subtitles from Video",
+    category: "data-developer",
+    title: "Generate Subtitles Online - Free Video Caption Maker",
+    subtitle: "Create synced captions and subtitle files from video and audio in seconds.",
+    metaDescription: "Generate subtitles for your videos online. Free automatic SRT and VTT subtitle generator.",
+    answerSummary: "Create accurate subtitles and captions for video clips.",
+    badge: "Auto Captions",
+    featured: false,
+    keywords: ["generate subtitles", "make subtitles", "video caption creator", "auto srt maker"],
+    about: "Create synchronized subtitle files for YouTube, Reels, and TikTok videos.",
+    howTo: [
+      { step: 1, title: "Upload", description: "Upload your video file." },
+      { step: 2, title: "Generate", description: "Click Generate Synced Subtitles." },
+      { step: 3, title: "Download", description: "Download your .srt file." }
+    ],
+    faqs: [
+      { question: "Is this free?", answer: "Yes, completely free with no limits." }
+    ],
+    relatedConverters: ["speech-to-text"],
+    relatedTools: ["auto-subtitle-generator", "speech-to-text"]
+  },
+
+  "compress-image-to-20kb": {
+    slug: "compress-image-to-20kb",
+    name: "Compress Image to 20KB",
+    category: "utility",
+    title: "Compress Image to 20KB Online - Free Photo Resizer",
+    subtitle: "Compress JPG, PNG, and WebP images to under 20KB for signatures, SSC, UPSC, and government portal uploads.",
+    metaDescription: "Free online image compressor to 20KB. Compress photos and signatures to exactly under 20KB for passport, exam, and job applications without quality loss.",
+    answerSummary: "Compress images and signatures to under 20KB for government and job portal uploads with instant libvips processing.",
+    badge: "Exact 20KB Target",
+    featured: true,
+    keywords: [
+      "compress image to 20kb",
+      "compress photo to 20kb online",
+      "reduce image size to 20kb",
+      "signature compress to 20kb",
+      "photo size reducer to 20kb",
+      "ssc photo resizer 20kb"
+    ],
+    about: "Online job portals and government exam applications (UPSC, SSC, IBPS, State PSCs) strictly require candidate photos and signatures to be under 20KB. ConvertSheet uses high-speed libvips binary search compression to fit your photo under 20KB while preserving maximum visual sharpness and standard pixel dimensions (140x60 or custom).",
+    howTo: [
+      { step: 1, title: "Upload Photo", description: "Select your image or signature in JPG, PNG, or WebP format." },
+      { step: 2, title: "Confirm 20KB Target", description: "The tool automatically sets the target size to 20KB." },
+      { step: 3, title: "Compress & Download", description: "Click compress to generate your compliant image in under 50ms." }
+    ],
+    faqs: [
+      { question: "Will my image meet government portal requirements?", answer: "Yes! The output file is guaranteed to be under 20,480 bytes (20KB), matching all portal validation rules." },
+      { question: "Can I compress signatures?", answer: "Yes, signature images and documents compress cleanly with high contrast." }
+    ],
+    relatedConverters: ["compress-image"],
+    relatedTools: ["compress-image-to-50kb", "compress-image-to-100kb", "white-background-passport-photo"]
+  },
+
+  "compress-image-to-50kb": {
+    slug: "compress-image-to-50kb",
+    name: "Compress Image to 50KB",
+    category: "utility",
+    title: "Compress Image to 50KB Online - Free Passport & Exam Resizer",
+    subtitle: "Compress photos to exactly under 50KB (between 20KB and 50KB) for passport portals, visa applications, and exam registrations.",
+    metaDescription: "Compress image to 50KB online for free. Reduce photo size to under 50KB for passport, visa, and government portal uploads with crisp clarity.",
+    answerSummary: "Compress photos to under 50KB for passport, visa, and exam portals with exact byte convergence.",
+    badge: "Exact 50KB Target",
+    featured: true,
+    keywords: [
+      "compress image to 50kb",
+      "compress photo to 50kb",
+      "reduce image size to 50kb online",
+      "passport photo 50kb",
+      "upsc photo resizer 50kb",
+      "photo compressor 50kb"
+    ],
+    about: "Over 80% of government, visa, and academic admission portals mandate passport photos between 20KB and 50KB. ConvertSheet's 50KB Image Compressor tunes compression quantization and dimensions to ensure your file strictly satisfies the portal validator without blurriness or pixelation.",
+    howTo: [
+      { step: 1, title: "Upload Photo", description: "Upload your passport or portrait photo." },
+      { step: 2, title: "Select 50KB", description: "Preset for 50KB ceiling with 20KB floor." },
+      { step: 3, title: "Download", description: "Save your portal-compliant JPG or WebP image." }
+    ],
+    faqs: [
+      { question: "Does it support 3.5 x 4.5 cm dimensions?", answer: "Yes, select the India Passport (3.5 x 4.5 cm) preset to set both exact dimensions and 50KB size." },
+      { question: "Is the tool free?", answer: "Yes, completely free with zero limits or watermarks." }
+    ],
+    relatedConverters: ["compress-image"],
+    relatedTools: ["compress-image-to-20kb", "compress-image-to-100kb", "white-background-passport-photo"]
+  },
+
+  "compress-image-to-100kb": {
+    slug: "compress-image-to-100kb",
+    name: "Compress Image to 100KB",
+    category: "utility",
+    title: "Compress Image to 100KB Online - Free Photo & Doc Resizer",
+    subtitle: "Compress images and scanned certificates to under 100KB for online forms, US visa uploads, and ID cards.",
+    metaDescription: "Free online image compressor to 100KB. Reduce JPG and PNG file sizes to under 100KB for US Visa (DS-160), job portals, and identity documents.",
+    answerSummary: "Compress images to under 100KB for DS-160 US Visa, ID verification, and document portals.",
+    badge: "Exact 100KB Target",
+    featured: true,
+    keywords: [
+      "compress image to 100kb",
+      "reduce image size to 100kb",
+      "us visa photo 100kb",
+      "photo compressor 100kb online",
+      "compress certificate to 100kb"
+    ],
+    about: "US Visa (DS-160) and identity verification portals require 2x2 inch photos between 600x600 pixels and under 100KB. ConvertSheet's 100KB Compressor guarantees compliance while preserving facial micro-features and color depth.",
+    howTo: [
+      { step: 1, title: "Upload Image", description: "Select your photo or scanned document." },
+      { step: 2, title: "100KB Target", description: "Preset for exact 100KB limit." },
+      { step: 3, title: "Download", description: "Save your verified compliant image." }
+    ],
+    faqs: [
+      { question: "Can I use this for US Visa (DS-160)?", answer: "Yes, select the US Visa 2x2 inch preset for immediate DS-160 portal acceptance." }
+    ],
+    relatedConverters: ["compress-image"],
+    relatedTools: ["compress-image-to-50kb", "white-background-passport-photo"]
+  },
+
+  "reduce-image-size-in-kb": {
+    slug: "reduce-image-size-in-kb",
+    name: "Reduce Image Size in KB",
+    category: "utility",
+    title: "Reduce Image Size in KB - Free Online Photo Compressor",
+    subtitle: "Reduce photo and image sizes to any custom KB ceiling (20KB, 50KB, 100KB, 200KB) with exact byte control.",
+    metaDescription: "Reduce image size in KB online for free. Compress JPG, PNG, and WebP images to exact kilobyte targets with high visual quality.",
+    answerSummary: "Reduce image file size to exact KB targets with instant libvips processing.",
+    badge: "Custom KB Target",
+    featured: true,
+    keywords: [
+      "reduce image size in kb",
+      "reduce photo size in kb",
+      "kb reducer",
+      "image size reducer in kb",
+      "photo size reducer in kb online"
+    ],
+    about: "Custom kilobyte optimization tool that gives you exact control over target KB ceilings, dimension scaling, and quality compression.",
+    howTo: [
+      { step: 1, title: "Upload Photo", description: "Upload your image file." },
+      { step: 2, title: "Set KB Size", description: "Enter any target KB value." },
+      { step: 3, title: "Save", description: "Download your resized image." }
+    ],
+    faqs: [
+      { question: "What formats can I reduce?", answer: "We support JPG, JPEG, PNG, WebP, BMP, and TIFF." }
+    ],
+    relatedConverters: ["compress-image"],
+    relatedTools: ["compress-image-to-50kb", "compress-image-to-20kb"]
+  },
+
+  "increase-image-size-in-kb": {
+    slug: "increase-image-size-in-kb",
+    name: "Increase Image Size in KB",
+    category: "utility",
+    title: "Increase Image Size in KB - Free Online Photo Expander",
+    subtitle: "Increase photo and image file size in KB to satisfy minimum portal requirements (e.g. min 20KB, min 50KB) without distortion.",
+    metaDescription: "Increase image size in KB online for free. Expand image file sizes to meet minimum portal requirements without visual degradation.",
+    answerSummary: "Increase image file sizes to meet minimum portal constraints (e.g. minimum 20KB or 50KB).",
+    badge: "Min KB Expander",
+    featured: false,
+    keywords: [
+      "increase image size in kb",
+      "increase photo size in kb",
+      "expand image size in kb",
+      "make image larger in kb"
+    ],
+    about: "Some portals reject photos that are too small (e.g. 'Must be at least 20KB'). ConvertSheet uses lossless padding and quality interpolation to expand your image size to satisfy minimum requirements.",
+    howTo: [
+      { step: 1, title: "Upload Image", description: "Select your image file." },
+      { step: 2, title: "Set Min KB", description: "Enter the required minimum KB floor." },
+      { step: 3, title: "Download", description: "Save your expanded compliant photo." }
+    ],
+    faqs: [
+      { question: "Does increasing KB size distort the image?", answer: "No, we use lossless zero-padding and high-fidelity sampling to maintain visual appearance." }
+    ],
+    relatedConverters: ["compress-image"],
+    relatedTools: ["reduce-image-size-in-kb", "compress-image-to-50kb"]
+  },
+
+  "receipt-scanner-ocr": {
+    slug: "receipt-scanner-ocr",
+    name: "Receipt Scanner & Expense OCR",
+    category: "data-developer",
+    title: "Receipt Scanner Online - Free Receipt OCR & Expense Parser",
+    subtitle: "Extract vendor names, dates, line items, taxes, and totals from receipt photos and invoices into structured JSON and CSV.",
+    metaDescription: "Free online receipt scanner and expense OCR. Scan paper receipts, invoices, and bills to extract vendor, line items, taxes, and total amounts into CSV and JSON.",
+    answerSummary: "Scan receipts and invoices to extract line items, taxes, and total amounts automatically into CSV and JSON with verified math.",
+    badge: "Expense OCR",
+    featured: true,
+    keywords: [
+      "receipt scanner",
+      "receipt ocr online",
+      "scan receipt to excel",
+      "receipt to csv",
+      "extract receipt data",
+      "invoice scanner ocr",
+      "free expense parser"
+    ],
+    about: "Manual expense reporting is tedious and error-prone. ConvertSheet's Receipt Scanner uses deep document OCR to parse receipts, bills, and hotel invoices. It automatically isolates merchant names, transaction dates, itemized purchases, sales tax, and verifies that subtotal + tax = total within mathematical rounding tolerances. Export clean CSV tables for Excel or raw JSON for accounting software.",
+    howTo: [
+      { step: 1, title: "Upload Receipt", description: "Upload a photo or scan of your receipt in JPG, PNG, or PDF format." },
+      { step: 2, title: "OCR Extraction", description: "Click Extract Expense Data to parse merchant, tax, and line items." },
+      { step: 3, title: "Export CSV or JSON", description: "Download an itemized CSV table or copy structured JSON data." }
+    ],
+    faqs: [
+      { question: "Does it verify that numbers add up?", answer: "Yes! The parser performs automated mathematical reconciliation (subtotal + tax == total) to flag discrepancies." },
+      { question: "What formats can I export?", answer: "You can download an itemized CSV table (opens directly in Excel and Google Sheets) or copy clean JSON." }
+    ],
+    relatedConverters: ["pdf-table-extractor", "json-to-excel"],
+    relatedTools: ["pdf-to-markdown", "data-anonymizer-cleaner"]
+  },
+
+  "parse-receipt": {
+    slug: "parse-receipt",
+    name: "Parse Receipt to CSV",
+    category: "data-developer",
+    title: "Parse Receipt to CSV - Free Online Expense Extractor",
+    subtitle: "Convert receipt photos into organized spreadsheet rows.",
+    metaDescription: "Parse receipts into CSV spreadsheets online for free. Automated receipt expense parser.",
+    answerSummary: "Convert receipt images to CSV spreadsheets automatically.",
+    badge: "Receipt to CSV",
+    featured: false,
+    keywords: ["parse receipt", "receipt to csv", "invoice to excel", "expense extractor"],
+    about: "Automate expense reports by extracting line items and totals into CSV format.",
+    howTo: [
+      { step: 1, title: "Upload", description: "Select your receipt photo." },
+      { step: 2, title: "Extract", description: "Extract items and total." },
+      { step: 3, title: "Save CSV", description: "Download the CSV file." }
+    ],
+    faqs: [
+      { question: "Is this tool free?", answer: "Yes, completely free." }
+    ],
+    relatedConverters: ["json-to-excel"],
+    relatedTools: ["receipt-scanner-ocr", "pdf-table-extractor"]
   }
 };

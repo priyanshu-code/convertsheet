@@ -80,6 +80,12 @@ import { TextToSpeechTool } from "@/components/tools/TextToSpeechTool";
 import { AiContentDetectorTool } from "@/components/tools/AiContentDetectorTool";
 import { PdfToMarkdownTool } from "@/components/tools/PdfToMarkdownTool";
 import { AudioNoiseReducerTool } from "@/components/tools/AudioNoiseReducerTool";
+import { VideoCompressorTool } from "@/components/tools/VideoCompressorTool";
+import { MediaDownloaderTool } from "@/components/tools/MediaDownloaderTool";
+import { KbImageResizerTool } from "@/components/tools/KbImageResizerTool";
+import { VocalRemoverTool } from "@/components/tools/VocalRemoverTool";
+import { AutoSubtitleTool } from "@/components/tools/AutoSubtitleTool";
+import { ReceiptOcrTool } from "@/components/tools/ReceiptOcrTool";
 
 export interface ToolPageProps {
   params: {
@@ -461,6 +467,56 @@ export default function ToolPage({ params }: ToolPageProps) {
     "document-to-markdown": PdfToMarkdownTool,
     "audio-noise-reducer": AudioNoiseReducerTool,
     "clean-audio": AudioNoiseReducerTool,
+    "video-compressor": VideoCompressorTool,
+    "compress-video": VideoCompressorTool,
+    "youtube-downloader": () => <MediaDownloaderTool defaultPlatform="youtube" />,
+    "youtube-to-mp3": () => <MediaDownloaderTool defaultPlatform="youtube" />,
+    "instagram-downloader": () => <MediaDownloaderTool defaultPlatform="instagram" />,
+    "download-instagram-reels": () => <MediaDownloaderTool defaultPlatform="instagram" />,
+    "vocal-remover": VocalRemoverTool,
+    "isolate-vocals": VocalRemoverTool,
+    "acapella-extractor": VocalRemoverTool,
+    "auto-subtitle-generator": AutoSubtitleTool,
+    "generate-subtitles": AutoSubtitleTool,
+    "compress-image-to-20kb": () => (
+      <KbImageResizerTool
+        defaultTargetKb={20}
+        title="Compress Image to 20KB"
+        subtitle="Compress photos and signatures to exactly under 20KB for government and exam portals."
+      />
+    ),
+    "compress-image-to-50kb": () => (
+      <KbImageResizerTool
+        defaultTargetKb={50}
+        defaultMinKb={20}
+        title="Compress Image to 50KB"
+        subtitle="Compress photos to under 50KB (between 20KB and 50KB) for passport and visa applications."
+      />
+    ),
+    "compress-image-to-100kb": () => (
+      <KbImageResizerTool
+        defaultTargetKb={100}
+        title="Compress Image to 100KB"
+        subtitle="Compress images to under 100KB for US Visa (DS-160) and identity verification."
+      />
+    ),
+    "reduce-image-size-in-kb": () => (
+      <KbImageResizerTool
+        defaultTargetKb={50}
+        title="Reduce Image Size in KB"
+        subtitle="Reduce photo sizes to any custom KB ceiling with exact byte convergence."
+      />
+    ),
+    "increase-image-size-in-kb": () => (
+      <KbImageResizerTool
+        defaultTargetKb={50}
+        defaultMinKb={20}
+        title="Increase Image Size in KB"
+        subtitle="Expand image file sizes to meet minimum portal requirements without visual degradation."
+      />
+    ),
+    "receipt-scanner-ocr": ReceiptOcrTool,
+    "parse-receipt": ReceiptOcrTool,
   };
 
   const ToolComponent = componentMap[tool.slug];

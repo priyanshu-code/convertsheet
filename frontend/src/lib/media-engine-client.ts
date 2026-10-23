@@ -118,6 +118,31 @@ export async function pollMediaJobFull(
 }
 
 /**
+ * Resolves any raw output path or engine download URL into a secure, CORS-enabled HTTPS gateway URL.
+ */
+export function resolvePublicDownloadUrl(rawUrl: string): string {
+  if (!rawUrl) return "";
+  let url = rawUrl.replace(/^http:\/\/engine\./, "https://engine.");
+  if (url.startsWith("https://engine.solveyourtrip.com/api/v1/download/files/")) {
+    url = url.replace(
+      "https://engine.solveyourtrip.com/api/v1/download/files/",
+      `${MEDIA_ENGINE_BASE_URL}/media/api/v1/download/files/`
+    );
+  }
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  if (url.startsWith("/media/")) {
+    return `${MEDIA_ENGINE_BASE_URL}${url}`;
+  }
+  if (url.startsWith("/api/")) {
+    return `${MEDIA_ENGINE_BASE_URL}/media${url}`;
+  }
+  const filename = url.split("/").pop();
+  return `${MEDIA_ENGINE_BASE_URL}/media/api/v1/download/files/${filename}`;
+}
+
+/**
  * Convenience wrapper returning the download URL of a completed job.
  */
 export async function pollMediaJob(
@@ -134,15 +159,7 @@ export async function pollMediaJob(
     (result as any).output_audio_path;
 
   if (rawUrl) {
-    if (rawUrl.startsWith("http")) return rawUrl;
-    if (rawUrl.startsWith("/media/")) {
-      return `${MEDIA_ENGINE_BASE_URL}${rawUrl}`;
-    }
-    if (rawUrl.startsWith("/api/")) {
-      return `${MEDIA_ENGINE_BASE_URL}/media${rawUrl}`;
-    }
-    const filename = rawUrl.split("/").pop();
-    return `${MEDIA_ENGINE_BASE_URL}/media/api/v1/download/files/${filename}`;
+    return resolvePublicDownloadUrl(rawUrl);
   }
   throw new Error("Job completed but returned no output file.");
 }
