@@ -126,11 +126,23 @@ export async function pollMediaJob(
   intervalMs: number = 1000
 ): Promise<string> {
   const result = await pollMediaJobFull(jobId, maxAttempts, intervalMs);
-  const url = result.download_url || result.output_path;
-  if (url) {
-    return url.startsWith("http")
-      ? url
-      : `${MEDIA_ENGINE_BASE_URL}/media/api/v1/download/files/${url}`;
+  const rawUrl =
+    result.download_url ||
+    result.output_path ||
+    (result as any).output_image_path ||
+    (result as any).output_video_path ||
+    (result as any).output_audio_path;
+
+  if (rawUrl) {
+    if (rawUrl.startsWith("http")) return rawUrl;
+    if (rawUrl.startsWith("/media/")) {
+      return `${MEDIA_ENGINE_BASE_URL}${rawUrl}`;
+    }
+    if (rawUrl.startsWith("/api/")) {
+      return `${MEDIA_ENGINE_BASE_URL}/media${rawUrl}`;
+    }
+    const filename = rawUrl.split("/").pop();
+    return `${MEDIA_ENGINE_BASE_URL}/media/api/v1/download/files/${filename}`;
   }
   throw new Error("Job completed but returned no output file.");
 }
