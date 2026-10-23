@@ -231,6 +231,7 @@ export function WhiteBackgroundPassportTool() {
               ref={fileInputRef}
               type="file"
               accept="image/*"
+              aria-label="Upload photo for passport white background"
               className="hidden"
               onChange={(e) => {
                 if (e.target.files?.[0]) handleFileSelect(e.target.files[0]);
@@ -239,9 +240,9 @@ export function WhiteBackgroundPassportTool() {
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
               <UploadCloud className="w-8 h-8" />
             </div>
-            <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-1">
+            <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-1">
               Upload Any Selfie or Portrait Photo
-            </h3>
+            </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
               Drag and drop your photo here, or click to browse. Works with camera photos, home selfies, and scanned IDs.
             </p>

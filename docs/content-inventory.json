@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-22",
+  "lastUpdated": "2026-10-23",
   "totalBlogs": 30,
   "totalTools": 28,
   "blogs": [
@@ -157,7 +157,7 @@
       "slug": "rbi-99-percent-daily-crr-liquidity-drain-october-16-2026",
       "title": "RBI's 99% Daily CRR Mandate Takes Effect October 16: The Treasury Squeeze Ending Festive Loan Discounts",
       "category": "Financial Planning",
-      "description": "Starting October 16, 2026, RBI Circular RBI/2026-27/290 mandates scheduled banks maintain 99% of required CRR daily, up from 90%. Uncover the ₹1.8 Lakh Crore treasury drain ending 7.20% festive home loan spreads."
+      "description": "Starting October 16, 2026, RBI Circular RBI/2026-27/290 mandates scheduled banks maintain 99% of required CRR daily, up from 90%. Uncover the \u20b91.8 Lakh Crore treasury drain ending 7.20% festive home loan spreads."
     },
     {
       "slug": "federal-reserve-g19-credit-card-debt-avalanche-math-2026",
@@ -475,14 +475,17 @@
     },
     {
       "slug": "percentage-calculator",
-      "lastAudited": "2026-10-15",
+      "lastAudited": "2026-10-23",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
+        "october-2026-market-rate-freshness",
+        "calc-save-persistence",
         "url-query-permalink-sync",
         "multi-mode-permalinks",
-        "save-share-prompt-actions",
+        "44px-touch-targets",
+        "direct-answer-featured-snippets",
         "matrix-xlsx-download",
-        "sticky-bottom-mobile-bar"
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
@@ -525,10 +528,11 @@
     },
     {
       "slug": "hourly-to-salary-calculator",
-      "lastAudited": "2026-10-20",
+      "lastAudited": "2026-10-23",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "2026-labor-benchmarks-signal",
+        "october-2026-flsa-bls-freshness-signals",
+        "28-dollar-hourly-quick-presets-44px",
         "url-query-permalink-sync",
         "44px-touch-targets",
         "dual-slider-controls",
@@ -541,14 +545,17 @@
     },
     {
       "slug": "retirement-calculator",
-      "lastAudited": "2026-10-16",
+      "lastAudited": "2026-10-23",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
+        "october-2026-irs-rate-freshness-signals",
+        "1-click-retirement-archetypes-44px",
         "url-query-permalink-sync",
         "44px-touch-targets",
-        "save-share-prompt-actions",
+        "calc-save-persistence",
         "formulaic-xlsx-export",
-        "sticky-bottom-mobile-bar"
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },

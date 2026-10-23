@@ -8,6 +8,7 @@ vi.mock("xlsx", () => ({
   utils: {
     book_new: vi.fn(() => ({})),
     json_to_sheet: vi.fn(() => ({})),
+    aoa_to_sheet: vi.fn(() => ({})),
     book_append_sheet: vi.fn(),
   },
   writeFile: vi.fn(),
@@ -111,5 +112,17 @@ describe("PercentageCalculator Suite", () => {
     expect(screen.getByText("Final Sale Price (20% off)")).toBeInTheDocument();
     expect(screen.getAllByText("$80").length).toBeGreaterThan(0);
     expect(screen.getByText(/A 20% discount on \$100 saves/i)).toBeInTheDocument();
+  });
+
+  it("displays October 2026 market rate freshness signal and CalcSaveButton", () => {
+    render(<PercentageCalculator />);
+
+    expect(
+      screen.getByText(/Updated for October 2026: Average US State\/Local Sales Tax 7\.25%/i)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: /Save Calculation/i })
+    ).toBeInTheDocument();
   });
 });

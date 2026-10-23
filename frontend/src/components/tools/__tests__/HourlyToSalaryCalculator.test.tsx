@@ -25,17 +25,19 @@ describe("HourlyToSalaryCalculator Moat & Mobile UX", () => {
     expect(window.location.search).toContain("hoursPerWeek=35");
   });
 
-  it("handles quick hourly rate and workweek preset buttons with 44px touch targets", () => {
+  it("displays October 2026 freshness signal and handles $28/hr quick preset with 44px touch target", () => {
     render(<HourlyToSalaryCalculator />);
 
-    const rate50 = screen.getByText("$50/hr");
-    expect(rate50).toHaveClass("min-h-[44px]");
-    fireEvent.click(rate50);
-    expect(window.location.search).toContain("hourlyRate=50");
+    expect(
+      screen.getByText(/Updated for October 2026: 2026 Federal Minimum Wage \$7\.25\/hr/i)
+    ).toBeInTheDocument();
 
-    const ft40 = screen.getByText("40h (Standard FT)");
-    expect(ft40).toHaveClass("min-h-[44px]");
-    fireEvent.click(ft40);
-    expect(window.location.search).toContain("hoursPerWeek=40");
+    const rate28 = screen.getByText("$28/hr");
+    expect(rate28).toBeInTheDocument();
+    expect(rate28).toHaveClass("min-h-[44px]");
+
+    fireEvent.click(rate28);
+    expect(window.location.search).toContain("hourlyRate=28");
+    expect(screen.getByText("$58,240")).toBeInTheDocument(); // 28 * 40 * 52 = 58240
   });
 });

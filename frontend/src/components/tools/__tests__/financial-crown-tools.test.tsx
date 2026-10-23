@@ -67,12 +67,12 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(
         screen.getByText(/Updated for October 2026 Freddie Mac PMMS/i)
       ).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /7.40% \(30Y Fixed\)/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /6.71% \(15Y Fixed\)/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /7.32% \(30Y Fixed\)/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /6.68% \(15Y Fixed\)/i })).toBeInTheDocument();
 
-      fireEvent.click(screen.getByRole("button", { name: /7.40% \(30Y Fixed\)/i }));
+      fireEvent.click(screen.getByRole("button", { name: /7.32% \(30Y Fixed\)/i }));
       const rateInput = screen.getByLabelText(/Interest Rate \(Annual %\)/i);
-      expect(rateInput).toHaveValue(7.4);
+      expect(rateInput).toHaveValue(7.32);
     });
   });
 

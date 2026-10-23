@@ -178,7 +178,7 @@ Please evaluate:
         <span className="font-medium">
           {currencySymbol === "₹"
             ? "Updated for October 2026: RBI Repo Rate 5.50% • Prime Home Loans 8.15%–8.50% (SBI EBLR 8.15%) • Auto Loans 8.85%–9.50%"
-            : "Updated for October 2026: 30-Year Mortgages 7.40% • 15-Year Mortgages 6.71% (Freddie Mac PMMS) • Auto Financing 6.90%–7.50%"}
+            : "Updated for October 2026: 30-Year Mortgages 7.32% • 15-Year Mortgages 6.68% (Freddie Mac PMMS) • Auto Financing 6.90%–7.50%"}
         </span>
       </div>
 
@@ -266,9 +266,10 @@ Please evaluate:
                     { label: "10.5% (PL)", val: 10.50 },
                   ]
                 : [
-                    { label: "6.71% (15-Yr)", val: 6.71 },
+                    { label: "6.68% (15-Yr)", val: 6.68 },
                     { label: "7.0% (Auto)", val: 7.0 },
-                    { label: "7.40% (30-Yr)", val: 7.40 },
+                    { label: "7.32% (30-Yr)", val: 7.32 },
+                    { label: "7.40% (Peak)", val: 7.40 },
                     { label: "8.50% (HELOC)", val: 8.50 },
                     { label: "10.5% (PL)", val: 10.50 },
                   ]

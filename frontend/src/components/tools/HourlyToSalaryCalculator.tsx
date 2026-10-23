@@ -204,6 +204,14 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
         <span>Zero-Knowledge Client-Side Engine • No salary data sent to servers • 100% Private &amp; Free</span>
       </div>
 
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          Updated for October 2026: 2026 Federal Minimum Wage $7.25/hr • BLS Average Private Sector Earnings $35.40/hr • 2026 FLSA Overtime Threshold $58,656/yr ($1,128/wk)
+        </span>
+      </div>
+
       {/* 2-Column Responsive Layout */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         {/* Left Column: Interactive Inputs */}
@@ -228,7 +236,7 @@ Provide career budgeting insights, estimated tax brackets, and negotiating advic
                 />
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mr-1">Quick:</span>
-                  {[15, 20, 25, 35, 50, 75, 100].map((rate) => (
+                  {[15, 20, 25, 28, 35, 50, 75, 100].map((rate) => (
                     <button
                       key={rate}
                       type="button"

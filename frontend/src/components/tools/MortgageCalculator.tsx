@@ -215,7 +215,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
           {/* Market Rate Freshness Signal */}
           <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
-            <span className="font-medium">Updated for October 2026 Freddie Mac PMMS: 30-Year Fixed at 7.40%, 15-Year Fixed at 6.71%</span>
+            <span className="font-medium">Updated for October 2026 Freddie Mac PMMS: 30-Year Fixed at 7.32%, 15-Year Fixed at 6.68% (10-Yr Treasury 4.95%)</span>
           </div>
 
         {/* Top Controls Grid */}
@@ -314,8 +314,9 @@ Provide financial advice on whether refinancing or making extra principal paymen
             />
             <div className="flex flex-wrap items-center gap-1.5 pt-1">
               {[
-                { label: "7.40% (30Y Fixed)", rate: 7.4 },
-                { label: "6.71% (15Y Fixed)", rate: 6.71 },
+                { label: "7.32% (30Y Fixed)", rate: 7.32 },
+                { label: "6.68% (15Y Fixed)", rate: 6.68 },
+                { label: "7.40% (30Y Peak)", rate: 7.4 },
                 { label: "6.85% (FHA/VA)", rate: 6.85 },
                 { label: "6.50%", rate: 6.5 },
               ].map((preset) => (

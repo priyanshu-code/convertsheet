@@ -51,4 +51,27 @@ describe("RetirementCalculator Moat & Mobile UX", () => {
     fireEvent.click(wizardBtn!);
     expect(screen.getByText(/Step 1 of 3/i)).toBeInTheDocument();
   });
+
+  it("displays October 2026 market rate freshness signal and 44px retirement archetype presets", () => {
+    render(
+      <CurrencyProvider>
+        <RetirementCalculator />
+      </CurrencyProvider>
+    );
+
+    // Freshness signal
+    expect(
+      screen.getByText(/Updated for October 2026: 2026 IRS 401\(k\) Limit \$23,500/i)
+    ).toBeInTheDocument();
+
+    // Archetype presets with 44px min touch target
+    const fireBtn = screen.getByText("Early FIRE 50").closest("button");
+    expect(fireBtn).toBeInTheDocument();
+    expect(fireBtn).toHaveClass("min-h-[44px]");
+
+    fireEvent.click(fireBtn!);
+    expect(window.location.search).toContain("currentAge=28");
+    expect(window.location.search).toContain("retirementAge=50");
+    expect(window.location.search).toContain("monthlyContribution=2000");
+  });
 });

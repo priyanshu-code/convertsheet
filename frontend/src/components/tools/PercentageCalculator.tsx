@@ -10,6 +10,7 @@ import {
   CalcToggle,
   CalcResult,
   CalcSelect,
+  CalcSaveButton,
   CalcShareButton,
   CalcPromptButton,
 } from "@/components/calculator";
@@ -368,12 +369,21 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
     ];
 
     const wb = XLSX.utils.book_new();
+    const metaData = [
+      ["ConvertSheet - Percentage & Multiplier Reference Matrix", ""],
+      ["Report Generated At", new Date().toISOString().split("T")[0]],
+      ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/percentage-calculator"],
+      ["Base Number", matrixBase],
+      ["Calculation Engine", "100% Client-Side In-Browser Zero-Knowledge Mathematical Model"],
+    ];
+    const wsMeta = XLSX.utils.aoa_to_sheet(metaData);
     const wsMatrix = XLSX.utils.json_to_sheet(rows);
     const wsFormulas = XLSX.utils.json_to_sheet(formulaGuide);
 
-    XLSX.utils.book_append_sheet(wb, wsMatrix, `Percentage_Matrix_${matrixBase}`);
-    XLSX.utils.book_append_sheet(wb, wsFormulas, "Formulas_Cheatsheet");
-    XLSX.writeFile(wb, `percentage-reference-sheet-${matrixBase}.xlsx`);
+    XLSX.utils.book_append_sheet(wb, wsMeta, "Overview");
+    XLSX.utils.book_append_sheet(wb, wsMatrix, `Matrix_${matrixBase}`);
+    XLSX.utils.book_append_sheet(wb, wsFormulas, "Formulas");
+    XLSX.writeFile(wb, `ConvertSheet_Percentage_Matrix_${matrixBase}.xlsx`);
   };
 
   const shareState = useMemo(() => {
@@ -435,6 +445,14 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
         <span>100% Client-Side Privacy — Zero Math or Input Data Leaves Your Device</span>
+      </div>
+
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          Updated for October 2026: Average US State/Local Sales Tax 7.25% • CPI Inflation 2.8%–3.1% • Standard Gratuity 18%–20% • Wholesale Margin 30%–50%
+        </span>
       </div>
 
       <CalcCard
@@ -721,6 +739,17 @@ export function PercentageCalculator({ initialValues }: PercentageCalculatorProp
 
         {/* Action Buttons Strip */}
         <div className="flex flex-wrap items-center gap-3 pt-2">
+          <CalcSaveButton
+            toolSlug="percentage-calculator"
+            toolName="Percentage Calculator"
+            summaryTitle={currentSummaryLabel}
+            label="Save Calculation"
+            summaryMetrics={[
+              { label: "Mode", value: calcMode },
+              { label: "Result", value: currentSummaryValue },
+              { label: "Base Value", value: matrixBase.toLocaleString() },
+            ]}
+          />
           <CalcShareButton
             state={shareState}
             label="Share Calculation"

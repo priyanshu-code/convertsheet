@@ -352,6 +352,14 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
         <span>Zero-Knowledge Client-Side Engine • No net worth or retirement data sent to servers • 100% Private</span>
       </div>
 
+      {/* Market Rate Freshness Signal */}
+      <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
+        <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+        <span className="font-medium">
+          Updated for October 2026: 2026 IRS 401(k) Limit $23,500 ($31,000 age 50+) • IRA Limit $7,000 • S&P 500 Historical 10.2% Nominal / 7.1% Real • 10-Yr Treasury 4.95%
+        </span>
+      </div>
+
       {/* Mode Switcher Banner */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/60 backdrop-blur-sm">
         <div className="flex items-center gap-2 px-2 text-xs font-semibold text-zinc-600 dark:text-zinc-400">
@@ -422,6 +430,79 @@ Assess my readiness for retirement, whether my withdrawal rate is sustainable, a
           badge="SheetJS Export"
         >
           <div className="space-y-8">
+            {/* Quick 1-Click Retirement Archetype Presets */}
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+                1-Click Retirement Archetypes &amp; Scenarios:
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                {[
+                  {
+                    name: "Standard 65",
+                    sub: "Age 30 • $750/mo • 8%",
+                    apply: () => {
+                      setCurrentAge(30);
+                      setRetirementAge(65);
+                      setCurrentSavings(40000);
+                      setMonthlyContribution(750);
+                      setAnnualReturn(8.0);
+                      setPostRetirementReturn(5.0);
+                      setInflationRate(2.5);
+                    },
+                  },
+                  {
+                    name: "Early FIRE 50",
+                    sub: "Age 28 • $2,000/mo • 8%",
+                    apply: () => {
+                      setCurrentAge(28);
+                      setRetirementAge(50);
+                      setCurrentSavings(50000);
+                      setMonthlyContribution(2000);
+                      setAnnualReturn(8.0);
+                      setPostRetirementReturn(5.0);
+                      setInflationRate(2.5);
+                    },
+                  },
+                  {
+                    name: "Late Catch-Up 67",
+                    sub: "Age 45 • $1,500/mo • 7%",
+                    apply: () => {
+                      setCurrentAge(45);
+                      setRetirementAge(67);
+                      setCurrentSavings(150000);
+                      setMonthlyContribution(1500);
+                      setAnnualReturn(7.0);
+                      setPostRetirementReturn(4.5);
+                      setInflationRate(2.5);
+                    },
+                  },
+                  {
+                    name: "Conservative 62",
+                    sub: "Age 35 • $1,000/mo • 6%",
+                    apply: () => {
+                      setCurrentAge(35);
+                      setRetirementAge(62);
+                      setCurrentSavings(80000);
+                      setMonthlyContribution(1000);
+                      setAnnualReturn(6.0);
+                      setPostRetirementReturn(4.0);
+                      setInflationRate(3.0);
+                    },
+                  },
+                ].map((item) => (
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={item.apply}
+                    className="min-h-[44px] flex flex-col items-start justify-center p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-emerald-500 text-left transition-colors touch-manipulation cursor-pointer"
+                  >
+                    <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">{item.name}</span>
+                    <span className="text-[10px] text-zinc-500 dark:text-zinc-400">{item.sub}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Primary Interactive Sliders Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 sm:p-6 rounded-3xl bg-zinc-50/50 dark:bg-zinc-800/30 border border-zinc-200/80 dark:border-zinc-800">
               <ModernSlider

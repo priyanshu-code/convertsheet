@@ -276,6 +276,9 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
       "hourly to annual salary",
       "hourly to monthly pay",
       "wage to salary converter",
+      "28 an hour is how much a year",
+      "28 hourly to salary",
+      "how much is 28 an hour a month",
       "how much is 25 an hour annually",
       "how much is 20 an hour a year",
       "bi weekly paycheck from hourly rate",
@@ -315,6 +318,11 @@ export const FINANCIAL_CROWN_TOOLS: Record<string, ToolConfig> = {
         question: "How many working hours are in a standard year?",
         answer:
           "A standard 40-hour work week across 52 weeks contains 2,080 working hours. If you take 2 weeks of unpaid leave, your working hours equal 2,000 hours per year.",
+      },
+      {
+        question: "How much is $28 an hour annually, monthly, and bi-weekly?",
+        answer:
+          "At standard full-time employment (40 hours/week, 52 weeks/year = 2,080 hours), $28 an hour equals $58,240 per year gross, $4,853.33 per month, $2,240 bi-weekly (26 paychecks), and $1,120 weekly. After estimated standard single-filer federal and FICA taxes (~18.5%), estimated take-home pay is approximately $47,466 annually or $3,955 per month.",
       },
       {
         question: "What is the difference between bi-weekly and semi-monthly pay?",
