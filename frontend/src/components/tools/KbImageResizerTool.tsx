@@ -3,20 +3,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   Image as ImageIcon,
-  UploadCloud,
   Download,
   Sparkles,
   RefreshCw,
-  ShieldCheck,
-  Check,
-  Sliders,
   Scale,
-  Maximize2,
   Lock,
   Unlock,
+  Check,
+  ArrowRight,
 } from "lucide-react";
 import { dispatchMediaJob, pollMediaJobFull, resolvePublicDownloadUrl } from "@/lib/media-engine-client";
 import { formatBytes } from "@/lib/utils";
+import { StudioDropZone } from "./StudioDropZone";
 
 interface KbImageResizerProps {
   defaultTargetKb?: number;
@@ -58,8 +56,6 @@ export function KbImageResizerTool({
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     setTargetKb(defaultTargetKb);
     if (defaultMinKb) setMinKb(defaultMinKb);
@@ -84,6 +80,14 @@ export function KbImageResizerTool({
         setHeight(img.height);
       }
     };
+  };
+
+  const handleClear = () => {
+    setFile(null);
+    setPreviewUrl(null);
+    setResult(null);
+    setProcessedUrl(null);
+    setError(null);
   };
 
   const handleWidthChange = (val: number) => {
@@ -166,256 +170,254 @@ export function KbImageResizerTool({
     document.body.removeChild(a);
   };
 
+  const outputBytes = result?.bytes || result?.output_size_bytes;
+
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
-      <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 sm:p-8 shadow-xl space-y-6">
-        {/* Header Title if customized */}
-        <div className="space-y-1">
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-            {title}
-          </h3>
-          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-            {subtitle}
-          </p>
+    <div className="w-full max-w-6xl mx-auto space-y-6">
+      {/* Studio Header */}
+      <div className="space-y-1">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+          {title}
+        </h1>
+        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+          {subtitle}
+        </p>
+      </div>
+
+      {/* Two-Column Studio Workspace */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Visual Canvas & Inspector (7 cols) */}
+        <div className="lg:col-span-7 space-y-4">
+          <StudioDropZone
+            onFileSelect={handleFileSelect}
+            currentFile={file}
+            onClear={handleClear}
+            title="Click to select or drag & drop photo"
+            subtitle="Supports JPG, PNG, WebP up to 50MB"
+            acceptedExtensions={[".jpg", ".jpeg", ".png", ".webp", ".bmp", ".tiff"]}
+          />
+
+          {/* Canvas Preview Area */}
+          {previewUrl && (
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-4 shadow-sm space-y-4">
+              <div className="flex items-center justify-between text-xs pb-3 border-b border-zinc-100 dark:border-zinc-800">
+                <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                  {processedUrl ? "Optimized Output Preview" : "Source Photo Preview"}
+                </span>
+                {width && height ? (
+                  <span className="font-mono text-[11px] text-zinc-500">
+                    {width} × {height} px
+                  </span>
+                ) : null}
+              </div>
+
+              <div className="relative flex items-center justify-center min-h-[280px] max-h-[420px] bg-zinc-50 dark:bg-zinc-950/60 rounded-xl overflow-hidden border border-zinc-100 dark:border-zinc-800 p-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={processedUrl || previewUrl}
+                  alt={file?.name || "Image Preview"}
+                  className="max-h-[380px] max-w-full object-contain rounded-lg shadow-xs"
+                />
+              </div>
+
+              {/* Byte Delta Banner when processed */}
+              {result && processedUrl && (
+                <div className="p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 text-xs">
+                    <span className="inline-flex items-center gap-1 font-bold text-zinc-900 dark:text-zinc-100">
+                      <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                      Ready Under {targetKb} KB
+                    </span>
+                    {file && outputBytes && (
+                      <span className="text-zinc-500 dark:text-zinc-400 font-mono text-[11px] flex items-center gap-1.5">
+                        <span className="line-through">{formatBytes(file.size)}</span>
+                        <ArrowRight className="w-3 h-3 text-zinc-400" />
+                        <span className="font-bold text-zinc-900 dark:text-white">
+                          {formatBytes(outputBytes)}
+                        </span>
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={downloadProcessed}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 text-xs font-bold transition-all shadow-sm"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Download {format.toUpperCase()}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Step 1: Upload Image */}
-        <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2">
-            1. Select Photo or Document Image
-          </label>
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
-              file
-                ? "border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20"
-                : "border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 bg-zinc-50/50 dark:bg-zinc-900/40"
-            }`}
-          >
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
-              accept="image/*,.jpg,.jpeg,.png,.webp,.bmp,.tiff"
-              className="hidden"
-            />
-            <div className="flex flex-col items-center justify-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                <ImageIcon className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">
-                  {file ? file.name : "Click to select or drag & drop photo"}
-                </p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  {file
-                    ? `${formatBytes(file.size)} • Ready to compress`
-                    : "Supports JPG, PNG, WebP, TIFF up to 50MB"}
-                </p>
-              </div>
+        {/* Right Column: Precision Parameters & Actions (5 cols) */}
+        <div className="lg:col-span-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 sm:p-6 shadow-sm space-y-5">
+          {/* Section 1: Target Size */}
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+                Target Size (KB)
+              </label>
+              <span className="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                Max {targetKb} KB
+              </span>
+            </div>
+
+            {/* Quick KB Pills */}
+            <div className="grid grid-cols-5 gap-1.5">
+              {PRESET_KB_PILLS.map((kb) => (
+                <button
+                  key={kb}
+                  type="button"
+                  onClick={() => setTargetKb(kb)}
+                  className={`py-2 px-1 rounded-xl border text-center transition-all ${
+                    targetKb === kb
+                      ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900 font-bold shadow-xs"
+                      : "border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 text-zinc-700 dark:text-zinc-300 text-xs font-semibold"
+                  }`}
+                >
+                  <span className="text-xs">{kb} KB</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Target KB Number Slider & Input */}
+            <div className="pt-1">
+              <input
+                type="range"
+                min="5"
+                max="1000"
+                step="5"
+                value={targetKb}
+                onChange={(e) => setTargetKb(parseInt(e.target.value) || 50)}
+                className="w-full accent-zinc-900 dark:accent-zinc-100 cursor-pointer"
+              />
             </div>
           </div>
-        </div>
 
-        {/* Step 2: Target Size Selection */}
-        <div className="space-y-3 pt-2">
-          <div className="flex items-center justify-between">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-              2. Target Size (KB)
-            </label>
-            <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
-              Max {targetKb} KB
+          {/* Section 2: Official Exam & Government Presets */}
+          <div className="space-y-2 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+            <span className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">
+              Official Portal Presets
             </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-            {PRESET_KB_PILLS.map((kb) => (
-              <button
-                key={kb}
-                type="button"
-                onClick={() => setTargetKb(kb)}
-                className={`py-3 px-3 rounded-2xl border text-center transition-all ${
-                  targetKb === kb
-                    ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30 ring-1 ring-emerald-500 text-emerald-900 dark:text-emerald-200 font-bold"
-                    : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 text-zinc-700 dark:text-zinc-300 font-semibold"
-                }`}
-              >
-                <span className="text-sm">{kb} KB</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Quick Government Portal Presets */}
-          <div className="p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-800/30 border border-zinc-200 dark:border-zinc-800 space-y-2">
-            <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block">
-              Government & Exam Presets:
-            </span>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
               {GOVERNMENT_PRESETS.map((p) => (
                 <button
                   key={p.label}
                   type="button"
                   onClick={() => applyPreset(p)}
-                  className="text-xs px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-emerald-500 hover:text-emerald-600 transition-colors"
+                  className="text-left text-xs px-2.5 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-500 transition-colors"
                 >
-                  {p.label}
+                  <p className="font-semibold truncate">{p.label}</p>
+                  <p className="text-[10px] text-zinc-500 font-mono mt-0.5">
+                    {p.w}×{p.h}px • {p.kb}KB
+                  </p>
                 </button>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Step 3: Exact Dimensions & Format */}
-        <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
-              <Scale className="w-4 h-4 text-emerald-500" /> Output Format & Dimensions
-            </span>
+          {/* Section 3: Exact Dimensions & Format */}
+          <div className="space-y-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                <Scale className="w-3.5 h-3.5" /> Dimensions &amp; Format
+              </span>
 
-            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setLockAspectRatio(!lockAspectRatio)}
                 className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 ${
                   lockAspectRatio
-                    ? "border-emerald-500 text-emerald-600 bg-emerald-50/50"
-                    : "border-zinc-200 text-zinc-400"
+                    ? "border-zinc-900 bg-zinc-100 dark:border-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium"
+                    : "border-zinc-200 dark:border-zinc-700 text-zinc-400"
                 }`}
                 title="Lock Aspect Ratio"
               >
                 {lockAspectRatio ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
-                <span className="text-[10px] hidden sm:inline">Lock Ratio</span>
+                <span className="text-[10px]">Lock Ratio</span>
               </button>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-2.5">
+              <div>
+                <label className="block text-[11px] font-medium text-zinc-500 mb-1">
+                  Width (px)
+                </label>
+                <input
+                  type="number"
+                  value={width}
+                  onChange={(e) => {
+                    setCustomDimensions(true);
+                    handleWidthChange(parseInt(e.target.value) || 0);
+                  }}
+                  placeholder="Auto"
+                  className="w-full p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-medium text-zinc-500 mb-1">
+                  Height (px)
+                </label>
+                <input
+                  type="number"
+                  value={height}
+                  onChange={(e) => {
+                    setCustomDimensions(true);
+                    handleHeightChange(parseInt(e.target.value) || 0);
+                  }}
+                  placeholder="Auto"
+                  className="w-full p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-mono"
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-[11px] font-semibold text-zinc-400 mb-1">
-                Target Format
+              <label className="block text-[11px] font-medium text-zinc-500 mb-1">
+                Output Format
               </label>
               <select
                 value={format}
                 onChange={(e) => setFormat(e.target.value as any)}
-                className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-medium"
+                className="w-full p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-medium"
               >
-                <option value="jpeg">JPG / JPEG (Standard)</option>
-                <option value="webp">WebP (Smallest File)</option>
+                <option value="jpeg">JPG / JPEG (Universal Acceptance)</option>
+                <option value="webp">WebP (Smallest File Size)</option>
                 <option value="png">PNG (Lossless)</option>
               </select>
             </div>
-
-            <div>
-              <label className="block text-[11px] font-semibold text-zinc-400 mb-1">
-                Width (Pixels)
-              </label>
-              <input
-                type="number"
-                value={width}
-                onChange={(e) => {
-                  setCustomDimensions(true);
-                  handleWidthChange(parseInt(e.target.value) || 0);
-                }}
-                placeholder="Original"
-                className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-mono"
-              />
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-semibold text-zinc-400 mb-1">
-                Height (Pixels)
-              </label>
-              <input
-                type="number"
-                value={height}
-                onChange={(e) => {
-                  setCustomDimensions(true);
-                  handleHeightChange(parseInt(e.target.value) || 0);
-                }}
-                placeholder="Original"
-                className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-mono"
-              />
-            </div>
           </div>
-        </div>
 
-        {error && (
-          <div className="text-xs text-red-600 dark:text-red-400 font-medium p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900">
-            {error}
-          </div>
-        )}
-
-        {/* Process Button */}
-        <div className="flex justify-center pt-2">
-          <button
-            onClick={processImage}
-            disabled={isProcessing || !file}
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all shadow-xl shadow-emerald-600/25 disabled:opacity-50"
-          >
-            {isProcessing ? (
-              <>
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Optimizing to {targetKb} KB...</span>
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4" />
-                <span>Compress Image to {targetKb} KB</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Results Card */}
-        {result && processedUrl && (
-          <div className="pt-6 border-t border-zinc-100 dark:border-zinc-800 space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800">
-              <div className="flex items-center gap-4 text-xs">
-                <span className="flex items-center gap-1.5 font-bold text-emerald-600 dark:text-emerald-400">
-                  <Check className="w-4 h-4" /> Ready Under {targetKb} KB
-                </span>
-                {result.original_size_bytes && result.output_size_bytes && (
-                  <span className="text-zinc-500">
-                    <strong>{formatBytes(result.original_size_bytes)}</strong> →{" "}
-                    <strong className="text-emerald-600 dark:text-emerald-400 font-mono">
-                      {formatBytes(result.output_size_bytes)}
-                    </strong>{" "}
-                    ({result.compression_ratio || "Done"})
-                  </span>
-                )}
-                {result.duration_seconds && (
-                  <span className="text-zinc-400 font-mono">
-                    {(result.duration_seconds * 1000).toFixed(0)}ms
-                  </span>
-                )}
-              </div>
-
-              <button
-                type="button"
-                onClick={downloadProcessed}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-md shadow-emerald-600/20"
-              >
-                <Download className="w-4 h-4" />
-                <span>Download {format.toUpperCase()}</span>
-              </button>
+          {error && (
+            <div className="text-xs text-red-600 dark:text-red-400 font-medium p-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900">
+              {error}
             </div>
+          )}
 
-            {/* Image Preview */}
-            <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800 flex justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={processedUrl}
-                alt="Compressed"
-                className="max-h-[350px] object-contain rounded-xl shadow-md"
-              />
-            </div>
+          {/* Primary Action Button */}
+          <div className="pt-2">
+            <button
+              onClick={processImage}
+              disabled={isProcessing || !file}
+              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 font-bold text-sm transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isProcessing ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>Compressing to {targetKb} KB...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4" />
+                  <span>Compress Image to {targetKb} KB</span>
+                </>
+              )}
+            </button>
           </div>
-        )}
-
-        {/* Security Reassurance */}
-        <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
-          <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-          <span>Image compression is performed on high-speed RAM workers and immediately removed upon delivery.</span>
         </div>
       </div>
     </div>
