@@ -6,7 +6,7 @@ import ToolCategoryPage, {
   generateStaticParams,
   generateMetadata,
 } from "../category/[category]/page";
-import { getAllTools } from "@/lib/tool-registry";
+import { getAllTools, getToolsByCategory } from "@/lib/tool-registry";
 
 describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () => {
   describe("Tools Hub Directory Page (/tools)", () => {
@@ -44,7 +44,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(json["@graph"][0]["@type"]).toBe("CollectionPage");
       expect(json["@graph"][1]["@type"]).toBe("BreadcrumbList");
       expect(json["@graph"][2]["@type"]).toBe("ItemList");
-      expect(json["@graph"][2]["numberOfItems"]).toBe(71);
+      expect(json["@graph"][2]["numberOfItems"]).toBe(getAllTools().length);
     });
 
     it("live filter updates tool list when typing in search input", () => {
@@ -68,7 +68,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       const financialPill = screen.getByRole("button", { name: /Financial Math/i });
       fireEvent.click(financialPill);
 
-      expect(screen.getByText(/Showing 25 tools in financial/i)).toBeInTheDocument();
+      expect(screen.getByText(new RegExp(`Showing ${getToolsByCategory("financial").length} tools in financial`, "i"))).toBeInTheDocument();
       expect(
         screen.getByRole("heading", { level: 3, name: /Mortgage Calculator/i })
       ).toBeInTheDocument();
@@ -96,7 +96,8 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       );
     });
 
-    it("renders financial category page with 25 tools and FAQ accordion", () => {
+    it("renders financial category page with correct tool count and FAQ accordion", () => {
+      const count = getToolsByCategory("financial").length;
       render(<ToolCategoryPage params={{ category: "financial" }} />);
 
       expect(
@@ -109,7 +110,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(
         screen.getByRole("heading", {
           level: 2,
-          name: /Available Financial Calculators \(25\)/i,
+          name: new RegExp(`Available Financial Calculators \\(${count}\\)`, "i"),
         })
       ).toBeInTheDocument();
 
@@ -119,7 +120,8 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(screen.getByText(/Explore Other Tool Suites/i)).toBeInTheDocument();
     });
 
-    it("renders data-developer category page with 25 tools", () => {
+    it("renders data-developer category page with correct tool count", () => {
+      const count = getToolsByCategory("data-developer").length;
       render(<ToolCategoryPage params={{ category: "data-developer" }} />);
 
       expect(
@@ -132,12 +134,13 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(
         screen.getByRole("heading", {
           level: 2,
-          name: /Available Data & Developer Tools \(25\)/i,
+          name: new RegExp(`Available Data & Developer Tools \\(${count}\\)`, "i"),
         })
       ).toBeInTheDocument();
     });
 
-    it("renders utility category page with 21 tools", () => {
+    it("renders utility category page with correct tool count", () => {
+      const count = getToolsByCategory("utility").length;
       render(<ToolCategoryPage params={{ category: "utility" }} />);
 
       expect(
@@ -150,7 +153,7 @@ describe("Tools Hub (/tools) & Category Silos (/tools/category/[category])", () 
       expect(
         screen.getByRole("heading", {
           level: 2,
-          name: /Available Daily Utilities & PDF \(21\)/i,
+          name: new RegExp(`Available Daily Utilities & PDF \\(${count}\\)`, "i"),
         })
       ).toBeInTheDocument();
     });

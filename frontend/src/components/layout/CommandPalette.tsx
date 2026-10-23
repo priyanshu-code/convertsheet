@@ -44,7 +44,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const allTools = useMemo(() => getAllTools(), []);
 
   const getToolIcon = (slug: string, category: string) => {
-    if (slug.includes("video") || slug.includes("youtube") || slug.includes("instagram")) {
+    if (slug.includes("video")) {
       return Video;
     }
     if (
@@ -238,7 +238,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
               setSelectedIndex(0);
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Search tools (e.g. YouTube, 50KB, Video Compress, Subtitles, Passport, SIP)..."
+            placeholder="Type a tool name or converter (e.g. SIP, 50KB, Passport, Video Compress)..."
             className="w-full bg-transparent text-sm sm:text-base text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none"
           />
           <button

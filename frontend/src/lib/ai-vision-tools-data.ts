@@ -413,8 +413,8 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Will my video have any watermark?", answer: "No. All video tools on ConvertSheet are 100% free with zero watermarks or branding." },
       { question: "How does it hit the exact MB target?", answer: "We calculate the exact mathematical audio and video bitrate budget over the video duration, then apply two-pass rate control." }
     ],
-    relatedConverters: ["compress-pdf", "compress-image"],
-    relatedTools: ["youtube-downloader", "auto-subtitle-generator"]
+    relatedConverters: ["csv-to-excel", "json-to-excel"],
+    relatedTools: ["compress-video", "auto-subtitle-generator"]
   },
 
   "compress-video": {
@@ -435,123 +435,11 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Save the compressed MP4." }
     ],
     faqs: [
-      { question: "Is this free?", answer: "Yes, 100% free with no limits." }
+      { question: "Is this free?", answer: "Yes, 100% free with no limits." },
+      { question: "What codecs are supported?", answer: "We support H.264, HEVC, and AV1 video encoding with two-pass rate control." }
     ],
-    relatedConverters: ["compress-image"],
+    relatedConverters: ["csv-to-excel", "json-to-excel"],
     relatedTools: ["video-compressor", "auto-subtitle-generator"]
-  },
-
-  "youtube-downloader": {
-    slug: "youtube-downloader",
-    name: "YouTube Video & MP3 Downloader",
-    category: "data-developer",
-    title: "YouTube Downloader - Download 1080p Video & MP3 Free",
-    subtitle: "Download YouTube videos, Shorts, and music in HD 1080p MP4 or high-bitrate 320kbps MP3 audio with instant metadata preview.",
-    metaDescription: "Free online YouTube downloader. Save YouTube videos and Shorts in 1080p MP4 or convert YouTube to MP3 audio in seconds without annoying popups or ads.",
-    answerSummary: "Download YouTube videos in 1080p MP4 or convert to MP3 audio. Paste any YouTube or Shorts link for instant download with zero watermarks.",
-    badge: "1080p & MP3",
-    featured: true,
-    keywords: [
-      "youtube downloader",
-      "download youtube video",
-      "youtube to mp3",
-      "download youtube shorts",
-      "youtube video saver",
-      "free youtube to mp4",
-      "convert youtube to mp3 320kbps"
-    ],
-    about: "ConvertSheet's YouTube Downloader lets you save YouTube videos, podcasts, and Shorts in pristine 1080p Full HD MP4 or extract audio tracks into 320kbps MP3. Simply paste any YouTube URL to instantly preview the video thumbnail, author, and duration, then download directly to your phone, tablet, or desktop with no intrusive popups or software installation.",
-    howTo: [
-      { step: 1, title: "Paste YouTube Link", description: "Copy and paste the URL of any YouTube video, Shorts, or music track." },
-      { step: 2, title: "Choose MP4 or MP3", description: "Select Video (1080p/720p MP4) or Audio Only (320kbps MP3)." },
-      { step: 3, title: "Download", description: "Click Download to transcode and save your media file directly to your device." }
-    ],
-    faqs: [
-      { question: "Can I download YouTube Shorts?", answer: "Yes! Simply paste the Shorts link to download high-resolution vertical MP4 videos." },
-      { question: "Can I extract MP3 audio?", answer: "Yes, choose the 'Audio Only (MP3)' option to extract crystal-clear 320kbps audio tracks." },
-      { question: "Does it work on mobile phones?", answer: "Yes, it works smoothly on iPhones (iOS Safari), Android, Mac, and Windows." }
-    ],
-    relatedConverters: ["speech-to-text"],
-    relatedTools: ["video-compressor", "vocal-remover"]
-  },
-
-  "youtube-to-mp3": {
-    slug: "youtube-to-mp3",
-    name: "YouTube to MP3 Converter",
-    category: "data-developer",
-    title: "YouTube to MP3 Converter - Free High-Bitrate Audio Ripper",
-    subtitle: "Convert YouTube videos and podcasts into high-bitrate 320kbps MP3 audio files in seconds.",
-    metaDescription: "Free YouTube to MP3 converter. Extract audio from YouTube videos in high quality 320kbps MP3 with zero registration.",
-    answerSummary: "Extract MP3 audio from any YouTube video with one click.",
-    badge: "320 kbps MP3",
-    featured: false,
-    keywords: ["youtube to mp3", "yt to mp3", "youtube audio converter", "rip audio from youtube"],
-    about: "Convert YouTube videos and lectures into high-fidelity MP3 audio files.",
-    howTo: [
-      { step: 1, title: "Paste URL", description: "Paste the YouTube link." },
-      { step: 2, title: "Select MP3", description: "Select Audio Only (MP3)." },
-      { step: 3, title: "Download", description: "Save the audio track." }
-    ],
-    faqs: [
-      { question: "Is this tool free?", answer: "Yes, completely free with unlimited conversions." }
-    ],
-    relatedConverters: ["speech-to-text"],
-    relatedTools: ["youtube-downloader", "speech-to-text"]
-  },
-
-  "instagram-downloader": {
-    slug: "instagram-downloader",
-    name: "Instagram Reel & Video Downloader",
-    category: "data-developer",
-    title: "Instagram Downloader - Download Reels, Posts & Stories Free",
-    subtitle: "Download Instagram Reels, carousel videos, and audio in high-resolution MP4 without watermarks.",
-    metaDescription: "Free online Instagram downloader. Download Instagram Reels, videos, and carousel posts in full HD MP4 with zero login required.",
-    answerSummary: "Save Instagram Reels and videos in full HD MP4. Paste any Reel link to download directly with zero watermarks.",
-    badge: "Full HD Reels",
-    featured: true,
-    keywords: [
-      "instagram downloader",
-      "download instagram reel",
-      "instagram reel saver",
-      "download instagram video free",
-      "ig video downloader",
-      "save instagram reels without watermark"
-    ],
-    about: "Save your favorite Instagram Reels, travel clips, tutorials, and carousel videos in original Full HD quality. ConvertSheet's Instagram Downloader works instantly across all modern browsers without requiring your Instagram login or third-party apps.",
-    howTo: [
-      { step: 1, title: "Paste Instagram Link", description: "Copy and paste the URL of any Instagram Reel or video post." },
-      { step: 2, title: "Preview", description: "Check the preview card and choose Video or Audio format." },
-      { step: 3, title: "Save to Device", description: "Click Download to save the MP4 video straight to your camera roll or downloads." }
-    ],
-    faqs: [
-      { question: "Do I need to log into Instagram?", answer: "No login or password is required. Simply paste the public Reel link." },
-      { question: "Are videos downloaded without watermarks?", answer: "Yes, all videos are saved in pure original quality with zero added watermarks." }
-    ],
-    relatedConverters: ["video-compressor"],
-    relatedTools: ["youtube-downloader", "video-compressor"]
-  },
-
-  "download-instagram-reels": {
-    slug: "download-instagram-reels",
-    name: "Download Instagram Reels",
-    category: "data-developer",
-    title: "Download Instagram Reels Online - Free MP4 Reel Saver",
-    subtitle: "Save Instagram Reels in high definition without watermarks or app downloads.",
-    metaDescription: "Download Instagram Reels in HD MP4. Fast, free, and private Reel downloader.",
-    answerSummary: "Download Instagram Reels in HD MP4 directly to your device.",
-    badge: "Reels Downloader",
-    featured: false,
-    keywords: ["download instagram reels", "reels saver", "instagram reel mp4", "save reels"],
-    about: "Fast online Instagram Reel saver for mobile and desktop.",
-    howTo: [
-      { step: 1, title: "Paste Reel Link", description: "Paste the Reel URL." },
-      { step: 2, title: "Download", description: "Click Download to save." }
-    ],
-    faqs: [
-      { question: "Is it free?", answer: "Yes, 100% free with unlimited downloads." }
-    ],
-    relatedConverters: ["video-compressor"],
-    relatedTools: ["instagram-downloader", "video-compressor"]
   },
 
   "vocal-remover": {
@@ -585,7 +473,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Can I download individual stems like drums and bass?", answer: "Yes, select 'Full 4-Stem Split' to extract isolated drums, bass, vocals, and instruments." },
       { question: "Is this tool free?", answer: "Yes, completely free with zero subscription requirements or watermarks." }
     ],
-    relatedConverters: ["audio-noise-reducer"],
+    relatedConverters: ["csv-to-excel"],
     relatedTools: ["speech-to-text", "audio-noise-reducer"]
   },
 
@@ -607,9 +495,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Download the isolated vocal WAV." }
     ],
     faqs: [
-      { question: "Is this free?", answer: "Yes, 100% free." }
+      { question: "Is this free?", answer: "Yes, 100% free." },
+      { question: "What formats can I upload?", answer: "We support MP3, WAV, FLAC, M4A, and AAC audio files up to 100MB." }
     ],
-    relatedConverters: ["vocal-remover"],
+    relatedConverters: ["csv-to-excel"],
     relatedTools: ["vocal-remover", "audio-noise-reducer"]
   },
 
@@ -631,9 +520,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Download the acapella file." }
     ],
     faqs: [
-      { question: "Is this free?", answer: "Yes, free with zero watermarks." }
+      { question: "Is this free?", answer: "Yes, free with zero watermarks." },
+      { question: "How clean is the acapella?", answer: "Demucs v4 separates harmonics with high fidelity, isolating voice leads and backing vocals cleanly." }
     ],
-    relatedConverters: ["vocal-remover"],
+    relatedConverters: ["csv-to-excel"],
     relatedTools: ["vocal-remover", "isolate-vocals"]
   },
 
@@ -668,7 +558,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "What languages are supported?", answer: "Whisper supports 99+ languages including English, Spanish, French, German, Hindi, Mandarin, Portuguese, Arabic, and Japanese." },
       { question: "Are timestamps accurate?", answer: "Yes, timestamps are calculated to exact millisecond intervals aligning with spoken words." }
     ],
-    relatedConverters: ["speech-to-text"],
+    relatedConverters: ["csv-to-excel", "markdown-to-excel"],
     relatedTools: ["speech-to-text", "video-compressor"]
   },
 
@@ -690,9 +580,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Download your .srt file." }
     ],
     faqs: [
-      { question: "Is this free?", answer: "Yes, completely free with no limits." }
+      { question: "Is this free?", answer: "Yes, completely free with no limits." },
+      { question: "What subtitle formats are supported?", answer: "You can download industry-standard .srt and .vtt files with millisecond timecodes." }
     ],
-    relatedConverters: ["speech-to-text"],
+    relatedConverters: ["csv-to-excel", "markdown-to-excel"],
     relatedTools: ["auto-subtitle-generator", "speech-to-text"]
   },
 
@@ -724,7 +615,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Will my image meet government portal requirements?", answer: "Yes! The output file is guaranteed to be under 20,480 bytes (20KB), matching all portal validation rules." },
       { question: "Can I compress signatures?", answer: "Yes, signature images and documents compress cleanly with high contrast." }
     ],
-    relatedConverters: ["compress-image"],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
     relatedTools: ["compress-image-to-50kb", "compress-image-to-100kb", "white-background-passport-photo"]
   },
 
@@ -756,7 +647,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Does it support 3.5 x 4.5 cm dimensions?", answer: "Yes, select the India Passport (3.5 x 4.5 cm) preset to set both exact dimensions and 50KB size." },
       { question: "Is the tool free?", answer: "Yes, completely free with zero limits or watermarks." }
     ],
-    relatedConverters: ["compress-image"],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
     relatedTools: ["compress-image-to-20kb", "compress-image-to-100kb", "white-background-passport-photo"]
   },
 
@@ -784,9 +675,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Save your verified compliant image." }
     ],
     faqs: [
-      { question: "Can I use this for US Visa (DS-160)?", answer: "Yes, select the US Visa 2x2 inch preset for immediate DS-160 portal acceptance." }
+      { question: "Can I use this for US Visa (DS-160)?", answer: "Yes, select the US Visa 2x2 inch preset for immediate DS-160 portal acceptance." },
+      { question: "Will the image retain its original dimensions?", answer: "Yes, our two-pass quantization optimizes compression while preserving the original aspect ratio and dimensions." }
     ],
-    relatedConverters: ["compress-image"],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
     relatedTools: ["compress-image-to-50kb", "white-background-passport-photo"]
   },
 
@@ -814,9 +706,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Save", description: "Download your resized image." }
     ],
     faqs: [
-      { question: "What formats can I reduce?", answer: "We support JPG, JPEG, PNG, WebP, BMP, and TIFF." }
+      { question: "What formats can I reduce?", answer: "We support JPG, JPEG, PNG, WebP, BMP, and TIFF." },
+      { question: "Can I choose my own target KB?", answer: "Yes! You can enter any custom KB target (e.g. 20, 50, 100, 200, 500) and the engine converges to fit under that ceiling." }
     ],
-    relatedConverters: ["compress-image"],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
     relatedTools: ["compress-image-to-50kb", "compress-image-to-20kb"]
   },
 
@@ -843,10 +736,202 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Save your expanded compliant photo." }
     ],
     faqs: [
-      { question: "Does increasing KB size distort the image?", answer: "No, we use lossless zero-padding and high-fidelity sampling to maintain visual appearance." }
+      { question: "Does increasing KB size distort the image?", answer: "No, we use lossless zero-padding and high-fidelity sampling to maintain visual appearance." },
+      { question: "Why do some government portals require a minimum file size?", answer: "Portals mandate minimum file sizes (like min 20KB or min 50KB) to prevent users from uploading heavily downsampled, unreadable postage-stamp images." }
     ],
-    relatedConverters: ["compress-image"],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
     relatedTools: ["reduce-image-size-in-kb", "compress-image-to-50kb"]
+  },
+
+  "compress-image-to-200kb": {
+    slug: "compress-image-to-200kb",
+    name: "Compress Image to 200KB",
+    category: "utility",
+    title: "Compress Image to 200KB Online - Free Photo & Doc Resizer",
+    subtitle: "Compress photos, certificates, and identity documents to under 200KB for government and university portals.",
+    metaDescription: "Free online image compressor to 200KB. Compress photos and scans to exactly under 200KB with zero blurriness and instant libvips processing.",
+    answerSummary: "Compress images to under 200KB for online government, university, and employment portals with instant libvips processing.",
+    badge: "Exact 200KB Target",
+    featured: true,
+    keywords: [
+      "compress image to 200kb",
+      "compress photo to 200kb",
+      "reduce image size to 200kb",
+      "compress certificate to 200kb",
+      "photo size reducer to 200kb"
+    ],
+    about: "Many state government portals, university admission boards, and job application forms enforce a strict 200KB maximum file limit for scanned degrees, certificates, and ID documents. ConvertSheet uses fast libvips binary search compression to ensure your image remains under 204,800 bytes (200KB) while preserving full visual clarity and text legibility.",
+    howTo: [
+      { step: 1, title: "Upload Image", description: "Select your photo or scanned certificate in JPG, PNG, or WebP format." },
+      { step: 2, title: "Select 200KB Target", description: "Confirm the target file size is set to 200KB." },
+      { step: 3, title: "Download", description: "Download your compressed image ready for portal submission." }
+    ],
+    faqs: [
+      { question: "Will my text remain readable in scanned documents?", answer: "Yes, our algorithm prioritizes high-frequency edge contrast so scanned signatures, stamps, and certificate text remain sharp and legible." },
+      { question: "Is this compressor free with no watermarks?", answer: "Yes, 100% free with zero watermarks or registration required." }
+    ],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
+    relatedTools: ["compress-image-to-100kb", "compress-image-to-50kb", "white-background-passport-photo"]
+  },
+
+  "passport-photo-maker": {
+    slug: "passport-photo-maker",
+    name: "Passport Photo Maker",
+    category: "utility",
+    title: "Passport Photo Maker Online - Free 35x45mm & 2x2 Inch Photos",
+    subtitle: "Create official passport and visa photos online. Auto-crop face to 35x45mm or 2x2 inch standards with official plain background.",
+    metaDescription: "Free online passport photo maker. Create official passport size photos (3.5x4.5cm and 2x2 inch) for US Visa, India Passport, UK, EU, and Schengen visas with zero watermark.",
+    answerSummary: "Generate compliant passport and visa photos in seconds. Auto-crop portraits to official 3.5x4.5cm (India, UK, EU) or 2x2 inch (US Visa) formats with clean white backgrounds.",
+    badge: "Official Standards",
+    featured: true,
+    keywords: [
+      "passport photo maker",
+      "passport size photo maker online",
+      "35x45mm photo maker",
+      "2x2 inch passport photo",
+      "visa photo creator",
+      "free passport photo generator"
+    ],
+    about: "Applying for passports, travel visas, and national identity cards requires photos conforming to strict biometric dimensions and plain background rules. ConvertSheet's Passport Photo Maker formats portraits to official international dimensions: 35 x 45 mm (India, UK, Schengen, Australia) and 51 x 51 mm / 2 x 2 inch (US Visa DS-160, India OCI). Features smart face centering and instant file compression under portal limits (50KB or 100KB).",
+    howTo: [
+      { step: 1, title: "Upload Portrait", description: "Select any clear selfie or camera photo taken at eye level." },
+      { step: 2, title: "Choose Country Format", description: "Select 3.5 x 4.5 cm (India/UK/EU) or 2 x 2 inch (US Visa)." },
+      { step: 3, title: "Generate & Download", description: "Save your official biometric passport photo ready for online submission or 4x6 print grids." }
+    ],
+    faqs: [
+      { question: "What are the standard dimensions for passport photos?", answer: "Most countries (India, UK, Europe, Australia) use 35mm x 45mm (3.5 x 4.5 cm). The United States and US Visa DS-160 require 2 x 2 inches (51 x 51 mm or 600 x 600 px)." },
+      { question: "Can I take a passport photo with my smartphone?", answer: "Yes! Take a photo in good lighting facing the camera directly. Our tool crops the face to the required 70%-80% head height ratio." }
+    ],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
+    relatedTools: ["white-background-passport-photo", "compress-image-to-50kb", "unblur-face"]
+  },
+
+  "signature-resizer": {
+    slug: "signature-resizer",
+    name: "Online Signature Resizer",
+    category: "utility",
+    title: "Signature Resizer Online - Compress Signature to 10-20KB Free",
+    subtitle: "Resize and compress signature images to exact dimensions (140x60 px) and file size (10KB - 20KB) for government and exam portals.",
+    metaDescription: "Free online signature resizer and compressor. Resize signature photos to 140x60 pixels and under 20KB for UPSC, SSC, IBPS, and job application forms.",
+    answerSummary: "Resize and compress signature images for online forms. Crop to 140x60 pixels and compress to between 10KB and 20KB with pure white background contrast.",
+    badge: "10-20KB Signature",
+    featured: true,
+    keywords: [
+      "signature resizer",
+      "resize signature online",
+      "compress signature to 20kb",
+      "signature 140x60 px",
+      "signature photo compressor",
+      "ssc signature resizer"
+    ],
+    about: "Recruitment and examination portals (UPSC, SSC, Banking, State PSCs) mandate that candidate signatures be cropped to precise dimensions (typically 140 x 60 pixels) and compressed between 10KB and 20KB. ConvertSheet's Signature Resizer sharpens dark ink strokes, cleans grey paper shadows, and adjusts dimensions and file size to pass portal upload validators effortlessly.",
+    howTo: [
+      { step: 1, title: "Upload Signature", description: "Photograph or scan your signature on plain white paper." },
+      { step: 2, title: "Select Dimension & Size", description: "Default is preset to 140x60 pixels and under 20KB." },
+      { step: 3, title: "Download", description: "Save your crisp, compliant signature image." }
+    ],
+    faqs: [
+      { question: "What is the standard pixel size for signature uploads?", answer: "Most competitive exam portals specify 140 pixels wide by 60 pixels high (aspect ratio 7:3), with a file size between 10KB and 20KB." },
+      { question: "Will my signature look pixelated after compression?", answer: "No. Our libvips engine optimizes black ink contrast against white paper backgrounds, preserving clean stroke clarity even at 15KB." }
+    ],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
+    relatedTools: ["compress-image-to-20kb", "ssc-photo-resizer", "upsc-photo-resizer"]
+  },
+
+  "ssc-photo-resizer": {
+    slug: "ssc-photo-resizer",
+    name: "SSC Photo & Signature Resizer",
+    category: "utility",
+    title: "SSC Photo & Signature Resizer Online - CGL, CHSL, MTS Free",
+    subtitle: "Resize photos (3.5 x 4.5 cm, 20-50KB) and signatures (140 x 60 px, 10-20KB) for Staff Selection Commission online application portals.",
+    metaDescription: "Free online SSC photo and signature resizer. Format photos to 3.5x4.5cm (20KB - 50KB) and signatures to 140x60px (10KB - 20KB) for SSC CGL, CHSL, GD, and MTS.",
+    answerSummary: "Resize photos and signatures for SSC exams (CGL, CHSL, MTS, GD). Guaranteed compliance with 3.5x4.5cm dimensions and 20-50KB file size caps.",
+    badge: "SSC Exam Ready",
+    featured: true,
+    keywords: [
+      "ssc photo resizer",
+      "ssc signature resizer",
+      "ssc cgl photo size",
+      "ssc photo compressor 20 to 50 kb",
+      "ssc chsl photo resizer",
+      "ssc online photo size 3.5 x 4.5"
+    ],
+    about: "Staff Selection Commission (SSC) portals (ssc.gov.in) strictly reject applications if the candidate photograph is not between 20KB and 50KB with 3.5 cm width x 4.5 cm height, or if the signature is outside 10KB to 20KB (4.0 cm x 2.0 cm / 140 x 60 px). ConvertSheet's specialized SSC Photo & Signature Resizer handles all dimensional and byte constraints in a single step with zero server retention.",
+    howTo: [
+      { step: 1, title: "Upload Photo or Signature", description: "Select your image file in JPG or JPEG format." },
+      { step: 2, title: "Select SSC Mode", description: "Choose SSC Photo (3.5x4.5cm, 20-50KB) or SSC Signature (140x60px, 10-20KB)." },
+      { step: 3, title: "Download Compliant File", description: "Download your pre-validated JPG file ready to upload to ssc.gov.in." }
+    ],
+    faqs: [
+      { question: "What are the exact photo specifications for SSC CGL and CHSL?", answer: "The photograph must be in JPEG format, 20 KB to 50 KB in size, with dimensions of approximately 3.5 cm (width) x 4.5 cm (height) or 200 x 230 pixels." },
+      { question: "What are the signature requirements for SSC exams?", answer: "Signatures must be in JPEG format, 10 KB to 20 KB in size, with dimensions of about 4.0 cm (width) x 2.0 cm (height) or 140 x 60 pixels." }
+    ],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
+    relatedTools: ["upsc-photo-resizer", "compress-image-to-50kb", "signature-resizer"]
+  },
+
+  "upsc-photo-resizer": {
+    slug: "upsc-photo-resizer",
+    name: "UPSC Photo & Signature Resizer",
+    category: "utility",
+    title: "UPSC Photo & Signature Resizer Online - Civil Services, NDA, CDS",
+    subtitle: "Format and resize candidate photos (350 x 350 px, 20-300KB) and signatures to exact UPSC Online portal specifications.",
+    metaDescription: "Free online UPSC photo and signature resizer. Resize photos to 350x350 pixels (20KB - 300KB) and signatures for UPSC Civil Services IAS, NDA, and CDS applications.",
+    answerSummary: "Resize photos and signatures for UPSC Online application portal (upsconline.nic.in). Fits 350x350 to 1000x1000 px dimensions and 20KB to 300KB file sizes.",
+    badge: "UPSC IAS / NDA",
+    featured: true,
+    keywords: [
+      "upsc photo resizer",
+      "upsc signature resizer",
+      "upsc photo size 350x350",
+      "upsconline photo compressor",
+      "upsc photo format",
+      "upsc civil services photo resizer"
+    ],
+    about: "Union Public Service Commission (UPSC) requires all candidate photographs and signatures uploaded to upsconline.nic.in to have identical pixel width and height (square aspect ratio between 350 x 350 and 1000 x 1000 pixels) and file size between 20KB and 300KB. ConvertSheet's UPSC Resizer automatically enforces the square aspect ratio, scales to 350x350 px, and ensures file size satisfies the portal validator.",
+    howTo: [
+      { step: 1, title: "Upload Photo or Signature", description: "Upload your passport portrait or scanned signature." },
+      { step: 2, title: "Select UPSC Preset", description: "Automatic 350x350 pixel square formatting with 20KB to 300KB byte constraint." },
+      { step: 3, title: "Download", description: "Download your UPSC-ready JPG file." }
+    ],
+    faqs: [
+      { question: "What are the exact dimensions for UPSC photos?", answer: "UPSC requires square dimensions: minimum 350 x 350 pixels up to maximum 1000 x 1000 pixels, in JPG format, with file size between 20KB and 300KB." },
+      { question: "Does this tool work for UPSC signature upload too?", answer: "Yes, both photo and signature must meet the 350x350 pixel and 20-300KB requirements for UPSC Online portals." }
+    ],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
+    relatedTools: ["ssc-photo-resizer", "compress-image-to-100kb", "signature-resizer"]
+  },
+
+  "pan-card-photo-resizer": {
+    slug: "pan-card-photo-resizer",
+    name: "PAN Card Photo & Signature Resizer",
+    category: "utility",
+    title: "PAN Card Photo & Signature Resizer - NSDL & UTIITSL Online",
+    subtitle: "Resize photos to 213 x 213 pixels at 300 DPI (under 30KB) and signatures to 400 x 200 pixels for NSDL and UTIITSL PAN card portals.",
+    metaDescription: "Free online PAN card photo and signature resizer. Resize photos to 213x213 pixels at 300 DPI (< 30KB) and signatures to 400x200 pixels (< 30KB) for NSDL and UTIITSL.",
+    answerSummary: "Resize photos and signatures for NSDL and UTIITSL PAN card applications. Fits 213x213 px at 300 DPI under 30KB and signatures under 30KB.",
+    badge: "NSDL / UTIITSL",
+    featured: true,
+    keywords: [
+      "pan card photo resizer",
+      "pan card signature resizer",
+      "nsdl photo size 213x213",
+      "utiitsl pan card photo resizer 300 dpi",
+      "pan card photo compressor 30kb",
+      "resize photo for pan card online"
+    ],
+    about: "Applying for a new PAN card or updating details on NSDL (Protean) or UTIITSL requires photos with exact 213 x 213 pixels dimensions, 300 DPI resolution, and file size under 30KB. Signatures must be 400 x 200 pixels and under 30KB. ConvertSheet's PAN Card Resizer handles both NSDL and UTIITSL criteria with calibrated 300 DPI EXIF headers.",
+    howTo: [
+      { step: 1, title: "Upload Portrait or Signature", description: "Select your image file in JPG or PNG format." },
+      { step: 2, title: "Choose Photo or Signature", description: "Pick PAN Photo (213x213 px, 300 DPI, < 30KB) or PAN Signature (400x200 px, < 30KB)." },
+      { step: 3, title: "Download", description: "Save your verified file ready for immediate NSDL/UTIITSL upload." }
+    ],
+    faqs: [
+      { question: "What are the exact photo specifications for NSDL PAN Card?", answer: "Dimensions must be 213 x 213 pixels (2.5 x 2.5 cm), resolution 300 DPI, color photo, in JPEG format, with file size under 30KB." },
+      { question: "What are the signature specifications for UTIITSL PAN Card?", answer: "Signature must be 400 x 200 pixels, resolution 300 DPI, in JPEG format, with file size under 30KB." }
+    ],
+    relatedConverters: ["jpg-to-pdf", "png-to-jpg"],
+    relatedTools: ["signature-resizer", "compress-image-to-20kb", "passport-photo-maker"]
   },
 
   "receipt-scanner-ocr": {
@@ -878,7 +963,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Does it verify that numbers add up?", answer: "Yes! The parser performs automated mathematical reconciliation (subtotal + tax == total) to flag discrepancies." },
       { question: "What formats can I export?", answer: "You can download an itemized CSV table (opens directly in Excel and Google Sheets) or copy clean JSON." }
     ],
-    relatedConverters: ["pdf-table-extractor", "json-to-excel"],
+    relatedConverters: ["pdf-to-excel", "json-to-excel"],
     relatedTools: ["pdf-to-markdown", "data-anonymizer-cleaner"]
   },
 
@@ -900,7 +985,8 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Save CSV", description: "Download the CSV file." }
     ],
     faqs: [
-      { question: "Is this tool free?", answer: "Yes, completely free." }
+      { question: "Is this tool free?", answer: "Yes, completely free." },
+      { question: "Does it support international currency receipts?", answer: "Yes, our OCR detects USD, EUR, GBP, INR, CAD, and other major currency symbols and formats." }
     ],
     relatedConverters: ["json-to-excel"],
     relatedTools: ["receipt-scanner-ocr", "pdf-table-extractor"]

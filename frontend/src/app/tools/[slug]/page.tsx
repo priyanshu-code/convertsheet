@@ -81,7 +81,6 @@ import { AiContentDetectorTool } from "@/components/tools/AiContentDetectorTool"
 import { PdfToMarkdownTool } from "@/components/tools/PdfToMarkdownTool";
 import { AudioNoiseReducerTool } from "@/components/tools/AudioNoiseReducerTool";
 import { VideoCompressorTool } from "@/components/tools/VideoCompressorTool";
-import { MediaDownloaderTool } from "@/components/tools/MediaDownloaderTool";
 import { KbImageResizerTool } from "@/components/tools/KbImageResizerTool";
 import { VocalRemoverTool } from "@/components/tools/VocalRemoverTool";
 import { AutoSubtitleTool } from "@/components/tools/AutoSubtitleTool";
@@ -469,10 +468,6 @@ export default function ToolPage({ params }: ToolPageProps) {
     "clean-audio": AudioNoiseReducerTool,
     "video-compressor": VideoCompressorTool,
     "compress-video": VideoCompressorTool,
-    "youtube-downloader": () => <MediaDownloaderTool defaultPlatform="youtube" />,
-    "youtube-to-mp3": () => <MediaDownloaderTool defaultPlatform="youtube" />,
-    "instagram-downloader": () => <MediaDownloaderTool defaultPlatform="instagram" />,
-    "download-instagram-reels": () => <MediaDownloaderTool defaultPlatform="instagram" />,
     "vocal-remover": VocalRemoverTool,
     "isolate-vocals": VocalRemoverTool,
     "acapella-extractor": VocalRemoverTool,
@@ -498,6 +493,45 @@ export default function ToolPage({ params }: ToolPageProps) {
         defaultTargetKb={100}
         title="Compress Image to 100KB"
         subtitle="Compress images to under 100KB for US Visa (DS-160) and identity verification."
+      />
+    ),
+    "compress-image-to-200kb": () => (
+      <KbImageResizerTool
+        defaultTargetKb={200}
+        title="Compress Image to 200KB"
+        subtitle="Compress photos, certificates, and identity documents to under 200KB for online portals."
+      />
+    ),
+    "passport-photo-maker": WhiteBackgroundPassportTool,
+    "signature-resizer": () => (
+      <KbImageResizerTool
+        defaultTargetKb={20}
+        defaultMinKb={10}
+        title="Signature Resizer Online"
+        subtitle="Resize and compress signatures to 140x60 pixels and under 20KB for online forms."
+      />
+    ),
+    "ssc-photo-resizer": () => (
+      <KbImageResizerTool
+        defaultTargetKb={50}
+        defaultMinKb={20}
+        title="SSC Photo & Signature Resizer"
+        subtitle="Resize photos to 3.5 x 4.5 cm (20KB - 50KB) and signatures to 140x60px for SSC exams."
+      />
+    ),
+    "upsc-photo-resizer": () => (
+      <KbImageResizerTool
+        defaultTargetKb={100}
+        defaultMinKb={20}
+        title="UPSC Photo & Signature Resizer"
+        subtitle="Format candidate photos to 350x350 pixels (20KB - 300KB) for UPSC Online portal."
+      />
+    ),
+    "pan-card-photo-resizer": () => (
+      <KbImageResizerTool
+        defaultTargetKb={30}
+        title="PAN Card Photo & Signature Resizer"
+        subtitle="Resize photos to 213x213 pixels at 300 DPI (< 30KB) for NSDL & UTIITSL PAN cards."
       />
     ),
     "reduce-image-size-in-kb": () => (
