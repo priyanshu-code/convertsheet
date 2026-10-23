@@ -163,7 +163,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Can I download SRT and VTT subtitles for YouTube or Reels?", answer: "Yes, clicking the SRT or VTT buttons downloads industry-standard subtitle files with millisecond timestamps ready for YouTube, TikTok, and Premiere Pro." },
       { question: "Can I click timestamps to jump in the audio player?", answer: "Yes, clicking any timestamp in the Timestamps view immediately seeks and plays that exact audio moment for effortless proofreading." }
     ],
-    relatedConverters: ["jpg-to-text", "png-to-text"],
+    relatedConverters: ["markdown-to-excel", "csv-to-excel"],
     relatedTools: ["text-to-speech", "json-formatter-validator"]
   },
 
@@ -255,7 +255,8 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "View Verdict", description: "Check probability gauge and sentence colors." }
     ],
     faqs: [
-      { question: "Is this tool completely free?", answer: "Yes, 100% free with unlimited scans." }
+      { question: "Is this tool completely free?", answer: "Yes, 100% free with unlimited scans." },
+      { question: "Can it detect text from ChatGPT and Claude?", answer: "Yes, our algorithm analyzes perplexity and burstiness patterns common to large language models including ChatGPT, GPT-4, and Claude." }
     ],
     relatedConverters: ["json-to-excel"],
     relatedTools: ["ai-content-detector", "speech-to-text"]
@@ -292,7 +293,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Are complex tables preserved accurately?", answer: "Yes, tables are automatically parsed into standard GitHub-Flavored Markdown pipe-separated tables with aligned headers and cells." },
       { question: "What formats can I upload?", answer: "You can upload PDF, DOCX, XLSX, PPTX, PNG, JPG, JPEG, TIFF, and HTML files." }
     ],
-    relatedConverters: ["pdf-table-extractor", "csv-to-jsonl-converter"],
+    relatedConverters: ["pdf-to-excel", "markdown-to-excel"],
     relatedTools: ["sheet-diff-checker", "sql-query-studio"]
   },
 
@@ -314,10 +315,11 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Download or copy the markdown output." }
     ],
     faqs: [
-      { question: "Are documents stored on servers?", answer: "No, files are processed in ephemeral memory and discarded immediately." }
+      { question: "Are documents stored on servers?", answer: "No, files are processed in ephemeral memory and discarded immediately." },
+      { question: "Does OCR work on scanned images and invoices?", answer: "Yes, Deep Scan OCR processes scanned pages, photos, and invoices into structured Markdown with preserved tables and headers." }
     ],
-    relatedConverters: ["pdf-table-extractor"],
-    relatedTools: ["pdf-to-markdown", "csv-to-jsonl-converter"]
+    relatedConverters: ["pdf-to-excel", "markdown-to-excel"],
+    relatedTools: ["pdf-to-markdown", "pdf-table-extractor"]
   },
 
   "audio-noise-reducer": {
@@ -351,7 +353,7 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { question: "Does noise reduction degrade vocal clarity?", answer: "No. Unlike traditional frequency notch filters that make voices sound hollow or tinny, our deep learning model reconstructs full harmonic vocal frequencies." },
       { question: "What audio formats are supported?", answer: "We support MP3, WAV, M4A, AAC, FLAC, OGG, and WebM up to 100MB." }
     ],
-    relatedConverters: ["speech-to-text", "text-to-speech"],
+    relatedConverters: ["json-to-excel", "csv-to-excel"],
     relatedTools: ["speech-to-text", "text-to-speech"]
   },
 
@@ -373,9 +375,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 3, title: "Download", description: "Download your enhanced audio." }
     ],
     faqs: [
-      { question: "Is this voice cleaner free?", answer: "Yes, completely free with no watermarks." }
+      { question: "Is this voice cleaner free?", answer: "Yes, completely free with no watermarks." },
+      { question: "What formats can I clean?", answer: "You can upload and denoise MP3, WAV, M4A, AAC, FLAC, and WebM audio files up to 100MB." }
     ],
-    relatedConverters: ["speech-to-text"],
+    relatedConverters: ["json-to-excel", "csv-to-excel"],
     relatedTools: ["audio-noise-reducer", "speech-to-text"]
   }
 };

@@ -212,6 +212,7 @@ export function TextToSpeechTool() {
               max="1.5"
               step="0.1"
               value={speed}
+              aria-label="Speech Rate"
               onChange={(e) => setSpeed(parseFloat(e.target.value))}
               className="w-full accent-emerald-500 cursor-pointer"
             />

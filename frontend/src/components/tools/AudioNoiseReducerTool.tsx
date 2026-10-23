@@ -127,6 +127,7 @@ export function AudioNoiseReducerTool() {
             <input
               type="file"
               ref={fileInputRef}
+              aria-label="Upload audio recording to denoise"
               onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
               accept=".mp3,.wav,.m4a,.aac,.flac,.ogg,.webm,.mp4"
               className="hidden"
@@ -222,6 +223,7 @@ export function AudioNoiseReducerTool() {
           <input
             type="checkbox"
             checked={postFilter}
+            aria-label="Harmonic Post-Filter"
             onChange={(e) => setPostFilter(e.target.checked)}
             className="w-4 h-4 rounded text-emerald-600 accent-emerald-600 cursor-pointer"
           />
@@ -257,9 +259,9 @@ export function AudioNoiseReducerTool() {
         {/* Audio Before & After Comparison */}
         {(originalAudioUrl || cleanedAudioUrl) && (
           <div className="pt-6 border-t border-zinc-100 dark:border-zinc-800 space-y-4">
-            <h5 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
               Audio Comparison Player
-            </h5>
+            </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Original Noisy Audio */}

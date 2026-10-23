@@ -119,6 +119,7 @@ export function PdfToMarkdownTool() {
             <input
               type="file"
               ref={fileInputRef}
+              aria-label="Upload document to convert to markdown"
               onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
               accept=".pdf,.png,.jpg,.jpeg,.webp,.tiff,.docx,.xlsx,.pptx,.txt,.html"
               className="hidden"
@@ -207,6 +208,7 @@ export function PdfToMarkdownTool() {
           <input
             type="checkbox"
             checked={includeTables}
+            aria-label="Reconstruct Tables as Clean Markdown Grids"
             onChange={(e) => setIncludeTables(e.target.checked)}
             className="w-4 h-4 rounded text-emerald-600 accent-emerald-600 cursor-pointer"
           />

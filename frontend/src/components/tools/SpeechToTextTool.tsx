@@ -423,6 +423,7 @@ export function SpeechToTextTool() {
           <select
             value={selectedLanguage}
             onChange={(e) => setSelectedLanguage(e.target.value)}
+            aria-label="Audio Language"
             className="px-3 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
           >
             {SUPPORTED_LANGUAGES.map((lang) => (
@@ -439,6 +440,7 @@ export function SpeechToTextTool() {
               type="checkbox"
               checked={enableGpu}
               onChange={(e) => setEnableGpu(e.target.checked)}
+              aria-label="GPU Acceleration"
               className="rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500"
             />
             <span className="font-medium text-zinc-700 dark:text-zinc-300">
@@ -464,6 +466,7 @@ export function SpeechToTextTool() {
               <input
                 ref={fileInputRef}
                 type="file"
+                aria-label="Upload audio or video file"
                 accept="audio/*,video/*,.mp3,.wav,.m4a,.aac,.flac,.ogg,.opus,.mp4,.webm,.mov,.mkv"
                 className="hidden"
                 onChange={(e) => {
@@ -473,9 +476,9 @@ export function SpeechToTextTool() {
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
                 <UploadCloud className="w-8 h-8" />
               </div>
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-1">
+              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-1">
                 Drop Audio or Video File Here
-              </h3>
+              </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
                 Supports MP3, WAV, M4A, FLAC, MP4, WebM, and MOV up to 100MB. Audio tracks are extracted automatically from videos.
               </p>
