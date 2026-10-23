@@ -32,6 +32,8 @@ export function SpeechToTextTool() {
   const [file, setFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [engineMode, setEngineMode] = useState<"auto" | "fast" | "multilingual">("auto");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("auto");
+  const [enableGpu, setEnableGpu] = useState<boolean>(true);
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [recordingSeconds, setRecordingSeconds] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
@@ -113,7 +115,12 @@ export function SpeechToTextTool() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("mode", engineMode);
-      formData.append("tier", engineMode === "multilingual" ? "pro" : "free");
+      if (selectedLanguage && selectedLanguage !== "auto") {
+        formData.append("language", selectedLanguage);
+      }
+      formData.append("tier", enableGpu || engineMode === "multilingual" ? "pro" : "free");
+      formData.append("provider", enableGpu ? "cuda" : "cpu");
+      formData.append("device", enableGpu ? "cuda" : "cpu");
 
       const data = await dispatchMediaJob("stt/transcribe", formData);
 
@@ -244,6 +251,45 @@ export function SpeechToTextTool() {
             Accurate punctuation across 99+ international languages.
           </p>
         </button>
+      </div>
+
+      {/* Settings Row: Language & Acceleration */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 text-xs">
+        <div className="flex flex-wrap items-center gap-2">
+          <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          <span className="font-semibold text-zinc-800 dark:text-zinc-200">Audio Language:</span>
+          <select
+            value={selectedLanguage}
+            onChange={(e) => setSelectedLanguage(e.target.value)}
+            className="px-3 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option value="auto">Auto-Detect Language</option>
+            <option value="hi">Hindi (हिंदी / Hinglish)</option>
+            <option value="en">English</option>
+            <option value="es">Spanish (Español)</option>
+            <option value="fr">French (Français)</option>
+            <option value="de">German (Deutsch)</option>
+            <option value="pt">Portuguese (Português)</option>
+            <option value="ru">Russian (Русский)</option>
+            <option value="ja">Japanese (日本語)</option>
+            <option value="zh">Chinese (中文)</option>
+            <option value="ar">Arabic (العربية)</option>
+          </select>
+        </div>
+
+        <div className="flex items-center gap-2 justify-end">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={enableGpu}
+              onChange={(e) => setEnableGpu(e.target.checked)}
+              className="rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500"
+            />
+            <span className="font-medium text-zinc-700 dark:text-zinc-300">
+              GPU Acceleration {enableGpu ? "(CUDA active)" : "(CPU mode)"}
+            </span>
+          </label>
+        </div>
       </div>
 
       {/* Main Dropzone / Record Card */}
