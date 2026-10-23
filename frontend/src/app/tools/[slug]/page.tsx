@@ -77,6 +77,9 @@ import { FaceUnblurTool } from "@/components/tools/FaceUnblurTool";
 import { AiPhotoEnhancerTool } from "@/components/tools/AiPhotoEnhancerTool";
 import { SpeechToTextTool } from "@/components/tools/SpeechToTextTool";
 import { TextToSpeechTool } from "@/components/tools/TextToSpeechTool";
+import { AiContentDetectorTool } from "@/components/tools/AiContentDetectorTool";
+import { PdfToMarkdownTool } from "@/components/tools/PdfToMarkdownTool";
+import { AudioNoiseReducerTool } from "@/components/tools/AudioNoiseReducerTool";
 
 export interface ToolPageProps {
   params: {
@@ -452,6 +455,12 @@ export default function ToolPage({ params }: ToolPageProps) {
     "ai-photo-enhancer": AiPhotoEnhancerTool,
     "speech-to-text": SpeechToTextTool,
     "text-to-speech": TextToSpeechTool,
+    "ai-content-detector": AiContentDetectorTool,
+    "ai-text-detector": AiContentDetectorTool,
+    "pdf-to-markdown": PdfToMarkdownTool,
+    "document-to-markdown": PdfToMarkdownTool,
+    "audio-noise-reducer": AudioNoiseReducerTool,
+    "clean-audio": AudioNoiseReducerTool,
   };
 
   const ToolComponent = componentMap[tool.slug];

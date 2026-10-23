@@ -36,7 +36,10 @@ const ECOSYSTEM_CATEGORIES: EcosystemCategory[] = [
       { label: "Unblur Face", href: "/tools/unblur-face" },
       { label: "White BG Passport", href: "/tools/white-background-passport-photo" },
       { label: "4x AI Enhancer", href: "/tools/ai-photo-enhancer" },
-      { label: "Unblur Image", href: "/tools/unblur-image" },
+      { label: "Speech to Text", href: "/tools/speech-to-text" },
+      { label: "Text to Speech", href: "/tools/text-to-speech" },
+      { label: "AI Content Detector", href: "/tools/ai-content-detector" },
+      { label: "Audio Noise Reducer", href: "/tools/audio-noise-reducer" },
     ],
   },
   {
@@ -62,9 +65,9 @@ const ECOSYSTEM_CATEGORIES: EcosystemCategory[] = [
     icon: FileText,
     primaryHref: "/tools/compress-pdf",
     pills: [
+      { label: "PDF to Markdown", href: "/tools/pdf-to-markdown" },
       { label: "Compress PDF", href: "/tools/compress-pdf" },
       { label: "Merge PDF", href: "/tools/merge-pdf" },
-      { label: "Split PDF", href: "/tools/split-pdf" },
       { label: "PDF Table Extractor", href: "/tools/pdf-table-extractor" },
     ],
   },

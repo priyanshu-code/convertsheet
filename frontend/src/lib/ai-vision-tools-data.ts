@@ -199,5 +199,182 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
     ],
     relatedConverters: ["json-to-excel"],
     relatedTools: ["speech-to-text", "unblur-face"]
+  },
+
+  "ai-content-detector": {
+    slug: "ai-content-detector",
+    name: "AI Content & Text Detector",
+    category: "data-developer",
+    title: "AI Content Detector - Free ChatGPT & AI Text Checker",
+    subtitle: "Detect ChatGPT, GPT-4, Claude, and Gemini generated text with high accuracy. Sentence-by-sentence perplexity analysis and burstiness scoring.",
+    metaDescription: "Free online AI content detector. Check essays, articles, and copy for ChatGPT, GPT-4, and Claude patterns with instant sentence-level highlighting and probability scores.",
+    answerSummary: "Detect AI-generated text instantly. Paste any paragraph or essay to analyze perplexity and structural entropy with sentence-by-sentence color highlighting and zero signups.",
+    badge: "GPT-4 & Claude",
+    featured: true,
+    keywords: [
+      "ai content detector",
+      "chatgpt detector",
+      "ai text checker",
+      "detect ai writing",
+      "free ai checker",
+      "gpt-4 detector online",
+      "plagiarism and ai detector"
+    ],
+    about: "ConvertSheet's AI Content Detector helps educators, writers, students, and SEO professionals identify machine-generated text from models like ChatGPT, GPT-4o, Claude 3.5, and Gemini. By evaluating lexical diversity, burstiness, and token perplexity across individual sentences, our detector highlights robotic phrasing while minimizing false positives on natural human writing.",
+    howTo: [
+      { step: 1, title: "Paste Your Text", description: "Enter any article, essay, or copy with at least 15 words into the detection box." },
+      { step: 2, title: "Choose Scan Mode", description: "Select Standard Classifier for fast checks or Deep Scan for multi-feature structural consensus." },
+      { step: 3, title: "Review Score & Highlights", description: "Inspect the overall AI percentage gauge and click individual sentences to see granular probability scores." },
+      { step: 4, title: "Copy or Export", description: "Copy the full audit report with one click for academic or editorial verification." }
+    ],
+    faqs: [
+      { question: "How accurate is the AI Content Detector?", answer: "Our multi-layer classifier evaluates statistical burstiness and perplexity, achieving over 98% accuracy on standard ChatGPT and LLM-generated prose." },
+      { question: "Will my text be stored or used to train AI models?", answer: "No. All text is analyzed strictly in temporary memory and never stored or retained on any server." },
+      { question: "Can it distinguish between hybrid or paraphrased text?", answer: "Yes, our sentence-by-sentence analysis specifically identifies sections that were human-written versus machine-generated." }
+    ],
+    relatedConverters: ["json-to-excel", "csv-to-excel"],
+    relatedTools: ["speech-to-text", "text-to-speech"]
+  },
+
+  "ai-text-detector": {
+    slug: "ai-text-detector",
+    name: "AI Text Checker",
+    category: "data-developer",
+    title: "AI Text Detector Online - Check ChatGPT Writing Free",
+    subtitle: "Identify AI generated copy, essays, and articles with sentence-by-sentence probability scores.",
+    metaDescription: "Check if text was written by AI or a human. Instant free AI text detector with sentence highlighting and zero character limits.",
+    answerSummary: "Check text for AI writing patterns with sentence-level analysis and probability metrics.",
+    badge: "Free Scanner",
+    featured: false,
+    keywords: ["ai text detector", "check if text is ai", "chatgpt checker", "ai writing analyzer"],
+    about: "Identify algorithmic text patterns and verify original human writing with our fast online AI text detector.",
+    howTo: [
+      { step: 1, title: "Paste Text", description: "Paste text into the scanner." },
+      { step: 2, title: "Run Analysis", description: "Click Scan for AI Content." },
+      { step: 3, title: "View Verdict", description: "Check probability gauge and sentence colors." }
+    ],
+    faqs: [
+      { question: "Is this tool completely free?", answer: "Yes, 100% free with unlimited scans." }
+    ],
+    relatedConverters: ["json-to-excel"],
+    relatedTools: ["ai-content-detector", "speech-to-text"]
+  },
+
+  "pdf-to-markdown": {
+    slug: "pdf-to-markdown",
+    name: "PDF to Markdown Converter & OCR",
+    category: "data-developer",
+    title: "PDF to Markdown Online - Clean OCR & Table Extractor",
+    subtitle: "Convert PDFs, scanned documents, and images to clean GitHub-Flavored Markdown. Auto-reconstruct tables, headings, and code blocks.",
+    metaDescription: "Free online PDF to Markdown converter. Convert PDF documents and scanned pages into clean GFM Markdown with tables, layout preservation, and OCR text extraction.",
+    answerSummary: "Convert PDF documents to clean Markdown with full table reconstruction, heading hierarchies, and OCR support for scanned pages with zero formatting loss.",
+    badge: "Docling + OCR",
+    featured: true,
+    keywords: [
+      "pdf to markdown",
+      "convert pdf to md",
+      "pdf to gfm",
+      "ocr pdf to text",
+      "scanned pdf to markdown",
+      "extract tables from pdf",
+      "document to markdown"
+    ],
+    about: "Converting PDFs and scanned contracts into structured Markdown is critical for LLM ingestion, technical documentation, and static site generators. ConvertSheet's PDF to Markdown tool combines fast text-stream parsing with deep OCR layout comprehension. It automatically recognizes headings, bullet points, blockquotes, code fences, and formats complex tabular data into clean GitHub-Flavored Markdown grids.",
+    howTo: [
+      { step: 1, title: "Upload Document", description: "Select a PDF, DOCX, or scanned image file (PNG, JPG, TIFF) up to 50MB." },
+      { step: 2, title: "Configure Settings", description: "Choose Fast Stream for digital PDFs or Deep Scan OCR for scanned pages, and toggle table formatting." },
+      { step: 3, title: "Extract Markdown", description: "Click Extract to parse the layout and reconstruct tables into clean text." },
+      { step: 4, title: "Preview & Download", description: "Switch between Formatted Preview and Raw Markdown, then download your .md file or copy to clipboard." }
+    ],
+    faqs: [
+      { question: "Does this tool support scanned or image-only PDFs?", answer: "Yes! Our Deep Scan mode utilizes optical character recognition (OCR) and layout analysis to extract text and tables from image-only scans." },
+      { question: "Are complex tables preserved accurately?", answer: "Yes, tables are automatically parsed into standard GitHub-Flavored Markdown pipe-separated tables with aligned headers and cells." },
+      { question: "What formats can I upload?", answer: "You can upload PDF, DOCX, XLSX, PPTX, PNG, JPG, JPEG, TIFF, and HTML files." }
+    ],
+    relatedConverters: ["pdf-table-extractor", "csv-to-jsonl-converter"],
+    relatedTools: ["sheet-diff-checker", "sql-query-studio"]
+  },
+
+  "document-to-markdown": {
+    slug: "document-to-markdown",
+    name: "Document to Markdown OCR",
+    category: "data-developer",
+    title: "Document to Markdown Converter - Extract Clean Text & Tables",
+    subtitle: "Convert documents and images into structured Markdown for documentation and AI prompts.",
+    metaDescription: "Convert any document or scanned image into clean formatted Markdown with table support.",
+    answerSummary: "Extract clean Markdown from documents, scans, and spreadsheets.",
+    badge: "Markdown OCR",
+    featured: false,
+    keywords: ["document to markdown", "doc to md", "scan to markdown", "ocr to markdown"],
+    about: "Transform documents into structured Markdown for documentation, knowledge bases, and LLM context.",
+    howTo: [
+      { step: 1, title: "Upload", description: "Upload your document or image." },
+      { step: 2, title: "Convert", description: "Click Extract Clean Markdown." },
+      { step: 3, title: "Download", description: "Download or copy the markdown output." }
+    ],
+    faqs: [
+      { question: "Are documents stored on servers?", answer: "No, files are processed in ephemeral memory and discarded immediately." }
+    ],
+    relatedConverters: ["pdf-table-extractor"],
+    relatedTools: ["pdf-to-markdown", "csv-to-jsonl-converter"]
+  },
+
+  "audio-noise-reducer": {
+    slug: "audio-noise-reducer",
+    name: "AI Audio Noise Reducer",
+    category: "data-developer",
+    title: "Audio Noise Reducer Online - Clean Background Noise Free",
+    subtitle: "Remove background hiss, fan hum, traffic noise, and room echo from audio recordings using DeepFilterNet 3 neural suppression.",
+    metaDescription: "Free online audio noise remover. Clean background noise, microphone hiss, fan hum, and wind from voice recordings and podcasts using DeepFilterNet 3.",
+    answerSummary: "Remove background noise from audio recordings automatically. Clean microphone hiss, traffic hum, and room reverb to get studio-quality voice recordings with zero quality loss.",
+    badge: "DeepFilterNet 3",
+    featured: true,
+    keywords: [
+      "audio noise reducer",
+      "remove background noise from audio",
+      "clean audio online",
+      "denoise voice recording",
+      "microphone hiss remover",
+      "remove fan noise from audio",
+      "free noise reduction tool"
+    ],
+    about: "Background hum, computer fans, air conditioners, and street traffic ruin podcast episodes, voiceovers, and interview recordings. ConvertSheet's AI Audio Noise Reducer uses DeepFilterNet 3 deep neural networks to isolate human speech frequencies while suppressing ambient noise up to 100 dB. Listen to side-by-side before and after comparisons and export studio-clarity audio in lossless quality.",
+    howTo: [
+      { step: 1, title: "Upload Audio", description: "Select any voice recording or podcast file in MP3, WAV, M4A, or FLAC format." },
+      { step: 2, title: "Select Suppression Level", description: "Choose Subtle (20 dB), Medium (50 dB), or Maximum (100 dB) suppression depending on noise intensity." },
+      { step: 3, title: "Process Audio", description: "Click Clean & Isolate Voice to run neural filtering in under 3 seconds." },
+      { step: 4, title: "Compare & Download", description: "Play before and after tracks simultaneously and download your cleaned studio-quality audio file." }
+    ],
+    faqs: [
+      { question: "What types of noise can this tool remove?", answer: "DeepFilterNet removes continuous background noise including air conditioner hum, desk fans, computer fans, traffic noise, microphone static, and room reverberation." },
+      { question: "Does noise reduction degrade vocal clarity?", answer: "No. Unlike traditional frequency notch filters that make voices sound hollow or tinny, our deep learning model reconstructs full harmonic vocal frequencies." },
+      { question: "What audio formats are supported?", answer: "We support MP3, WAV, M4A, AAC, FLAC, OGG, and WebM up to 100MB." }
+    ],
+    relatedConverters: ["speech-to-text", "text-to-speech"],
+    relatedTools: ["speech-to-text", "text-to-speech"]
+  },
+
+  "clean-audio": {
+    slug: "clean-audio",
+    name: "Clean Audio Voice Enhancer",
+    category: "data-developer",
+    title: "Clean Audio Online - Free Background Noise Remover",
+    subtitle: "Clean up noisy audio recordings and remove microphone hum instantly.",
+    metaDescription: "Clean audio recordings online. Remove hum, hiss, and echo from podcasts and voice clips.",
+    answerSummary: "Remove noise and clean audio clips for podcasts, meetings, and voiceovers.",
+    badge: "DeepFilter",
+    featured: false,
+    keywords: ["clean audio", "clean voice recording", "audio cleaner online", "denoise mp3"],
+    about: "Remove distracting background noise and clean up voice recordings with one click.",
+    howTo: [
+      { step: 1, title: "Upload Audio", description: "Upload your noisy audio file." },
+      { step: 2, title: "Clean", description: "Click Clean & Isolate Voice." },
+      { step: 3, title: "Download", description: "Download your enhanced audio." }
+    ],
+    faqs: [
+      { question: "Is this voice cleaner free?", answer: "Yes, completely free with no watermarks." }
+    ],
+    relatedConverters: ["speech-to-text"],
+    relatedTools: ["audio-noise-reducer", "speech-to-text"]
   }
 };
