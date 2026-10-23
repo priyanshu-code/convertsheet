@@ -19,12 +19,16 @@ export interface MediaJobStatus {
   result?: {
     output_path?: string;
     download_url?: string;
+    text?: string;
+    segments?: Array<{ start: number; end: number; text: string }>;
+    duration_seconds?: number;
+    language?: string;
     [key: string]: any;
   };
 }
 
 /**
- * Dispatches an image processing request directly to the Media Engine.
+ * Dispatches a multipart form upload request to the Media Engine.
  */
 export async function dispatchMediaJob(
   endpoint: string,
@@ -49,13 +53,39 @@ export async function dispatchMediaJob(
 }
 
 /**
- * Polls a running media job until completion or timeout.
+ * Dispatches a JSON request to the Media Engine (for TTS, Detection, etc.).
  */
-export async function pollMediaJob(
+export async function dispatchJsonMediaJob(
+  endpoint: string,
+  payload: Record<string, any>
+): Promise<any> {
+  const url = `${MEDIA_ENGINE_BASE_URL}/media/api/v1/${endpoint.replace(/^\//, "")}`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "X-API-Key": MASTER_API_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || err.message || `Media Engine returned HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
+/**
+ * Polls a running media job until completion and returns the final result payload.
+ */
+export async function pollMediaJobFull(
   jobId: string,
-  maxAttempts: number = 40,
+  maxAttempts: number = 60,
   intervalMs: number = 1000
-): Promise<string> {
+): Promise<NonNullable<MediaJobStatus["result"]>> {
   let attempts = 0;
 
   while (attempts < maxAttempts) {
@@ -73,19 +103,34 @@ export async function pollMediaJob(
     const job: MediaJobStatus = await res.json();
 
     if (job.status === "completed") {
-      const url = job.result?.download_url || job.result?.output_path;
-      if (url) {
-        return url.startsWith("http")
-          ? url
-          : `${MEDIA_ENGINE_BASE_URL}/media/api/v1/download/files/${url}`;
+      if (job.result) {
+        return job.result;
       }
-      throw new Error("Job completed but returned no output file.");
+      return {};
     }
 
     if (job.status === "failed") {
-      throw new Error(job.error || "Media processing job failed on GPU worker.");
+      throw new Error(job.error || "Media processing job failed on worker node.");
     }
   }
 
-  throw new Error("Media processing timed out. Please try with a smaller image.");
+  throw new Error("Job timed out while processing.");
+}
+
+/**
+ * Convenience wrapper returning the download URL of a completed job.
+ */
+export async function pollMediaJob(
+  jobId: string,
+  maxAttempts: number = 40,
+  intervalMs: number = 1000
+): Promise<string> {
+  const result = await pollMediaJobFull(jobId, maxAttempts, intervalMs);
+  const url = result.download_url || result.output_path;
+  if (url) {
+    return url.startsWith("http")
+      ? url
+      : `${MEDIA_ENGINE_BASE_URL}/media/api/v1/download/files/${url}`;
+  }
+  throw new Error("Job completed but returned no output file.");
 }

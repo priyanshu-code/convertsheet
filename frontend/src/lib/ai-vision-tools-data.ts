@@ -129,5 +129,75 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
     ],
     relatedConverters: ["png-to-jpg", "webp-to-jpg"],
     relatedTools: ["unblur-face", "ai-photo-enhancer", "white-background-passport-photo"]
+  },
+
+  "speech-to-text": {
+    slug: "speech-to-text",
+    name: "AI Speech to Text Converter",
+    category: "data-developer",
+    title: "Speech to Text Online - Free Audio & Video Transcriber",
+    subtitle: "Transcribe audio and video to text in seconds using Whisper Large-v3 and Parakeet-TDT. Accurate timestamps and 99+ languages.",
+    metaDescription: "Free online speech to text transcription. Transcribe MP3, WAV, M4A, and MP4 files into clean text and SRT subtitles using OpenAI Whisper and NeMo Parakeet.",
+    answerSummary: "Transcribe speech to text automatically. Upload audio or record live to get accurate text transcripts, timestamps, and downloadable SRT subtitles with zero watermarks.",
+    badge: "Whisper Large-v3",
+    featured: true,
+    keywords: [
+      "speech to text",
+      "audio to text",
+      "transcribe audio online",
+      "voice to text converter",
+      "whisper speech to text",
+      "video to text transcript",
+      "free transcription tool"
+    ],
+    about: "Manual transcription is tedious and time-consuming. ConvertSheet's Speech-to-Text tool combines Sherpa-ONNX Parakeet-TDT v3 for sub-second English transcription with Whisper Large-v3-Turbo for world-class punctuation and multi-lingual accuracy across 99+ languages. Upload voice notes, interviews, lectures, or record straight from your microphone to generate formatted transcripts and SRT subtitle files instantly.",
+    howTo: [
+      { step: 1, title: "Upload or Record", description: "Select an audio/video file (MP3, WAV, M4A, MP4) or record directly from your microphone." },
+      { step: 2, title: "Choose Engine Mode", description: "Pick Fast Lane (Parakeet) for 250ms speed or Multilingual (Whisper) for international language support." },
+      { step: 3, title: "Review & Format", description: "Toggle between clean continuous text and timestamped segment views." },
+      { step: 4, title: "Export Transcript", description: "Copy with one click or download as .txt or .srt subtitle files." }
+    ],
+    faqs: [
+      { question: "What audio formats are supported?", answer: "We support MP3, WAV, M4A, AAC, FLAC, OGG, WebM, MP4, and MOV files up to 100MB." },
+      { question: "Can I transcribe languages other than English?", answer: "Yes! Whisper Large-v3 supports 99+ languages including Spanish, French, German, Hindi, Mandarin, Portuguese, and Arabic with auto-detection." },
+      { question: "Can I download SRT subtitles for YouTube or Reels?", answer: "Yes, clicking the SRT button downloads an industry-standard .srt subtitle file with precise millisecond timestamps." }
+    ],
+    relatedConverters: ["jpg-to-text", "png-to-text"],
+    relatedTools: ["text-to-speech", "json-formatter-validator"]
+  },
+
+  "text-to-speech": {
+    slug: "text-to-speech",
+    name: "AI Text to Speech Generator",
+    category: "data-developer",
+    title: "AI Text to Speech Online - Lifelike Voice Generator",
+    subtitle: "Convert text into realistic, studio-quality human voices in seconds. Powered by Kokoro-82M with 10 American and British voice accents.",
+    metaDescription: "Free AI text to speech online. Generate natural human voices from text using Kokoro-82M. Download MP3 audio for videos, podcasts, and audiobooks with zero sign-up.",
+    answerSummary: "Generate natural speech from text. Choose from 10 studio voice presets across American and British accents with adjustable speaking rates and instant MP3 download.",
+    badge: "Kokoro Studio Voices",
+    featured: true,
+    keywords: [
+      "text to speech",
+      "ai voice generator",
+      "text to voice online",
+      "free tts converter",
+      "kokoro tts",
+      "realistic text to speech",
+      "generate voice from text"
+    ],
+    about: "Transform written scripts, blog posts, stories, and educational content into broadcast-grade natural spoken audio. ConvertSheet's Text-to-Speech tool leverages Kokoro-82M neural synthesis models to produce expressive, human-like voice cadences without robotic monotony. Choose from 10 distinct male and female personalities across American and British accents with full control over playback tempo.",
+    howTo: [
+      { step: 1, title: "Enter Your Text", description: "Type, paste, or select a sample prompt up to 15,000 characters." },
+      { step: 2, title: "Choose Voice & Accent", description: "Select from 10 studio voices (Heart, Bella, Adam, Michael, Emma, George) and adjust speaking speed." },
+      { step: 3, title: "Synthesize Audio", description: "Click Generate to synthesize lifelike speech in under one second." },
+      { step: 4, title: "Listen & Download", description: "Preview using the built-in audio player and download your high-bitrate MP3." }
+    ],
+    faqs: [
+      { question: "Is this voice synthesizer free to use?", answer: "Yes! You can generate speech from text completely free with zero subscription requirements or watermarks." },
+      { question: "Can I use the generated audio for YouTube and commercial projects?", answer: "Yes, generated audio is royalty-free for your personal, commercial, YouTube, and podcast projects." },
+      { question: "What is the maximum length of text I can synthesize at once?", answer: "You can convert up to 15,000 characters (approximately 2,500 words or 15 minutes of speech) in a single generation." }
+    ],
+    relatedConverters: ["json-to-excel"],
+    relatedTools: ["speech-to-text", "unblur-face"]
   }
 };

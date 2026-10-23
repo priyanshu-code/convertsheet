@@ -75,6 +75,8 @@ import { StrategyRiskCalculator } from "@/components/tools/StrategyRiskCalculato
 import { WhiteBackgroundPassportTool } from "@/components/tools/WhiteBackgroundPassportTool";
 import { FaceUnblurTool } from "@/components/tools/FaceUnblurTool";
 import { AiPhotoEnhancerTool } from "@/components/tools/AiPhotoEnhancerTool";
+import { SpeechToTextTool } from "@/components/tools/SpeechToTextTool";
+import { TextToSpeechTool } from "@/components/tools/TextToSpeechTool";
 
 export interface ToolPageProps {
   params: {
@@ -448,6 +450,8 @@ export default function ToolPage({ params }: ToolPageProps) {
     "unblur-face": FaceUnblurTool,
     "unblur-image": FaceUnblurTool,
     "ai-photo-enhancer": AiPhotoEnhancerTool,
+    "speech-to-text": SpeechToTextTool,
+    "text-to-speech": TextToSpeechTool,
   };
 
   const ToolComponent = componentMap[tool.slug];
