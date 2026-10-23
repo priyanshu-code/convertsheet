@@ -136,10 +136,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
     name: "AI Speech to Text Converter",
     category: "data-developer",
     title: "Speech to Text Online - Free Audio & Video Transcriber",
-    subtitle: "Transcribe audio and video to text in seconds using Whisper Large-v3 and Parakeet-TDT. Accurate timestamps and 99+ languages.",
-    metaDescription: "Free online speech to text transcription. Transcribe MP3, WAV, M4A, and MP4 files into clean text and SRT subtitles using OpenAI Whisper and NeMo Parakeet.",
-    answerSummary: "Transcribe speech to text automatically. Upload audio or record live to get accurate text transcripts, timestamps, and downloadable SRT subtitles with zero watermarks.",
-    badge: "Whisper Large-v3",
+    subtitle: "Transcribe audio and video to text in seconds using Whisper Large-v3-Turbo and Parakeet-TDT. Accurate timestamps, SRT/VTT subtitles, and 99+ languages.",
+    metaDescription: "Free online speech to text transcription. Transcribe MP3, WAV, M4A, and MP4 files into clean text, SRT/VTT subtitles, and JSON using Whisper Large-v3-Turbo and NeMo Parakeet.",
+    answerSummary: "Transcribe speech to text automatically. Upload audio or record live to get accurate text transcripts, interactive timestamps, and downloadable SRT/VTT subtitles with zero watermarks.",
+    badge: "Whisper Large-v3-Turbo",
     featured: true,
     keywords: [
       "speech to text",
@@ -158,9 +158,10 @@ export const AI_VISION_TOOLS: Record<string, ToolConfig> = {
       { step: 4, title: "Export Transcript", description: "Copy with one click or download as .txt or .srt subtitle files." }
     ],
     faqs: [
-      { question: "What audio formats are supported?", answer: "We support MP3, WAV, M4A, AAC, FLAC, OGG, WebM, MP4, and MOV files up to 100MB." },
-      { question: "Can I transcribe languages other than English?", answer: "Yes! Whisper Large-v3 supports 99+ languages including Spanish, French, German, Hindi, Mandarin, Portuguese, and Arabic with auto-detection." },
-      { question: "Can I download SRT subtitles for YouTube or Reels?", answer: "Yes, clicking the SRT button downloads an industry-standard .srt subtitle file with precise millisecond timestamps." }
+      { question: "What audio formats are supported?", answer: "We support MP3, WAV, M4A, AAC, FLAC, OGG, WebM, MP4, and MOV files up to 100MB. Audio tracks are extracted automatically from video files." },
+      { question: "Can I transcribe languages other than English?", answer: "Yes! Whisper Large-v3-Turbo supports 99+ languages including Hindi, Hinglish, Spanish, French, German, Mandarin, Portuguese, and Arabic with automatic language detection or explicit selection." },
+      { question: "Can I download SRT and VTT subtitles for YouTube or Reels?", answer: "Yes, clicking the SRT or VTT buttons downloads industry-standard subtitle files with millisecond timestamps ready for YouTube, TikTok, and Premiere Pro." },
+      { question: "Can I click timestamps to jump in the audio player?", answer: "Yes, clicking any timestamp in the Timestamps view immediately seeks and plays that exact audio moment for effortless proofreading." }
     ],
     relatedConverters: ["jpg-to-text", "png-to-text"],
     relatedTools: ["text-to-speech", "json-formatter-validator"]
