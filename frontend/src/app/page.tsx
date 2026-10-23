@@ -16,6 +16,7 @@ import { getAllTools } from "@/lib/tool-registry";
 import { AdBanner } from "@/components/layout";
 import { HomeCommandHero } from "@/components/home/HomeCommandHero";
 import { TrendingFinancialSuite } from "@/components/home/TrendingFinancialSuite";
+import { ModularEcosystemGrid } from "@/components/home/ModularEcosystemGrid";
 import { ConverterGrid } from "@/components/home/ConverterGrid";
 import { ToolGrid } from "@/components/home/ToolGrid";
 
@@ -129,6 +130,9 @@ export default function HomePage() {
 
       {/* Trending Financial & Mortgage Suite */}
       <TrendingFinancialSuite />
+
+      {/* Modular Tooling Ecosystem Cards (Pi7-Style Architecture) */}
+      <ModularEcosystemGrid />
 
       {/* Leaderboard Ad Slot */}
       <div className="flex justify-center w-full my-2">
