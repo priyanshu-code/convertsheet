@@ -138,6 +138,7 @@ export function ReceiptOcrTool() {
             <input
               type="file"
               ref={fileInputRef}
+              aria-label="Upload receipt or invoice image"
               onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
               accept="image/*,.pdf,.jpg,.jpeg,.png,.webp,.tiff"
               className="hidden"

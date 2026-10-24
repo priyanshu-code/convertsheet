@@ -217,6 +217,12 @@ Evaluate if switching to the new lender is financially superior to negotiating a
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      // Transparent Excel formulas with retention links
+      wsSummary["B15"] = { t: "n", f: "B13-B14", v: Math.round(result.monthlySavings) };
+      wsSummary["B16"] = { t: "n", f: "B15*12", v: Math.round(result.annualSavings) };
+      wsSummary["B17"] = { t: "n", f: "B16*B10", v: Math.round(result.grossLifetimeSavings) };
+      wsSummary["B21"] = { t: "n", f: "SUM(B18:B20)", v: Math.round(result.totalSwitchingCost) };
+      wsSummary["B22"] = { t: "n", f: "B17-B21", v: Math.round(result.netLifetimeSavings) };
       XLSX.utils.book_append_sheet(wb, wsSummary, "Transfer Summary");
 
       // Yearly schedule
@@ -240,6 +246,15 @@ Evaluate if switching to the new lender is financially superior to negotiating a
       ]);
 
       const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeaders, ...scheduleRows]);
+      result.yearlyComparison.forEach((r, idx) => {
+        const rowNum = idx + 2;
+        wsSchedule[`D${rowNum}`] = { t: "n", f: `B${rowNum}-C${rowNum}`, v: Math.round(r.yearlySavings) };
+        if (idx === 0) {
+          wsSchedule[`E${rowNum}`] = { t: "n", f: `D${rowNum}`, v: Math.round(r.cumulativeSavings) };
+        } else {
+          wsSchedule[`E${rowNum}`] = { t: "n", f: `E${rowNum - 1}+D${rowNum}`, v: Math.round(r.cumulativeSavings) };
+        }
+      });
       XLSX.utils.book_append_sheet(wb, wsSchedule, "Yearly Amortization");
 
       XLSX.writeFile(
@@ -274,7 +289,7 @@ Evaluate if switching to the new lender is financially superior to negotiating a
       <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
         <span className="font-medium">
-          Updated for October 16, 2026 RBI Policy: 99% Daily CRR Mandate sets prime bank home loan floor at 8.15%–8.40% (Target delta ≥40 bps)
+          Updated for October 16, 2026 RBI Policy: 99% Daily CRR Mandate sets prime bank home loan floor at 8.15%–8.40% (PSU vs Private spread: 40–75 bps • October 24, 2026 benchmarks)
         </span>
       </div>
 

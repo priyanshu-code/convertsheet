@@ -1,10 +1,25 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BalanceTransferCalculator } from "../BalanceTransferCalculator";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import * as XLSX from "xlsx";
+
+vi.mock("xlsx", () => ({
+  utils: {
+    book_new: vi.fn(() => ({})),
+    aoa_to_sheet: vi.fn(() => ({})),
+    book_append_sheet: vi.fn(),
+  },
+  writeFile: vi.fn(),
+}));
 
 describe("BalanceTransferCalculator", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    window.history.replaceState(null, "", "/tools/home-loan-balance-transfer-calculator");
+  });
+
   it("renders balance transfer inputs, verdict card, and yearly amortization schedule", () => {
     localStorage.setItem("convertsheet-target-market", "IN");
     render(
@@ -96,5 +111,30 @@ describe("BalanceTransferCalculator", () => {
 
     // Market rate freshness signal badge
     expect(screen.getByText(/Updated for October 16, 2026 RBI Policy: 99% Daily CRR Mandate/i)).toBeInTheDocument();
+  });
+
+  it("triggers formulaic SheetJS Excel export on export button click", () => {
+    render(
+      <CurrencyProvider>
+        <BalanceTransferCalculator
+          initialValues={{
+            currentBalance: 5000000,
+            currentRate: 9.10,
+            newRate: 8.35,
+            remainingTenureYears: 15,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    const exportBtn = screen.getByText("Export Excel (.xlsx)");
+    fireEvent.click(exportBtn);
+
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.aoa_to_sheet).toHaveBeenCalled();
+    expect(XLSX.writeFile).toHaveBeenCalledWith(
+      expect.anything(),
+      "ConvertSheet_Balance_Transfer_Audit_50Lakh.xlsx"
+    );
   });
 });

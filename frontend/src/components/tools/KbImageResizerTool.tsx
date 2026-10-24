@@ -176,9 +176,9 @@ export function KbImageResizerTool({
     <div className="w-full max-w-6xl mx-auto space-y-6">
       {/* Studio Header */}
       <div className="space-y-1">
-        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
           {title}
-        </h1>
+        </h2>
         <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
           {subtitle}
         </p>
@@ -292,6 +292,7 @@ export function KbImageResizerTool({
                 max="1000"
                 step="5"
                 value={targetKb}
+                aria-label="Target image size in kilobytes"
                 onChange={(e) => setTargetKb(parseInt(e.target.value) || 50)}
                 className="w-full accent-zinc-900 dark:accent-zinc-100 cursor-pointer"
               />
@@ -344,10 +345,12 @@ export function KbImageResizerTool({
 
             <div className="grid grid-cols-2 gap-2.5">
               <div>
-                <label className="block text-[11px] font-medium text-zinc-500 mb-1">
+                <label htmlFor="kb-custom-width" className="block text-[11px] font-medium text-zinc-500 mb-1">
                   Width (px)
                 </label>
                 <input
+                  id="kb-custom-width"
+                  aria-label="Width in pixels"
                   type="number"
                   value={width}
                   onChange={(e) => {
@@ -360,10 +363,12 @@ export function KbImageResizerTool({
               </div>
 
               <div>
-                <label className="block text-[11px] font-medium text-zinc-500 mb-1">
+                <label htmlFor="kb-custom-height" className="block text-[11px] font-medium text-zinc-500 mb-1">
                   Height (px)
                 </label>
                 <input
+                  id="kb-custom-height"
+                  aria-label="Height in pixels"
                   type="number"
                   value={height}
                   onChange={(e) => {
@@ -377,10 +382,12 @@ export function KbImageResizerTool({
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-zinc-500 mb-1">
+              <label htmlFor="kb-output-format" className="block text-[11px] font-medium text-zinc-500 mb-1">
                 Output Format
               </label>
               <select
+                id="kb-output-format"
+                aria-label="Output Format"
                 value={format}
                 onChange={(e) => setFormat(e.target.value as any)}
                 className="w-full p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-medium"

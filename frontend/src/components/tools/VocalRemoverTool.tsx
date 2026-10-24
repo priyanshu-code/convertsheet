@@ -116,6 +116,7 @@ export function VocalRemoverTool() {
             <input
               type="file"
               ref={fileInputRef}
+              aria-label="Upload music or vocal track"
               onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
               accept="audio/*,.mp3,.wav,.m4a,.flac,.aac,.ogg"
               className="hidden"

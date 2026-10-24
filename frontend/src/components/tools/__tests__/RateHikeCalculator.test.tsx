@@ -1,10 +1,25 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { RateHikeCalculator } from "../RateHikeCalculator";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import * as XLSX from "xlsx";
+
+vi.mock("xlsx", () => ({
+  utils: {
+    book_new: vi.fn(() => ({})),
+    aoa_to_sheet: vi.fn(() => ({})),
+    book_append_sheet: vi.fn(),
+  },
+  writeFile: vi.fn(),
+}));
 
 describe("RateHikeCalculator", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    window.history.replaceState(null, "", "/tools/interest-rate-hike-calculator");
+  });
+
   it("renders benchmark matrix matching user specifications", () => {
     localStorage.setItem("convertsheet-target-market", "IN");
     render(
@@ -113,5 +128,31 @@ describe("RateHikeCalculator", () => {
     fireEvent.click(cutBtn);
 
     expect(screen.getByText(/Current Delta: -50 bps \(-0.5%\)/i)).toBeInTheDocument();
+  });
+
+  it("triggers formulaic SheetJS Excel export on export button click", () => {
+    render(
+      <CurrencyProvider>
+        <RateHikeCalculator
+          initialValues={{
+            loanAmount: 5000000,
+            oldRate: 8.50,
+            newRate: 8.75,
+            tenureYears: 20,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    const exportBtn = screen.getByRole("button", { name: "Export Excel" });
+    fireEvent.click(exportBtn);
+
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.aoa_to_sheet).toHaveBeenCalled();
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalled();
+    expect(XLSX.writeFile).toHaveBeenCalledWith(
+      expect.anything(),
+      "ConvertSheet_Rate_Hike_Audit_5000000.xlsx"
+    );
   });
 });

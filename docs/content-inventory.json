@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-23",
+  "lastUpdated": "2026-10-24",
   "totalBlogs": 30,
   "totalTools": 28,
   "blogs": [
@@ -316,40 +316,49 @@
     },
     {
       "slug": "rate-hike-calculator",
-      "lastAudited": "2026-10-13",
+      "lastAudited": "2026-10-24",
       "moatsAdded": [
-        "dual-range-sliders",
-        "sticky-bottom-mobile-bar",
+        "zero-knowledge-privacy-badge",
+        "october-2026-central-bank-freshness-signal",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
+        "44px-delta-presets",
+        "44px-loan-presets",
+        "calc-save-button-local-persistence",
         "url-query-permalink-sync",
-        "privacy-reassurance-badge",
-        "save-share-prompt-actions",
-        "sheetjs-retention-hook"
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "savings-cd-calculator",
-      "lastAudited": "2026-10-13",
+      "lastAudited": "2026-10-24",
       "moatsAdded": [
-        "hysa-cd-toggle-44px",
-        "sticky-bottom-mobile-bar",
+        "zero-knowledge-privacy-badge",
+        "october-2026-hysa-cd-freshness-signal",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
+        "44px-hysa-cd-toggle-controls",
+        "44px-institutional-benchmark-presets",
+        "calc-save-button-local-persistence",
         "url-query-permalink-sync",
-        "privacy-reassurance-badge",
-        "save-share-prompt-actions",
-        "sheetjs-retention-hook"
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "balance-transfer-calculator",
-      "lastAudited": "2026-10-13",
+      "lastAudited": "2026-10-24",
       "moatsAdded": [
-        "4-slider-responsive-grid",
-        "sticky-bottom-mobile-bar",
+        "zero-knowledge-privacy-badge",
+        "october-2026-rbi-policy-freshness-signal",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
+        "44px-loan-presets",
+        "44px-modt-state-presets",
+        "calc-save-button-local-persistence",
         "url-query-permalink-sync",
-        "privacy-reassurance-badge",
-        "save-share-prompt-actions",
-        "sheetjs-retention-hook"
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },

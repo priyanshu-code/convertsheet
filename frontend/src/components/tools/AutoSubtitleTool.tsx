@@ -146,6 +146,7 @@ export function AutoSubtitleTool() {
             <input
               type="file"
               ref={fileInputRef}
+              aria-label="Upload video or audio file for subtitles"
               onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
               accept="video/*,audio/*,.mp4,.mov,.mkv,.webm,.mp3,.wav,.m4a"
               className="hidden"
@@ -171,10 +172,12 @@ export function AutoSubtitleTool() {
         {/* Step 2: Language & Format Controls */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5">
+            <label htmlFor="subtitle-language" className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5">
               Spoken Language
             </label>
             <select
+              id="subtitle-language"
+              aria-label="Spoken Language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
               className="w-full p-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-medium"
@@ -193,10 +196,12 @@ export function AutoSubtitleTool() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5">
+            <label htmlFor="subtitle-format" className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5">
               Subtitle Format
             </label>
             <select
+              id="subtitle-format"
+              aria-label="Subtitle Format"
               value={format}
               onChange={(e) => setFormat(e.target.value as any)}
               className="w-full p-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100 font-medium"

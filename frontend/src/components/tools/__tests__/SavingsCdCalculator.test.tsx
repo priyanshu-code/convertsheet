@@ -43,11 +43,13 @@ describe("SavingsCdCalculator", () => {
     expect(screen.getByRole("button", { name: "Export Excel" })).toBeInTheDocument();
 
     // Market rate freshness signal badge
-    expect(screen.getByText(/Updated for October 2026: Top Online HYSAs 4.15%–4.25% APY/i)).toBeInTheDocument();
+    expect(screen.getByText(/Updated for October 2026: Top Online HYSAs 4.15%–4.60% APY/i)).toBeInTheDocument();
 
     // 1-Click institutional rate presets
     expect(screen.getByRole("button", { name: "4.15% (Top HYSA)" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "4.25% (1-Yr CD)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "4.85% (Peak CD)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "5.00% (10Y Yield)" })).toBeInTheDocument();
   });
 
   it("updates rate when 1-click institutional preset button is clicked", () => {

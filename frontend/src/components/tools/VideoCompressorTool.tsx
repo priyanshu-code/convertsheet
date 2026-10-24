@@ -147,6 +147,7 @@ export function VideoCompressorTool() {
             <input
               type="file"
               ref={fileInputRef}
+              aria-label="Upload video file"
               onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
               accept="video/*,.mp4,.mov,.avi,.mkv,.webm,.m4v"
               className="hidden"
@@ -226,6 +227,7 @@ export function VideoCompressorTool() {
               max="200"
               step="1"
               value={targetSizeMb}
+              aria-label="Custom Target Size in MB"
               onChange={(e) => {
                 setTargetSizeMb(parseInt(e.target.value));
                 setIsCustomTarget(true);

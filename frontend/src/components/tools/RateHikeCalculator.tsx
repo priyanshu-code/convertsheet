@@ -201,6 +201,10 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      // Transparent Excel formulas with retention links
+      wsSummary["B15"] = { t: "n", f: "B14-B13", v: Math.round(impact.monthlyHike) };
+      wsSummary["B16"] = { t: "n", f: `B15*B10*12`, v: Math.round(impact.extraLifetimeInterest) };
+
       const matrixHeader = ["Loan Amount", "Original EMI", "Revised EMI", "Monthly Hike", "Lifetime Extra Interest"];
       const matrixRows = impact.bracketRows.map((r) => [
         r.loanAmount,
@@ -210,6 +214,11 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
         Math.round(r.extraLifetimeInterest),
       ]);
       const wsMatrix = XLSX.utils.aoa_to_sheet([matrixHeader, ...matrixRows]);
+      impact.bracketRows.forEach((r, idx) => {
+        const rowNum = idx + 2;
+        wsMatrix[`D${rowNum}`] = { t: "n", f: `C${rowNum}-B${rowNum}`, v: Math.round(r.monthlyHike) };
+        wsMatrix[`E${rowNum}`] = { t: "n", f: `D${rowNum}*${tenureYears}*12`, v: Math.round(r.extraLifetimeInterest) };
+      });
 
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, wsSummary, "RateHikeSummary");
@@ -232,7 +241,7 @@ Please evaluate whether to absorb the higher EMI, execute the monthly prepayment
       <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
         <span className="font-medium">
-          Updated for October 2026 Central Bank Policy Rates: Fed Funds 3.75%–4.00%, BoE 3.75%, ECB 2.50%, RBI Repo 5.50% (99% CRR Mandate)
+          Updated for October 2026 Central Bank Policy Rates (October 24, 2026): Fed Funds Target 3.75%–4.00%, BoE 3.75%, ECB 2.50%, RBI Repo 5.50% (99% CRR Mandate) • Freddie Mac 30Y 7.32% / 15Y 6.68%
         </span>
       </div>
 

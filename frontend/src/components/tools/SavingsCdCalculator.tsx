@@ -95,7 +95,7 @@ export function SavingsCdCalculator({
       const summaryRows = [
         ["ConvertSheet - Savings Growth & CD Yield Audit", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
-        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/savings-cd-calculator"],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/high-yield-savings-cd-calculator"],
         ["", ""],
         ["--- ACCOUNT CONFIGURATION ---", ""],
         ["Account Type", mode === "hysa" ? "High-Yield Savings Account (HYSA)" : "Certificate of Deposit (CD)"],
@@ -119,6 +119,10 @@ export function SavingsCdCalculator({
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      // Transparent Excel formulas with retention links
+      wsSummary["B15"] = { t: "n", f: `B7+(B8*${termMonths})`, v: result.initialDeposit + result.totalContributions };
+      wsSummary["B17"] = { t: "n", f: "B15+B16", v: Math.round(result.finalBalance) };
+
       const scheduleHeader = [
         "Month",
         "Starting Balance ($)",
@@ -136,6 +140,16 @@ export function SavingsCdCalculator({
         row.endingBalance,
       ]);
       const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+
+      // Add dynamic formula links across monthly rows
+      result.monthlySchedule.forEach((row, idx) => {
+        const rowNum = idx + 2;
+        wsSchedule[`F${rowNum}`] = { t: "n", f: `B${rowNum}+C${rowNum}+D${rowNum}`, v: row.endingBalance };
+        if (idx > 0) {
+          wsSchedule[`B${rowNum}`] = { t: "n", f: `F${rowNum - 1}`, v: row.startingBalance };
+          wsSchedule[`E${rowNum}`] = { t: "n", f: `E${rowNum - 1}+D${rowNum}`, v: row.totalInterestEarned };
+        }
+      });
 
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, wsSummary, "YieldSummary");
@@ -185,7 +199,7 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
       <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
         <span className="font-medium">
-          Updated for October 2026: Top Online HYSAs 4.15%–4.25% APY • 1-Year CDs 4.25%–4.35% APY (Fed Funds Target 3.75%–4.00%)
+          Updated for October 2026: Top Online HYSAs 4.15%–4.60% APY • 1-Year CDs 4.25%–4.85% APY • 10-Year US Treasury 5.00% (Fed Funds 4.00%)
         </span>
       </div>
 
@@ -345,6 +359,8 @@ Please analyze inflation-adjusted real returns, rate-cut protection strategies, 
                     { label: "4.25% (1-Yr CD)", r: 4.25 },
                     { label: "3.75% (T-Bill)", r: 3.75 },
                     { label: "4.50% (Promo APY)", r: 4.50 },
+                    { label: "4.85% (Peak CD)", r: 4.85 },
+                    { label: "5.00% (10Y Yield)", r: 5.00 },
                   ].map((p) => (
                     <button
                       key={p.label}
