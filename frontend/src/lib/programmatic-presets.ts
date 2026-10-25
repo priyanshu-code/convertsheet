@@ -128,10 +128,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "200k-mortgage",
     "name": "$200,000 Mortgage Payment Calculator",
-    "title": "$200,000 Mortgage Calculator with Amortization Schedule | ConvertSheet",
-    "metaDescription": "Calculate monthly payment on a $200,000 mortgage at 6.5%. Full breakdown of principal, interest, taxes, insurance, and Excel amortization schedule export.",
-    "answerSummary": "A $200,000 home purchase with 20% down ($40,000) leaves a loan balance of $160,000. At a 6.5% 30-year fixed rate, monthly principal & interest is $1,011. Adding property taxes (~$200/mo) and insurance (~$67/mo), the estimated total payment is $1,278/month.",
-    "about": "Evaluate monthly carrying costs and amortization for a $200,000 property purchase. Compare down payment options, test extra payments to compress your loan schedule, and export the entire 360-month schedule to Microsoft Excel.",
+    "title": "$200,000 Mortgage Calculator (2026) — 15 & 30-Year Monthly Payment Math",
+    "metaDescription": "Calculate monthly payments on a $200,000 mortgage. Compare 15-year fixed ($1,409/mo on $160k; $1,761/mo on $200k) vs 30-year ($1,011/mo), property tax, and Excel export.",
+    "answerSummary": "For a $200,000 home purchase with 20% down ($40,000) and a $160,000 loan balance: a 30-year fixed loan at 6.5% requires $1,011/month P&I (total $1,278/mo with taxes & insurance). A 15-year fixed mortgage at 6.68% requires $1,409/month P&I, saving over $111,000 in lifetime interest charges. On a full $200,000 loan amount, a 15-year mortgage payment is $1,761/month.",
+    "about": "Evaluate monthly carrying costs and amortization for a $200,000 property purchase. Compare 15-year versus 30-year terms, test extra payments to compress your loan schedule, and export the entire 360-month schedule to Microsoft Excel.",
     "initialValues": {
       "homePrice": 200000,
       "downPayment": 40000,
@@ -144,6 +144,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       {
         "question": "What is the monthly payment on a $200,000 mortgage?",
         "answer": "With 20% down ($40,000) at 6.5% fixed interest for 30 years, monthly principal and interest is $1,011. Total payment with typical property taxes and homeowners insurance is approximately $1,278/month."
+      },
+      {
+        "question": "What is the monthly payment on a $200,000 mortgage for 15 years?",
+        "answer": "On a full $200,000 loan balance at a 6.68% 15-year fixed rate, monthly principal and interest is approximately $1,761/month, incurring $117,046 in total interest. If purchasing a $200,000 property with 20% down ($160,000 financed), the 15-year payment is $1,409/month, saving roughly $111,800 in lifetime interest compared to a 30-year loan."
       },
       {
         "question": "How much income do I need for a $200,000 house?",

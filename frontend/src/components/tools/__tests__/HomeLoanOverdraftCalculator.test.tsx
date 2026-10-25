@@ -95,4 +95,29 @@ describe("HomeLoanOverdraftCalculator", () => {
     const inputs = screen.getAllByRole("spinbutton") as HTMLInputElement[];
     expect(inputs[1].value).toBe("8.15");
   });
+
+  it("renders CalcSaveButton for zero-login local persistence and triggers Excel export", () => {
+    render(
+      <CurrencyProvider>
+        <HomeLoanOverdraftCalculator
+          initialValues={{
+            loanAmount: 5000000,
+            standardRate: 8.50,
+            overdraftRate: 8.90,
+            tenureYears: 20,
+            parkedSurplusAmount: 1000000,
+          }}
+        />
+      </CurrencyProvider>
+    );
+
+    const saveButton = screen.getByRole("button", { name: /Save Scenario/i });
+    expect(saveButton).toBeInTheDocument();
+    fireEvent.click(saveButton);
+    expect(screen.getByText(/Saved!/i)).toBeInTheDocument();
+
+    const exportBtn = screen.getByRole("button", { name: /Export Excel/i });
+    expect(exportBtn).toBeInTheDocument();
+    fireEvent.click(exportBtn);
+  });
 });

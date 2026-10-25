@@ -176,6 +176,9 @@ Provide strategic financial advice on whether parking emergency funds in an over
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      // Transparent Excel formulas with retention links
+      wsSummary["B13"] = { t: "n", f: "B10*12", v: tenureYears * 12 };
+      wsSummary["B16"] = { t: "n", f: "B18-B19", v: Math.round(result.interestSavedVsStandard) };
       XLSX.utils.book_append_sheet(wb, wsSummary, "Overdraft Summary");
 
       // Yearly Schedule Table
@@ -189,13 +192,19 @@ Provide strategic financial advice on whether parking emergency funds in an over
       ];
       const scheduleRows = result.yearlyComparison.map((pt) => [
         pt.year,
-        pt.standardBalance,
-        pt.overdraftBalance,
-        pt.standardCumulativeInterest,
-        pt.overdraftCumulativeInterest,
-        pt.cumulativeInterestSaved,
+        Math.round(pt.standardBalance),
+        Math.round(pt.overdraftBalance),
+        Math.round(pt.standardCumulativeInterest),
+        Math.round(pt.overdraftCumulativeInterest),
+        Math.round(pt.cumulativeInterestSaved),
       ]);
       const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+
+      // Dynamic schedule formulas linking interest savings
+      result.yearlyComparison.forEach((pt, idx) => {
+        const rowNum = idx + 2;
+        wsSchedule[`F${rowNum}`] = { t: "n", f: `D${rowNum}-E${rowNum}`, v: Math.round(pt.cumulativeInterestSaved) };
+      });
       XLSX.utils.book_append_sheet(wb, wsSchedule, "Yearly Amortization");
 
       XLSX.writeFile(wb, `ConvertSheet_Home_Loan_Overdraft_Audit_${loanAmount}.xlsx`);
@@ -207,7 +216,7 @@ Provide strategic financial advice on whether parking emergency funds in an over
   };
 
   return (
-    <div className="space-y-6 pb-20 sm:pb-0">
+    <div className="space-y-6 pb-32 sm:pb-0">
       {/* Zero-Knowledge Privacy Badge */}
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-semibold w-fit">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -222,7 +231,7 @@ Provide strategic financial advice on whether parking emergency funds in an over
             <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
           </span>
           <span className="font-medium">
-            <strong>Updated for October 2026 RBI Policy:</strong> Benchmark repo rate at 5.50%. SBI EBLR updated to 8.15% (+0.40% MaxGain spread = 8.55% OD rate).
+            <strong>Updated for October 2026 RBI Policy (October 25, 2026):</strong> Benchmark repo rate at 5.50%. SBI EBLR updated to 8.15% (+0.40% MaxGain spread = 8.55% OD rate).
           </span>
         </div>
         <span className="text-[11px] font-mono text-amber-700 dark:text-amber-400 font-semibold">

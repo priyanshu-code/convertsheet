@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { Car, ShieldCheck } from "lucide-react";
+import { Car, ShieldCheck, FileSpreadsheet } from "lucide-react";
+import * as XLSX from "xlsx";
 import {
   CalcCard,
   CalcInput,
@@ -149,6 +150,83 @@ export function CarLoanCalculator({ initialValues }: CarLoanCalculatorProps = {}
     }));
   }, [carLoan.yearlySchedule]);
 
+  // Transparent formulaic SheetJS export with active Excel formulas and retention links
+  const handleExportExcel = () => {
+    try {
+      const taxablePrice = Math.max(0, vehiclePrice - tradeInValue);
+      const estTax = (taxablePrice * salesTaxPercent) / 100;
+      const netFinanced = taxablePrice + estTax + dealerFees - downPayment;
+
+      const summaryRows = [
+        ["ConvertSheet - Auto Loan & Financing Schedule Audit", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/car-loan-calculator"],
+        ["", ""],
+        ["--- VEHICLE & PURCHASE PARAMETERS ---", ""],
+        ["Vehicle Purchase Price ($)", vehiclePrice],
+        ["Cash Down Payment ($)", downPayment],
+        ["Trade-In Allowance ($)", tradeInValue],
+        ["Net Price Before Tax & Fees ($)", taxablePrice],
+        ["Sales Tax Rate (%)", `${salesTaxPercent}%`],
+        ["Sales Tax Amount ($)", Math.round(estTax)],
+        ["Dealer & Documentation Fees ($)", dealerFees],
+        ["Net Loan Financed ($)", Math.round(carLoan.netLoanAmount)],
+        ["Interest Rate (APR %)", `${interestRate}%`],
+        ["Loan Term (Months)", loanTermMonths],
+        ["Loan Term (Years)", loanTermMonths / 12],
+        ["", ""],
+        ["--- FINANCING & PAYMENT METRICS ---", ""],
+        ["Monthly Auto Loan Payment", Math.round(carLoan.monthlyPayment)],
+        ["Total Interest Paid Over Term", Math.round(carLoan.totalInterest)],
+        ["Total Taxes & Dealer Fees", Math.round(carLoan.totalTaxesAndFees)],
+        ["Total Out-of-Pocket Vehicle Cost", Math.round(carLoan.totalCost)],
+      ];
+
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      // Transparent Excel formulas with retention links
+      wsSummary["B9"] = { t: "n", f: "B6-B8", v: taxablePrice };
+      wsSummary["B11"] = { t: "n", f: "B9*(B10/100)", v: Math.round(estTax) };
+      wsSummary["B13"] = { t: "n", f: "B9+B11+B12-B7", v: Math.round(carLoan.netLoanAmount) };
+      wsSummary["B16"] = { t: "n", f: "B15/12", v: loanTermMonths / 12 };
+      wsSummary["B19"] = { t: "n", f: "(B18*B15)-B13", v: Math.round(carLoan.totalInterest) };
+      wsSummary["B20"] = { t: "n", f: "B11+B12", v: Math.round(carLoan.totalTaxesAndFees) };
+      wsSummary["B21"] = { t: "n", f: "B18*B15+B7", v: Math.round(carLoan.totalCost) };
+
+      const scheduleHeader = [
+        "Year",
+        "Remaining Loan Balance ($)",
+        "Principal Paid This Year ($)",
+        "Interest Paid This Year ($)",
+        "ConvertSheet Recalculation Model",
+      ];
+      const scheduleRows = carLoan.yearlySchedule.map((row) => [
+        `Year ${row.year}`,
+        Math.round(row.balance),
+        Math.round(row.principal),
+        Math.round(row.interest),
+        "https://www.convertsheet.com/tools/car-loan-calculator",
+      ]);
+      const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+
+      // Dynamic schedule formulas linking row balances
+      carLoan.yearlySchedule.forEach((row, idx) => {
+        const rowNum = idx + 2;
+        if (idx === 0) {
+          wsSchedule[`B${rowNum}`] = { t: "n", f: `AutoLoanSummary!B13-C${rowNum}`, v: Math.round(row.balance) };
+        } else {
+          wsSchedule[`B${rowNum}`] = { t: "n", f: `B${rowNum - 1}-C${rowNum}`, v: Math.round(row.balance) };
+        }
+      });
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, wsSummary, "AutoLoanSummary");
+      XLSX.utils.book_append_sheet(wb, wsSchedule, "AmortizationSchedule");
+      XLSX.writeFile(wb, `ConvertSheet_Car_Loan_Schedule_${vehiclePrice}.xlsx`);
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    }
+  };
+
   const aiPrompt = useMemo(() => {
     return `Analyze this auto loan financing scenario:
 - Vehicle Price: $${vehiclePrice.toLocaleString()}
@@ -175,7 +253,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
   ]);
 
   return (
-    <div className="space-y-8 pb-24 sm:pb-0">
+    <div className="space-y-8 pb-32 sm:pb-0">
       <CalcCard
         title="Auto Loan & Car Payment Calculator"
       subtitle="Calculate your monthly car payment, total interest, sales taxes, and net financed amount with visual payoff curves."
@@ -194,7 +272,7 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
           {/* Market Rate Freshness Signal */}
           <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
-            <span className="font-medium">Updated: Experian 2026 Benchmark (6.35% New Car Avg • 11.19% Used Car Avg)</span>
+            <span className="font-medium">Updated: Experian 2026 Benchmark (October 25, 2026): 6.35% New Car Avg • 11.19% Used Car Avg • Prime 6.49% • Subprime 14.50%</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -219,6 +297,28 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
                 prefix="$"
                 onChange={(val) => setVehiclePrice(val)}
               />
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                {[
+                  { label: "$15k (Used)", val: 15000 },
+                  { label: "$25k (Compact)", val: 25000 },
+                  { label: "$35k (Sedan/SUV)", val: 35000 },
+                  { label: "$50k (Truck)", val: 50000 },
+                  { label: "$70k (Luxury)", val: 70000 },
+                ].map((preset) => (
+                  <button
+                    key={preset.val}
+                    type="button"
+                    onClick={() => setVehiclePrice(preset.val)}
+                    className={`min-h-[44px] px-2.5 py-2 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+                      vehiclePrice === preset.val
+                        ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -437,12 +537,15 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
 
           {/* Action Toolbar */}
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <CalcExportButton
-              data={exportData}
-              filename={`car_loan_schedule_${vehiclePrice}`}
-              sheetName="AutoLoan"
-              label="Export Loan Schedule (.xlsx)"
-            />
+            <button
+              type="button"
+              onClick={handleExportExcel}
+              aria-label="Export Loan Schedule (.xlsx)"
+              className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>Export Loan Schedule (.xlsx)</span>
+            </button>
             <CalcPdfReportButton
               filename={`auto_loan_dossier_${vehiclePrice}.pdf`}
               label="Download Bank-Ready PDF"
@@ -521,12 +624,15 @@ Please provide an analysis on whether taking a shorter loan term (e.g. 48 vs 60/
           ${carLoan.monthlyPayment.toLocaleString()}/mo
         </span>
       </div>
-      <CalcExportButton
-        data={exportData}
-        filename={`car_loan_schedule_${vehiclePrice}`}
-        sheetName="AutoLoan"
-        label="Export (.xlsx)"
-      />
+      <button
+        type="button"
+        onClick={handleExportExcel}
+        aria-label="Export (.xlsx)"
+        className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer"
+      >
+        <FileSpreadsheet className="w-3.5 h-3.5" />
+        <span>Export (.xlsx)</span>
+      </button>
     </div>
   </div>
   );

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { Home, Table as TableIcon, ShieldCheck } from "lucide-react";
+import { Home, Table as TableIcon, ShieldCheck, FileSpreadsheet } from "lucide-react";
+import * as XLSX from "xlsx";
 import {
   CalcCard,
   CalcInput,
@@ -93,6 +94,7 @@ export function MortgageCalculator({ initialValues }: MortgageCalculatorProps = 
   });
 
   const [scheduleView, setScheduleView] = useState<"yearly" | "monthly">("yearly");
+  const [isExportingExcel, setIsExportingExcel] = useState(false);
 
   const downPaymentPercent = homePrice > 0 ? Math.round((downPayment / homePrice) * 100) : 0;
 
@@ -168,6 +170,91 @@ export function MortgageCalculator({ initialValues }: MortgageCalculatorProps = 
     }));
   }, [scheduleView, mortgage.yearlySchedule, mortgage.monthlySchedule]);
 
+  const handleExportExcel = () => {
+    try {
+      setIsExportingExcel(true);
+      const summaryRows = [
+        ["ConvertSheet - Mortgage & Amortization Audit", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/mortgage-calculator"],
+        ["", ""],
+        ["--- PROPERTY & FINANCING PARAMETERS ---", ""],
+        ["Home Purchase Price ($)", homePrice],
+        ["Down Payment ($)", downPayment],
+        ["Down Payment (%)", `${downPaymentPercent}%`],
+        ["Financed Loan Amount ($)", mortgage.loanAmount],
+        ["Annual Interest Rate (%)", `${interestRate}%`],
+        ["Loan Term (Years)", loanTermYears],
+        ["Loan Term (Total Months)", loanTermYears * 12],
+        ["Yearly Property Tax ($)", propertyTaxYearly],
+        ["Yearly Home Insurance ($)", homeInsuranceYearly],
+        ["Extra Monthly Principal ($)", extraPayment],
+        ["", ""],
+        ["--- MONTHLY PAYMENT METRICS & BREAKDOWN ---", ""],
+        ["Monthly Principal & Interest", Math.round(mortgage.monthlyPrincipalAndInterest)],
+        ["Monthly Property Tax", Math.round(mortgage.monthlyPropertyTax)],
+        ["Monthly Home Insurance", Math.round(mortgage.monthlyInsurance)],
+        ["Monthly Private Mortgage Insurance (PMI)", Math.round(mortgage.monthlyPmi)],
+        ["Total Monthly Payment", Math.round(mortgage.totalMonthlyPayment)],
+        ["Total Cumulative Interest Paid", Math.round(mortgage.totalInterest)],
+        ["Total Lifetime Loan P&I Cost", Math.round(mortgage.totalPayment)],
+        ["Interest Saved with Extra Principal", Math.round(mortgage.interestSavedWithExtra)],
+        ["Payoff Acceleration (Months Saved)", mortgage.monthsSavedWithExtra],
+      ];
+
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      // Transparent Excel formulas with retention links
+      wsSummary["B9"] = { t: "n", f: "B6-B7", v: mortgage.loanAmount };
+      wsSummary["B12"] = { t: "n", f: "B11*12", v: loanTermYears * 12 };
+      wsSummary["B19"] = { t: "n", f: "B13/12", v: Math.round(mortgage.monthlyPropertyTax) };
+      wsSummary["B20"] = { t: "n", f: "B14/12", v: Math.round(mortgage.monthlyInsurance) };
+      wsSummary["B22"] = { t: "n", f: "B18+B19+B20+B21", v: Math.round(mortgage.totalMonthlyPayment) };
+      wsSummary["B24"] = { t: "n", f: "B18*B12", v: Math.round(mortgage.totalPayment) };
+
+      const activeSchedule = scheduleView === "yearly" ? mortgage.yearlySchedule : mortgage.monthlySchedule;
+      const scheduleHeader = [
+        "Period",
+        "Payment ($)",
+        "Principal ($)",
+        "Interest ($)",
+        "Total Interest Paid ($)",
+        "Remaining Balance ($)",
+        "ConvertSheet Recalculation Model",
+      ];
+      const scheduleRows = activeSchedule.map((row) => [
+        row.label,
+        Math.round(row.payment),
+        Math.round(row.principal),
+        Math.round(row.interest),
+        Math.round(row.totalInterest),
+        Math.round(row.balance),
+        "https://www.convertsheet.com/tools/mortgage-calculator",
+      ]);
+      const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+
+      // Dynamic schedule formulas
+      activeSchedule.forEach((row, idx) => {
+        const rowNum = idx + 2;
+        if (idx === 0) {
+          wsSchedule[`E${rowNum}`] = { t: "n", f: `D${rowNum}`, v: Math.round(row.totalInterest) };
+          wsSchedule[`F${rowNum}`] = { t: "n", f: `MortgageSummary!B9-C${rowNum}`, v: Math.round(row.balance) };
+        } else {
+          wsSchedule[`E${rowNum}`] = { t: "n", f: `E${rowNum - 1}+D${rowNum}`, v: Math.round(row.totalInterest) };
+          wsSchedule[`F${rowNum}`] = { t: "n", f: `F${rowNum - 1}-C${rowNum}`, v: Math.round(row.balance) };
+        }
+      });
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, wsSummary, "MortgageSummary");
+      XLSX.utils.book_append_sheet(wb, wsSchedule, "AmortizationSchedule");
+      XLSX.writeFile(wb, `ConvertSheet_Mortgage_Amortization_${homePrice}.xlsx`);
+    } catch (err) {
+      console.error("Excel export failed:", err);
+    } finally {
+      setIsExportingExcel(false);
+    }
+  };
+
   const aiPrompt = useMemo(() => {
     return `Analyze this mortgage financing scenario:
 - Home Purchase Price: $${homePrice.toLocaleString()}
@@ -196,7 +283,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
   ]);
 
   return (
-    <div className="space-y-8 pb-24 sm:pb-0">
+    <div className="space-y-8 pb-32 sm:pb-0">
       <CalcCard
         title="Mortgage Calculator with Amortization Schedule"
       subtitle="Calculate your total monthly mortgage payment including principal, interest, taxes, insurance, and PMI with full amortization schedule export."
@@ -215,7 +302,7 @@ Provide financial advice on whether refinancing or making extra principal paymen
           {/* Market Rate Freshness Signal */}
           <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
-            <span className="font-medium">Updated for October 2026 Freddie Mac PMMS: 30-Year Fixed at 7.32%, 15-Year Fixed at 6.68% (10-Yr Treasury 4.95%)</span>
+            <span className="font-medium">Updated for October 2026 Freddie Mac PMMS (October 25, 2026): 30-Year Fixed at 7.32%, 15-Year Fixed at 6.68% (10-Yr Treasury 5.00%, Fed Funds Target 3.75%–4.00%)</span>
           </div>
 
         {/* Top Controls Grid */}
@@ -248,6 +335,32 @@ Provide financial advice on whether refinancing or making extra principal paymen
                 setDownPayment(Math.round((val * downPaymentPercent) / 100));
               }}
             />
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {[
+                { label: "$250k", val: 250000 },
+                { label: "$350k", val: 350000 },
+                { label: "$400k", val: 400000 },
+                { label: "$500k", val: 500000 },
+                { label: "$750k", val: 750000 },
+                { label: "$1M", val: 1000000 },
+              ].map((preset) => (
+                <button
+                  key={preset.val}
+                  type="button"
+                  onClick={() => {
+                    setHomePrice(preset.val);
+                    setDownPayment(Math.round((preset.val * downPaymentPercent) / 100));
+                  }}
+                  className={`min-h-[44px] px-2.5 py-2 text-xs font-medium rounded-lg border transition-colors cursor-pointer ${
+                    homePrice === preset.val
+                      ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700 font-semibold"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  }`}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -483,12 +596,15 @@ Provide financial advice on whether refinancing or making extra principal paymen
 
           {/* Actions bar: Excel Export + PDF Dossier + ChatGPT Copilot */}
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <CalcExportButton
-              data={exportData}
-              filename={`mortgage_amortization_${homePrice}`}
-              sheetName="Amortization"
-              label={`Export ${scheduleView === "yearly" ? "Annual" : "Monthly"} Amortization (.xlsx)`}
-            />
+            <button
+              type="button"
+              onClick={handleExportExcel}
+              aria-label={`Export ${scheduleView === "yearly" ? "Annual" : "Monthly"} Amortization (.xlsx)`}
+              className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>Export {scheduleView === "yearly" ? "Annual" : "Monthly"} Amortization (.xlsx)</span>
+            </button>
             <CalcPdfReportButton
               filename={`mortgage_dossier_${homePrice}.pdf`}
               label="Download Bank-Ready PDF"
@@ -625,12 +741,15 @@ Provide financial advice on whether refinancing or making extra principal paymen
           {formatCurrency(mortgage.totalMonthlyPayment)}/mo
         </span>
       </div>
-      <CalcExportButton
-        data={exportData}
-        filename={`mortgage_amortization_${homePrice}`}
-        sheetName="Amortization"
-        label="Export (.xlsx)"
-      />
+      <button
+        type="button"
+        onClick={handleExportExcel}
+        aria-label="Export (.xlsx)"
+        className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer"
+      >
+        <FileSpreadsheet className="w-3.5 h-3.5" />
+        <span>Export (.xlsx)</span>
+      </button>
     </div>
   </div>
   );

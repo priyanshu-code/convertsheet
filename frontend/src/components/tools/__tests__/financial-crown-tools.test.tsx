@@ -74,6 +74,17 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       const rateInput = screen.getByLabelText(/Interest Rate \(Annual %\)/i);
       expect(rateInput).toHaveValue(7.32);
     });
+
+    it("updates home price when 44px preset chips are clicked", () => {
+      render(<MortgageCalculator />);
+
+      expect(screen.getAllByRole("button", { name: "$250k" })[0]).toBeInTheDocument();
+      expect(screen.getAllByRole("button", { name: "$500k" })[0]).toBeInTheDocument();
+
+      fireEvent.click(screen.getAllByRole("button", { name: "$500k" })[0]);
+      const priceInput = screen.getByLabelText(/Home Purchase Price/i);
+      expect(priceInput).toHaveValue(500000);
+    });
   });
 
   describe("CarLoanCalculator", () => {
@@ -117,6 +128,17 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       fireEvent.click(screen.getByRole("button", { name: /6.35% \(New Avg\)/i }));
       const rateInput = screen.getByLabelText(/Interest Rate \(APR %\)/i);
       expect(rateInput).toHaveValue(6.35);
+    });
+
+    it("updates vehicle price when 44px preset chips are clicked", () => {
+      render(<CarLoanCalculator />);
+
+      expect(screen.getByRole("button", { name: "$15k (Used)" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "$25k (Compact)" })).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: "$25k (Compact)" }));
+      const priceInput = screen.getByLabelText(/Vehicle Purchase Price/i);
+      expect(priceInput).toHaveValue(25000);
     });
   });
 
