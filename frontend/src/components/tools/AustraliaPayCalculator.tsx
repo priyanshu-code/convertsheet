@@ -161,6 +161,16 @@ export function AustraliaPayCalculator({
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      // Active transparent Excel cell formulas with canonical recalculation links
+      wsSummary["B9"] = { t: "n", f: "B7*(B8/100)", v: result.superannuationAmount };
+      wsSummary["B12"] = { t: "n", f: medicareExempt ? "0" : "B7*0.02", v: result.medicareLevy };
+      wsSummary["B13"] = { t: "n", f: "B20+B12+B10", v: result.totalDeductions };
+      wsSummary["B16"] = { t: "n", f: "B7-B13", v: result.netAnnualTakeHome };
+      wsSummary["B17"] = { t: "n", f: "B16/12", v: result.netMonthlyTakeHome };
+      wsSummary["B18"] = { t: "n", f: "B16/26", v: result.netFortnightlyTakeHome };
+      wsSummary["B19"] = { t: "n", f: "B16/52", v: result.netWeeklyTakeHome };
+      wsSummary["B21"] = { t: "n", f: "(B13/B7)*100", v: result.effectiveTaxRate };
+
       XLSX.utils.book_append_sheet(wb, wsSummary, "Australia Pay Summary");
 
       // Pay frequency breakdown table
@@ -170,17 +180,35 @@ export function AustraliaPayCalculator({
         "Fortnightly (26x)",
         "Monthly (12x)",
         "Annual",
+        "ConvertSheet Recalculation Model",
       ];
+      const modelUrl = `https://www.convertsheet.com/tools/australia-pay-calculator?grossSalary=${grossSalary}&superannuationPercent=${superannuationPercent}&hasHelpDebt=${hasHelpDebt}&medicareExempt=${medicareExempt}`;
       const scheduleRows = [
-        ["Gross Base Salary", result.weeklyGross, result.fortnightlyGross, result.monthlyGross, result.grossSalary],
-        ["ATO Income Tax", Math.round((result.incomeTax / 52) * 100) / 100, Math.round((result.incomeTax / 26) * 100) / 100, Math.round((result.incomeTax / 12) * 100) / 100, result.incomeTax],
-        ["Medicare Levy (2%)", Math.round((result.medicareLevy / 52) * 100) / 100, Math.round((result.medicareLevy / 26) * 100) / 100, Math.round((result.medicareLevy / 12) * 100) / 100, result.medicareLevy],
-        ["HELP / HECS Repayment", Math.round((result.helpRepayment / 52) * 100) / 100, Math.round((result.helpRepayment / 26) * 100) / 100, Math.round((result.helpRepayment / 12) * 100) / 100, result.helpRepayment],
-        ["Total Deductions", Math.round((result.totalDeductions / 52) * 100) / 100, Math.round((result.totalDeductions / 26) * 100) / 100, Math.round((result.totalDeductions / 12) * 100) / 100, result.totalDeductions],
-        ["Net Take-Home Pay", result.netWeeklyTakeHome, result.netFortnightlyTakeHome, result.netMonthlyTakeHome, result.netAnnualTakeHome],
-        ["Employer Superannuation", Math.round((result.superannuationAmount / 52) * 100) / 100, Math.round((result.superannuationAmount / 26) * 100) / 100, Math.round((result.superannuationAmount / 12) * 100) / 100, result.superannuationAmount],
+        ["Gross Base Salary", result.weeklyGross, result.fortnightlyGross, result.monthlyGross, result.grossSalary, modelUrl],
+        ["ATO Income Tax", Math.round((result.incomeTax / 52) * 100) / 100, Math.round((result.incomeTax / 26) * 100) / 100, Math.round((result.incomeTax / 12) * 100) / 100, result.incomeTax, modelUrl],
+        ["Medicare Levy (2%)", Math.round((result.medicareLevy / 52) * 100) / 100, Math.round((result.medicareLevy / 26) * 100) / 100, Math.round((result.medicareLevy / 12) * 100) / 100, result.medicareLevy, modelUrl],
+        ["HELP / HECS Repayment", Math.round((result.helpRepayment / 52) * 100) / 100, Math.round((result.helpRepayment / 26) * 100) / 100, Math.round((result.helpRepayment / 12) * 100) / 100, result.helpRepayment, modelUrl],
+        ["Total Deductions", Math.round((result.totalDeductions / 52) * 100) / 100, Math.round((result.totalDeductions / 26) * 100) / 100, Math.round((result.totalDeductions / 12) * 100) / 100, result.totalDeductions, modelUrl],
+        ["Net Take-Home Pay", result.netWeeklyTakeHome, result.netFortnightlyTakeHome, result.netMonthlyTakeHome, result.netAnnualTakeHome, modelUrl],
+        ["Employer Superannuation", Math.round((result.superannuationAmount / 52) * 100) / 100, Math.round((result.superannuationAmount / 26) * 100) / 100, Math.round((result.superannuationAmount / 12) * 100) / 100, result.superannuationAmount, modelUrl],
       ];
       const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+      // Dynamic frequency column formulas
+      [2, 3, 4, 5, 8].forEach((rowNum) => {
+        wsSchedule[`B${rowNum}`] = { t: "n", f: `E${rowNum}/52`, v: scheduleRows[rowNum - 2][1] as number };
+        wsSchedule[`C${rowNum}`] = { t: "n", f: `E${rowNum}/26`, v: scheduleRows[rowNum - 2][2] as number };
+        wsSchedule[`D${rowNum}`] = { t: "n", f: `E${rowNum}/12`, v: scheduleRows[rowNum - 2][3] as number };
+      });
+      wsSchedule["B6"] = { t: "n", f: "B3+B4+B5", v: Math.round((result.totalDeductions / 52) * 100) / 100 };
+      wsSchedule["C6"] = { t: "n", f: "C3+C4+C5", v: Math.round((result.totalDeductions / 26) * 100) / 100 };
+      wsSchedule["D6"] = { t: "n", f: "D3+D4+D5", v: Math.round((result.totalDeductions / 12) * 100) / 100 };
+      wsSchedule["E6"] = { t: "n", f: "E3+E4+E5", v: result.totalDeductions };
+
+      wsSchedule["B7"] = { t: "n", f: "B2-B6", v: result.netWeeklyTakeHome };
+      wsSchedule["C7"] = { t: "n", f: "C2-C6", v: result.netFortnightlyTakeHome };
+      wsSchedule["D7"] = { t: "n", f: "D2-D6", v: result.netMonthlyTakeHome };
+      wsSchedule["E7"] = { t: "n", f: "E2-E6", v: result.netAnnualTakeHome };
+
       XLSX.utils.book_append_sheet(wb, wsSchedule, "Pay Frequency Matrix");
 
       XLSX.writeFile(wb, `ConvertSheet_Australia_Pay_${grossSalary}.xlsx`);
@@ -209,7 +237,7 @@ Please advise on Australian tax strategies (concessional super contributions, sa
 
   return (
     <CalcCard
-      title="Australia Pay & Salary Take-Home Calculator (ATO 2024-25)"
+      title="Australia Pay & Salary Take-Home Calculator (ATO 2024-25 & 2026 Stage 3)"
       subtitle="Calculate your exact Australian take-home pay under the new Stage 3 tax cuts, including Medicare Levy, HELP/HECS student loan repayments, and superannuation guarantee."
       icon={DollarSign}
       badge="ATO 2024-25 Stage 3 Tax Cuts"
@@ -223,7 +251,7 @@ Please advise on Australian tax strategies (concessional super contributions, sa
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span>Updated for 2026 ATO Tax Year: Stage 3 Tax Cuts in full effect, Super Guarantee statutory benchmark 11.5% (scaling to 12%), Medicare Levy 2%</span>
+            <span>Updated for 2026 ATO Tax Year (October 26, 2026): Stage 3 Tax Cuts in full effect (16% low band / 30% up to $135k), Super Guarantee benchmark 11.5% (scaling to 12%), Medicare Levy 2% (RBA Cash Rate 4.35%)</span>
           </div>
         </div>
 
@@ -317,6 +345,32 @@ Please advise on Australian tax strategies (concessional super contributions, sa
               unit="%"
               helpText="Statutory employer superannuation contribution (standard 11.5% for 2024-25, scaling to 12%)"
             />
+            {/* Quick 44px Superannuation Presets */}
+            <div className="space-y-1.5 pt-1">
+              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block">Common Superannuation Presets:</span>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "9.5% Legacy", value: 9.5 },
+                  { label: "10.5% Historical", value: 10.5 },
+                  { label: "11.5% Statutory", value: 11.5 },
+                  { label: "12.0% Target", value: 12.0 },
+                  { label: "15.0% Concessional", value: 15.0 },
+                ].map((preset) => (
+                  <button
+                    key={preset.value}
+                    type="button"
+                    onClick={() => setSuperannuationPercent(preset.value)}
+                    className={`min-h-[44px] min-w-[44px] px-3.5 py-2 text-xs font-semibold rounded-xl border transition-colors cursor-pointer touch-manipulation ${
+                      superannuationPercent === preset.value
+                        ? "bg-emerald-600 text-white border-emerald-600 dark:border-emerald-500 shadow-xs"
+                        : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <div className="space-y-4 pt-1">
               {/* HELP / HECS Student Debt Toggle */}

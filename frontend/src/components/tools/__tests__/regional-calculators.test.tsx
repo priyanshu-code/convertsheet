@@ -18,7 +18,7 @@ describe("UkSalaryCalculator UI Component", () => {
     expect(
       screen.getByText(/UK Salary & Take-Home Pay Calculator/i)
     ).toBeInTheDocument();
-    expect(screen.getAllByText(/2024\/25 HMRC/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/2024\/25.*HMRC/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("£")).toBeInTheDocument();
     expect(screen.getByLabelText(/Gross Annual Salary/i)).toHaveValue(45000);
     expect(screen.getByText(/Net Monthly Take-Home/i)).toBeInTheDocument();
@@ -92,9 +92,17 @@ describe("UkSalaryCalculator UI Component", () => {
     render(<UkSalaryCalculator initialValues={{ grossSalary: 60000, pensionPercent: 5 }} />);
 
     expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
-    expect(screen.getByText(/Updated for 2026\/27 HMRC/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/2026\/27 HMRC/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Export/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Net Monthly Pay")).toBeInTheDocument();
+  });
+
+  it("updates pension percentage using 44px preset chip", () => {
+    render(<UkSalaryCalculator initialValues={{ grossSalary: 60000, pensionPercent: 5 }} />);
+    const chip8 = screen.getByRole("button", { name: "8% Matched" });
+    expect(chip8).toBeInTheDocument();
+    fireEvent.click(chip8);
+    expect(screen.getByText("8% Matched")).toHaveClass("bg-emerald-600");
   });
 });
 
@@ -319,8 +327,16 @@ describe("AustraliaPayCalculator UI Component", () => {
     render(<AustraliaPayCalculator initialValues={{ grossSalary: 120000 }} />);
 
     expect(screen.getByText(/100% Client-Side/i)).toBeInTheDocument();
-    expect(screen.getByText(/Updated for 2026 ATO Tax Year/i)).toBeInTheDocument();
+    expect(screen.getByText(/2026 ATO Tax Year/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Export/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Net Fortnightly Pay")).toBeInTheDocument();
+  });
+
+  it("updates superannuation percentage using 44px preset chip", () => {
+    render(<AustraliaPayCalculator initialValues={{ grossSalary: 120000 }} />);
+    const chip12 = screen.getByRole("button", { name: "12.0% Target" });
+    expect(chip12).toBeInTheDocument();
+    fireEvent.click(chip12);
+    expect(screen.getByText("12.0% Target")).toHaveClass("bg-emerald-600");
   });
 });

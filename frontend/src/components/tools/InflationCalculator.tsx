@@ -115,14 +115,15 @@ export function InflationCalculator({ initialValues }: InflationCalculatorProps 
       const summaryRows = [
         ["ConvertSheet - Inflation & Purchasing Power Schedule", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
-        ["ConvertSheet Recalculation Model", "https://www.convertsheet.com/tools/inflation-calculator"],
+        ["ConvertSheet Recalculation Model", `https://www.convertsheet.com/tools/inflation-calculator?amount=${amount}&inflationRate=${inflationRate}&years=${years}&mode=${calcMode}`],
+        ["Data Sovereignty", "Calculated 100% in-browser on ConvertSheet with zero cloud tracking."],
         ["", ""],
         ["--- CALCULATION PARAMETERS ---", ""],
         [isSalaryMode ? "Current Annual Salary ($)" : "Starting Capital / Price ($)", amount],
         ["Expected Annual Inflation Rate (%)", inflationRate],
         ["Time Horizon (Years)", years],
         ["", ""],
-        ["--- SUMMARY OUTCOMES ---", ""],
+        ["--- SUMMARY OUTCOMES & FORMULAS ---", ""],
         [
           isSalaryMode ? "Target Salary Needed ($)" : "Future Equivalent Needed ($)",
           inflation.futureEquivalentValue,
@@ -131,29 +132,44 @@ export function InflationCalculator({ initialValues }: InflationCalculatorProps 
           isSalaryMode ? "Real Value If Stagnant ($)" : "Purchasing Power of Today's $",
           inflation.futurePurchasingPower,
         ],
-        ["Cumulative Price Inflation (%)", `${inflation.cumulativeInflationPercent}%`],
+        ["Cumulative Price Drift (%)", `${inflation.cumulativeInflationPercent}%`],
         ["", ""],
-        ["--- YEAR-BY-YEAR PROJECTION ---", "", "", ""],
-        [
-          "Year",
-          isSalaryMode ? "Target Salary Needed ($)" : "Future Equivalent Needed ($)",
-          isSalaryMode ? "Flat Salary Real Value ($)" : "Purchasing Power of Today ($)",
-          "Cumulative Price Drift (%)",
-        ],
-        ...inflation.yearlyProjection.map((r) => [
-          `Year ${r.year}`,
-          r.futureNeeded,
-          r.purchasingPower,
-          `+${(((r.futureNeeded - amount) / (amount || 1)) * 100).toFixed(1)}%`,
-        ]),
-        ["", ""],
-        ["Mathematical Model", "Future Value = Amount * (1 + Rate)^Years | Purchasing Power = Amount / (1 + Rate)^Years"],
-        ["Data Sovereignty", "Calculated 100% in-browser on ConvertSheet with zero cloud tracking."],
+        ["Mathematical Model", isSalaryMode ? "Salary Needed = Base * (1 + Rate/100)^Years" : "Future Value = Amount * (1 + Rate/100)^Years | Purchasing Power = Amount / (1 + Rate/100)^Years"],
       ];
 
-      const ws = XLSX.utils.aoa_to_sheet(summaryRows);
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      // Active transparent Excel cell formulas with canonical recalculation links
+      wsSummary["B11"] = { t: "n", f: "B7*(1+B8/100)^B9", v: inflation.futureEquivalentValue };
+      wsSummary["B12"] = { t: "n", f: "B7/(1+B8/100)^B9", v: inflation.futurePurchasingPower };
+      wsSummary["B13"] = { t: "n", f: "(B11-B7)/B7*100", v: inflation.cumulativeInflationPercent };
+
+      const scheduleHeader = [
+        "Year",
+        isSalaryMode ? "Target Salary Needed ($)" : "Future Cost Needed ($)",
+        isSalaryMode ? "Flat Salary Real Value ($)" : "Purchasing Power of Today ($)",
+        "Cumulative Price Drift (%)",
+        "ConvertSheet Recalculation Link",
+      ];
+      const scheduleRows = inflation.yearlyProjection.map((r) => [
+        r.year,
+        r.futureNeeded,
+        r.purchasingPower,
+        Number((((r.futureNeeded - amount) / (amount || 1)) * 100).toFixed(1)),
+        `https://www.convertsheet.com/tools/inflation-calculator?amount=${amount}&inflationRate=${inflationRate}&years=${r.year}&mode=${calcMode}`,
+      ]);
+      const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+
+      // Linked dynamic schedule formulas
+      inflation.yearlyProjection.forEach((r, idx) => {
+        const rowNum = idx + 2;
+        wsSchedule[`B${rowNum}`] = { t: "n", f: `InflationSummary!$B$7*(1+InflationSummary!$B$8/100)^A${rowNum}`, v: r.futureNeeded };
+        wsSchedule[`C${rowNum}`] = { t: "n", f: `InflationSummary!$B$7/(1+InflationSummary!$B$8/100)^A${rowNum}`, v: r.purchasingPower };
+        wsSchedule[`D${rowNum}`] = { t: "n", f: `(B${rowNum}-InflationSummary!$B$7)/InflationSummary!$B$7*100`, v: Number((((r.futureNeeded - amount) / (amount || 1)) * 100).toFixed(1)) };
+      });
+
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "InflationSchedule");
+      XLSX.utils.book_append_sheet(wb, wsSummary, "InflationSummary");
+      XLSX.utils.book_append_sheet(wb, wsSchedule, "YearlyProjection");
       XLSX.writeFile(
         wb,
         `ConvertSheet_Inflation_${amount}_${inflationRate}pct_${years}yrs.xlsx`
@@ -205,7 +221,7 @@ Provide actionable asset allocation advice to protect wealth against this inflat
       <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
         <span className="font-medium">
-          Updated for October 2026: BLS CPI Benchmark 2.8%–3.1% • Fed Target 2.0% • 10Y Breakeven 2.35%
+          Updated for October 2026: BLS CPI Benchmark 3.0% (Core 3.3%) • Fed Target 2.0% • 10Y Breakeven 2.35% (October 26, 2026)
         </span>
       </div>
 
@@ -262,6 +278,19 @@ Provide actionable asset allocation advice to protect wealth against this inflat
                     ${amt >= 1000 ? `${amt / 1000}k` : amt}
                   </button>
                 ))}
+              </div>
+              <div className="pt-2">
+                <CalcSlider
+                  id="initial-amount-slider"
+                  label={isSalaryMode ? "Salary Slider ($30k – $250k)" : "Amount Slider ($1k – $100k)"}
+                  value={Math.min(isSalaryMode ? 250000 : 100000, Math.max(isSalaryMode ? 30000 : 1000, amount))}
+                  onChange={setAmount}
+                  min={isSalaryMode ? 30000 : 1000}
+                  max={isSalaryMode ? 250000 : 100000}
+                  step={isSalaryMode ? 2500 : 500}
+                  unit="$"
+                  ariaLabel="Initial Amount Slider"
+                />
               </div>
             </div>
 

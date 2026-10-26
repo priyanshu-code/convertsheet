@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-25",
+  "lastUpdated": "2026-10-26",
   "totalBlogs": 30,
   "totalTools": 28,
   "blogs": [
@@ -578,29 +578,34 @@
     },
     {
       "slug": "inflation-calculator",
-      "lastAudited": "2026-10-17",
+      "lastAudited": "2026-10-26",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-bls-cpi-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
+        "44px-preset-chips",
+        "dual-slider-control",
+        "calc-save-button-local-persistence",
         "url-query-permalink-sync",
-        "44px-touch-targets",
-        "save-share-prompt-actions",
-        "formulaic-xlsx-export",
-        "sticky-bottom-mobile-bar"
+        "sticky-bottom-mobile-bar",
+        "safe-area-inset-sticky-bar"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "uk-salary-calculator",
-      "lastAudited": "2026-10-18",
+      "lastAudited": "2026-10-26",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-hmrc-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
+        "44px-pension-presets",
+        "44px-salary-presets",
+        "calc-save-button-local-persistence",
         "url-query-permalink-sync",
-        "44px-touch-targets",
         "dual-slider-control",
-        "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
         "safe-area-inset-sticky-bar"
       ],
@@ -608,15 +613,17 @@
     },
     {
       "slug": "australia-pay-calculator",
-      "lastAudited": "2026-10-18",
+      "lastAudited": "2026-10-26",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-ato-stage-3-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
+        "44px-superannuation-presets",
+        "44px-salary-presets",
+        "calc-save-button-local-persistence",
         "url-query-permalink-sync",
-        "44px-touch-targets",
         "dual-slider-control",
-        "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
         "safe-area-inset-sticky-bar"
       ],

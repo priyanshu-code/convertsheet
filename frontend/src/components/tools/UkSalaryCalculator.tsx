@@ -152,6 +152,14 @@ export function UkSalaryCalculator({ initialValues }: UkSalaryCalculatorProps = 
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      // Active transparent Excel cell formulas with canonical recalculation links
+      wsSummary["B9"] = { t: "n", f: "B7*(B8/100)", v: result.pensionContribution };
+      wsSummary["B13"] = { t: "n", f: "MAX(0, B7-B9-B12)", v: result.taxableIncome };
+      wsSummary["B16"] = { t: "n", f: "B7-B9-B19-B20-B11", v: result.netAnnualTakeHome };
+      wsSummary["B17"] = { t: "n", f: "B16/12", v: result.netMonthlyTakeHome };
+      wsSummary["B18"] = { t: "n", f: "B16/52", v: result.netWeeklyTakeHome };
+      wsSummary["B21"] = { t: "n", f: "(B19+B20)/B7*100", v: result.effectiveTaxRate };
+
       XLSX.utils.book_append_sheet(wb, wsSummary, "UK Salary Summary");
 
       // Pay frequency comparison table
@@ -160,17 +168,28 @@ export function UkSalaryCalculator({ initialValues }: UkSalaryCalculatorProps = 
         "Weekly (52x)",
         "Monthly (12x)",
         "Annual",
+        "ConvertSheet Recalculation Model",
       ];
+      const modelUrl = `https://www.convertsheet.com/tools/uk-salary-calculator?grossSalary=${grossSalary}&pensionPercent=${pensionPercent}&studentLoanPlan=${studentLoanPlan}`;
       const scheduleRows = [
-        ["Gross Base Salary", Math.round((grossSalary / 52) * 100) / 100, result.monthlyGross, grossSalary],
-        ["Personal Allowance (Tax-Free)", Math.round((result.personalAllowance / 52) * 100) / 100, Math.round((result.personalAllowance / 12) * 100) / 100, result.personalAllowance],
-        ["Income Tax (PAYE)", Math.round((result.incomeTax / 52) * 100) / 100, Math.round((result.incomeTax / 12) * 100) / 100, result.incomeTax],
-        ["National Insurance (NIC)", Math.round((result.nationalInsurance / 52) * 100) / 100, Math.round((result.nationalInsurance / 12) * 100) / 100, result.nationalInsurance],
-        ["Pension Contribution", Math.round((result.pensionContribution / 52) * 100) / 100, Math.round((result.pensionContribution / 12) * 100) / 100, result.pensionContribution],
-        ["Student Loan Repayment", Math.round((result.studentLoanRepayment / 52) * 100) / 100, Math.round((result.studentLoanRepayment / 12) * 100) / 100, result.studentLoanRepayment],
-        ["Net Take-Home Pay", result.netWeeklyTakeHome, result.netMonthlyTakeHome, result.netAnnualTakeHome],
+        ["Gross Base Salary", Math.round((grossSalary / 52) * 100) / 100, result.monthlyGross, grossSalary, modelUrl],
+        ["Personal Allowance (Tax-Free)", Math.round((result.personalAllowance / 52) * 100) / 100, Math.round((result.personalAllowance / 12) * 100) / 100, result.personalAllowance, modelUrl],
+        ["Income Tax (PAYE)", Math.round((result.incomeTax / 52) * 100) / 100, Math.round((result.incomeTax / 12) * 100) / 100, result.incomeTax, modelUrl],
+        ["National Insurance (NIC)", Math.round((result.nationalInsurance / 52) * 100) / 100, Math.round((result.nationalInsurance / 12) * 100) / 100, result.nationalInsurance, modelUrl],
+        ["Pension Contribution", Math.round((result.pensionContribution / 52) * 100) / 100, Math.round((result.pensionContribution / 12) * 100) / 100, result.pensionContribution, modelUrl],
+        ["Student Loan Repayment", Math.round((result.studentLoanRepayment / 52) * 100) / 100, Math.round((result.studentLoanRepayment / 12) * 100) / 100, result.studentLoanRepayment, modelUrl],
+        ["Net Take-Home Pay", result.netWeeklyTakeHome, result.netMonthlyTakeHome, result.netAnnualTakeHome, modelUrl],
       ];
       const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+      // Dynamic frequency column formulas
+      [2, 3, 4, 5, 6, 7].forEach((rowNum) => {
+        wsSchedule[`B${rowNum}`] = { t: "n", f: `D${rowNum}/52`, v: scheduleRows[rowNum - 2][1] as number };
+        wsSchedule[`C${rowNum}`] = { t: "n", f: `D${rowNum}/12`, v: scheduleRows[rowNum - 2][2] as number };
+      });
+      wsSchedule["B8"] = { t: "n", f: "B2-B4-B5-B6-B7", v: result.netWeeklyTakeHome };
+      wsSchedule["C8"] = { t: "n", f: "C2-C4-C5-C6-C7", v: result.netMonthlyTakeHome };
+      wsSchedule["D8"] = { t: "n", f: "D2-D4-D5-D6-D7", v: result.netAnnualTakeHome };
+
       XLSX.utils.book_append_sheet(wb, wsSchedule, "Pay Frequency Matrix");
 
       XLSX.writeFile(wb, `ConvertSheet_UK_Salary_${grossSalary}.xlsx`);
@@ -198,10 +217,10 @@ Please advise on salary sacrifice pension contributions, ISA allowances, tax bra
 
   return (
     <CalcCard
-      title="UK Salary & Take-Home Pay Calculator (2024/25 HMRC)"
+      title="UK Salary & Take-Home Pay Calculator (2024/25 & 2026/27 HMRC)"
       subtitle="Calculate your exact UK monthly take-home pay after PAYE income tax, Class 1 National Insurance, pension deductions, and student loans."
       icon={PoundSterling}
-      badge="United Kingdom • 2024/25 HMRC"
+      badge="United Kingdom • 2024/25 & 2026/27 HMRC"
     >
       <div className="space-y-6 pb-28 sm:pb-0">
         {/* Zero-Knowledge Privacy Badge & Freshness Signal */}
@@ -212,7 +231,7 @@ Please advise on salary sacrifice pension contributions, ISA allowances, tax bra
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span>Updated for 2026/27 HMRC: £12,570 Personal Allowance frozen, 8% Class 1 Employee NIC, £100k taper threshold</span>
+            <span>Updated for 2026/27 HMRC (October 26, 2026): £12,570 Personal Allowance frozen • 8% Class 1 Employee NIC • £100k taper threshold (BoE Rate 3.75%)</span>
           </div>
         </div>
 
@@ -305,6 +324,33 @@ Please advise on salary sacrifice pension contributions, ISA allowances, tax bra
               unit="%"
               helpText="Auto-enrolment employee pension contribution (typically pre-tax salary sacrifice)"
             />
+            {/* Quick 44px Pension Presets */}
+            <div className="space-y-1.5 pt-1">
+              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block">Common Pension Contribution Presets:</span>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { label: "0% Opt-out", value: 0 },
+                  { label: "3% Minimum", value: 3 },
+                  { label: "5% Standard", value: 5 },
+                  { label: "8% Matched", value: 8 },
+                  { label: "10% High", value: 10 },
+                  { label: "15% Max", value: 15 },
+                ].map((preset) => (
+                  <button
+                    key={preset.value}
+                    type="button"
+                    onClick={() => setPensionPercent(preset.value)}
+                    className={`min-h-[44px] min-w-[44px] px-3.5 py-2 text-xs font-semibold rounded-xl border transition-colors cursor-pointer touch-manipulation ${
+                      pensionPercent === preset.value
+                        ? "bg-emerald-600 text-white border-emerald-600 dark:border-emerald-500 shadow-xs"
+                        : "bg-zinc-50 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500"
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <CalcSelect
               id="student-loan-plan"

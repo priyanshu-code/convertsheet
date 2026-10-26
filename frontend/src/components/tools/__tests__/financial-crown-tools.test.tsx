@@ -243,6 +243,17 @@ describe("Financial Crown Tools Suite (Mortgage, Car Loan, Retirement, Inflation
       expect(screen.getByLabelText(/Initial Amount \/ Price Today/i)).toHaveValue(50000);
       expect(screen.getAllByRole("button", { name: /copy/i }).length).toBeGreaterThanOrEqual(1);
     });
+
+    it("verifies dual-slider controls and October 26, 2026 BLS CPI freshness signal", () => {
+      render(<InflationCalculator />);
+      expect(
+        screen.getByText(/Updated for October 2026: BLS CPI Benchmark 3\.0%/i)
+      ).toBeInTheDocument();
+      const amountSlider = screen.getByLabelText(/Amount Slider/i);
+      expect(amountSlider).toBeInTheDocument();
+      fireEvent.change(amountSlider, { target: { value: "25000" } });
+      expect(screen.getByLabelText(/Initial Amount \/ Price Today/i)).toHaveValue(25000);
+    });
   });
 
   describe("DebtPayoffCalculator", () => {

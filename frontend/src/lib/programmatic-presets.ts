@@ -58,8 +58,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "175k-mortgage-payment",
     "name": "$175,000 Mortgage Payment Calculator",
-    "title": "$175,000 Mortgage Payment Calculator (30 & 15 Year) | ConvertSheet",
-    "metaDescription": "Calculate exact monthly payments on a $175,000 mortgage at 6.5% and 7.32%. Full breakdown of P&I ($1,106/mo), property taxes, insurance, and amortization export.",
+    "title": "$175,000 Mortgage Payment Calculator: $175 000 Mortgage Monthly Payments (2026)",
+    "metaDescription": "Calculate $175 000 mortgage monthly payments at 6.5% and 7.32%. Instant 175k mortgage payment calculator with P&I ($1,106/mo), taxes, insurance, and Excel schedule.",
     "answerSummary": "On a $175,000 loan balance at a 6.5% 30-year fixed rate, monthly principal & interest is $1,106. Adding typical property taxes (~$180/mo) and homeowners insurance (~$60/mo), the estimated total payment is $1,346/month. At the October 2026 Freddie Mac benchmark of 7.32%, monthly P&I is $1,202/month ($1,442/mo total).",
     "about": "Calculate carrying costs, amortization schedules, and qualifying income for a $175,000 mortgage. Compare 15-year vs 30-year amortization, simulate extra principal prepayments to cut years off your term, and export the complete 360-month breakdown to Excel.",
     "initialValues": {
@@ -71,6 +71,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       "homeInsuranceYearly": 720
     },
     "faqs": [
+      {
+        "question": "What are the $175 000 mortgage monthly payments across 15 and 30-year terms?",
+        "answer": "For a $175,000 mortgage (175k mortgage payment / 175000 mortgage), monthly P&I on a 30-year fixed loan is $1,106 at 6.50% (or $1,202 at 7.32% PMMS benchmark). On a 15-year term, monthly P&I is $1,477 at 6.00% (or $1,541 at 6.68%). Total monthly payments including taxes and insurance average $1,346 to $1,442 per month for 30 years."
+      },
       {
         "question": "What is the monthly payment on a $175,000 mortgage for 30 years?",
         "answer": "At 6.5% fixed interest, monthly principal and interest on a $175,000 loan balance is $1,106. Adding average property taxes ($180/mo) and hazard insurance ($60/mo), your total monthly payment is approximately $1,346/month. At 7.32% (October 2026 market average), monthly P&I is $1,202 ($1,442 total PITI)."
@@ -93,8 +97,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "225k-mortgage-payment",
     "name": "$225,000 Mortgage Payment Calculator",
-    "title": "$225,000 Mortgage Payment Calculator with Amortization | ConvertSheet",
-    "metaDescription": "Calculate monthly payment on a $225,000 mortgage at 6.5% and 7.32%. Full breakdown of P&I ($1,422/mo), taxes, insurance, and Excel amortization schedule.",
+    "title": "$225,000 Mortgage Payment Calculator: 225 000 Mortgage Monthly Payment (2026)",
+    "metaDescription": "Calculate 225 000 mortgage monthly payment at 6.5% and 7.32%. Instant $225,000 mortgage payment calculator with P&I ($1,422/mo), taxes, insurance, and Excel schedule.",
     "answerSummary": "On a $225,000 loan balance at a 6.5% 30-year fixed rate, monthly principal & interest is $1,422. Adding property taxes (~$230/mo) and homeowners insurance (~$80/mo), total estimated monthly payment is $1,732/month. At the October 2026 market average of 7.32%, monthly P&I is $1,546/month ($1,856/mo total).",
     "about": "Evaluate monthly mortgage payments, down payment options, and amortization for a $225,000 mortgage balance. Review principal reduction schedules, estimate lifetime interest savings from extra payments, and download the entire schedule directly to Excel.",
     "initialValues": {
@@ -106,6 +110,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       "homeInsuranceYearly": 960
     },
     "faqs": [
+      {
+        "question": "What is the 225 000 mortgage monthly payment with property taxes and insurance?",
+        "answer": "For a $225,000 mortgage (225000 mortgage), monthly P&I is $1,422 at 6.50% (or $1,546 at 7.32% PMMS benchmark). Adding estimated property taxes (~$230/mo) and homeowners insurance (~$80/mo), the total monthly payment is approximately $1,732 to $1,856 per month."
+      },
       {
         "question": "What is the monthly payment on a $225,000 mortgage?",
         "answer": "At 6.5% fixed interest for 30 years, monthly principal and interest on a $225,000 loan balance is $1,422. With property taxes (~$230/mo) and insurance (~$80/mo), total monthly payment is approximately $1,732/month. At 7.32% (October 2026 Freddie Mac PMMS), monthly P&I is $1,546 ($1,856 total PITI)."
@@ -574,8 +582,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15 vs 30 Year Mortgage Calculator (2026) — 15 Year vs 30 Year Comparison",
-    "metaDescription": "Free 15 vs 30 year mortgage calculator. Compare 15 year vs 30 year mortgage payments, monthly cash flow differences, lifetime interest savings ($248k+), and side-by-side amortization with live 2026 rates.",
+    "title": "15 vs 30 Year Mortgage Calculator: Calculate 15 Year Mortgage vs 30 (2026)",
+    "metaDescription": "Calculate 15 year mortgage vs 30 year payments. Free 15 vs 30 year mortgage calculator comparing monthly cash flow, $248k+ interest savings, and live 2026 rates.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {
@@ -587,6 +595,10 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
       "homeInsuranceYearly": 1200
     },
     "faqs": [
+      {
+        "question": "How do I calculate 15 year mortgage vs 30 year loan payments side-by-side?",
+        "answer": "To calculate 15 year mortgage vs 30 year payments, compare both terms on the same principal balance. On a $320,000 loan balance: a 15-year mortgage at 5.80% requires $2,666/month with $159,860 total interest, while a 30-year mortgage at 6.50% requires $2,023/month with $408,142 total interest. The 15-year loan requires $643 more per month but saves $248,282 in total lifetime interest."
+      },
       {
         "question": "How do you calculate 15-year vs 30-year mortgage monthly payments?",
         "answer": "To calculate payments, use the monthly amortization equation M = P[r(1+r)^n]/[(1+r)^n - 1]. For a $320,000 loan balance: at 5.8% for 15 years (n=180), M = $2,666/month with $159,860 in total interest. At 6.5% for 30 years (n=360), M = $2,023/month with $408,142 in total interest. The 15-year mortgage requires $643 more per month but saves $248,282 in lifetime interest charges."
