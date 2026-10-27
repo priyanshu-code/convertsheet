@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-26",
+  "lastUpdated": "2026-10-27",
   "totalBlogs": 30,
   "totalTools": 28,
   "blogs": [
@@ -631,15 +631,17 @@
     },
     {
       "slug": "gst-calculator",
-      "lastAudited": "2026-10-18",
+      "lastAudited": "2026-10-27",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-gst-council-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
         "url-query-permalink-sync",
         "44px-touch-targets",
         "dual-slider-control",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
         "safe-area-inset-sticky-bar"
       ],
@@ -647,15 +649,17 @@
     },
     {
       "slug": "discount-calculator",
-      "lastAudited": "2026-10-18",
+      "lastAudited": "2026-10-27",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-retail-ecommerce-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
         "url-query-permalink-sync",
         "44px-touch-targets",
         "dual-slider-control",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
         "safe-area-inset-sticky-bar"
       ],
@@ -663,15 +667,17 @@
     },
     {
       "slug": "margin-calculator",
-      "lastAudited": "2026-10-18",
+      "lastAudited": "2026-10-27",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-commercial-margin-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
         "url-query-permalink-sync",
         "44px-touch-targets",
         "dual-slider-control",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
         "safe-area-inset-sticky-bar"
       ],

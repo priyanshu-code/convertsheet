@@ -114,8 +114,10 @@ Please explain the stacked discount math and compare against competitive retail 
     try {
       setIsExportingExcel(true);
       const wb = XLSX.utils.book_new();
+      const pAfter1st = originalPrice * (1 - discountPercent / 100);
 
-      const summaryData = [
+      // Tab 1: Discount Summary with active transparent Excel formulas
+      const summaryData: any[][] = [
         ["ConvertSheet - Discount & Sale Price Calculation", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
         [
@@ -126,21 +128,22 @@ Please explain the stacked discount math and compare against competitive retail 
         ["", ""],
         ["--- TRANSACTION PARAMETERS ---", ""],
         ["Original Retail Price", originalPrice],
-        ["Primary Store Discount (%)", `${discountPercent}%`],
-        ["Stacked Coupon Code (%)", extraDiscount > 0 ? `${extraDiscount}%` : "None"],
+        ["Primary Store Discount (%)", discountPercent],
+        ["Stacked Coupon Code (%)", extraDiscount],
         ["", ""],
-        ["--- FINAL PAYABLE & SAVINGS ---", ""],
-        ["Initial Store Discount Savings", firstDiscountSavings],
-        ["Stacked Coupon Additional Savings", extraCouponSavings],
-        ["Total Cash Savings", totalSavings],
-        ["Effective Blended Discount Rate", `${effectiveDiscount}%`],
-        ["Final Payable Price", finalPrice],
+        ["--- FINAL PAYABLE & SAVINGS (FORMULAS) ---", ""],
+        ["Price After Primary Discount", { t: "n", f: "B7*(1-B8/100)", v: Math.round(pAfter1st * 100) / 100 }],
+        ["Initial Store Discount Savings", { t: "n", f: "B7-B11", v: firstDiscountSavings }],
+        ["Stacked Coupon Additional Savings", { t: "n", f: "B11*(B9/100)", v: extraCouponSavings }],
+        ["Final Payable Price", { t: "n", f: "B11-B13", v: finalPrice }],
+        ["Total Cash Savings", { t: "n", f: "B7-B14", v: totalSavings }],
+        ["Effective Blended Discount Rate (%)", { t: "n", f: "IF(B7>0,(B15/B7)*100,0)", v: effectiveDiscount }],
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
       XLSX.utils.book_append_sheet(wb, wsSummary, "Discount Summary");
 
-      // Comparative Markdown Matrix for standard tiers
+      // Tab 2: Comparative Markdown Matrix for standard tiers with live row formulas
       const matrixHeader = [
         "Discount Tier",
         "Original Price",
@@ -149,17 +152,18 @@ Please explain the stacked discount math and compare against competitive retail 
         "Effective %",
       ];
       const comparisonTiers = [10, 15, 20, 25, 30, 40, 50, 60, 70];
-      const matrixRows = comparisonTiers.map((tier) => {
+      const matrixRows = comparisonTiers.map((tier, idx) => {
+        const row = idx + 2;
         const p1 = originalPrice * (1 - tier / 100);
         const p2 = p1 * (1 - extraDiscount / 100);
         const saved = originalPrice - p2;
         const eff = originalPrice > 0 ? (saved / originalPrice) * 100 : 0;
         return [
           `${tier}%${extraDiscount > 0 ? ` + ${extraDiscount}%` : ""}`,
-          originalPrice,
-          Math.round(saved * 100) / 100,
-          Math.round(p2 * 100) / 100,
-          `${Math.round(eff * 10) / 10}%`,
+          { t: "n", f: "'Discount Summary'!$B$7", v: originalPrice },
+          { t: "n", f: `B${row}-(B${row}*(1-${tier}/100)*(1-'Discount Summary'!$B$9/100))`, v: Math.round(saved * 100) / 100 },
+          { t: "n", f: `B${row}-C${row}`, v: Math.round(p2 * 100) / 100 },
+          { t: "n", f: `IF(B${row}>0,(C${row}/B${row})*100,0)`, v: Math.round(eff * 10) / 10 },
         ];
       });
 
@@ -186,7 +190,7 @@ Please explain the stacked discount math and compare against competitive retail 
       <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
         <span className="font-medium">
-          Updated for 2026 Retail &amp; E-Commerce Benchmarks • Stacked Coupon Math &amp; Tax Savings
+          Updated for 2026 Retail &amp; E-Commerce Benchmarks (October 27, 2026) • Stacked Coupon Math &amp; Tax Savings
         </span>
       </div>
 
@@ -322,7 +326,15 @@ Please explain the stacked discount math and compare against competitive retail 
         {/* Action Buttons: Save, Share, Prompt, Excel Export */}
         <div className="pt-4 flex flex-wrap items-center gap-3 border-t border-zinc-100 dark:border-zinc-800">
           <CalcSaveButton
-            calculationType="Discount Calculation"
+            toolSlug="discount-calculator"
+            toolName="Discount Calculator"
+            summaryTitle={`${discountPercent}% OFF ${currencySymbol}${originalPrice.toLocaleString()}${extraDiscount > 0 ? ` + ${extraDiscount}% coupon` : ""}`}
+            summaryMetrics={[
+              { label: "Final Price", value: formatCurrency(finalPrice) },
+              { label: "Total Saved", value: formatCurrency(totalSavings) },
+              { label: "Effective Off", value: `${effectiveDiscount}%` },
+              { label: "Original", value: formatCurrency(originalPrice) },
+            ]}
             inputs={{ originalPrice, discountPercent, extraDiscount }}
             outputs={{ finalPrice, totalSavings, effectiveDiscount }}
           />

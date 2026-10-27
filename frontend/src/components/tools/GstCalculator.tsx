@@ -112,33 +112,35 @@ export function GstCalculator() {
     try {
       setIsExportingExcel(true);
       const wb = XLSX.utils.book_new();
+      const isExcl = mode === "exclusive";
 
-      const summaryData = [
+      // Tab 1: GST Summary with active Excel cell formulas
+      const summaryData: any[][] = [
         ["ConvertSheet - GST Tax Computation & Invoice Audit", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
         ["ConvertSheet Recalculation Model", `https://www.convertsheet.com/tools/gst-calculator?amount=${amount}&rate=${rate}&mode=${mode}${rate === "custom" ? `&customRate=${customRate}` : ""}`],
         ["GST Council Baseline", "2026 Statutory GST Schedule (CGST/SGST 50:50 Revenue Split)"],
         ["", ""],
         ["--- TRANSACTION PARAMETERS ---", ""],
-        ["Computation Mode", mode === "exclusive" ? "Add GST (Exclusive - Pre-Tax Input)" : "Remove GST (Inclusive - MRP / Post-Tax Input)"],
+        ["Computation Mode", isExcl ? "Add GST (Exclusive - Pre-Tax Input)" : "Remove GST (Inclusive - MRP / Post-Tax Input)"],
         ["Input Amount", amount],
-        ["Applicable GST Rate (%)", `${effectiveRate}%`],
+        ["Applicable GST Rate (%)", effectiveRate],
         ["", ""],
-        ["--- TAX BREAKDOWN & SPLIT ---", ""],
-        ["Net Pre-Tax Base Amount", netAmount],
-        ["Total GST Liability", gstAmount],
-        ["Central GST (CGST - 50%)", cgst],
-        ["State / UT GST (SGST - 50%)", sgst],
-        ["Integrated GST (IGST - Inter-State)", gstAmount],
-        ["Gross Final Total Amount", totalAmount],
+        ["--- TAX BREAKDOWN & SPLIT (FORMULAS) ---", ""],
+        ["Net Pre-Tax Base Amount", isExcl ? { t: "n", f: "B8", v: netAmount } : { t: "n", f: "B8/(1+B9/100)", v: netAmount }],
+        ["Total GST Liability", isExcl ? { t: "n", f: "B12*(B9/100)", v: gstAmount } : { t: "n", f: "B8-B12", v: gstAmount }],
+        ["Central GST (CGST - 50%)", { t: "n", f: "B13/2", v: cgst }],
+        ["State / UT GST (SGST - 50%)", { t: "n", f: "B13/2", v: sgst }],
+        ["Integrated GST (IGST - Inter-State)", { t: "n", f: "B13", v: gstAmount }],
+        ["Gross Final Total Amount", { t: "n", f: "B12+B13", v: totalAmount }],
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
       XLSX.utils.book_append_sheet(wb, wsSummary, "GST Summary");
 
-      // Rate Matrix Comparison
+      // Tab 2: Rate Matrix Comparison across 3%, 5%, 12%, 18%, 28% with active row formulas
       const matrixHeader = [
-        "GST Slab Rate",
+        "GST Slab Rate (%)",
         "Mode",
         "Net Base Amount",
         "Total GST",
@@ -147,11 +149,12 @@ export function GstCalculator() {
         "Gross Final Total",
       ];
       const comparisonRates = [3, 5, 12, 18, 28];
-      const matrixRows = comparisonRates.map((r) => {
+      const matrixRows = comparisonRates.map((r, idx) => {
+        const row = idx + 2; // header is row 1
         let n = 0;
         let t = 0;
         let tot = 0;
-        if (mode === "exclusive") {
+        if (isExcl) {
           n = amount;
           t = n * (r / 100);
           tot = n + t;
@@ -160,14 +163,19 @@ export function GstCalculator() {
           n = tot / (1 + r / 100);
           t = tot - n;
         }
+
         return [
-          `${r}%`,
-          mode === "exclusive" ? "Add GST" : "Remove GST",
-          Math.round(n * 100) / 100,
-          Math.round(t * 100) / 100,
-          Math.round((t / 2) * 100) / 100,
-          Math.round((t / 2) * 100) / 100,
-          Math.round(tot * 100) / 100,
+          r,
+          isExcl ? "Add GST" : "Remove GST",
+          isExcl
+            ? { t: "n", f: "'GST Summary'!$B$8", v: amount }
+            : { t: "n", f: `'GST Summary'!$B$8/(1+A${row}/100)`, v: Math.round(n * 100) / 100 },
+          isExcl
+            ? { t: "n", f: `C${row}*(A${row}/100)`, v: Math.round(t * 100) / 100 }
+            : { t: "n", f: `'GST Summary'!$B$8-C${row}`, v: Math.round(t * 100) / 100 },
+          { t: "n", f: `D${row}/2`, v: Math.round((t / 2) * 100) / 100 },
+          { t: "n", f: `D${row}/2`, v: Math.round((t / 2) * 100) / 100 },
+          { t: "n", f: `C${row}+D${row}`, v: Math.round(tot * 100) / 100 },
         ];
       });
 
@@ -212,7 +220,7 @@ Please provide guidance on Input Tax Credit (ITC) eligibility, reverse charge me
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-            <span>Updated for 2026 GST Council: Standard 5%, 12%, 18%, 28% brackets + 3% Gold slab; CGST/SGST 50:50 revenue split</span>
+            <span>Updated for 2026 GST Council (October 27, 2026): Standard 5%, 12%, 18%, 28% brackets + 3% Gold slab; CGST/SGST 50:50 revenue split</span>
           </div>
         </div>
 

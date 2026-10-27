@@ -1128,6 +1128,38 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
   },
   {
     "toolSlug": "car-loan-calculator",
+    "presetSlug": "60k-car-loan-monthly-payment",
+    "name": "$60,000 Car Loan Payment (60 & 72 Months) Calculator",
+    "title": "$60,000 Car Loan Payment: 72 & 60 Month Financing Calculator (2026)",
+    "metaDescription": "Calculate exact monthly payment on a $60,000 car loan for 72 months ($811/mo) vs 60 months ($949/mo). Compare interest, down payment, and export full Excel schedule.",
+    "answerSummary": "Financing a $60,000 vehicle at 5.7% APR over a 72-month (6-year) term with $10,000 down and $5,000 trade-in results in a monthly payment of $811 ($8,963 total interest). Over a 60-month term, the payment is $949/month ($7,497 total interest).",
+    "about": "Model financing for premium cars, luxury SUVs, and light trucks. Compare 72-month vs 60-month amortization, interest differentials, and depreciation risks.",
+    "initialValues": {
+      "vehiclePrice": 60000,
+      "downPayment": 10000,
+      "tradeInValue": 5000,
+      "interestRate": 5.7,
+      "loanTermMonths": 72,
+      "salesTaxPercent": 7.0,
+      "dealerFees": 600
+    },
+    "faqs": [
+      {
+        "question": "What is the monthly payment on a $60,000 car loan for 72 months?",
+        "answer": "With $10,000 down and $5,000 trade-in (net loan of $49,450 including 7% sales tax and fees) at 5.7% APR, the monthly payment on a 72-month term is approximately $811/month. Total interest paid over 6 years is $8,963."
+      },
+      {
+        "question": "How much does a $60,000 car loan cost per month for 60 months vs 72 months?",
+        "answer": "At 5.7% APR with $15,000 in combined down payment and trade-in, a 60-month loan costs $949/month with $7,497 in total interest, whereas a 72-month loan costs $811/month with $8,963 in total interest. The 72-month loan lowers the monthly payment by $138 but costs an additional $1,466 in interest."
+      },
+      {
+        "question": "Can I export the complete 72-month amortization schedule to Excel?",
+        "answer": "Yes. ConvertSheet allows one-click export of the entire 72-month principal, interest, and remaining balance amortization table directly into an Excel (.xlsx) workbook with live formulas."
+      }
+    ]
+  },
+  {
+    "toolSlug": "car-loan-calculator",
     "presetSlug": "80k-car-loan",
     "name": "$80,000 Luxury Auto Loan Payment Calculator",
     "title": "$80,000 Luxury Car Loan Calculator & Financing Schedule | ConvertSheet",
@@ -3927,8 +3959,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "percentage-calculator",
     presetSlug: "what-is-20-percent-of-100",
     name: "What is 20% of 100?",
-    title: "What is 20% of 100? (0.20 × 100) — Exact Math & Steps",
-    metaDescription: "20% of 100 is 20. Solve 0.20 * 100, 100 * 0.20, 100/0.20 (500), 20% of $100k ($20k), 100 - 20% (80), and 100 + 20% (120) with exact formula, steps, and Excel sheet.",
+    title: "What is 20% of 100? (0.20 × 100 & 0.20 * 100) — Exact Math & Steps",
+    metaDescription: "20% of 100 is 20. Solve 0.20 * 100, 0.20 x 100, 100 * 0.20, 100 x 0.20, 100/0.20 (500), 20% of $100k ($20k), 100 - 20% (80), and 100 + 20% (120) with exact formula, steps, and Excel sheet.",
     answerSummary: "20% of 100 equals 20. To calculate this, convert 20% to a decimal by dividing by 100 (0.20), then multiply by 100: 0.20 × 100 = 20.",
     about: "Calculate percentages instantly with step-by-step mathematical breakdowns. Understand how to convert percentages to decimals, fractions, and apply them to discounts, taxes, and tips.",
     initialValues: {
@@ -3942,8 +3974,12 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
         answer: "Divide 20 by 100 to get the decimal 0.20, then multiply by 100: 0.20 × 100 = 20.",
       },
       {
-        question: "What is 0.20 * 100 in math?",
-        answer: "0.20 * 100 equals 20. In arithmetic, multiplying any decimal by 100 shifts the decimal point two places to the right, yielding 20.",
+        question: "What is 0.20 * 100 (and 0.20 x 100) in math?",
+        answer: "0.20 * 100 and 0.20 x 100 equal 20. In arithmetic, multiplying any decimal by 100 shifts the decimal point two places to the right, yielding 20.",
+      },
+      {
+        question: "What is 100 x 0.20 (and 100 * 0.20) in math?",
+        answer: "100 x 0.20 equals 20. Under the commutative property of multiplication, 100 × 0.20 = 0.20 × 100 = 20.",
       },
       {
         question: "What is 100 / 0.20 (and 100 ÷ 0.20) in math?",

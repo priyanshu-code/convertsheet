@@ -138,7 +138,8 @@ Please advise on pricing power, price elasticity, volume discounting thresholds,
       setIsExportingExcel(true);
       const wb = XLSX.utils.book_new();
 
-      const summaryData = [
+      // Tab 1: Margin Summary with active transparent Excel formulas
+      const summaryData: any[][] = [
         ["ConvertSheet - Profit Margin & Markup Analysis", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
         [
@@ -147,18 +148,19 @@ Please advise on pricing power, price elasticity, volume discounting thresholds,
         ],
         ["Industry Standard", "2026 Commercial Pricing & Retail Margin Framework"],
         ["", ""],
-        ["--- UNIT ECONOMICS & PRICING ---", ""],
+        ["--- UNIT ECONOMICS & PRICING (FORMULAS) ---", ""],
         ["Cost of Goods Sold (COGS)", cost],
         ["Selling Price / Revenue", effectiveRevenue],
-        ["Gross Profit ($)", grossProfit],
-        ["Profit Margin (%)", `${marginPercent}%`],
-        ["Markup Percentage (%)", `${markupPercent}%`],
+        ["", ""],
+        ["Gross Profit ($)", { t: "n", f: "B8-B7", v: grossProfit }],
+        ["Profit Margin (%)", { t: "n", f: "IF(B8>0,(B10/B8)*100,0)", v: marginPercent }],
+        ["Markup Percentage (%)", { t: "n", f: "IF(B7>0,(B10/B7)*100,0)", v: markupPercent }],
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
       XLSX.utils.book_append_sheet(wb, wsSummary, "Margin Summary");
 
-      // Sensitivity Benchmark Matrix across margins 10% to 80%
+      // Tab 2: Sensitivity Benchmark Matrix across margins 10% to 80% with live row formulas
       const matrixHeader = [
         "Target Margin %",
         "Cost of Goods",
@@ -167,17 +169,18 @@ Please advise on pricing power, price elasticity, volume discounting thresholds,
         "Equivalent Markup %",
       ];
       const benchmarkMargins = [10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80];
-      const matrixRows = benchmarkMargins.map((m) => {
+      const matrixRows = benchmarkMargins.map((m, idx) => {
+        const row = idx + 2;
         const rate = m / 100;
         const price = rate < 1 ? cost / (1 - rate) : cost;
         const profit = price - cost;
         const markup = cost > 0 ? (profit / cost) * 100 : 0;
         return [
-          `${m}%`,
-          cost,
-          Math.round(price * 100) / 100,
-          Math.round(profit * 100) / 100,
-          `${Math.round(markup * 10) / 10}%`,
+          m,
+          { t: "n", f: "'Margin Summary'!$B$7", v: cost },
+          { t: "n", f: `IF(A${row}<100,B${row}/(1-A${row}/100),B${row})`, v: Math.round(price * 100) / 100 },
+          { t: "n", f: `C${row}-B${row}`, v: Math.round(profit * 100) / 100 },
+          { t: "n", f: `IF(B${row}>0,(D${row}/B${row})*100,0)`, v: Math.round(markup * 10) / 10 },
         ];
       });
 
@@ -204,7 +207,7 @@ Please advise on pricing power, price elasticity, volume discounting thresholds,
       <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
         <span className="font-medium">
-          Updated for 2026 E-Commerce &amp; Retail Margins: SaaS 75–85%, E-Commerce 35–50%, Wholesale 15–25%
+          Updated for 2026 E-Commerce &amp; Commercial Margins (October 27, 2026): SaaS 75–85%, E-Commerce 35–50%, Wholesale 15–25%
         </span>
       </div>
 
@@ -392,6 +395,42 @@ Please advise on pricing power, price elasticity, volume discounting thresholds,
               },
             ]}
           />
+        </div>
+
+        {/* Action Buttons: Save, Share, Prompt, Excel Export */}
+        <div className="mt-6 pt-4 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={handleExportExcel}
+            disabled={isExportingExcel}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors shrink-0 disabled:opacity-50 cursor-pointer min-h-[44px] touch-manipulation"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            <span>{isExportingExcel ? "Generating .xlsx..." : "Export Excel (.xlsx)"}</span>
+          </button>
+          <CalcSaveButton
+            toolSlug="margin-calculator"
+            toolName="Profit Margin & Markup Calculator"
+            summaryTitle={`Margin: ${marginPercent}% (Cost: ${formatCurrency(cost)}, Price: ${formatCurrency(effectiveRevenue)})`}
+            summaryMetrics={[
+              { label: "Gross Profit", value: formatCurrency(grossProfit) },
+              { label: "Profit Margin", value: `${marginPercent}%` },
+              { label: "Markup", value: `${markupPercent}%` },
+              { label: "Selling Price", value: formatCurrency(effectiveRevenue) },
+            ]}
+            inputs={{ cost, revenue: effectiveRevenue, targetMargin, calcMode }}
+            outputs={{ grossProfit, marginPercent, markupPercent, effectiveRevenue }}
+          />
+          <CalcShareButton
+            state={{
+              cost,
+              revenue: effectiveRevenue,
+              targetMargin,
+              calcMode,
+            }}
+            label="Share Pricing Model"
+          />
+          <CalcPromptButton promptText={llmPrompt} />
         </div>
       </CalcCard>
 

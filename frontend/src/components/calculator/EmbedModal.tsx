@@ -19,6 +19,13 @@ export interface EmbedModalProps {
 export function EmbedModal({ tool, isOpen, onClose }: EmbedModalProps) {
   const [sizePreset, setSizePreset] = useState<"responsive" | "standard" | "compact">("responsive");
   const [copied, setCopied] = useState(false);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   const dimensions = useMemo(() => {
     switch (sizePreset) {
@@ -45,7 +52,8 @@ export function EmbedModal({ tool, isOpen, onClose }: EmbedModalProps) {
     try {
       await navigator.clipboard.writeText(embedCode);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 2500);
     } catch {
       const textarea = document.createElement("textarea");
       textarea.value = embedCode;
@@ -54,7 +62,8 @@ export function EmbedModal({ tool, isOpen, onClose }: EmbedModalProps) {
       document.execCommand("copy");
       document.body.removeChild(textarea);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 2500);
     }
   }, [embedCode]);
 

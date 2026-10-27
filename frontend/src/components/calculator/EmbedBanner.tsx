@@ -14,6 +14,13 @@ export interface EmbedBannerProps {
 export function EmbedBanner({ tool, className = "" }: EmbedBannerProps) {
   const [copied, setCopied] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   const snippet = `<div style="max-width:100%;"><iframe src="https://www.convertsheet.com/embed/${tool.slug}" width="100%" height="650" frameborder="0" style="border:0;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);max-width:100%;" title="${tool.name}"></iframe><div style="font-size:11px;color:#71717a;text-align:right;margin-top:4px;"><a href="https://www.convertsheet.com/tools/${tool.slug}" target="_blank" rel="noopener" style="color:#059669;text-decoration:none;font-weight:600;">Free ${tool.name}</a> powered by <a href="https://www.convertsheet.com" target="_blank" rel="noopener" style="color:#059669;text-decoration:none;font-weight:600;">ConvertSheet</a></div></div>`;
 
@@ -21,7 +28,8 @@ export function EmbedBanner({ tool, className = "" }: EmbedBannerProps) {
     try {
       await navigator.clipboard.writeText(snippet);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 2000);
     } catch {
       const textarea = document.createElement("textarea");
       textarea.value = snippet;
@@ -30,7 +38,8 @@ export function EmbedBanner({ tool, className = "" }: EmbedBannerProps) {
       document.execCommand("copy");
       document.body.removeChild(textarea);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 2000);
     }
   };
 
