@@ -122,6 +122,13 @@ Please evaluate this performance against the S&P 500 historical baseline (~10% C
     { label: "5x", mult: 5.0 },
   ];
   const DURATION_PRESETS = [1, 2, 3, 5, 7, 10];
+  const ASSET_BENCHMARK_PRESETS = [
+    { label: "S&P 500 (~10% CAGR)", cagr: 10.0 },
+    { label: "10Y Treasury (5.00%)", cagr: 5.0 },
+    { label: "High-Yield CD (4.80%)", cagr: 4.8 },
+    { label: "Commercial RE (8.50%)", cagr: 8.5 },
+    { label: "Venture Equity (25%)", cagr: 25.0 },
+  ];
 
   const handleExportExcel = () => {
     try {
@@ -135,32 +142,40 @@ Please evaluate this performance against the S&P 500 historical baseline (~10% C
           "ConvertSheet Recalculation Model",
           `https://www.convertsheet.com/tools/roi-calculator?initialInvestment=${initialInvestment}&finalReturn=${finalReturn}&investmentYears=${investmentYears}`,
         ],
-        ["Macro Benchmark Reference", "2026 Asset Benchmarks (S&P 500 ~10% CAGR • US 10Y Treasury 5.10%)"],
+        ["Macro Benchmark Reference", "October 28, 2026 Asset Benchmarks (S&P 500 ~10% CAGR • US 10Y Treasury 5.00% • 3M T-Bill 4.50%)"],
         ["", ""],
         ["--- INVESTMENT PARAMETERS ---", ""],
         ["Initial Capital Invested (Cost Basis)", initialInvestment],
         ["Final Return / Liquidation Value", finalReturn],
         ["Holding Horizon (Years)", investmentYears],
         ["", ""],
-        ["--- PERFORMANCE METRICS ---", ""],
-        ["Net Capital Gain / Profit", netProfit],
-        ["Simple Total ROI (%)", `${simpleRoi}%`],
-        ["Annualized Compound Growth (CAGR %)", `${annualizedRoi}%`],
+        ["--- PERFORMANCE METRICS (FORMULAS) ---", ""],
+        ["Net Capital Gain / Profit", { t: "n", f: "B8-B7", v: netProfit }],
+        ["Simple Total ROI (%)", { t: "n", f: "IF(B7>0,(B11/B7)*100,0)", v: simpleRoi }],
+        ["Annualized Compound Growth (CAGR %)", { t: "n", f: "IF(AND(B7>0,B8>0),((B8/B7)^(1/B9)-1)*100,0)", v: annualizedRoi }],
       ];
 
       const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      wsSummary["!cols"] = [{ wch: 38 }, { wch: 28 }];
       XLSX.utils.book_append_sheet(wb, wsSummary, "ROI Summary");
 
-      // Annualized Portfolio Growth Schedule
-      const scheduleHeader = ["Year", "Portfolio Valuation ($)", "Cost Basis ($)", "Cumulative Gain ($)"];
-      const scheduleRows = chartData.map((d) => [
-        d.label,
-        d.portfolioValue,
-        d.costBasis,
-        d.portfolioValue - d.costBasis,
-      ]);
+      // Annualized Portfolio Growth Schedule with linked dynamic row formulas
+      const scheduleHeader = ["Holding Interval", "Portfolio Valuation ($)", "Cost Basis ($)", "Cumulative Gain ($)"];
+      const scheduleRows = chartData.map((d, idx) => {
+        const row = idx + 2; // header is row 1
+        const yr = idx;
+        return [
+          d.label,
+          yr === 0
+            ? { t: "n", f: "'ROI Summary'!$B$7", v: d.portfolioValue }
+            : { t: "n", f: `'ROI Summary'!$B$7*(1+'ROI Summary'!$B$13/100)^(${yr})`, v: d.portfolioValue },
+          { t: "n", f: "'ROI Summary'!$B$7", v: d.costBasis },
+          { t: "n", f: `B${row}-C${row}`, v: d.portfolioValue - d.costBasis },
+        ];
+      });
 
       const wsSchedule = XLSX.utils.aoa_to_sheet([scheduleHeader, ...scheduleRows]);
+      wsSchedule["!cols"] = [{ wch: 18 }, { wch: 24 }, { wch: 20 }, { wch: 22 }];
       XLSX.utils.book_append_sheet(wb, wsSchedule, "Valuation Trajectory");
 
       XLSX.writeFile(wb, `ConvertSheet_ROI_Audit_${initialInvestment}_${simpleRoi}pct.xlsx`);
@@ -183,7 +198,7 @@ Please evaluate this performance against the S&P 500 historical baseline (~10% C
       <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
         <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
         <span className="font-medium">
-          Updated for 2026 Asset Benchmarks: S&amp;P 500 Historical ~10% CAGR • US 10-Year Treasury 5.10%
+          Updated for 2026 Asset Benchmarks (October 28, 2026): S&amp;P 500 Historical ~10% CAGR • US 10-Year Treasury 5.00% • 3-Month T-Bill 4.50%
         </span>
       </div>
 
@@ -304,6 +319,30 @@ Please evaluate this performance against the S&P 500 historical baseline (~10% C
                     }`}
                   >
                     {yr} {yr === 1 ? "Year" : "Years"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Asset Benchmark Scenarios */}
+            <div className="space-y-2 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800">
+              <span className="text-[10px] uppercase font-semibold text-zinc-500 block">
+                Simulate Asset Class Benchmark:
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {ASSET_BENCHMARK_PRESETS.map((bm) => (
+                  <button
+                    key={bm.label}
+                    type="button"
+                    onClick={() => {
+                      const computedReturn = Math.round(
+                        initialInvestment * Math.pow(1 + bm.cagr / 100, investmentYears)
+                      );
+                      setFinalReturn(computedReturn);
+                    }}
+                    className="min-h-[44px] px-3 py-2 text-xs font-semibold rounded-lg border bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-emerald-500 dark:hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all touch-manipulation cursor-pointer flex items-center justify-center"
+                  >
+                    {bm.label}
                   </button>
                 ))}
               </div>

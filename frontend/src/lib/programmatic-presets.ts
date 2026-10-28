@@ -97,8 +97,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "225k-mortgage-payment",
     "name": "$225,000 Mortgage Payment Calculator",
-    "title": "$225,000 Mortgage Payment Calculator: 225 000 Mortgage Monthly Payment (2026)",
-    "metaDescription": "Calculate 225 000 mortgage monthly payment at 6.5% and 7.32%. Instant $225,000 mortgage payment calculator with P&I ($1,422/mo), taxes, insurance, and Excel schedule.",
+    "title": "$225,000 Mortgage Payment Calculator: $225 000 Mortgage Monthly Payment (2026)",
+    "metaDescription": "Calculate $225 000 mortgage payment calculator results. Instant 225k mortgage monthly payments at 6.5% ($1,422/mo) and 7.32% ($1,546/mo), taxes, insurance, and Excel schedule.",
     "answerSummary": "On a $225,000 loan balance at a 6.5% 30-year fixed rate, monthly principal & interest is $1,422. Adding property taxes (~$230/mo) and homeowners insurance (~$80/mo), total estimated monthly payment is $1,732/month. At the October 2026 market average of 7.32%, monthly P&I is $1,546/month ($1,856/mo total).",
     "about": "Evaluate monthly mortgage payments, down payment options, and amortization for a $225,000 mortgage balance. Review principal reduction schedules, estimate lifetime interest savings from extra payments, and download the entire schedule directly to Excel.",
     "initialValues": {
@@ -582,8 +582,8 @@ const PROGRAMMATIC_PRESETS_BASE: ProgrammaticPreset[] = [
     "toolSlug": "mortgage-calculator",
     "presetSlug": "15-year-vs-30-year",
     "name": "15-Year vs 30-Year Mortgage Calculator",
-    "title": "15 vs 30 Year Mortgage Calculator: Calculate 15 Year Mortgage vs 30 (2026)",
-    "metaDescription": "Calculate 15 year mortgage vs 30 year payments. Free 15 vs 30 year mortgage calculator comparing monthly cash flow, $248k+ interest savings, and live 2026 rates.",
+    "title": "15 vs 30 Year Mortgage Calculator: 15-Year vs 30-Year Loan Comparison (2026)",
+    "metaDescription": "Free 15 vs 30 year mortgage calculator. Compare 15 year vs 30 year mortgage payments side-by-side, calculate $248k+ interest savings, and export full Excel amortization.",
     "answerSummary": "On a $320,000 loan ($400,000 home with 20% down), a 15-year mortgage at 5.8% has a monthly P&I payment of $2,666 and total interest of $159,860. A 30-year mortgage at 6.5% has a monthly P&I payment of $2,023 and total interest of $408,142. The 15-year loan costs $643 more per month but saves $248,282 in total interest.",
     "about": "A 15-year fixed loan typically carries a 0.5% to 0.8% lower interest rate than a 30-year mortgage and cuts total interest paid by over 60%. Use this calculator to compare monthly cash flow against long-term interest savings.",
     "initialValues": {

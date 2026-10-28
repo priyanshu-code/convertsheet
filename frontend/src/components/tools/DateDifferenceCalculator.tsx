@@ -176,25 +176,78 @@ Please evaluate this project timeline against standard 2026 sprint milestones an
       const summaryData = [
         ["ConvertSheet - Date Difference & Project Duration Calculation", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
-        ["Recalculate Online", "https://www.convertsheet.com/tools/date-difference-calculator"],
+        [
+          "ConvertSheet Recalculation Model",
+          `https://www.convertsheet.com/tools/date-difference-calculator?startDate=${startDate}&endDate=${endDate}&includeEndDay=${includeEndDay}`,
+        ],
+        ["Calendar Baseline Reference", "October 28, 2026 Project Standards (365 Days • 261 Business Days • NETWORKDAYS Math)"],
         ["", ""],
         ["--- TIMELINE PARAMETERS ---", ""],
         ["Start Date", startDate],
         ["End Date", endDate],
         ["Include End Date in Duration", includeEndDay === "yes" ? "Yes" : "No"],
         ["", ""],
-        ["--- DURATION METRICS ---", ""],
-        ["Total Calendar Days", diffData.rawCalendarDays],
-        ["Working Business Days (Mon-Fri)", diffData.rawBusinessDays],
-        ["Weekend Days (Sat-Sun)", diffData.rawWeekends],
-        ["Weeks and Days Breakdown", diffData.breakdown],
-        ["Total Hours", diffData.rawCalendarDays * 24],
-        ["Total Minutes", diffData.rawCalendarDays * 1440],
+        ["--- DURATION METRICS (FORMULAS) ---", ""],
+        [
+          "Total Calendar Days",
+          {
+            t: "n",
+            f: `DATEVALUE("${endDate}")-DATEVALUE("${startDate}")+IF(B8="Yes",1,0)`,
+            v: diffData.rawCalendarDays,
+          },
+        ],
+        [
+          "Working Business Days (Mon-Fri)",
+          {
+            t: "n",
+            f: `NETWORKDAYS(DATEVALUE("${startDate}"),IF(B8="Yes",DATEVALUE("${endDate}"),DATEVALUE("${endDate}")-1))`,
+            v: diffData.rawBusinessDays,
+          },
+        ],
+        ["Weekend Days (Sat-Sun)", { t: "n", f: "B11-B12", v: diffData.rawWeekends }],
+        ["Total Duration in Hours", { t: "n", f: "B11*24", v: diffData.rawCalendarDays * 24 }],
+        ["Total Duration in Minutes", { t: "n", f: "B14*60", v: diffData.rawCalendarDays * 1440 }],
+        ["Total Elapsed Weeks", { t: "n", f: "INT(B11/7)", v: Math.floor(diffData.rawCalendarDays / 7) }],
       ];
 
-      const ws = XLSX.utils.aoa_to_sheet(summaryData);
-      ws["!cols"] = [{ wch: 38 }, { wch: 24 }];
-      XLSX.utils.book_append_sheet(wb, ws, "Duration Summary");
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      wsSummary["!cols"] = [{ wch: 38 }, { wch: 28 }];
+      XLSX.utils.book_append_sheet(wb, wsSummary, "Duration Summary");
+
+      // Tab 2: Sprint & Timeline Milestone Projections with formulas linking Start Date
+      const milestoneHeader = [
+        "Milestone Target",
+        "Target Interval (Days)",
+        "Calendar Days Offset",
+        "Target Completion Date (Formula)",
+      ];
+      const milestones = [
+        { label: "1-Week Sprint", days: 7 },
+        { label: "2-Week Sprint", days: 14 },
+        { label: "30-Day Checkpoint", days: 30 },
+        { label: "60-Day Midterm", days: 60 },
+        { label: "90-Day Quarter Milestone", days: 90 },
+        { label: "180-Day Half-Year", days: 180 },
+        { label: "365-Day Annual Cycle", days: 365 },
+      ];
+
+      const sDateObj = new Date(startDate);
+      const milestoneRows = milestones.map((m, idx) => {
+        const row = idx + 2;
+        const targetDate = new Date(sDateObj);
+        targetDate.setDate(targetDate.getDate() + m.days);
+        const targetDateStr = !isNaN(targetDate.getTime()) ? targetDate.toISOString().slice(0, 10) : "";
+        return [
+          m.label,
+          m.days,
+          { t: "n", f: `B${row}`, v: m.days },
+          { t: "s", f: `TEXT(DATEVALUE("${startDate}")+B${row},"YYYY-MM-DD")`, v: targetDateStr },
+        ];
+      });
+
+      const wsMilestones = XLSX.utils.aoa_to_sheet([milestoneHeader, ...milestoneRows]);
+      wsMilestones["!cols"] = [{ wch: 28 }, { wch: 24 }, { wch: 22 }, { wch: 32 }];
+      XLSX.utils.book_append_sheet(wb, wsMilestones, "Milestone Projections");
 
       XLSX.writeFile(wb, `ConvertSheet_Date_Diff_${startDate}_to_${endDate}.xlsx`);
     } catch (err) {
@@ -205,7 +258,7 @@ Please evaluate this project timeline against standard 2026 sprint milestones an
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-28 sm:pb-0">
       {/* 100% Client-Side Privacy Reassurance Badge */}
       <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -218,7 +271,7 @@ Please evaluate this project timeline against standard 2026 sprint milestones an
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs">
         <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
         <span>
-          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">2026 Calendar Standards:</strong> 365 Days (Common Year) • 261 Standard Business Days • Accurate Mon–Fri Working Day Math
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">2026 Calendar Standards:</strong> Updated for 2026 Calendar &amp; Project Milestone Standards (October 28, 2026): 365 Days (Common Year) • 261 Standard Business Days • Accurate Mon–Fri NETWORKDAYS Math
         </span>
       </div>
 

@@ -158,6 +158,15 @@ describe("Phase 2 Calculators and Tools", () => {
       expect(screen.getByText("+100%")).toBeInTheDocument();
       expect(screen.getAllByText("$25,000").length).toBeGreaterThanOrEqual(1);
       expect(screen.getAllByRole("button", { name: /copy/i }).length).toBeGreaterThanOrEqual(1);
+
+      // Test asset class benchmark preset
+      const sp500Btn = screen.getByRole("button", { name: /S&P 500/i });
+      expect(sp500Btn).toBeInTheDocument();
+      expect(sp500Btn).toHaveClass("min-h-[44px]");
+      fireEvent.click(sp500Btn);
+
+      // Verify Excel export button exists
+      expect(screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i }).length).toBeGreaterThanOrEqual(1);
     });
   });
 });

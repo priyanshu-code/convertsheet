@@ -147,32 +147,48 @@ Please evaluate how this compares to 2026 regional dining tipping standards and 
       const summaryData = [
         ["ConvertSheet - Restaurant Bill & Tip Split Calculation", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
-        ["Recalculate Online", "https://www.convertsheet.com/tools/tip-calculator"],
+        [
+          "ConvertSheet Recalculation Model",
+          `https://www.convertsheet.com/tools/tip-calculator?billAmount=${billAmount}&tipPercent=${tipPercent}&splitCount=${splitCount}${tipPercent === "custom" ? `&customTip=${customTip}` : ""}${roundUp ? "&roundUp=true" : ""}`,
+        ],
+        ["Dining Standard Baseline", "Updated for 2026 Dining Standards (October 28, 2026): US Standard 15%–22% • UK 12.5% Discretionary • Corporate Per Diem Guidelines"],
         ["", ""],
-        ["--- BILL SUMMARY ---", ""],
+        ["--- BILL PARAMETERS ---", ""],
         ["Food & Beverage Subtotal", billAmount],
-        ["Gratuity / Tip Percentage", `${effectiveTipRate}%`],
-        ["Total Gratuity Added", tipAmount],
-        ["Total Bill Payable", totalBill],
+        ["Gratuity / Tip Percentage", effectiveTipRate],
         ["Number of People Splitting", splitCount],
-        ["Payable Per Person", perPersonBill],
-        ["Tip Contributed Per Person", perPersonTip],
         ["Nearest Dollar Rounding Applied", roundUp ? "Yes" : "No"],
         ["", ""],
-        ["--- GRATUITY COMPARISON MATRIX ---", "", "", ""],
-        ["Tip Rate", "Tip Amount", "Total Bill", "Per Person Split"],
+        ["--- CHECK BREAKDOWN & SPLIT (FORMULAS) ---", ""],
+        ["Total Gratuity Added", { t: "n", f: "B7*(B8/100)", v: tipAmount }],
+        ["Total Bill Payable", { t: "n", f: "B7+B13", v: totalBill }],
+        ["Payable Per Person", { t: "n", f: "B14/B9", v: perPersonBill }],
+        ["Tip Share Per Person", { t: "n", f: "B13/B9", v: perPersonTip }],
       ];
 
-      [10, 12.5, 15, 18, 20, 22, 25].forEach((rate) => {
-        const t = Math.round(billAmount * (rate / 100) * 100) / 100;
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      wsSummary["!cols"] = [{ wch: 38 }, { wch: 24 }];
+      XLSX.utils.book_append_sheet(wb, wsSummary, "Bill Summary");
+
+      // Tab 2: Gratuity Comparison Matrix with active cell formulas linking Bill Summary
+      const matrixHeader = ["Tip Rate (%)", "Tip Amount", "Total Bill", "Per Person Split"];
+      const comparisonRates = [10, 12.5, 15, 18, 20, 22, 25];
+      const matrixRows = comparisonRates.map((r, idx) => {
+        const row = idx + 2; // header is row 1
+        const t = Math.round(billAmount * (r / 100) * 100) / 100;
         const tot = Math.round((billAmount + t) * 100) / 100;
         const pp = Math.round((tot / Math.max(1, splitCount)) * 100) / 100;
-        summaryData.push([`${rate}%`, t, tot, pp]);
+        return [
+          r,
+          { t: "n", f: `'Bill Summary'!$B$7*(A${row}/100)`, v: t },
+          { t: "n", f: `'Bill Summary'!$B$7+B${row}`, v: tot },
+          { t: "n", f: `C${row}/'Bill Summary'!$B$9`, v: pp },
+        ];
       });
 
-      const ws = XLSX.utils.aoa_to_sheet(summaryData);
-      ws["!cols"] = [{ wch: 36 }, { wch: 18 }, { wch: 18 }, { wch: 18 }];
-      XLSX.utils.book_append_sheet(wb, ws, "Bill Split Schedule");
+      const wsMatrix = XLSX.utils.aoa_to_sheet([matrixHeader, ...matrixRows]);
+      wsMatrix["!cols"] = [{ wch: 16 }, { wch: 18 }, { wch: 18 }, { wch: 18 }];
+      XLSX.utils.book_append_sheet(wb, wsMatrix, "Gratuity Matrix");
 
       XLSX.writeFile(wb, `ConvertSheet_Tip_Split_${billAmount}.xlsx`);
     } catch (err) {
@@ -183,7 +199,7 @@ Please evaluate how this compares to 2026 regional dining tipping standards and 
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-28 sm:pb-0">
       {/* 100% Client-Side Privacy Reassurance Badge */}
       <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -196,7 +212,7 @@ Please evaluate how this compares to 2026 regional dining tipping standards and 
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs">
         <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
         <span>
-          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">2026 Dining Standards:</strong> US Standard 15%–22% • UK 12.5% Optional Service • India CCPA Voluntary Guidelines
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">2026 Dining Standards:</strong> Updated for 2026 Dining Standards (October 28, 2026): US Standard 15%–22% • UK 12.5% Optional Service • Corporate Per Diem &amp; Group Event Guidelines
         </span>
       </div>
 
