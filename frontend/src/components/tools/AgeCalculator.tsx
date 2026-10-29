@@ -177,48 +177,130 @@ Please provide life milestone benchmarks (e.g. US SSA Full Retirement Age 67 eli
       setIsExportingExcel(true);
       const wb = XLSX.utils.book_new();
 
-      const summaryData = [
+      const b = new Date(birthDate);
+      const t = new Date(targetDate);
+      const evalYear = t.getFullYear();
+
+      // Tab 1: Age Summary with active live cell formulas
+      const summaryRows: any[][] = [
         ["ConvertSheet - Chronological Age & Life Milestones Calculation", ""],
         ["Report Generated At", new Date().toISOString().split("T")[0]],
         ["Recalculate Online", "https://www.convertsheet.com/tools/age-calculator"],
+        ["Privacy Model", "100% Client-Side In-Browser Calculation • Zero Server Storage"],
         ["", ""],
-        ["--- CHRONOLOGICAL AGE SUMMARY ---", ""],
+        ["--- CHRONOLOGICAL EVALUATION PARAMETERS ---", ""],
         ["Date of Birth", birthDate],
-        ["Evaluation Date", targetDate],
-        ["Exact Age", ageData.primaryAge],
-        ["Years", ageData.years],
-        ["Months", ageData.months],
-        ["Days", ageData.days],
+        ["Target Evaluation Date", targetDate],
         ["Generational Cohort", ageData.generation],
         ["Day of Week Born", ageData.bornDayName],
-        ["Zodiac Sign", ageData.zodiac],
+        ["Western Zodiac Sign", ageData.zodiac],
         ["", ""],
-        ["--- LIFE ACCUMULATION METRICS ---", ""],
-        ["Total Days Lived", ageData.rawTotalDays ?? 0],
-        ["Total Weeks Lived", Math.floor((ageData.rawTotalDays ?? 0) / 7)],
-        ["Total Hours Lived", (ageData.rawTotalDays ?? 0) * 24],
-        ["Total Minutes Lived", (ageData.rawTotalDays ?? 0) * 1440],
-        ["Days Until Next Birthday", ageData.rawDaysToBday ?? 0],
-        ["", ""],
-        ["--- UPCOMING 10 BIRTHDAYS & WEEKDAYS ---", "", ""],
-        ["Year", "Birthday Date", "Day of the Week"],
+        ["--- CHRONOLOGICAL ACCUMULATION & AGE BREAKDOWN ---", ""],
+        [
+          "Total Days Lived",
+          { t: "n", f: 'DATEVALUE(B8)-DATEVALUE(B7)', v: ageData.rawTotalDays ?? 0 },
+        ],
+        [
+          "Total Weeks Lived",
+          { t: "n", f: "INT(B14/7)", v: Math.floor((ageData.rawTotalDays ?? 0) / 7) },
+        ],
+        [
+          "Total Hours Lived",
+          { t: "n", f: "B14*24", v: (ageData.rawTotalDays ?? 0) * 24 },
+        ],
+        [
+          "Total Minutes Lived",
+          { t: "n", f: "B16*60", v: (ageData.rawTotalDays ?? 0) * 1440 },
+        ],
+        [
+          "Completed Years",
+          { t: "n", f: 'DATEDIF(DATEVALUE(B7),DATEVALUE(B8),"Y")', v: ageData.years },
+        ],
+        [
+          "Remaining Months",
+          { t: "n", f: 'DATEDIF(DATEVALUE(B7),DATEVALUE(B8),"YM")', v: ageData.months },
+        ],
+        [
+          "Remaining Days",
+          { t: "n", f: 'DATEDIF(DATEVALUE(B7),DATEVALUE(B8),"MD")', v: ageData.days },
+        ],
+        [
+          "Days Until Next Birthday",
+          { t: "n", v: ageData.rawDaysToBday ?? 0 },
+        ],
       ];
 
-      const b = new Date(birthDate);
-      const evalYear = new Date(targetDate).getFullYear();
-      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      wsSummary["!cols"] = [{ wch: 38 }, { wch: 28 }];
+      XLSX.utils.book_append_sheet(wb, wsSummary, "Age Summary");
 
+      // Tab 2: Life Milestones & Future Birthdays Projections
+      const milestoneDefinitions = [
+        { age: 18, label: "Legal Voting & Adulthood Age" },
+        { age: 21, label: "Legal Majority & Autonomy" },
+        { age: 25, label: "Auto Rental Prime & Cognitive Maturity" },
+        { age: 30, label: "30s Decade Milestone" },
+        { age: 40, label: "40s Mid-Career Milestone" },
+        { age: 50, label: "Half-Century & 401(k) Catch-Up Eligibility" },
+        { age: 60, label: "60s Senior Transition Horizon" },
+        { age: 65, label: "Traditional Retirement & Medicare Eligibility" },
+        { age: 67, label: "US SSA Full Retirement Age (1960+ Cohort)" },
+        { age: 70, label: "Maximum SSA Benefit Delayed Retirement" },
+      ];
+
+      const milestoneRows: any[][] = [
+        ["ConvertSheet - Life Milestones & Upcoming Birthdays Schedule", "", "", ""],
+        ["Evaluation Date Reference", targetDate, "", ""],
+        ["Canonical Calculator", "https://www.convertsheet.com/tools/age-calculator", "", ""],
+        ["", "", "", ""],
+        ["Milestone / Life Event", "Target Age", "Milestone Date", "Status vs Evaluation Date"],
+      ];
+
+      milestoneDefinitions.forEach((m, idx) => {
+        const rowNum = 6 + idx;
+        const milestoneDate = new Date(b.getFullYear() + m.age, b.getMonth(), b.getDate());
+        const mDateStr = `${milestoneDate.getFullYear()}-${String(milestoneDate.getMonth() + 1).padStart(2, "0")}-${String(milestoneDate.getDate()).padStart(2, "0")}`;
+        const isAchieved = (ageData.years ?? 0) >= m.age;
+
+        milestoneRows.push([
+          m.label,
+          m.age,
+          {
+            t: "s",
+            f: `TEXT(DATE(YEAR(DATEVALUE('Age Summary'!$B$7))+${m.age}, MONTH(DATEVALUE('Age Summary'!$B$7)), DAY(DATEVALUE('Age Summary'!$B$7))), "YYYY-MM-DD")`,
+            v: mDateStr,
+          },
+          {
+            t: "s",
+            f: `IF(DATEVALUE(C${rowNum})<=DATEVALUE('Age Summary'!$B$8), "Achieved", "Upcoming")`,
+            v: isAchieved ? "Achieved" : "Upcoming",
+          },
+        ]);
+      });
+
+      milestoneRows.push(["", "", "", ""]);
+      milestoneRows.push(["--- UPCOMING 10 BIRTHDAYS & WEEKDAYS ---", "", "", ""]);
+      milestoneRows.push(["Calendar Year", "Target Age", "Birthday Date", "Day of Week"]);
+
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       for (let i = 1; i <= 10; i++) {
         const nextYear = evalYear + i;
         const bdayInstance = new Date(nextYear, b.getMonth(), b.getDate());
         const dayStr = dayNames[bdayInstance.getDay()];
         const dateStr = `${nextYear}-${String(b.getMonth() + 1).padStart(2, "0")}-${String(b.getDate()).padStart(2, "0")}`;
-        summaryData.push([nextYear, dateStr, dayStr]);
+        const ageAtBday = nextYear - b.getFullYear();
+
+        milestoneRows.push([
+          nextYear,
+          ageAtBday,
+          dateStr,
+          dayStr,
+        ]);
       }
 
-      const ws = XLSX.utils.aoa_to_sheet(summaryData);
-      ws["!cols"] = [{ wch: 40 }, { wch: 24 }, { wch: 24 }];
-      XLSX.utils.book_append_sheet(wb, ws, "Age Milestones");
+      const wsMilestones = XLSX.utils.aoa_to_sheet(milestoneRows);
+      wsMilestones["!cols"] = [{ wch: 42 }, { wch: 14 }, { wch: 18 }, { wch: 24 }];
+      XLSX.utils.book_append_sheet(wb, wsMilestones, "Life Milestones");
 
       XLSX.writeFile(wb, `ConvertSheet_Age_Calculation_${birthDate}.xlsx`);
     } catch (err) {
@@ -229,7 +311,7 @@ Please provide life milestone benchmarks (e.g. US SSA Full Retirement Age 67 eli
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-28 sm:pb-0">
       {/* 100% Client-Side Privacy Reassurance Badge */}
       <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 text-xs font-medium">
         <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -242,7 +324,7 @@ Please provide life milestone benchmarks (e.g. US SSA Full Retirement Age 67 eli
       <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs">
         <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
         <span>
-          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">2026 Demographic Benchmarks:</strong> SSA Full Retirement Age 67 • Precise Leap Year Offset • Generational Cohorts (Gen Alpha, Gen Z, Millennial)
+          <strong className="font-semibold text-zinc-800 dark:text-zinc-200">2026 Demographic Benchmarks:</strong> Updated for October 29, 2026: US SSA Full Retirement Age 67 • Precise Leap Year Offset • Generational Cohorts (Gen Alpha, Gen Z, Millennial, Boomer)
         </span>
       </div>
 

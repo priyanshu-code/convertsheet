@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-28",
+  "lastUpdated": "2026-10-29",
   "totalBlogs": 30,
   "totalTools": 28,
   "blogs": [
@@ -737,53 +737,65 @@
     },
     {
       "slug": "age-calculator",
-      "lastAudited": "2026-10-18",
+      "lastAudited": "2026-10-29",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-ssa-demographic-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
         "url-query-permalink-sync",
         "44px-touch-targets",
         "quick-dob-presets-44px",
         "generational-cohort-engine",
+        "two-tab-milestone-excel-model",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
-        "safe-area-inset-sticky-bar"
+        "safe-area-inset-sticky-bar",
+        "pb-28-safe-padding"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "byte-converter",
-      "lastAudited": "2026-10-19",
+      "lastAudited": "2026-10-29",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-iec-jedec-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
         "url-query-permalink-sync",
         "44px-developer-presets",
         "dual-slider-control",
         "developer-quick-arithmetic-box",
+        "two-tab-multibase-excel-model",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
-        "safe-area-inset-sticky-bar"
+        "safe-area-inset-sticky-bar",
+        "pb-28-safe-padding"
       ],
       "uxStatus": "audited"
     },
     {
       "slug": "unit-converter",
-      "lastAudited": "2026-10-19",
+      "lastAudited": "2026-10-29",
       "moatsAdded": [
         "zero-knowledge-privacy-badge",
-        "market-rate-freshness-signals",
+        "october-2026-bipm-nist-freshness-signals",
+        "active-transparent-sheetjs-cell-formulas",
+        "canonical-recalculation-links",
         "url-query-permalink-sync",
         "44px-touch-targets",
         "44px-dimension-and-swap-controls",
         "1-tap-shortcuts-44px",
         "dual-slider-control",
+        "two-tab-dimensional-excel-model",
+        "calc-save-button-local-persistence",
         "save-share-prompt-actions",
-        "formulaic-xlsx-export",
         "sticky-bottom-mobile-bar",
-        "safe-area-inset-sticky-bar"
+        "safe-area-inset-sticky-bar",
+        "pb-28-safe-padding"
       ],
       "uxStatus": "audited"
     },

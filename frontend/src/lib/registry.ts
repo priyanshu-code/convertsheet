@@ -1118,11 +1118,11 @@ export const CONVERTER_REGISTRY = {
     isClientSide: true,
     featured: true,
     badge: "Client-Side WASM",
-    title: "Convert SQLite to Excel Online Free (2026) — Export .db to Multi-Sheet XLSX",
+    title: "SQLite to Excel Converter: Convert .sqlite & .db to Excel Online Free (2026)",
     subtitle:
       "Export all tables from .sqlite, .db, and .sqlite3 database files into formatted multi-sheet Excel spreadsheets directly in your browser with zero server uploads.",
     metaDescription:
-      "Convert SQLite to Excel free online (2026). Open .sqlite, .db, and .sqlite3 database files and export all tables to native multi-sheet XLSX spreadsheets locally via WebAssembly with zero data leakage.",
+      "Convert SQLite to Excel online for free. Export tables from .sqlite, .db, and .sqlite3 files into multi-sheet XLSX spreadsheets locally via WebAssembly with zero data leakage.",
     howTo: [
       {
         step: 1,

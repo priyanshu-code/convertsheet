@@ -136,32 +136,83 @@ export function ByteConverterTool({ initialValues }: ByteConverterToolProps = {}
     setIsExportingExcel(true);
     try {
       const base = standard === "binary" ? 1024 : 1000;
+      const unitIndex = UNITS.indexOf(sourceUnit);
       const wb = XLSX.utils.book_new();
 
-      const summaryData = [
-        ["ConvertSheet Data Size & Storage Byte Schedule"],
-        ["Generated:", new Date().toLocaleDateString(), "Standard:", standard === "binary" ? "Binary (Base 1024 - IEC/JEDEC)" : "Decimal (Base 1000 - SI)"],
-        ["Source Value:", `${fileSize} ${sourceUnit}`],
-        ["Total Raw Bytes:", results.rawBytesFormatted],
-        ["Online Calculator:", `https://www.convertsheet.com/tools/byte-converter?size=${fileSize}&unit=${sourceUnit}&standard=${standard}`],
-        [],
-        ["Unit", `Size (${standard === "binary" ? "Base 1024" : "Base 1000"})`, `Alternate Standard (${standard === "binary" ? "Base 1000 Decimal" : "Base 1024 Binary"})`],
-        ...UNITS.map((u, i) => [
-          u,
-          results.converted[i].value + " " + u,
-          results.altConverted[i].value + " " + u,
-        ]),
-        [],
-        ["Developer Quick Formulas Reference"],
-        ["1048576 / 1024", "=1048576/1024", "1,024 KiB = 1 MiB"],
-        ["100*1024*1024", "=100*1024*1024", "104,857,600 Bytes = 100 MiB"],
-        ["100000 / 1000000", "=100000/1000000", "0.1 MB (Decimal SI)"],
-        ["100000 / 1048576", "=100000/1048576", "0.09537 MiB (Binary IEC)"],
+      // Tab 1: Storage Summary with active live cell formulas
+      const summaryRows: any[][] = [
+        ["ConvertSheet Data Size & Storage Capacity Model", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["Calculation Standard", standard === "binary" ? "Binary (Base 1024 - IEC/JEDEC)" : "Decimal (Base 1000 - SI)"],
+        ["Recalculate Online", `https://www.convertsheet.com/tools/byte-converter?size=${fileSize}&unit=${sourceUnit}&standard=${standard}`],
+        ["Privacy Assurance", "100% Client-Side In-Browser Calculation • Zero Server Storage"],
+        ["", ""],
+        ["--- INPUT STORAGE PARAMETERS ---", ""],
+        ["Source Value", { t: "n", v: fileSize }],
+        ["Source Unit", sourceUnit],
+        ["Base Standard Mode", standard],
+        ["Base Multiplier", { t: "n", f: 'IF(B10="binary",1024,1000)', v: base }],
+        ["Unit Power Offset", { t: "n", v: unitIndex }],
+        ["", ""],
+        ["--- STORAGE CAPACITY BREAKDOWN & LIVE FORMULAS ---", ""],
+        ["Total Raw Bytes (B)", { t: "n", f: "B8*(B11^B12)", v: results.rawBytes }],
+        ["Kilobytes (KB / KiB)", { t: "n", f: "B15/B11", v: results.rawBytes / base }],
+        ["Megabytes (MB / MiB)", { t: "n", f: "B15/(B11^2)", v: results.rawBytes / Math.pow(base, 2) }],
+        ["Gigabytes (GB / GiB)", { t: "n", f: "B15/(B11^3)", v: results.rawBytes / Math.pow(base, 3) }],
+        ["Terabytes (TB / TiB)", { t: "n", f: "B15/(B11^4)", v: results.rawBytes / Math.pow(base, 4) }],
+        ["Petabytes (PB / PiB)", { t: "n", f: "B15/(B11^5)", v: results.rawBytes / Math.pow(base, 5) }],
       ];
 
-      const ws = XLSX.utils.aoa_to_sheet(summaryData);
-      ws["!cols"] = [{ wch: 20 }, { wch: 30 }, { wch: 35 }];
-      XLSX.utils.book_append_sheet(wb, ws, "Storage Breakdown");
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      wsSummary["!cols"] = [{ wch: 35 }, { wch: 30 }];
+      XLSX.utils.book_append_sheet(wb, wsSummary, "Storage Summary");
+
+      // Tab 2: Multi-Standard Comparison Matrix (IEC Binary vs SI Decimal)
+      const matrixRows: any[][] = [
+        ["ConvertSheet - Multi-Standard Storage Comparison Matrix", "", "", ""],
+        ["Reference File Size", `${fileSize} ${sourceUnit}`, "", ""],
+        ["Canonical Tool", "https://www.convertsheet.com/tools/byte-converter", "", ""],
+        ["", "", "", ""],
+        ["Storage Unit", "IEC Binary (Base 1024)", "SI Decimal (Base 1000)", "Binary vs Decimal Variance %"],
+      ];
+
+      UNITS.forEach((u, idx) => {
+        const rowNum = 6 + idx;
+        const binVal = results.rawBytes / Math.pow(1024, idx);
+        const decVal = results.rawBytes / Math.pow(1000, idx);
+        const variance = decVal > 0 ? ((binVal - decVal) / decVal) * 100 : 0;
+
+        matrixRows.push([
+          u,
+          {
+            t: "n",
+            f: `'Storage Summary'!$B$15/(1024^${idx})`,
+            v: binVal,
+          },
+          {
+            t: "n",
+            f: `'Storage Summary'!$B$15/(1000^${idx})`,
+            v: decVal,
+          },
+          {
+            t: "n",
+            f: `IF(C${rowNum}>0, ((B${rowNum}-C${rowNum})/C${rowNum})*100, 0)`,
+            v: variance,
+          },
+        ]);
+      });
+
+      matrixRows.push(["", "", "", ""]);
+      matrixRows.push(["Developer Quick Reference Formulas", "", "", ""]);
+      matrixRows.push(["Formula Description", "Raw Value Expression", "Resulting Magnitude"]);
+      matrixRows.push(["1 MiB in Bytes (1024^2)", { t: "n", f: "1024*1024", v: 1048576 }, "1,048,576 Bytes"]);
+      matrixRows.push(["1 GiB in Bytes (1024^3)", { t: "n", f: "1024*1024*1024", v: 1073741824 }, "1,073,741,824 Bytes"]);
+      matrixRows.push(["1 TB SI in Bytes (1000^4)", { t: "n", f: "1000*1000*1000*1000", v: 1000000000000 }, "1,000,000,000,000 Bytes"]);
+
+      const wsMatrix = XLSX.utils.aoa_to_sheet(matrixRows);
+      wsMatrix["!cols"] = [{ wch: 28 }, { wch: 25 }, { wch: 25 }, { wch: 30 }];
+      XLSX.utils.book_append_sheet(wb, wsMatrix, "MultiBase Matrix");
+
       XLSX.writeFile(wb, `ConvertSheet-Byte-Converter-${fileSize}${sourceUnit}.xlsx`);
     } catch (err) {
       console.error("Export failed:", err);
@@ -193,7 +244,7 @@ export function ByteConverterTool({ initialValues }: ByteConverterToolProps = {}
         <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
           <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
           <span className="font-medium">
-            Updated for 2026 IEC 80000-13 & JEDEC Standards: Binary (1024 - RAM/OS/WASM) vs Decimal (1000 - Disk/Network/SI)
+            Updated for 2026 IEC 80000-13 & JEDEC Standards: (October 29, 2026) Binary (1024 - RAM/OS/WASM) vs Decimal (1000 - Disk/Network/SI)
           </span>
         </div>
 

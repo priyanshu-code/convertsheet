@@ -1894,8 +1894,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     "toolSlug": "inflation-calculator",
     "presetSlug": "100k-in-10-years",
     "name": "What Will $100,000 Be Worth in 10 Years?",
-    "title": "What Will $100k Be Worth in 10 Years? Inflation Calculator | ConvertSheet",
-    "metaDescription": "In 10 years at 3.2% inflation, $100,000 drops to $72,980 in real purchasing power. You will need $137,024 to match today's buying power. Free Excel export.",
+    "title": "What Will $100k Be Worth in 10 Years? Purchasing Power Calculator (2026)",
+    "metaDescription": "What will $100,000 be worth in 10 years? At 3.2% inflation, $100k drops to $72,980 in real purchasing power. Calculate future value, inflation loss & export free Excel schedule.",
     "answerSummary": "At a historical average inflation rate of 3.2%, $100,000 today will lose approximately 27% of its real purchasing power in 10 years, having an effective equivalent value of $72,980. Conversely, you will need $137,024 in 10 years to purchase what $100,000 buys today.",
     "about": "Visualizing inflation over a decade shows the critical necessity of investing surplus cash in yield-bearing assets or equity index funds rather than keeping it in cash.",
     "initialValues": {
@@ -1954,8 +1954,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     "toolSlug": "inflation-calculator",
     "presetSlug": "100k-in-30-years",
     "name": "What Will $100,000 Be Worth in 30 Years?",
-    "title": "What Will $100k Be Worth in 30 Years? 30-Year Inflation Model | ConvertSheet",
-    "metaDescription": "Calculate purchasing power of $100k in 30 years. See how 3.2% inflation erodes over 61% of value over a full generation. Excel export.",
+    "title": "What Will $100k Be Worth in 30 Years? Inflation Future Value Calculator (2026)",
+    "metaDescription": "How much will $100k be worth in 30 years? At 3.2% inflation, $100,000 loses 61% of value down to $38,870. Calculate exact future purchasing power and download free Excel chart.",
     "answerSummary": "Over a full 30-year generation at 3.2% annual inflation, $100,000 in uninvested cash loses 61% of its real purchasing power, buying only what $38,870 buys today. To maintain identical purchasing power, you will need $257,271 in 30 years.",
     "about": "Over 30 years\u2014the standard span of an American mortgage or career\u2014uninvested cash loses nearly two-thirds of its real economic value. Plan your long-term compounding strategy.",
     "initialValues": {
@@ -4706,8 +4706,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "car-loan-calculator",
     presetSlug: "ford-f150-monthly-payment",
     name: "Ford F-150 Monthly Payment Calculator",
-    title: "Ford F-150 Monthly Payment Calculator: How Much Per Month? (2026 Truck Loan Chart)",
-    metaDescription: "Financing a Ford F-150? See exact monthly payments from $582/mo to $820/mo across 48, 60, and 72-month terms at 6.5% APR. Compare down payments & export free Excel schedule.",
+    title: "Ford F-150 Monthly Payment Calculator: F150 Truck Payment Chart (2026)",
+    metaDescription: "Calculate your exact Ford F-150 monthly payment. Compare F150 payments from $582/mo to $820/mo across 48, 60 & 72-month terms at 2026 interest rates. Free Excel truck amortization schedule.",
     answerSummary: "Financing a popular Ford F-150 trim ($42,000 MSRP) with 10% down ($4,200) at 6.5% APR over 72 months costs approximately $668/month (net loan ~$41,200 with 7% sales tax and fees). Total interest paid over 6 years is approximately $8,680.",
     about: "The Ford F-150 has been America's best-selling truck for over 40 years. Model your monthly payments across SuperCab, SuperCrew, and XLT configurations with down payment options and realistic 60 vs 72-month financing schedules.",
     initialValues: {
@@ -5379,8 +5379,8 @@ A 5-year loan keeps monthly payments under $300 while ensuring the loan is paid 
     toolSlug: "retirement-calculator",
     presetSlug: "retire-with-2-million",
     name: "Retire with $2 Million Portfolio Calculator",
-    title: "Retire with $2 Million: Safe Withdrawal Rate & Monthly Income Model",
-    metaDescription: "How long does $2 Million last in retirement? Calculate 4% safe withdrawal monthly income, tax considerations, portfolio longevity, and Excel schedule.",
+    title: "Retire with $2 Million: Safe Withdrawal Rate & Monthly Income (2026 Calculator)",
+    metaDescription: "How long will $2 Million last in retirement? Calculate 4% rule monthly income ($6,667/mo), portfolio longevity across 30 years, Social Security integration, and export free Excel schedule.",
     answerSummary: "A $2,000,000 retirement nest egg supports a sustainable 4% rule annual withdrawal of $80,000 ($6,667 per month) adjusted annually for inflation, with a 95%+ probability of lasting 30+ years in a diversified 60/40 or 70/30 stock/bond portfolio.",
     about: "A $2 Million portfolio is a common benchmark for financial independence. This preset models the balance between post-retirement asset allocation returns, inflation erosions, and annual withdrawal amounts.",
     initialValues: {

@@ -317,20 +317,93 @@ export function UnitConverterTool({ initialValues }: UnitConverterToolProps = {}
     setIsExportingExcel(true);
     try {
       const wb = XLSX.utils.book_new();
-      const exportData = [
-        ["ConvertSheet Universal Unit Conversion Schedule"],
-        ["Generated:", new Date().toLocaleDateString(), "Dimension:", config.label],
-        ["Source Value:", `${value} ${fromLabel}`],
-        ["Converted Value:", `${convertedResult} ${toLabel}`],
-        ["Canonical Calculator:", `https://www.convertsheet.com/tools/unit-converter?dim=${dimension}&from=${fromUnit}&to=${toUnit}&val=${value}`],
-        [],
-        ["Target Unit", "Symbol", "Converted Equivalent", "Formula vs Base"],
-        ...allEquivalents.map((e) => [e.label, e.symbol, `${e.value} ${e.symbol}`, `Converted from ${value} ${fromLabel}`]),
+      const toBaseFn = config.toBase[fromUnit];
+      const baseVal = toBaseFn ? toBaseFn(value) : value;
+
+      // Determine explicit formula for direct conversion
+      let directFormula = `B8`;
+      if (dimension === "temperature") {
+        if (fromUnit === "c" && toUnit === "f") directFormula = `B8*(9/5)+32`;
+        else if (fromUnit === "f" && toUnit === "c") directFormula = `(B8-32)*(5/9)`;
+        else if (fromUnit === "c" && toUnit === "k") directFormula = `B8+273.15`;
+        else if (fromUnit === "k" && toUnit === "c") directFormula = `B8-273.15`;
+        else if (fromUnit === "f" && toUnit === "k") directFormula = `(B8-32)*(5/9)+273.15`;
+        else if (fromUnit === "k" && toUnit === "f") directFormula = `(B8-273.15)*(9/5)+32`;
+      } else {
+        const factor = config.fromBase[toUnit] && config.toBase[fromUnit]
+          ? config.fromBase[toUnit](config.toBase[fromUnit](1))
+          : 1;
+        directFormula = `B8*${factor}`;
+      }
+
+      // Tab 1: Conversion Summary with active live cell formulas
+      const summaryRows: any[][] = [
+        ["ConvertSheet Universal Unit Conversion Schedule", ""],
+        ["Report Generated At", new Date().toISOString().split("T")[0]],
+        ["Physical Dimension", config.label],
+        ["Recalculate Online", `https://www.convertsheet.com/tools/unit-converter?dim=${dimension}&from=${fromUnit}&to=${toUnit}&val=${value}`],
+        ["Privacy Model", "100% Client-Side In-Browser Calculation • Zero Server Storage"],
+        ["", ""],
+        ["--- CONVERSION PARAMETERS ---", ""],
+        ["Source Value", { t: "n", v: value }],
+        ["Source Unit", fromLabel],
+        ["Target Unit", toLabel],
+        ["", ""],
+        ["--- COMPUTED BASE EQUIVALENT & TARGET VALUE ---", ""],
+        ["Base SI Unit Equivalent", { t: "n", v: Math.round(baseVal * 100000) / 100000 }],
+        [
+          "Target Converted Value",
+          {
+            t: "n",
+            f: directFormula,
+            v: convertedResult,
+          },
+        ],
       ];
 
-      const ws = XLSX.utils.aoa_to_sheet(exportData);
-      ws["!cols"] = [{ wch: 25 }, { wch: 12 }, { wch: 25 }, { wch: 30 }];
-      XLSX.utils.book_append_sheet(wb, ws, "Conversion Schedule");
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryRows);
+      wsSummary["!cols"] = [{ wch: 32 }, { wch: 30 }];
+      XLSX.utils.book_append_sheet(wb, wsSummary, "Conversion Summary");
+
+      // Tab 2: Full Dimensional Unit Equivalents
+      const matrixRows: any[][] = [
+        [`ConvertSheet - Full Dimensional Unit Equivalents (${config.label})`, "", "", ""],
+        ["Source Measurement", `${value} ${fromLabel}`, "", ""],
+        ["Canonical Calculator", "https://www.convertsheet.com/tools/unit-converter", "", ""],
+        ["", "", "", ""],
+        ["Target Unit", "Symbol", "Converted Equivalent", "Excel Formula Reference"],
+      ];
+
+      config.units.forEach((u) => {
+        let uFormula = `'Conversion Summary'!$B$13`;
+        if (dimension === "temperature") {
+          if (u.value === "c") uFormula = `'Conversion Summary'!$B$13`;
+          else if (u.value === "f") uFormula = `'Conversion Summary'!$B$13*(9/5)+32`;
+          else if (u.value === "k") uFormula = `'Conversion Summary'!$B$13+273.15`;
+        } else {
+          const factor = config.fromBase[u.value] ? config.fromBase[u.value](1) : 1;
+          uFormula = `'Conversion Summary'!$B$13*${factor}`;
+        }
+
+        const fn = config.fromBase[u.value];
+        const val = fn ? Math.round(fn(baseVal) * 100000) / 100000 : 0;
+
+        matrixRows.push([
+          u.label,
+          u.symbol,
+          {
+            t: "n",
+            f: uFormula,
+            v: val,
+          },
+          uFormula,
+        ]);
+      });
+
+      const wsMatrix = XLSX.utils.aoa_to_sheet(matrixRows);
+      wsMatrix["!cols"] = [{ wch: 28 }, { wch: 12 }, { wch: 22 }, { wch: 38 }];
+      XLSX.utils.book_append_sheet(wb, wsMatrix, "Dimensional Equivalents");
+
       XLSX.writeFile(wb, `ConvertSheet-Unit-Conversion-${value}${fromUnit}-to-${toUnit}.xlsx`);
     } catch (err) {
       console.error("Export failed:", err);
@@ -362,7 +435,7 @@ export function UnitConverterTool({ initialValues }: UnitConverterToolProps = {}
         <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 text-xs text-blue-900 dark:text-blue-200">
           <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
           <span className="font-medium">
-            Updated for 2026 BIPM & NIST Standards: High-precision metric & imperial physical conversion constants
+            Updated for 2026 BIPM & NIST Standards: (October 29, 2026) High-precision metric & imperial physical conversion constants
           </span>
         </div>
 

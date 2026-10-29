@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { AgeCalculator } from "../AgeCalculator";
@@ -8,8 +8,21 @@ import { UnitConverterTool } from "../UnitConverterTool";
 import { TipCalculator } from "../TipCalculator";
 import { ByteConverterTool } from "../ByteConverterTool";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import * as XLSX from "xlsx";
+
+vi.mock("xlsx", () => ({
+  utils: {
+    book_new: vi.fn(() => ({})),
+    aoa_to_sheet: vi.fn(() => ({})),
+    book_append_sheet: vi.fn(),
+  },
+  writeFile: vi.fn(),
+}));
 
 describe("General Utility Calculators Suite", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
   it("AgeCalculator calculates chronological age with ConvertSheet MOATs", () => {
     render(<AgeCalculator initialValues={{ birthDate: "1998-05-15", targetDate: "2026-10-18" }} />);
     expect(screen.getByText("Chronological Age Calculator")).toBeInTheDocument();
@@ -28,8 +41,14 @@ describe("General Utility Calculators Suite", () => {
     const btn30y = screen.getByRole("button", { name: "30y" });
     expect(btn30y).toHaveClass("min-h-[44px]");
 
-    // Verify Excel export button exists
-    expect(screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i }).length).toBeGreaterThanOrEqual(1);
+    // Verify Excel export button exists and exports multi-tab workbook with active formulas
+    const exportBtns = screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i });
+    expect(exportBtns.length).toBeGreaterThanOrEqual(1);
+    fireEvent.click(exportBtns[0]);
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Age Summary");
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Life Milestones");
+    expect(XLSX.writeFile).toHaveBeenCalledWith(expect.anything(), "ConvertSheet_Age_Calculation_1998-05-15.xlsx");
   });
 
   it("DateDifferenceCalculator calculates calendar and business days with ConvertSheet MOATs", () => {
@@ -60,8 +79,14 @@ describe("General Utility Calculators Suite", () => {
     const swapBtn = screen.getByRole("button", { name: /Swap/i });
     expect(swapBtn).toHaveClass("min-h-[44px]");
 
-    // Verify Excel export button
-    expect(screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i }).length).toBeGreaterThanOrEqual(1);
+    // Verify Excel export button exports multi-tab workbook with active formulas
+    const exportBtns = screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i });
+    expect(exportBtns.length).toBeGreaterThanOrEqual(1);
+    fireEvent.click(exportBtns[0]);
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Duration Summary");
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Milestone Projections");
+    expect(XLSX.writeFile).toHaveBeenCalledWith(expect.anything(), "ConvertSheet_Date_Diff_2026-10-01_to_2026-10-15.xlsx");
   });
 
   it("BmiCalculator calculates BMI and classifies weight categories with ConvertSheet MOATs", () => {
@@ -88,7 +113,12 @@ describe("General Utility Calculators Suite", () => {
     expect(btn5kg).toHaveClass("min-h-[44px]");
 
     // Verify Excel export button
-    expect(screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i }).length).toBeGreaterThanOrEqual(1);
+    const exportBtns = screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i });
+    expect(exportBtns.length).toBeGreaterThanOrEqual(1);
+    fireEvent.click(exportBtns[0]);
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "BMI Schedule");
+    expect(XLSX.writeFile).toHaveBeenCalledWith(expect.anything(), "ConvertSheet-BMI-Calculation-22.9.xlsx");
   });
 
   it("UnitConverterTool converts length units with shortcuts, presets and ConvertSheet MOATs", () => {
@@ -113,8 +143,14 @@ describe("General Utility Calculators Suite", () => {
     const kmMiBtn = screen.getByRole("button", { name: "km ↔ mi" });
     expect(kmMiBtn).toHaveClass("min-h-[44px]");
 
-    // Verify Excel export button
-    expect(screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i }).length).toBeGreaterThanOrEqual(1);
+    // Verify Excel export button exports multi-tab workbook with active formulas
+    const exportBtnsUnit = screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i });
+    expect(exportBtnsUnit.length).toBeGreaterThanOrEqual(1);
+    fireEvent.click(exportBtnsUnit[0]);
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Conversion Summary");
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Dimensional Equivalents");
+    expect(XLSX.writeFile).toHaveBeenCalledWith(expect.anything(), "ConvertSheet-Unit-Conversion-50km-to-mi.xlsx");
   });
 
   it("TipCalculator computes tips and splits bill per person with ConvertSheet MOATs", () => {
@@ -142,7 +178,13 @@ describe("General Utility Calculators Suite", () => {
     expect(billBtn).toHaveClass("min-h-[44px]");
 
     // Verify Excel export button
-    expect(screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i }).length).toBeGreaterThanOrEqual(1);
+    const exportBtnsTip = screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i });
+    expect(exportBtnsTip.length).toBeGreaterThanOrEqual(1);
+    fireEvent.click(exportBtnsTip[0]);
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Bill Summary");
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Gratuity Matrix");
+    expect(XLSX.writeFile).toHaveBeenCalledWith(expect.anything(), "ConvertSheet_Tip_Split_1200.xlsx");
   });
 
   it("ByteConverterTool converts digital storage units with ConvertSheet MOATs", () => {
@@ -166,7 +208,13 @@ describe("General Utility Calculators Suite", () => {
     // 1024 MB in binary = 1,073,741,824 Bytes = 1 GB
     expect(screen.getAllByText("1,073,741,824 Bytes").length).toBeGreaterThanOrEqual(1);
 
-    // Verify Excel export button
-    expect(screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i }).length).toBeGreaterThanOrEqual(1);
+    // Verify Excel export button exports multi-tab workbook with active formulas
+    const exportBtnsByte = screen.getAllByRole("button", { name: /Export to Excel \(\.xlsx\)|Export \.xlsx/i });
+    expect(exportBtnsByte.length).toBeGreaterThanOrEqual(1);
+    fireEvent.click(exportBtnsByte[0]);
+    expect(XLSX.utils.book_new).toHaveBeenCalled();
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "Storage Summary");
+    expect(XLSX.utils.book_append_sheet).toHaveBeenCalledWith(expect.anything(), expect.anything(), "MultiBase Matrix");
+    expect(XLSX.writeFile).toHaveBeenCalledWith(expect.anything(), "ConvertSheet-Byte-Converter-1024MB.xlsx");
   });
 });
