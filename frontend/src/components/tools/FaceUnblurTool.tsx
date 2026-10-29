@@ -46,6 +46,7 @@ export function FaceUnblurTool() {
       formData.append("file", originalFile);
       formData.append("fidelity", fidelity.toString());
       formData.append("tier", "pro");
+      formData.append("output_format", "auto");
 
       const data = await dispatchMediaJob("vision/restore-faces", formData);
 
