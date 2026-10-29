@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/_next/", "/api/"],
+        disallow: ["/api/"],
       },
       // Explicitly grant crawl access to major AI search, answering, and LLM foundation engines
       {
