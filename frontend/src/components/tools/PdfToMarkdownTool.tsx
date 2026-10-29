@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   FileText,
-  UploadCloud,
   Copy,
   Check,
   Download,
@@ -18,7 +17,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { dispatchMediaJob, pollMediaJobFull } from "@/lib/media-engine-client";
-import { formatBytes } from "@/lib/utils";
+import { StudioDropZone } from "./StudioDropZone";
+import { MarkdownDocumentPreview } from "./MarkdownDocumentPreview";
 
 interface MarkdownResult {
   markdown: string;
@@ -39,12 +39,16 @@ export function PdfToMarkdownTool() {
   const [copied, setCopied] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleFileSelect = (selectedFile: File) => {
     setError(null);
     setFile(selectedFile);
     setResult(null);
+  };
+
+  const handleClearFile = () => {
+    setFile(null);
+    setResult(null);
+    setError(null);
   };
 
   const convertToMarkdown = async () => {
@@ -103,43 +107,31 @@ export function PdfToMarkdownTool() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6">
       <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 p-6 sm:p-8 shadow-xl space-y-6">
-        {/* Step 1: Upload Card */}
+        {/* Step 1: Upload Card with Native Drag-and-Drop + OS Paste */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-2">
             1. Upload Document or Scanned File
           </label>
-          <div
-            onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
-              file
-                ? "border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20"
-                : "border-zinc-300 dark:border-zinc-700 hover:border-emerald-500 bg-zinc-50/50 dark:bg-zinc-900/40"
-            }`}
-          >
-            <input
-              type="file"
-              ref={fileInputRef}
-              aria-label="Upload document to convert to markdown"
-              onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
-              accept=".pdf,.png,.jpg,.jpeg,.webp,.tiff,.docx,.xlsx,.pptx,.txt,.html"
-              className="hidden"
-            />
-            <div className="flex flex-col items-center justify-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                <UploadCloud className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">
-                  {file ? file.name : "Click to select or drag & drop document"}
-                </p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  {file
-                    ? `${formatBytes(file.size)} • Ready to extract`
-                    : "Supports PDF, DOCX, PNG, JPG, TIFF, HTML up to 50MB"}
-                </p>
-              </div>
-            </div>
-          </div>
+          <StudioDropZone
+            currentFile={file}
+            onFileSelect={handleFileSelect}
+            onClear={handleClearFile}
+            title="Drop PDF or document here, or click to browse"
+            subtitle="Supports PDF, DOCX, XLSX, PPTX, TIFF, PNG, JPG • Drag & drop or paste (⌘V)"
+            acceptedExtensions={[
+              ".pdf",
+              ".png",
+              ".jpg",
+              ".jpeg",
+              ".webp",
+              ".tiff",
+              ".docx",
+              ".xlsx",
+              ".pptx",
+              ".txt",
+              ".html",
+            ]}
+          />
         </div>
 
         {/* Step 2: Extraction Settings */}
@@ -314,11 +306,13 @@ export function PdfToMarkdownTool() {
             </div>
 
             {/* Markdown Display Container */}
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 p-5 max-h-[500px] overflow-y-auto">
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/60 p-5 sm:p-6 max-h-[750px] overflow-y-auto">
               {activeTab === "preview" ? (
-                <div className="prose dark:prose-invert max-w-none text-sm leading-relaxed whitespace-pre-wrap font-sans">
-                  {result.markdown}
-                </div>
+                <MarkdownDocumentPreview
+                  markdown={result.markdown}
+                  pageCount={result.page_count}
+                  tableCount={result.table_count}
+                />
               ) : (
                 <pre className="font-mono text-xs text-zinc-800 dark:text-zinc-200 whitespace-pre-wrap leading-relaxed select-all">
                   {result.markdown}
